@@ -12,12 +12,15 @@ function signin(email, password) {
     })
     .then(response => {
         console.log(response)
-        return true
+        console.log(response.body)
+        if (response.body.status == 200) {
+            store.user.login(email)
+            store.pages.redirect('main')
+        }
     })
-    .catch(error => {
-        console.log(error)
-        return false
-    })
+    // .catch(error => {
+    //     console.log(error)
+    // })
 }
 
 export class SigninPage {
@@ -26,7 +29,6 @@ export class SigninPage {
     }
 
     render(){
-        console.log('signin Page render start')
         const root = document.createElement('div')
         const content = document.createElement('div')
         const info = document.createElement('div')

@@ -3,15 +3,8 @@ import { store } from "./store.mjs";
 
 function signoutBtnClick(e) {
     e.stopPropagation();
-    console.log(e.target);
-}
-
-function signinBtnClick(e) {
-    e.stopPropagation();
-}
-
-function signupBtnClick(e) {
-    e.stopPropagation();
+    store.user.logout()
+    store.pages.redirect('signin')
 }
 
 const config = {

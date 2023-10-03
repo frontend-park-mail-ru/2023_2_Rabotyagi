@@ -30,6 +30,7 @@ export const store = {
             store.user.accessToken = null
             store.user.refreshToken = null
             localStorage.removeItem('email')
+            store.authored = false
         },
         username: null,
         email: null,
