@@ -38,5 +38,5 @@ const config = {
     }
 };
 
-const header = new Header(headerElement, config);
+const header = new Header(headerElement);
 header.render()
