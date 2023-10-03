@@ -139,3 +139,9 @@ nav {
     border: 1px solid var(--background-tertiary, rgba(41, 44, 47, 0.12));
     background: var(--background-primary, #FFFAFF);
 }
+
+.auth-box {
+    display: flex;
+align-items: center;
+gap: 16px;
+}

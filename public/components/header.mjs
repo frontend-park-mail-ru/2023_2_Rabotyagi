@@ -1,6 +1,7 @@
 'use strict'
 
 import { Profile } from "./profileBtn.mjs"
+import { AuthBox } from "./authBox.mjs"
 
 const logoSVG = () => {
     const body = document.createElement('div')
@@ -33,31 +34,32 @@ const searchSVG = () => {
     
     // Не-дефолтный экспорт
 export class Header {
-    #parent
-
-    constructor(parent) {
-        this.#parent = parent;
+    constructor(authed = false) {
 
         // Инициализация состояния компонента
         this.state = {
             activeMenu: null,
             menuElements: {},
+            authed: authed
         }
 
     }
 
     render() {
+        const root = document.createElement('nav')
         const headerLogo = document.createElement('a');
         const caption = document.createElement('div')
+
         headerLogo.href = '/';
         headerLogo.dataset.section = 'main';
         headerLogo.classList.add('menu__item');
-        caption.textContent = 'Юла';
         headerLogo.style.cssText = `display: flex;
         align-items: center;
         gap: 4px;`
         headerLogo.appendChild(logoSVG())
         headerLogo.appendChild(caption)
+
+        caption.textContent = 'Юла';
         caption.style.cssText = `color: #292C2F;
         font-size: 22px;
         font-family: Nunito;
@@ -81,16 +83,19 @@ export class Header {
         postCreateBtn.textContent = 'Разместить объявление'
         postCreateBtn.classList = ['btn-neutral']
 
-        const profile = new Profile()
+        root.appendChild(headerLogo)
+        root.appendChild(categoryBtn)
+        root.appendChild(searchFieldBox)
+        root.appendChild(postCreateBtn)
+        
+        if (this.state.authed) {
+            const profile = new Profile()
+            root.appendChild(profile.render())
+        } else {
+            const authBox = new AuthBox()
+            root.appendChild(authBox.render())
+        }
 
-        this.#parent.appendChild(headerLogo)
-        this.#parent.appendChild(categoryBtn)
-        this.#parent.appendChild(searchFieldBox)
-        this.#parent.appendChild(postCreateBtn)
-        this.#parent.appendChild(profile.render())
+        return root
     }
 }
-
-export function print() {
-    console.log('header.js');
-};
