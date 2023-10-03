@@ -28,4 +28,5 @@ store.pages.appendPage('main', renderMainPage)
 store.pages.appendPage('signin', renderSignInPage)
 store.pages.appendPage('signup', renderSignupPage)
 
+store.user.init()
 renderMainPage()

@@ -1,5 +1,24 @@
 import { store } from "./store.mjs"
 
+function signup(email, password) {
+    let cridentials = {
+        email: email,
+        password: password
+    }
+    fetch('http://localhost:8080/api/v1/signup', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify(cridentials)
+    })
+    .then(response => {
+        store.user.login(email)
+        store.pages.redirect('main')
+    })
+    .catch(error => {
+        console.log('err', error)
+    })
+}
+
 export class SignupPage {
     constructor() {
 
@@ -51,9 +70,7 @@ export class SignupPage {
             const check = this.checkPass(passInput.value, repeatPassInput.value)
 
             if (check) {
-                console.log('пароли совпадают')
-            } else {
-                
+                signup(emailInput.value, passInput.value)
             }
         })
 
