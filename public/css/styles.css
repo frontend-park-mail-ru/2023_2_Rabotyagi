@@ -63,6 +63,16 @@ nav {
     color: var(--background-primary);
 }
 
+.inputField {
+    display: flex;
+padding: 12px;
+align-items: center;
+align-self: stretch;
+border-radius: 8px;
+border: 0.5px solid var(--vkui-color-stroke-field-border-alpha, rgba(0, 16, 61, 0.12));
+background: var(--vkui-color-background-field-background, #FFF);
+}
+
 .btn-neutral {
     display: flex;
     height: 36px;
@@ -144,4 +154,31 @@ nav {
     display: flex;
 align-items: center;
 gap: 16px;
+}
+
+.signinPage {
+    display: flex;
+padding: 16px 32px;
+flex-direction: column;
+align-items: center;
+gap: 16px;
+/* flex: 1 0 0; */
+/* align-self: stretch; */
+}
+
+.signinPage-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    align-self: stretch;
+}
+
+.signinPage-info {
+    display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 8px;
+align-self: stretch;
 }
