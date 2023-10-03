@@ -42,10 +42,11 @@ body {
 
 nav {
     display: flex;
-    max-width: 1280px;
-    width: 100%;
-    padding: 8px 16px;
-    justify-content: space-between;
+    /* max-width: 1280px; */
+    /* width: 100%; */
+    padding: 8px 32px;
+    gap: 64px;
+    justify-content: center;
     align-items: center;
 }
 
@@ -68,7 +69,6 @@ nav {
     padding: 6px 12px;
     justify-content: center;
     align-items: center;
-    gap: 2px;
     border-radius: 8px;
     background: var(--vkui-color-background-secondary, #F0F1F3);
     color: var(--vkui-color-text-primary, #2C2D2E);
@@ -78,11 +78,12 @@ nav {
     font-style: normal;
     font-weight: 400;
     line-height: 100%; /* 15px */
+    width: max-content;
 }
 
 .searchField {
     display: flex;
-    /* width: 328px; */
+    width: 50%;
     padding: 8px 12px;
     align-items: center;
     gap: 8px;
@@ -93,6 +94,7 @@ nav {
 .searchFieldInput {
     color: var(--vkui-color-text-secondary, #87898F);
     font-feature-settings: 'clig' off, 'liga' off;
+    width: 100%;
     /* Text */
     font-family: Arial;
     font-size: 16px;
@@ -101,7 +103,7 @@ nav {
     line-height: 20px; /* 125% */
 }
 
-.avatar-btn {
+.profile-img {
     display: flex;
     width: 32px;
     height: 32px;
@@ -109,7 +111,31 @@ nav {
     flex-shrink: 0;
     border-radius: 16px;
 }
+.profile-root {
+    /* margin-right: 2rem; */
+}
 
 .svgIcon {
     background-color: transparent;
+}
+
+.dropdown-menu-root {
+    position: absolute;
+    /* display: inline-block; */
+}
+
+.hidden {
+    display: none;
+}
+
+.dropdown-menu-content {
+    display: flex;
+    /* width: 201px; */
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--background-tertiary, rgba(41, 44, 47, 0.12));
+    background: var(--background-primary, #FFFAFF);
 }

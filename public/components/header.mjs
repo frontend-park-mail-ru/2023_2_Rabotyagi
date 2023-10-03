@@ -1,11 +1,6 @@
 'use strict'
 
-// Тип рендера для демонстрации
-export const MENU_RENDER_TYPES = {
-    DOM: 'DOM',
-    STRING: 'STRING',
-    TEMPLATE: 'TEMPLATE'
-};
+import { Profile } from "./profileBtn.mjs"
 
 const logoSVG = () => {
     const body = document.createElement('div')
@@ -51,21 +46,6 @@ export class Header {
 
     }
 
-    // Демонстрация работы геттера
-    // get config() {
-    //     return this.#config;
-    // }
-
-    // Адаптер для удобства
-    // get items() {
-    //     return Object.entries(this.config).map(([key, { href, name }]) => ({
-    //         key,
-    //         href,
-    //         name
-    //     }));
-    // }
-
-    // Эта функция нужна для демонстрации разных видов рендера
     render() {
         const headerLogo = document.createElement('a');
         const caption = document.createElement('div')
@@ -101,21 +81,13 @@ export class Header {
         postCreateBtn.textContent = 'Разместить объявление'
         postCreateBtn.classList = ['btn-neutral']
 
-        const avatarBtn = document.createElement('button')
-        const img = document.createElement('img')
-        img.classList = ['avatar-btn']
-        // img.setAttribute('width', '36px')
-        // img.setAttribute('height', '36px')
-        img.src = 'https://shapka-youtube.ru/wp-content/uploads/2020/12/man-ava1.jpg'
-        avatarBtn.appendChild(img)
-        // avatarBtn.classList = ['avatar-btn']
-
+        const profile = new Profile()
 
         this.#parent.appendChild(headerLogo)
         this.#parent.appendChild(categoryBtn)
         this.#parent.appendChild(searchFieldBox)
         this.#parent.appendChild(postCreateBtn)
-        this.#parent.appendChild(avatarBtn)
+        this.#parent.appendChild(profile.render())
     }
 }
 

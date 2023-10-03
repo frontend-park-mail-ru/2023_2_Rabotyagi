@@ -1,0 +1,64 @@
+import { Dropdown } from "./dropdown.mjs";
+
+function signoutBtnClick(e) {
+    e.stopPropagation();
+    console.log(e.target);
+}
+
+function signinBtnClick(e) {
+    e.stopPropagation();
+}
+
+function signupBtnClick(e) {
+    e.stopPropagation();
+}
+
+const config = {
+    elem1: {
+        type: 'button',
+        inner: 'Главная',
+        style: null,
+        events: {
+            click: null,
+        },
+    },
+    elem2: {
+        type: 'button',
+        inner: 'Профиль',
+        style: null,
+        events: {
+            click: null,
+        },
+    },
+    elem3: {
+        type: 'button',
+        inner: 'Выйти',
+        style: null,
+        events: {
+            click: signoutBtnClick,
+        },
+    },
+}
+
+export class Profile {
+    render() {
+        const root = document.createElement('button')
+        const dropdown = new Dropdown(config).render()
+        const img = document.createElement('img')
+
+        img.src = 'https://shapka-youtube.ru/wp-content/uploads/2020/12/man-ava1.jpg'
+        img.classList = ['profile-img']
+
+        root.appendChild(img)
+        root.appendChild(dropdown)
+        root.classList = ['profile-root']
+        dropdown.classList.toggle('hidden')
+
+        root.addEventListener('click', (e) => {
+            dropdown.classList.toggle('hidden')
+            
+            console.log('click');
+        })
+        return root
+    }
+}
