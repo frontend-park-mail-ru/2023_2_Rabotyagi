@@ -1,11 +1,11 @@
-import { store } from "../store.mjs"
+import { ADRESS_BACKEND, store } from "../store.mjs"
 
 async function signup(email, password) {
     let cridentials = {
         'email': email,
         'password': password
     }
-    let promise = await fetch('http://localhost:8080/api/v1/signup', {
+    let promise = await fetch(ADRESS_BACKEND + '/api/v1/signup', {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(cridentials),
@@ -31,7 +31,12 @@ export class SignupPage {
 
     }
 
-    checkPass(pass, repeatPass) {
+    #checkPass(pass, repeatPass) {
+        if (pass == ''){
+            alert('Поле пароля не может быть пустым')
+            return false
+        }
+
         if (pass != repeatPass){
             alert('Пароли не совпадают')
             return false
@@ -73,7 +78,7 @@ export class SignupPage {
         })
 
         submitBtn.addEventListener('click', (e) => {
-            const check = this.checkPass(passInput.value, repeatPassInput.value)
+            const check = this.#checkPass(passInput.value, repeatPassInput.value)
 
             if (check) {
                 signup(emailInput.value, passInput.value)

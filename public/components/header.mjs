@@ -83,6 +83,12 @@ export class Header {
         postCreateBtn.textContent = 'Разместить объявление'
         postCreateBtn.classList = ['btn-neutral']
 
+        postCreateBtn.addEventListener('click', e => {
+            // e.stopPropagation()
+            // e.preventDefault()
+
+        })
+
         root.appendChild(headerLogo)
         root.appendChild(categoryBtn)
         root.appendChild(searchFieldBox)

@@ -1,4 +1,4 @@
-import { store } from "../store.mjs"
+import { ADRESS_BACKEND, store } from "../store.mjs"
 
 async function signin(email, password) {
     let cridentials = {
@@ -6,7 +6,7 @@ async function signin(email, password) {
         password: password
     }
 
-    let promise = await fetch('http://localhost:8080/api/v1/signin', {
+    let promise = await fetch(ADRESS_BACKEND + '/api/v1/signin', {
         method: 'POST',
         body: JSON.stringify(cridentials),
         headers: {
