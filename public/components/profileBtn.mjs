@@ -53,8 +53,6 @@ export class Profile {
 
         root.addEventListener('click', (e) => {
             dropdown.classList.toggle('hidden')
-            
-            console.log('click');
         })
         return root
     }

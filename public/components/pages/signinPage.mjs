@@ -1,25 +1,29 @@
-import { store } from "./store.mjs"
+import { store } from "../store.mjs"
 
 async function signin(email, password) {
     let cridentials = {
         email: email,
         password: password
     }
-    let response = await fetch('http://localhost:8080/api/v1/signin', {
+
+    let promise = await fetch('http://localhost:8080/api/v1/signin', {
         method: 'POST',
-        // mode: 'no-cors',
         body: JSON.stringify(cridentials),
         headers: {
             'Content-Type': 'application/json'
         }
     })
-    
-    console.log(response)
-    console.log(response.body)
-    if (response.body.status == 200) {
-        store.user.login(email)
-        store.pages.redirect('main')
-    }
+
+    promise.json()
+    .then((response) => {
+        if (response.status == 200) {
+            store.user.login(email)
+            store.pages.redirect('main')
+        }
+        else {
+            alert(response.Body.error)
+        }
+    })
 }
 
 export class SigninPage {

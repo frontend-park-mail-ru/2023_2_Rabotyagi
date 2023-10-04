@@ -1,25 +1,29 @@
-import { store } from "./store.mjs"
+import { store } from "../store.mjs"
 
 async function signup(email, password) {
     let cridentials = {
         'email': email,
         'password': password
     }
-    let response = await fetch('http://localhost:8080/api/v1/signup', {
+    let promise = await fetch('http://localhost:8080/api/v1/signup', {
         method: 'POST',
-        // mode: 'cors',
+        mode: 'cors',
         body: JSON.stringify(cridentials),
         headers: {
             'Content-Type': 'application/json'
         }
     })
-    
-    console.log(response)
-    console.log(response.body)
-    if (response.body.status == 200) {
-        store.user.login(email)
-        store.pages.redirect('main')
-    }
+
+    promise.json()
+    .then((response) => {
+        if (response.status == 200) {
+            store.user.login(email)
+            store.pages.redirect('main')
+        }
+        else {
+            alert(response.Body.error)
+        }
+    })
 }
 
 export class SignupPage {
@@ -36,7 +40,6 @@ export class SignupPage {
     }
 
     render(){
-        console.log('signin Page render start')
         const root = document.createElement('div')
         const content = document.createElement('div')
         const info = document.createElement('div')
