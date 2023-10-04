@@ -24,7 +24,7 @@
             xhr.send();
         }
 
-        get(params = {}) {
+        getAjax(params = {}) {
             this.#ajax({
                 ...params,
                 method: 'GET',
@@ -47,17 +47,23 @@
             });
         }
 
-        async getFetch(params = {}) {
-            let status;
-            const response = await fetch(params.url, {
+        getUsingFetch(params = {}) {
+            fetch(params.url, {
                 method: 'GET'
+            })
+            .then((response) => {
+                let status = response.status;
+                const parsedJson = response.json();
+                return {
+                    status,
+                    parsedJson,
+                };
+            })
+            .catch((error) => {
+                return {
+                    error
+                };
             });
-            status = response.status;
-            const parsedJson = await response.json();
-            return {
-                status,
-                parsedJson,
-            };
         }
 
         post(params = {}) {
