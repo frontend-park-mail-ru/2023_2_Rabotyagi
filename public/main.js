@@ -3,13 +3,16 @@ import {Header} from "./components/header.mjs"
 import { SigninPage } from "./components/signinPage.mjs";
 import { SignupPage } from "./components/signupPage.mjs";
 import { store } from "./components/store.mjs";
+import { Feed } from "./components/posts/feed.mjs";
 
 const rootElement = document.getElementById('root');
 
 function renderMainPage() {
-    const header = new Header();
+    const header = new Header()
+    const feed = new Feed()
     rootElement.innerHTML = ''
-    rootElement.appendChild(header.render());
+    rootElement.appendChild(header.render())
+    rootElement.appendChild(feed.render())
 }
 
 function renderSignInPage() {

@@ -1,26 +1,25 @@
 import { store } from "./store.mjs"
 
-function signin(email, password) {
+async function signin(email, password) {
     let cridentials = {
         email: email,
         password: password
     }
-    fetch('http://localhost:8080/api/v1/signin', {
+    let response = await fetch('http://localhost:8080/api/v1/signin', {
         method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify(cridentials)
-    })
-    .then(response => {
-        console.log(response)
-        console.log(response.body)
-        if (response.body.status == 200) {
-            store.user.login(email)
-            store.pages.redirect('main')
+        // mode: 'no-cors',
+        body: JSON.stringify(cridentials),
+        headers: {
+            'Content-Type': 'application/json'
         }
     })
-    // .catch(error => {
-    //     console.log(error)
-    // })
+    
+    console.log(response)
+    console.log(response.body)
+    if (response.body.status == 200) {
+        store.user.login(email)
+        store.pages.redirect('main')
+    }
 }
 
 export class SigninPage {
