@@ -1,3 +1,5 @@
+import { store } from "./store.mjs"
+
 export class AuthBox {
     constructor(){
 
@@ -5,21 +7,25 @@ export class AuthBox {
 
     render() {
         const root = document.createElement('div')
-        const signinBtn = document.createElement('a')
-        const signupBtn = document.createElement('a')
+        const signinBtn = document.createElement('button')
+        const signupBtn = document.createElement('button')
 
         signinBtn.textContent = 'Войти'
-        signinBtn.href = '/signin'
         signupBtn.textContent = 'Зарегистрироваться'
-        signupBtn.href = '/signup'
+
+        signinBtn.classList = ['btn-neutral']
+        signupBtn.classList = ['btn-neutral']
 
         signinBtn.addEventListener('click', (e) => {
             e.stopPropagation()
-
+            store.activePage = 'signin'
+            store.pages['signin']()
         })
 
         signupBtn.addEventListener('click', (e) => {
             e.stopPropagation()
+            store.activePage = 'signup'
+            store.pages['signup']()
         })
 
         root.appendChild(signinBtn)

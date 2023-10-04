@@ -2,6 +2,7 @@
 
 import { Profile } from "./profileBtn.mjs"
 import { AuthBox } from "./authBox.mjs"
+import { store } from "./store.mjs"
 
 const logoSVG = () => {
     const body = document.createElement('div')
@@ -40,7 +41,6 @@ export class Header {
         this.state = {
             activeMenu: null,
             menuElements: {},
-            authed: authed
         }
 
     }
@@ -83,12 +83,18 @@ export class Header {
         postCreateBtn.textContent = 'Разместить объявление'
         postCreateBtn.classList = ['btn-neutral']
 
+        postCreateBtn.addEventListener('click', e => {
+            // e.stopPropagation()
+            // e.preventDefault()
+
+        })
+
         root.appendChild(headerLogo)
         root.appendChild(categoryBtn)
         root.appendChild(searchFieldBox)
         root.appendChild(postCreateBtn)
         
-        if (this.state.authed) {
+        if (store.authored) {
             const profile = new Profile()
             root.appendChild(profile.render())
         } else {
