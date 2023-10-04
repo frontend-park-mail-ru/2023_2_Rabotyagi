@@ -1,5 +1,7 @@
+const ADRESS_BACKEND = 'http://localhost:8080'
 
-export const store = {
+
+const store = {
     pages: {
         appendPage: (name, func) => {
             store.pages[name] = func
@@ -41,11 +43,4 @@ export const store = {
     authored: false,
 }
 
-// function get_value(key) {
-//     store[key]
-// 
-// export const store = () => {
-//     state = {}
-
-    
-// }
+export {ADRESS_BACKEND, store}
