@@ -1,0 +1,27 @@
+<div class="card">
+        <div class="badges">
+                {{#if this.badges.safeDeal}}
+                        {{!-- {{this.badges.safeDeal}} --}}
+                {{/if}}
+
+                {{#if this.badges.delivery}}
+                <div class="badge">
+                        {{!-- {{this.badges.delivery}} --}}
+                </div> 
+                {{/if}}
+
+                {{#if this.badges.city != null}}
+                <div class="badge">
+                        {{this.badges.city}}
+                </div>
+                {{/if}}
+        </div>
+        <div class="card-body">
+                <img class="card-image" src="{{this.cardImage.url}}" alt="{{this.cardImage.alt}}">
+                <div class="card-info">
+                        <span class="card-info-price">{{this.cardInfo.price}} ₽</span>
+                        <span class="card-info-title">{{this.cardInfo.title}} ₽</span>
+                </div>
+                {{!-- <div class="card-fav-btn"></div> --}}
+        </div>
+</div>

@@ -1,6 +1,6 @@
 import { Dropdown } from "../dropdown.mjs"
 import { ADRESS_BACKEND } from "../store.mjs"
-import { PostCard } from "../card.mjs"
+import { PostCard } from "../card/card.mjs"
 
 export class Feed {
     // #items_arr

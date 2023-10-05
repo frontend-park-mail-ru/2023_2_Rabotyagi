@@ -1,4 +1,4 @@
-import {Header} from './components/header.mjs';
+import {Header} from './components/header/header.mjs';
 import {SigninPage} from './components/pages/signinPage.mjs';
 import {SignupPage} from './components/pages/signupPage.mjs';
 import {store} from './components/store.mjs';
