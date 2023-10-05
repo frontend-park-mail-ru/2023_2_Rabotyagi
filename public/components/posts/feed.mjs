@@ -1,6 +1,7 @@
 import { Dropdown } from "../dropdown.mjs"
 import { ADRESS_BACKEND } from "../store.mjs"
 import { PostCard } from "../card.mjs"
+import API from "../../api/api.mjs"
 
 export class Feed {
     // #items_arr
@@ -15,15 +16,10 @@ export class Feed {
     }
 
     async #getPosts() {
-        let response = await fetch(ADRESS_BACKEND + '/api/v1/post/get_list?' + new URLSearchParams({count: 2}), {
-            method: 'GET',
+        let postsList = await Ajax.getUsingFetch({
+            url: API.ADRESS_BACKEND + API.GET_POST_LIST + new URLSearchParams({count: 2}),
         })
-        .then(response => response.json())
-        .then(response => {
-            return response
-        })
-        
-        return response
+        return postsList
     }
 
     async 
