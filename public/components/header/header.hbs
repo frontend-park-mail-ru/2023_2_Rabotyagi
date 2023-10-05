@@ -10,7 +10,7 @@
     </div>
     <button class='btn-neutral'>Разместить объявление</button>
     {{#if authorized}}
-    {{> profile}}
+    {{> profile this.profileConf}}
     {{else}}
     <div class="auth-box">
         <button id='btn-signin'  class='btn-primary'>{{this.signin.caption}}</button>

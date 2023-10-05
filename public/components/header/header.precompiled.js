@@ -8,7 +8,7 @@ templates['header.hbs'] = template({"1":function(container,depth0,helpers,partia
         return undefined
     };
 
-  return ((stack1 = container.invokePartial(lookupProperty(partials,"profile"),depth0,{"name":"profile","data":data,"indent":"    ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "");
+  return ((stack1 = container.invokePartial(lookupProperty(partials,"profile"),(depth0 != null ? lookupProperty(depth0,"profileConf") : depth0),{"name":"profile","data":data,"indent":"    ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "");
 },"3":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {

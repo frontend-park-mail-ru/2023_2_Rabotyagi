@@ -34,6 +34,20 @@ export class Header {
                 caption: 'Зарегистрироваться',
             },
             authorized: store.authorized,
+            profileConf: {
+                dropdownConf: {
+                    id: 'profile-dropdown',
+                    search: false,
+                    items: {
+                        ref: 'profileBtn',
+                        content: [
+                            ['dropdown-btn-fav', 'Избранное'],
+                            ['dropdown-btn-profile', 'Профиль'],
+                            ['dropdown-btn-logout', 'Выйти']
+                        ]
+                    },
+                },
+            }
         }
 
 
@@ -51,6 +65,16 @@ export class Header {
             store.pages['signup']()
         })
 
+        document.querySelector('.profile-container')?.addEventListener('click', (e) => {
+            e.stopPropagation()
+            document.querySelector('#profile-dropdown')?.classList.toggle('hidden')
+        })
 
+        document.querySelector('#dropdown-btn-logout')?.addEventListener('click', (e) => {
+            e.stopPropagation()
+            store.user.logout()
+            store.activePage = 'signin'
+            store.pages.redirect('signin')
+        })
     }
 }

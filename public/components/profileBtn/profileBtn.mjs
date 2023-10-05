@@ -14,30 +14,37 @@ export class Profile {
 
         const config = {
             dropdownConf: {
-                items: [
-                    {
-                        text: 'Избранное',
-                        clickEvent: function(e) {
-
-                        }
-                    },
-                    {
-                        text: 'Профиль',
-                        clickEvent: function(e) {
-
-                        }
-                    },
-                    {
-                        text: 'Выйти',
-                        clickEvent: function(e) {
-                            store.user.logout()
-                            store.activePage = 'signin'
-                            store.pages['signin']()
-                        }
-                    },
-                ]
+                id: 'profile-dropdown',
+                search: false,
+                items: {
+                    ref: 'profileBtn',
+                    content: [
+                        ['dropdown-btn-fav', 'Избранное'],
+                        ['dropdown-btn-profile', 'Профиль'],
+                        ['dropdown-btn-logout', 'Выйти']
+                        // {
+                        //     text: 'Избранное',
+                        //     clickEvent: function(e) {
+    
+                        //     }
+                        // },
+                        // {
+                        //     text: 'Профиль',
+                        //     clickEvent: function(e) {
+    
+                        //     }
+                        // },
+                        // {
+                        //     text: 'Выйти',
+                        //     clickEvent: function(e) {
+                        //         store.user.logout()
+                        //         store.activePage = 'signin'
+                        //         store.pages['signin']()
+                        //     }
+                        // },
+                    ]
+                },
             },
-            id: 'profile-dropdown'
                 
         }
         
@@ -46,9 +53,12 @@ export class Profile {
         // const container = document.querySelector('.profile-container')
         // new Dropdown(container, config.dropdownConf).render()
 
-        // document.querySelector('#profile-dropdown')?.addEventListener('click', (e) => {
-        //     e.stopPropagation()
-        //     e.target.classList.toogle('hidden')
-        // })
+        const pd = document.querySelector('#profile-dropdown')
+        console.log(pd)
+        pd?.addEventListener('click', (e) => {
+            // e.stopPropagation()
+            console.log(e.target)
+            e.target.classList.toogle('hidden')
+        })
     }
 }
