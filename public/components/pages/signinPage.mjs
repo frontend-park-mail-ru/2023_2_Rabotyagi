@@ -1,27 +1,22 @@
 import { ADRESS_BACKEND, store } from "../store.mjs"
+import API from "../../api/api.mjs"
 
 async function signin(email, password) {
     let cridentials = {
         email: email,
         password: password
     }
-
-    let promise = await fetch(ADRESS_BACKEND + '/api/v1/signin', {
-        method: 'POST',
+    Ajax.postUsingFetch({
+        url: API.ADRESS_BACKEND + API.SIGNIN,
         body: JSON.stringify(cridentials),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-
-    promise.json()
-    .then((response) => {
-        if (response.status == 200) {
-            store.user.login(email)
-            store.pages.redirect('main')
-        }
-        else {
-            alert(response.Body.error)
+        callback: (response) => {
+            if (response.status == 200) {
+                store.user.login(email)
+                store.pages.redirect('main')
+            }
+            else {
+                alert(response.Body.error)
+            }
         }
     })
 }
