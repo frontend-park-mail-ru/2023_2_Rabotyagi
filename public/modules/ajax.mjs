@@ -49,13 +49,15 @@
 
         getUsingFetch({
             url = "/",
+            callback = noop,
+            errorCallback = noop,
         } = {}) {
             fetch(url)
             .then((response) => {
-                return response;
+                callback(response)
             })
             .catch((error) => {
-               return error; 
+               errorCallback(error)
             });
         }
 
@@ -63,6 +65,7 @@
             url = "/",
             body = null,
             callback = noop,
+            errorCallback = noop,
         } = {}) {
             fetch(url, {
                 method: AJAX_METHODS.POST,
@@ -73,10 +76,10 @@
                 body: JSON.stringify(body)
             })
             .then((response) => {
-                callback(response)
+                callback(response);
             })
             .catch((error) => {
-               return error; 
+               errorCallback(error);
             });
         }
     }
