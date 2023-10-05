@@ -47,27 +47,30 @@
             });
         }
 
-        getUsingFetch({
+        async getUsingFetch({
             url = "/",
             callback = noop,
             errorCallback = noop,
         } = {}) {
-            fetch(url)
-            .then((response) => {
-                callback(response)
+            return fetch(url)
+            .then((response) => response.json())
+            .then((result) => {
+                callback(result);
+                return result;
             })
             .catch((error) => {
-               errorCallback(error)
+                errorCallback(error);
+                return error;
             });
         }
 
-        postUsingFetch({
+        async postUsingFetch({
             url = "/",
             body = null,
             callback = noop,
             errorCallback = noop,
         } = {}) {
-            fetch(url, {
+            return fetch(url, {
                 method: AJAX_METHODS.POST,
                 mode: 'cors',
                 headers: {
@@ -77,9 +80,11 @@
             })
             .then((response) => {
                 callback(response);
+                return response;
             })
             .catch((error) => {
                errorCallback(error);
+               return error;
             });
         }
     }
