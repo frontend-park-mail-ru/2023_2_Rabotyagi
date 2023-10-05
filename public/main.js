@@ -7,12 +7,14 @@ import {Feed} from './components/posts/feed.mjs';
 const rootElement = document.getElementById('root');
 
 function renderMainPage() {
-    const header = new Header()
+    rootElement.innerHTML = ''
+    const header = new Header(rootElement)
     const feed = new Feed()
 
-    rootElement.innerHTML = ''
-    rootElement.appendChild(header.render())
+
+    header.render()
     rootElement.appendChild(feed.render())
+
     document.title = 'Супер Юла | Главная'
 }
 

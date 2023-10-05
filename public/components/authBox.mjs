@@ -16,13 +16,13 @@ export class AuthBox {
         signinBtn.classList = ['btn-neutral']
         signupBtn.classList = ['btn-neutral']
 
-        signinBtn.addEventListener('click', (e) => {
+        signinBtn.addEventListener('click', function(e) {
             e.stopPropagation()
             store.activePage = 'signin'
             store.pages['signin']()
         })
 
-        signupBtn.addEventListener('click', (e) => {
+        signupBtn.addEventListener('click', function(e) {
             e.stopPropagation()
             store.activePage = 'signup'
             store.pages['signup']()

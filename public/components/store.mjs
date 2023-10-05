@@ -17,13 +17,13 @@ const store = {
         init: () => {
             let email = localStorage.getItem('email')
             if (email != null) {
-                store.authored = true
+                store.authorized = true
                 store.user.email = email
             }
         },
         login: (email) => {
             localStorage.setItem('email', email)
-            store.authored = true
+            store.authorized = true
             store.user.email = email
         },
         logout: () => {
@@ -32,7 +32,7 @@ const store = {
             store.user.accessToken = null
             store.user.refreshToken = null
             localStorage.removeItem('email')
-            store.authored = false
+            store.authorized = false
         },
         username: null,
         email: null,
@@ -40,7 +40,7 @@ const store = {
         refreshToken: null
     },
     activePage: 'main',
-    authored: false,
+    authorized: false,
 }
 
 export {ADRESS_BACKEND, store}
