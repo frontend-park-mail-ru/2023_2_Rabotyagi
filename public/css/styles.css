@@ -3,6 +3,9 @@
 /* Antic Slab */
 @import url('https://fonts.googleapis.com/css2?family=Antic+Slab&family=Nunito+Sans:ital,opsz@0,6..12;1,6..12&display=swap');
 
+@import url('card.css');
+@import url('feed.css');
+
 :root {
     /* colors */
     --background-primary: #fffaff;

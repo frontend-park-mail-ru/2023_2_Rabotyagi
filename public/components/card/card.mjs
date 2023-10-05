@@ -1,12 +1,12 @@
-import Handlebars from "handlebars"
-
 export class PostCard {
+    #parent
     #title
     #desc
     #city
     #price
 
-    constructor(title, city, price) {
+    constructor(parent, {title, city, price}) {
+        this.#parent = parent
         this.#title = title
         // this.#desc = desc
         this.#city = city
@@ -15,12 +15,8 @@ export class PostCard {
 
 
     render () {
-        const template = Handlebars.templates(['card.hbs'])
-        // const root = document.createElement('div')
-        // const title = document.createElement('span')
-        // const desc = document.createElement('span')
-        // const city = document.createElement('span')
-        // const price = document.createElement('span')
+        const template = Handlebars.templates['card.hbs']
+        
         const context = {
             badges: {
                 safeDeal: false,
@@ -37,18 +33,6 @@ export class PostCard {
             }
         }
 
-        // title.textContent = 'title ' + this.#title
-        // desc.textContent = 'desc ' + this.#desc
-        // city.textContent = 'city ' + this.#city
-        // price.textContent = 'price ' + this.#price
-
-        // root.classList = ['post-card']
-        // root.appendChild(title)
-        // root.appendChild(desc)
-        // root.appendChild(city)
-        // root.appendChild(price)
-
-        // return root
-        return template(context)
+        this.#parent.innerHTML = this.#parent.innerHTML + template(context)
     }
 }

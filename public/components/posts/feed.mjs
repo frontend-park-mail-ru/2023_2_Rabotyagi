@@ -15,7 +15,7 @@ export class Feed {
     }
 
     async #getPosts() {
-        let response = await fetch(ADRESS_BACKEND + '/api/v1/post/get_list?' + new URLSearchParams({count: 2}), {
+        let response = await fetch(ADRESS_BACKEND + '/api/v1/post/get_list?' + new URLSearchParams({count: 10}), {
             method: 'GET',
         })
         .then(response => response.json())
@@ -31,7 +31,7 @@ export class Feed {
     #Header() {
         const root = document.createElement('div')
 
-        root.classList = []
+        root.classList = ['feed']
         const header = document.createElement('span')
         header.textContent = 'Все объявления'
 
@@ -43,12 +43,12 @@ export class Feed {
     #Content() {
         const root = document.createElement('div')
 
-        // root.classList = []
+        root.classList = ['feed-content']
         this.#getPosts()
         .then(response => {
-            response.Body.forEach(({title, description, city, price}) => {
-                let card = new PostCard(title, description, city, price)
-                root.appendChild(card.render())
+            response.Body.forEach((info) => {
+                let card = new PostCard(root, info)
+                card.render()
             })
         })
         // console.log(items)
