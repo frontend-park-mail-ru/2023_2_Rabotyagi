@@ -1,6 +1,11 @@
 (function() {
     const noop = () => null;
 
+    const AJAX_METHODS = {
+        GET: 'GET',
+        POST: 'POST'
+    }
+
     class Ajax {
         #ajax({
             method = 'GET',
@@ -18,61 +23,71 @@
             });
             if (body) {
                 xhr.setRequestHeader('Content-type', 'application/json; charset=utf8');
+                console.log(body)
                 xhr.send(JSON.stringify(body));
                 return;
             }
             xhr.send();
         }
 
-        getAjax(params = {}) {
+        get({url, callback}) {
             this.#ajax({
-                ...params,
-                method: 'GET',
+                method: AJAX_METHODS.GET,
+                url,
+                callback
             });
         }
 
-        getPromise(params = {}) {
-            return new Promise((resolve, reject) => {
-                this.#ajax({
-                    ...params,
-                    method: 'GET',
-                    callback: (status, responseText) => {
-                        if (status < 300) {
-                            resolve({status, responseText});
-                            return;
-                        }
-                        reject({status, responseText});
-                    },
-                });
+        post({url, body, callback}) {
+            this.#ajax({
+                method: AJAX_METHODS.POST,
+                url,
+                body,
+                callback
             });
         }
 
-        getUsingFetch(params = {}) {
-            fetch(params.url, {
-                method: 'GET'
-            })
-            .then((response) => {
-                let status = response.status;
-                const parsedJson = response.json();
-                return {
-                    status,
-                    parsedJson,
-                };
+        async getUsingFetch({
+            url = "/",
+            callback = noop,
+            errorCallback = noop,
+        } = {}) {
+            return fetch(url)
+            .then((response) => response.json())
+            .then((result) => {
+                callback(result);
+                return result;
             })
             .catch((error) => {
-                return {
-                    error
-                };
+                errorCallback(error);
+                return error;
             });
         }
 
-        post(params = {}) {
-            this.#ajax({
-                ...params,
-                method: 'POST',
+        async postUsingFetch({
+            url = "/",
+            body = null,
+            callback = noop,
+            errorCallback = noop,
+        } = {}) {
+            return fetch(url, {
+                method: AJAX_METHODS.POST,
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(body)
+            })
+            .then((response) => {
+                callback(response);
+                return response;
+            })
+            .catch((error) => {
+               errorCallback(error);
+               return error;
             });
         }
     }
 
-    window.HttpModule = new Ajax();
+    window.Ajax = new Ajax();
 })();
