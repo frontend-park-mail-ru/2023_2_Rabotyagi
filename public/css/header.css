@@ -1,0 +1,53 @@
+nav {
+    display: flex;
+    padding: 8px 32px;
+    gap: 64px;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-box {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.logo-caption {
+    color: var(--text-primary);
+    font-family: Nunito;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 140%; /* 30.8px */
+}
+
+.profile-container {
+
+}
+
+
+.profile-btn {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    align-items: flex-start;
+    flex-shrink: 0;
+    border-radius: 16px;
+}
+
+.dropdown-container {
+    position: absolute;
+    /* display: inline-block; */
+}
+
+.dropdown-content {
+    display: flex;
+    /* width: 201px; */
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--background-tertiary, rgba(41, 44, 47, 0.12));
+    background: var(--background-primary, #FFFAFF);
+}

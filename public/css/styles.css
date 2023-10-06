@@ -3,6 +3,10 @@
 /* Antic Slab */
 @import url('https://fonts.googleapis.com/css2?family=Antic+Slab&family=Nunito+Sans:ital,opsz@0,6..12;1,6..12&display=swap');
 
+@import url('header.css');
+@import url('feed.css');
+@import url('card.css');
+
 :root {
     /* colors */
     --background-primary: #fffaff;
@@ -24,8 +28,7 @@
 }
 
 * {
-    color: #292C2F;
-    background-color: #FFFAFF;
+    background-color: var(--background-primary);
     text-decoration: none;
     border-width: 0;
 }
@@ -33,21 +36,18 @@
 body {
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #root {
     margin: 0;
     padding: 0;
-}
-
-nav {
+    max-width: 1280px;
     display: flex;
-    /* max-width: 1280px; */
-    /* width: 100%; */
-    padding: 8px 32px;
-    gap: 64px;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    gap: 32px;
 }
 
 .btn-primary {
@@ -61,16 +61,6 @@ nav {
     border-radius: 8px;
     background: var(--palette-primary, #9D8DF1);
     color: var(--background-primary);
-}
-
-.inputField {
-    display: flex;
-padding: 12px;
-align-items: center;
-align-self: stretch;
-border-radius: 8px;
-border: 0.5px solid var(--vkui-color-stroke-field-border-alpha, rgba(0, 16, 61, 0.12));
-background: var(--vkui-color-background-field-background, #FFF);
 }
 
 .btn-neutral {
@@ -89,6 +79,16 @@ background: var(--vkui-color-background-field-background, #FFF);
     font-weight: 400;
     line-height: 100%; /* 15px */
     width: max-content;
+}
+
+.inputField {
+    display: flex;
+padding: 12px;
+align-items: center;
+align-self: stretch;
+border-radius: 8px;
+border: 0.5px solid var(--vkui-color-stroke-field-border-alpha, rgba(0, 16, 61, 0.12));
+background: var(--vkui-color-background-field-background, #FFF);
 }
 
 .searchField {
@@ -113,55 +113,20 @@ background: var(--vkui-color-background-field-background, #FFF);
     line-height: 20px; /* 125% */
 }
 
-.profile-img {
-    display: flex;
-    width: 32px;
-    height: 32px;
-    align-items: flex-start;
-    flex-shrink: 0;
-    border-radius: 16px;
-}
-.profile-root {
-    /* margin-right: 2rem; */
-}
-
 .svgIcon {
     background-color: transparent;
-}
-
-.dropdown-menu-root {
-    position: absolute;
-    /* display: inline-block; */
 }
 
 .hidden {
     display: none;
 }
 
-.dropdown-menu-content {
-    display: flex;
-    /* width: 201px; */
-    padding: 16px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    border-radius: 12px;
-    border: 1px solid var(--background-tertiary, rgba(41, 44, 47, 0.12));
-    background: var(--background-primary, #FFFAFF);
-}
-
-.auth-box {
-    display: flex;
-align-items: center;
-gap: 16px;
-}
-
 .signinPage {
     display: flex;
-padding: 16px 32px;
-flex-direction: column;
-align-items: center;
-gap: 16px;
+    padding: 16px 32px;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
 /* flex: 1 0 0; */
 /* align-self: stretch; */
 }
@@ -176,9 +141,31 @@ gap: 16px;
 
 .signinPage-info {
     display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-gap: 8px;
-align-self: stretch;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+}
+
+.modal {
+    display: flex;
+    width: 420px;
+    flex-direction: column;
+    align-items: flex-start;
+    /*  Установаем ширину окна  */
+    width: 100%;
+    max-width: 500px;
+    
+    /*  Центрируем и задаем z-index */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 30; /* Должен быть выше чем у подложки*/
+    
+    /*  Побочные стили   */
+    border-radius: 12px;
+    border: 0.5px solid var(--light-stroke-separator-primary-alpha, rgba(0, 16, 61, 0.12));
+    background: var(--vkui-color-background-modal, #FFF);
 }

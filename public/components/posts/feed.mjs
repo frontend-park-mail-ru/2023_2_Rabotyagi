@@ -1,28 +1,35 @@
-import { Dropdown } from "../dropdown.mjs"
+/**
+ * @module Объявления
+ */
 
+import API from "../../api/api.mjs"
+import { PostCard } from "../card/card.mjs"
+
+/**
+ * @class Блок с объявлениями
+ * @description Получает посты с бекенда и формирует коллекцию для представления
+ */
 export class Feed {
     constructor (){
-
+        this.items = []
     }
 
+    /**
+     * @async
+     * @description Посылает запрос на бек для получения 20 постов
+     * @returns Массив постов
+     */
     async #getPosts() {
-        let promise = await fetch('http://localhost:8080/api/v1/post/get_list?' + new URLSearchParams({count: 20}), {
-            method: 'GET',
+        let postsList = await Ajax.getUsingFetch({
+            url: API.ADRESS_BACKEND + API.GET_POST_LIST + new URLSearchParams({count: 20}),
         })
-
-        promise.json()
-        .then(response => {
-            if (response.status == 200) {
-                console.log(response.Body)
-            }
-        })
-        // console.log(response)
+        return postsList
     }
 
     #Header() {
         const root = document.createElement('div')
 
-        root.classList = []
+        root.classList = ['feed']
         const header = document.createElement('span')
         header.textContent = 'Все объявления'
 
@@ -34,8 +41,14 @@ export class Feed {
     #Content() {
         const root = document.createElement('div')
 
-        root.classList = []
+        root.classList = ['feed-content']
         this.#getPosts()
+        .then(response => {
+            response.body.forEach((info) => {
+                let card = new PostCard(root, info)
+                card.render()
+            })
+        })
 
         return root
     }
