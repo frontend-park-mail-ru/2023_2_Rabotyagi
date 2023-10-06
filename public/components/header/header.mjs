@@ -1,7 +1,5 @@
 'use strict'
 
-import { Profile } from "../profileBtn/profileBtn.mjs"
-import { AuthBox } from "../authBox.mjs"
 import { store } from "../store.mjs"
 import logo from "../icons/logo.mjs"
 import search from "../icons/search.mjs"
@@ -18,7 +16,6 @@ export class Header {
         const template = Handlebars.templates['header.hbs']
         Handlebars.registerPartial('profile', Handlebars.templates['profileBtn.hbs'])
         Handlebars.registerPartial('dropdown', Handlebars.templates['dropdown.hbs'])
-        // const profile = new Profile(this)
 
         const context = {
             logo: {

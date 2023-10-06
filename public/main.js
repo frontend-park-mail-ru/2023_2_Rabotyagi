@@ -1,11 +1,24 @@
-import {Header} from './components/header/header.mjs';
-import {SigninPage} from './components/pages/signinPage.mjs';
-import {SignupPage} from './components/pages/signupPage.mjs';
-import {store} from './components/store.mjs';
-import {Feed} from './components/posts/feed.mjs';
+/**
+ * @file Главный файл приложения
+ */
+import { Header } from './components/header/header.mjs';
+import { SigninPage } from './components/pages/signinPage.mjs';
+import { SignupPage } from './components/pages/signupPage.mjs';
+import { store } from './components/store.mjs';
+import { Feed } from './components/posts/feed.mjs';
 
-const rootElement = document.getElementById('root');
+/**
+ * Корневой элемент сайта
+ * @type {HTMLElement}
+ */
+const rootElement = document.querySelector('#root');
 
+
+/**
+ * Функция рендера главной страницы
+ * @borrows rootElement, Header, Feed
+ * @returns None
+ */
 function renderMainPage() {
     rootElement.innerHTML = ''
     const header = new Header(rootElement)
@@ -18,6 +31,11 @@ function renderMainPage() {
     document.title = 'Супер Юла | Главная'
 }
 
+/**
+ * Функция рендера страницы входа
+ * @borrows rootElement, SigninPage
+ * @returns None
+ */
 function renderSignInPage() {
     const signinPage = new SigninPage()
     rootElement.innerHTML = ''
@@ -25,6 +43,11 @@ function renderSignInPage() {
     document.title = 'Супер Юла | Вход'
 }
 
+/**
+ * Функция рендера страницы регистрации
+ * @borrows rootElement, SignupPage
+ * @returns None
+ */
 function renderSignupPage() {
     const signupPage = new SignupPage()
     rootElement.innerHTML = ''
