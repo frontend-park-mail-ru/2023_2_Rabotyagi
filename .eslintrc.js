@@ -1,19 +1,17 @@
 module.exports = {
     "env": {
         "browser": true,
-        "commonjs": true,
-        "es2021": true,
-        "node": true,
+        "es2021": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+        "airbnb-base", "prettier"
+    ],
     "overrides": [
         {
             "env": {
                 "node": true
             },
-            "files": [
-                ".eslintrc.{js,cjs}"
-            ],
+            "files": [".eslintrc.{mjs,js}"],
             "parserOptions": {
                 "sourceType": "script"
             }
@@ -21,8 +19,7 @@ module.exports = {
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
-        "sourceType": "module",
+        "sourceType": "module"
     },
-    "rules": {
-    }
+    "rules": {}
 }

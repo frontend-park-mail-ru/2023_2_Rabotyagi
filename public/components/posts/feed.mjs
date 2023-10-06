@@ -3,14 +3,14 @@
  */
 
 import API from "../../api/api.mjs"
-import { PostCard } from "../card/card.mjs"
+import {PostCard} from "../card/card.mjs"
 
 /**
  * @class Блок с объявлениями
  * @description Получает посты с бекенда и формирует коллекцию для представления
  */
 export class Feed {
-    constructor (){
+    constructor() {
         this.items = []
     }
 
@@ -22,7 +22,9 @@ export class Feed {
     #getPosts() {
         return Ajax.get({
             url: API.ADRESS_BACKEND + API.GET_POST_LIST,
-            params: {count: 20}
+            params: {
+                count: 20
+            }
 
         })
     }
@@ -44,8 +46,7 @@ export class Feed {
         const root = document.createElement('div')
 
         root.classList = ['feed-content']
-        this.#getPosts()
-        .then(data => {
+        this.#getPosts().then(data => {
             data.body.forEach((info) => {
                 let card = new PostCard(root, info)
                 card.render()
@@ -57,7 +58,7 @@ export class Feed {
 
     render() {
         const root = document.createElement('div')
-        
+
         root.appendChild(this.#Header())
         root.appendChild(this.#Content())
 

@@ -1,12 +1,28 @@
+/**
+ * @file Validation.mjs
+ * @module validation
+ */
+
+/**
+ * @constant {string} EMAIL_REGEXP
+ */
 const EMAIL_REGEXP = /^[^\s()<>@,;:\/]+@\w[\w.-]+\.[a-z]{2,}$/i;
+/**
+ * @constant {string} minLenPassword
+ */
 const minLenPassword = 4;
 
-function regexpEmail(email){
+/**
+ * @summary Функция проверяющая почту на валидность
+ * @param {string} email Почта юзера
+ * @returns {boolean}
+ */
+function regexpEmail(email) {
     return EMAIL_REGEXP.test(email)
 }
 
 /**
- * validateEmail() validate using regexp and check not empty
+ * @summary Валидация почты с использованием регулярки {@link validation:EMAIL_REGEXP}
  * @param {string} email - email
  * @return {null|string} return null if validation ok and return string if not
  */
@@ -14,7 +30,7 @@ export function validateEmail(email) {
     if (email === '') {
         return 'Поле почты не может быть пустым'
     }
-    if (!regexpEmail(email)) {
+    if (! regexpEmail(email)) {
         return 'Некорректый email'
     }
 
@@ -22,7 +38,7 @@ export function validateEmail(email) {
 }
 
 /**
- * validatePassword() check not empty and min lengths
+ * @summary validatePassword() check not empty and min lengths
  * @param {string} password - password
  * @return {null|string} return null if validation ok and return string if not
  */

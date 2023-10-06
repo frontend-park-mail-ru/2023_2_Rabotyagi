@@ -1,11 +1,12 @@
 /**
  * @file main.js
+ * @module Main
  */
-import { Header } from './components/header/header.mjs';
-import { SigninPage } from './components/pages/signinPage.mjs';
-import { SignupPage } from './components/pages/signupPage.mjs';
-import { store } from './components/store.mjs';
-import { Feed } from './components/posts/feed.mjs';
+import {Header} from './components/header/header.mjs';
+import {SigninPage} from './components/pages/signinPage.mjs';
+import {SignupPage} from './components/pages/signupPage.mjs';
+import {store} from './components/store.mjs';
+import {Feed} from './components/posts/feed.mjs';
 
 /**
  * Корневой элемент сайта
