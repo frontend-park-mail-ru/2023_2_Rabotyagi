@@ -1,5 +1,6 @@
 /**
- * @module Страница_авторизации
+ * @module signinPage
+ * @file signinPage.mjs
  */
 
 import { store } from "../store.mjs"
@@ -19,24 +20,25 @@ async function signin(email, password) {
         email: email,
         password: password
     }
-    Ajax.postUsingFetch({
+
+    Ajax.post({
         url: API.ADRESS_BACKEND + API.SIGNIN,
         body: JSON.stringify(cridentials),
-        callback: (response) => {
-            if (response.status == 200) {
-                store.user.login(email)
-                store.pages.redirect('main')
-            }
-            else {
-                alert(response.Body.error)
-            }
+    })
+    .then(data => {
+        if (data.status == 200) {
+            store.user.login(email)
+            store.pages.redirect('main')
+        }
+        else {
+            alert(data.body.error)
         }
     })
 }
 
 
 /**
- * @class SigninPage
+ * @class signinPage
  * @summary Класс страницы авторизации
  */
 export class SigninPage {

@@ -1,5 +1,5 @@
 /**
- * @file Главный файл приложения
+ * @file main.js
  */
 import { Header } from './components/header/header.mjs';
 import { SigninPage } from './components/pages/signinPage.mjs';

@@ -1,8 +1,8 @@
 /**
- * @module Хранилище
+ * @module Store
  */
 
-const ADRESS_BACKEND = 'http://localhost:8080'
+// const ADRESS_BACKEND = 'http://localhost:8080'
 
 /**
  * @summary Хранилище стейта всего приложения
@@ -89,4 +89,4 @@ const store = {
     authorized: false,
 }
 
-export {ADRESS_BACKEND, store}
+export {store}

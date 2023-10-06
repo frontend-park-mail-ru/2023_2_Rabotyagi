@@ -1,5 +1,6 @@
 /**
- * @module Страница_регистрации
+ * @module signupPage
+ * @file signupPage.mjs
  */
 
 import {store} from "../store.mjs"
@@ -12,17 +13,19 @@ async function signup(email, password) {
         'email': email,
         'password': password
     }
-    Ajax.postUsingFetch({
+
+    Ajax.post({
         url: API.ADRESS_BACKEND + API.SIGNUP,
         body: JSON.stringify(credentials),
-        callback: (response) => {
-            if (response.status == 200) {
-                store.user.login(email)
-                store.activePage = 'main'
-                store.pages.redirect('main')
-            } else {
-                alert(response.Body.error)
-            }
+    })
+    .then(data => {
+        if (data.status == 200) {
+            store.user.login(email)
+            store.activePage = 'main'
+            store.pages.redirect('main')
+        }
+        else {
+            alert(data.body.error)
         }
     })
 }

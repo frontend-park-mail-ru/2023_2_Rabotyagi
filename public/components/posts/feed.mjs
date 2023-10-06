@@ -1,5 +1,5 @@
 /**
- * @module Объявления
+ * @module Feed
  */
 
 import API from "../../api/api.mjs"
@@ -19,12 +19,14 @@ export class Feed {
      * @description Посылает запрос на бек для получения 20 постов
      * @returns Массив постов
      */
-    async #getPosts() {
-        let postsList = await Ajax.getUsingFetch({
-            url: API.ADRESS_BACKEND + API.GET_POST_LIST + new URLSearchParams({count: 20}),
+    #getPosts() {
+        return Ajax.get({
+            url: API.ADRESS_BACKEND + API.GET_POST_LIST,
+            params: {count: 20}
+
         })
-        return postsList
     }
+
 
     #Header() {
         const root = document.createElement('div')
@@ -43,8 +45,8 @@ export class Feed {
 
         root.classList = ['feed-content']
         this.#getPosts()
-        .then(response => {
-            response.body.forEach((info) => {
+        .then(data => {
+            data.body.forEach((info) => {
                 let card = new PostCard(root, info)
                 card.render()
             })
