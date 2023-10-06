@@ -2,24 +2,25 @@
  * @module Страница_регистрации
  */
 
-import { store } from "../store.mjs"
+import {store} from "../store.mjs"
 import API from "../../api/api.mjs"
+import {validateEmail, validatePassword} from "../../modules/validation.mjs";
+
 
 async function signup(email, password) {
-    let cridentials = {
+    let credentials = {
         'email': email,
         'password': password
     }
     Ajax.postUsingFetch({
         url: API.ADRESS_BACKEND + API.SIGNUP,
-        body: JSON.stringify(cridentials),
+        body: JSON.stringify(credentials),
         callback: (response) => {
             if (response.status == 200) {
                 store.user.login(email)
                 store.activePage = 'main'
                 store.pages.redirect('main')
-            }
-            else {
+            } else {
                 alert(response.Body.error)
             }
         }
@@ -31,25 +32,36 @@ export class SignupPage {
 
     }
 
+    /**
+     * #check() validate email, password and repeated password
+     * @param {string} email - email
+     * @param {string} pass - password
+     * @param {string} repeatPass - repeated password
+     * @return {null|string} return null if validation ok and return string if not
+     */
     #check(email, pass, repeatPass) {
-        if (email == ''){
-            alert('Поле почты не может быть пустым')
-            return false
+        email = email.trim()
+        pass = pass.trim()
+        repeatPass = repeatPass.trim()
+
+        const errEmail = validateEmail(email)
+        if (errEmail) {
+            return errEmail
         }
 
-        if (pass == ''){
-            alert('Поле пароля не может быть пустым')
-            return false
+        const errPassword = validatePassword(pass)
+        if (errPassword) {
+            return errPassword
         }
 
-        if (pass != repeatPass){
-            alert('Пароли не совпадают')
-            return false
+        if (pass !== repeatPass) {
+            return 'Пароли не совпадают'
         }
-        return true
+
+        return null
     }
 
-    render(){
+    render() {
         const root = document.createElement('div')
         const content = document.createElement('div')
         const info = document.createElement('div')
@@ -76,18 +88,23 @@ export class SignupPage {
         toRegBtn.classList = ['btn-neutral']
         emailInput.classList = ['inputField']
         passInput.classList = ['inputField']
+        passInput.type = ['password']
         repeatPassInput.classList = ['inputField']
+        repeatPassInput.type = ['password']
 
         logoBtn.addEventListener('click', (e) => {
             store.pages['main']()
         })
 
         submitBtn.addEventListener('click', (e) => {
-            const check = this.#check(emailInput.value, passInput.value, repeatPassInput.value)
+            const error = this.#check(emailInput.value, passInput.value, repeatPassInput.value)
 
-            if (check) {
-                signup(emailInput.value, passInput.value)
+            if (error) {
+                alert(error);
+                return;
             }
+
+            signup(emailInput.value, passInput.value, repeatPassInput.value)
         })
 
         content.appendChild(logoBtn)

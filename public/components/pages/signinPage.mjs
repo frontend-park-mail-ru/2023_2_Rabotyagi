@@ -4,6 +4,7 @@
 
 import { store } from "../store.mjs"
 import API from "../../api/api.mjs"
+import {validateEmail, validatePassword} from "../../modules/validation.mjs";
 
 /**
  * @async
@@ -47,6 +48,30 @@ export class SigninPage {
     }
 
     /**
+     * #check() validate email, password and repeated password
+     * @param {string} email - email
+     * @param {string} pass - password
+     * @return {null|string} return null if validation ok and return string if not
+     */
+    #check(email, pass) {
+        email = email.trim()
+        pass = pass.trim()
+
+        const errEmail = validateEmail(email)
+        if (errEmail) {
+            return errEmail
+        }
+
+        const errPassword = validatePassword(pass)
+        if (errPassword) {
+            return errPassword
+        }
+
+        return null
+    }
+
+
+    /**
      * @method render
      * @summary Функция рендера страницы-блока авторизации
      * @description Формирует страницу с элементами \
@@ -79,12 +104,20 @@ export class SigninPage {
         toRegBtn.classList = ['btn-neutral']
         emailInput.classList = ['inputField']
         passInput.classList = ['inputField']
+        passInput.type = ['password']
 
         logoBtn.addEventListener('click', (e) => {
             store.pages['main']()
         })
 
         submitBtn.addEventListener('click', (e) => {
+            const error = this.#check(emailInput.value, passInput.value)
+
+            if (error) {
+                alert(error);
+                return;
+            }
+
             signin(emailInput.value, passInput.value)
         })
         toRegBtn.addEventListener('click', (e) => {
