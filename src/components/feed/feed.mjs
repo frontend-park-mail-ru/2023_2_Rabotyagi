@@ -2,7 +2,6 @@
  * @module Feed
  */
 
-import API from "../../shared/constants/api.mjs"
 import {PostCard} from "../card/card.mjs"
 
 /**
@@ -20,15 +19,7 @@ export class Feed {
      * @description Посылает запрос на бек для получения 20 постов
      * @returns Массив постов
      */
-    #getPosts() {
-        return Ajax.get({
-            url: API.ADRESS_BACKEND + API.GET_POST_LIST,
-            params: {
-                count: 20
-            }
-
-        })
-    }
+    #getPosts() {}
 
 
     #Header() {
@@ -47,7 +38,7 @@ export class Feed {
         const root = document.createElement('div')
 
         root.classList = ['feed-content']
-        this.#getPosts().then(data => {
+        POST_SERVICE.feed().then(data => {
             data.body.forEach((info) => {
                 let card = new PostCard(root, info)
                 card.render()

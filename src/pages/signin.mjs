@@ -4,35 +4,7 @@
  */
 
 import {store} from "../shared/constants/store.mjs";
-import API from "../shared/constants/api.mjs";
 import {validateEmail, validatePassword} from "../shared/utils/validation.mjs";
-
-/**
- * @async
- * @summary Функция авторизации
- * @description Посылает запрос на бек и получает данные пользователя после чего записывает их в хранилище
- * @borrows store
- * @param {string} email Почта юзера
- * @param {string} password Пароль юзера
- */
-async function signin(email, password) {
-    let cridentials = {
-        email: email,
-        password: password
-    }
-
-    Ajax.post({
-        url: API.ADRESS_BACKEND + API.SIGNIN,
-        body: JSON.stringify(cridentials)
-    }).then(data => {
-        if (data.status == 200) {
-            store.user.login(email);
-            Router.navigateTo('/');
-        } else {
-            alert(data.body.error);
-        }
-    })
-}
 
 
 /**
@@ -110,7 +82,7 @@ export class SigninPage { /**
                 return;
             }
 
-            signin(emailInput.value, passInput.value)
+            AUTH_SERVICE.signin(emailInput.value, passInput.value)
         })
 
         content.appendChild(logoBtn)

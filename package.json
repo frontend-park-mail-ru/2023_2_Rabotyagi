@@ -20,8 +20,7 @@
     "homepage": "https://github.com/frontend-park-mail-ru/2023_2_Rabotyagi/tree/main#readme",
     "dependencies": {
         "express": "^4.18.2",
-        "handlebars": "^4.7.8",
-        "serve": "^14.2.1"
+        "handlebars": "^4.7.8"
     },
     "devDependencies": {
         "eslint": "^8.50.0",

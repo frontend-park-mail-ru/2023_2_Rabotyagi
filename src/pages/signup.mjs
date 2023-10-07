@@ -4,35 +4,7 @@
  */
 
 import {store} from "../shared/constants/store.mjs";
-import API from "../shared/constants/api.mjs";
 import {validateEmail, validatePassword} from "../shared/utils/validation.mjs";
-
-/**
- * @async
- * @summary Функция регистрации
- * @description Посылает запрос на бек и получает данные пользователя после чего записывает их в хранилище
- * @borrows store
- * @param {string} email Почта юзера
- * @param {string} password Пароль юзера
- */
-async function signup(email, password) {
-    let credentials = {
-        'email': email,
-        'password': password
-    }
-
-    Ajax.post({
-        url: API.ADRESS_BACKEND + API.SIGNUP,
-        body: JSON.stringify(credentials)
-    }).then(data => {
-        if (data.status == 200) {
-            store.user.login(email);
-            Router.navigateTo('/');
-        } else {
-            alert(data.body.error);
-        }
-    })
-}
 
 export class SignupPage { /**
      * #check() validate email, password and repeated password
@@ -106,7 +78,7 @@ export class SignupPage { /**
                 return;
             }
 
-            signup(emailInput.value, passInput.value, repeatPassInput.value);
+            AUTH_SERVICE.signup(emailInput.value, passInput.value, repeatPassInput.value);
         })
 
         content.appendChild(logoBtn);
