@@ -5,6 +5,7 @@
 import {Card} from "../card/Card.mjs"
 import {ErrorMessageBox} from "../error/ErrorMessageBox.mjs";
 import {Post} from "../../shared/api/post.mjs";
+import {loaderRegular} from "../loader/loader.mjs";
 
 /**
  * @class Блок с объявлениями
@@ -36,19 +37,27 @@ export class Feed {
         return root
     }
 
-    async #Content() {
+    #Content() {
         const root = document.createElement('div');
+        const loaderElement = loaderRegular();
 
         root.classList = ['feed-content'];
-        try {
-            const response = await Post.feed();
-            response.body.forEach(elem => {
-                root.innerHTML += new Card(elem).render()
-            })
+        root.appendChild(loaderElement);
 
-        } catch (err) {
-            root.appendChild(ErrorMessageBox(err));
-        }
+        (async function () {
+            try {
+                const response = await Post.feed();
+                setTimeout(() => {
+                    root.removeChild(loaderElement);
+
+                    response.body.forEach(elem => {
+                        root.innerHTML += new Card(elem).render()
+                    })
+                }, 3000);
+            } catch (err) {
+                root.replaceChild(loaderElement, ErrorMessageBox(err));
+            }
+        })();
 
         return root;
     }
@@ -57,10 +66,7 @@ export class Feed {
         const root = document.createElement('div');
 
         root.appendChild(this.#Header());
-        this.#Content().then(elem => {
-            root.appendChild(elem);
-        })
-
+        root.appendChild(this.#Content());
 
         return root;
     }
