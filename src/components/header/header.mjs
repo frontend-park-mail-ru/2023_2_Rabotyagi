@@ -58,12 +58,12 @@ export class Header { /**
 
         root.innerHTML = template(context);
 
-        document.querySelector('.profile-container') ?. addEventListener('click', (e) => {
+        root.querySelector('.profile-container') ?. addEventListener('click', (e) => {
             e.stopPropagation();
             document.querySelector('#profile-dropdown') ?. classList.toggle('hidden');
         });
 
-        document.querySelector('#dropdown-btn-logout') ?. addEventListener('click', (e) => {
+        root.querySelector('#dropdown-btn-logout') ?. addEventListener('click', (e) => {
             e.stopPropagation();
             store.user.logout();
             Router.navigateTo('/signin');
