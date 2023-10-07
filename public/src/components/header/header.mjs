@@ -4,7 +4,7 @@
  */
 
 'use strict';
-import {store} from "../store.mjs"
+import {store} from "../../shared/constants/store.mjs"
 import logo from "../icons/logo.mjs"
 import search from "../icons/search.mjs"
 
