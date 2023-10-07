@@ -10,22 +10,12 @@ import {store} from "../../shared/constants/store.mjs";
  * @class
  * @classdesc Класс страницы авторизации
  */
-export class Header {
-    #parent;
-
-    /**
-     * @constructor
-     * @param {HTMLElement} parent 
-     */
-    constructor(parent) {
-        this.#parent = parent;
-    }
-
-    /**
+export class Header { /**
      * @method
      * @summary Метод рендера хедера
      */
     render() {
+        const root = document.createElement('div');
         const template = Handlebars.templates['header.hbs'];
         Handlebars.registerPartial('profile', Handlebars.templates['profileBtn.hbs']);
         Handlebars.registerPartial('dropdown', Handlebars.templates['dropdown.hbs']);
@@ -66,7 +56,7 @@ export class Header {
             }
         }
 
-        this.#parent.innerHTML += template(context)
+        root.innerHTML = template(context);
 
         document.querySelector('.profile-container') ?. addEventListener('click', (e) => {
             e.stopPropagation();
@@ -78,5 +68,7 @@ export class Header {
             store.user.logout();
             Router.navigateTo('/signin');
         });
+
+        return root;
     }
 }

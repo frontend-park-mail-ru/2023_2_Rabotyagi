@@ -13,13 +13,12 @@ import {Feed} from "../components/feed/feed.mjs";
 
 export class MainPage {
     render() {
-
         const root = document.createElement('div');
         const header = new Header(root)
         const feed = new Feed(root)
 
-        header.render();
-        feed.render();
+        root.appendChild(header.render());
+        root.appendChild(feed.render());
         document.title = 'Супер Юла | Главная';
 
         return root;
