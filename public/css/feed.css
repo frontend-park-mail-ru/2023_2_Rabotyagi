@@ -9,12 +9,10 @@
 
 .feed-content {
     display: flex;
-height: 690px;
-padding: 0px 16px;
-align-items: flex-start;
-align-content: flex-start;
-gap: 16px 24px;
-align-self: stretch;
-flex-wrap: wrap;
-overflow-y: scroll;
+    padding: 0px 16px;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 16px 24px;
+    align-self: stretch;
+    flex-wrap: wrap;
 }

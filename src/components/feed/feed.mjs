@@ -2,7 +2,7 @@
  * @module Feed
  */
 
-import API from "../../api/api.mjs"
+import API from "../../shared/constants/api.mjs"
 import {PostCard} from "../card/card.mjs"
 
 /**
@@ -10,8 +10,9 @@ import {PostCard} from "../card/card.mjs"
  * @description Получает посты с бекенда и формирует коллекцию для представления
  */
 export class Feed {
-    constructor() {
-        this.items = []
+
+    constructor(parent) {
+        this.items = [];
     }
 
     /**
@@ -62,6 +63,6 @@ export class Feed {
         root.appendChild(this.#Header())
         root.appendChild(this.#Content())
 
-        return root
+        return root;
     }
 }

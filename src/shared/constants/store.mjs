@@ -5,21 +5,10 @@
 
 /**
  * @constant {Dict} store Хранилище стейта всего приложения
- * @property {Dict} pages Стейт страниц приложения
  * @property {Dict} user Стейт, хранящий в себе редьюсеры для авторизации и разлогирования
- * @property {string} activePage Стейт активной страницы
  * @property {boolean} authorized Стейт авторизованности
  */
-const store = {
-    pages: {
-        appendPage: (name, func) => {
-            store.pages[name] = func
-        },
-        redirect: (name) => {
-            store.pages[name]()
-        }
-    },
-
+export const store = {
     user: {
         setName: (name) => {
             store.user.username = name
@@ -74,16 +63,9 @@ const store = {
         accessToken: null,
         refreshToken: null
     },
-    /**
-     * @default 'main'
-     */
-    activePage: 'main',
+
     /**
      * @default false
      */
     authorized: false
-}
-
-export {
-    store
 }

@@ -13,8 +13,8 @@
     {{> profile this.profileConf}}
     {{else}}
     <div class="auth-box">
-        <button id='btn-signin'  class='btn-primary'>{{this.signin.caption}}</button>
-        <button id='btn-signup'  class='btn-neutral'>{{this.signup.caption}}</button>
+        <a href="/signin"  class='btn-primary' data-link="/signin">{{this.signin.caption}}</a>
+        <a href="/signup"  class='btn-neutral' data-link="/signup">{{this.signup.caption}}</a>
     </div>
     {{/if}}
 </nav>

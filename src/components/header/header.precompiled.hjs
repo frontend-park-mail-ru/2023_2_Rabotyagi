@@ -17,11 +17,11 @@ templates['header.hbs'] = template({"1":function(container,depth0,helpers,partia
         return undefined
     };
 
-  return "    <div class=\"auth-box\">\r\n        <button id='btn-signin'  class='btn-primary'>"
+  return "    <div class=\"auth-box\">\r\n        <a href=\"/signin\"  class='btn-primary' data-link=\"/signin\">"
     + alias2(alias1(((stack1 = (depth0 != null ? lookupProperty(depth0,"signin") : depth0)) != null ? lookupProperty(stack1,"caption") : stack1), depth0))
-    + "</button>\r\n        <button id='btn-signup'  class='btn-neutral'>"
+    + "</a>\r\n        <a href=\"/signup\"  class='btn-neutral' data-link=\"/signup\">"
     + alias2(alias1(((stack1 = (depth0 != null ? lookupProperty(depth0,"signup") : depth0)) != null ? lookupProperty(stack1,"caption") : stack1), depth0))
-    + "</button>\r\n    </div>\r\n";
+    + "</a>\r\n    </div>\r\n";
 },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
