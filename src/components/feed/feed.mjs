@@ -42,8 +42,8 @@ export class Feed {
         root.classList = ['feed-content'];
         try {
             const response = await Post.feed();
-            response.body.forEach((info) => {
-                root.appendChild(new Card(info).render());
+            response.body.forEach(elem => {
+                root.innerHTML += new Card(elem).render()
             })
 
         } catch (err) {
