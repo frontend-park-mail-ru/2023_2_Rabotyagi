@@ -27,57 +27,80 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @module Страница_регистрации
+ * @module signupPage
+ * @file signupPage.mjs
  */
 
-import { store } from "../store.mjs"
+import {store} from "../store.mjs"
 import API from "../../api/api.mjs"
+import {validateEmail, validatePassword} from "../../modules/validation.mjs";
 
+
+/**
+ * @async
+ * @summary Функция регистрации
+ * @description Посылает запрос на бек и получает данные пользователя после чего записывает их в хранилище
+ * @borrows store
+ * @param {string} email Почта юзера
+ * @param {string} password Пароль юзера
+ */
 async function signup(email, password) {
-    let cridentials = {
+    let credentials = {
         'email': email,
         'password': password
     }
-    Ajax.postUsingFetch({
+
+    Ajax.post({
         url: API.ADRESS_BACKEND + API.SIGNUP,
-        body: JSON.stringify(cridentials),
-        callback: (response) => {
-            if (response.status == 200) {
-                store.user.login(email)
-                store.activePage = 'main'
-                store.pages.redirect('main')
-            }
-            else {
-                alert(response.Body.error)
-            }
+        body: JSON.stringify(credentials)
+    }).then(data => {
+        if (data.status == 200) {
+            store.user.login(email)
+            store.activePage = 'main'
+            store.pages.redirect('main')
+        } else {
+            alert(data.body.error)
         }
     })
 }
 
 export class SignupPage {
-    constructor() {
+    constructor() {}
 
-    }
-
+    /**
+     * #check() validate email, password and repeated password
+     * @param {string} email - email
+     * @param {string} pass - password
+     * @param {string} repeatPass - repeated password
+     * @return {null|string} return null if validation ok and return string if not
+     */
     #check(email, pass, repeatPass) {
-        if (email == ''){
-            alert('Поле почты не может быть пустым')
-            return false
+        email = email.trim()
+        pass = pass.trim()
+        repeatPass = repeatPass.trim()
+
+        const errEmail = validateEmail(email)
+        if (errEmail) {
+            return errEmail
         }
 
-        if (pass == ''){
-            alert('Поле пароля не может быть пустым')
-            return false
+        const errPassword = validatePassword(pass)
+        if (errPassword) {
+            return errPassword
         }
 
-        if (pass != repeatPass){
-            alert('Пароли не совпадают')
-            return false
+        if (pass !== repeatPass) {
+            return 'Пароли не совпадают'
         }
-        return true
+
+        return null
     }
 
-    render(){
+    /**
+     * @summary Рендер функция
+     * @returns {HTMLElement}
+     */
+    render() {
         const root = document.createElement('div')
         const content = document.createElement('div')
         const info = document.createElement('div')
@@ -104,18 +127,23 @@ export class SignupPage {
         toRegBtn.classList = ['btn-neutral']
         emailInput.classList = ['inputField']
         passInput.classList = ['inputField']
+        passInput.type = ['password']
         repeatPassInput.classList = ['inputField']
+        repeatPassInput.type = ['password']
 
         logoBtn.addEventListener('click', (e) => {
             store.pages['main']()
         })
 
         submitBtn.addEventListener('click', (e) => {
-            const check = this.#check(emailInput.value, passInput.value, repeatPassInput.value)
+            const error = this.#check(emailInput.value, passInput.value, repeatPassInput.value)
 
-            if (check) {
-                signup(emailInput.value, passInput.value)
+            if (error) {
+                alert(error);
+                return;
             }
+
+            signup(emailInput.value, passInput.value, repeatPassInput.value)
         })
 
         content.appendChild(logoBtn)
@@ -129,7 +157,8 @@ export class SignupPage {
 
         return root
     }
-}</code></pre>
+}
+</code></pre>
         </article>
     </section>
 
@@ -139,13 +168,13 @@ export class SignupPage {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-%25D0%259E%25D0%25B1%25D1%258A%25D1%258F%25D0%25B2%25D0%25BB%25D0%25B5%25D0%25BD%25D0%25B8%25D1%258F.html">Объявления</a></li><li><a href="module-%25D0%25A1%25D1%2582%25D1%2580%25D0%25B0%25D0%25BD%25D0%25B8%25D1%2586%25D0%25B0_%25D0%25B0%25D0%25B2%25D1%2582%25D0%25BE%25D1%2580%25D0%25B8%25D0%25B7%25D0%25B0%25D1%2586%25D0%25B8%25D0%25B8.html">Страница_авторизации</a></li><li><a href="module-%25D0%25A1%25D1%2582%25D1%2580%25D0%25B0%25D0%25BD%25D0%25B8%25D1%2586%25D0%25B0_%25D1%2580%25D0%25B5%25D0%25B3%25D0%25B8%25D1%2581%25D1%2582%25D1%2580%25D0%25B0%25D1%2586%25D0%25B8%25D0%25B8.html">Страница_регистрации</a></li><li><a href="module-%25D0%25A5%25D1%2580%25D0%25B0%25D0%25BD%25D0%25B8%25D0%25BB%25D0%25B8%25D1%2589%25D0%25B5.html">Хранилище</a></li></ul><h3>Classes</h3><ul><li><a href="module-%25D0%259E%25D0%25B1%25D1%258A%25D1%258F%25D0%25B2%25D0%25BB%25D0%25B5%25D0%25BD%25D0%25B8%25D1%258F.Feed.html">Feed</a></li><li><a href="module-%25D0%25A1%25D1%2582%25D1%2580%25D0%25B0%25D0%25BD%25D0%25B8%25D1%2586%25D0%25B0_%25D0%25B0%25D0%25B2%25D1%2582%25D0%25BE%25D1%2580%25D0%25B8%25D0%25B7%25D0%25B0%25D1%2586%25D0%25B8%25D0%25B8.SigninPage.html">SigninPage</a></li><li><a href="module-%25D0%25A1%25D1%2582%25D1%2580%25D0%25B0%25D0%25BD%25D0%25B8%25D1%2586%25D0%25B0_%25D0%25B0%25D0%25B2%25D1%2582%25D0%25BE%25D1%2580%25D0%25B8%25D0%25B7%25D0%25B0%25D1%2586%25D0%25B8%25D0%25B8-SigninPage.html">SigninPage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#renderMainPage">renderMainPage</a></li><li><a href="global.html#renderSignInPage">renderSignInPage</a></li><li><a href="global.html#renderSignupPage">renderSignupPage</a></li><li><a href="global.html#rootElement">rootElement</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Ajax.html">Ajax</a></li><li><a href="module-Feed.html">Feed</a></li><li><a href="module-Header.html">Header</a></li><li><a href="module-Main.html">Main</a></li><li><a href="module-Store.html">Store</a></li><li><a href="module-validation.html">validation</a></li></ul><h3>Classes</h3><ul><li><a href="SigninPage_SigninPage.html">SigninPage</a></li><li><a href="module-Ajax-Ajax.html">Ajax</a></li><li><a href="module-Feed.Feed.html">Feed</a></li><li><a href="module-Header.Header.html">Header</a></li><li><a href="signinPage_.html">signinPage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#signin">signin</a></li><li><a href="global.html#signup">signup</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Oct 06 2023 11:07:45 GMT+0300 (Москва, стандартное время)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Oct 06 2023 17:54:51 GMT+0300 (Москва, стандартное время)
 </footer>
 
 <script> prettyPrint(); </script>

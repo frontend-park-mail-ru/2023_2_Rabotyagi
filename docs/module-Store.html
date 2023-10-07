@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Global</title>
+    <title>JSDoc: Module: Store</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Global</h1>
+    <h1 class="page-title">Module: Store</h1>
 
     
 
@@ -28,14 +28,13 @@
 
 <header>
     
-        <h2></h2>
-        
-    
 </header>
 
 <article>
     <div class="container-overview">
     
+        
+            <div class="description">store.mjs</div>
         
 
         
@@ -67,6 +66,11 @@
 
     
 
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_store.mjs.html">components/store.mjs</a>, <a href="components_store.mjs.html#line1">line 1</a>
+    </li></ul></dd>
     
 
     
@@ -94,41 +98,40 @@
     
 
     
-
-    
-        <h3 class="subsection-title">Methods</h3>
+        <h3 class="subsection-title">Members</h3>
 
         
             
+<h4 class="name" id="~store"><span class="type-signature">(inner, constant) </span>store<span class="type-signature"> :Dict</span></h4>
 
-    
-
-    
-    <h4 class="name" id="signin"><span class="type-signature">(async) </span>signin<span class="signature">(email, password)</span><span class="type-signature"></span></h4>
-    
-
-    
-    <p class="summary">Функция авторизации</p>
-    
 
 
 
 <div class="description">
-    Посылает запрос на бек и получает данные пользователя после чего записывает их в хранилище
+    Хранилище стейта всего приложения
 </div>
 
 
 
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Dict</span>
+
+
+        </li>
+    </ul>
 
 
 
 
 
+    <h5 class="subsection-title">Properties:</h5>
 
-    <h5>Parameters:</h5>
     
 
-<table class="params">
+<table class="props">
     <thead>
     <tr>
         
@@ -150,13 +153,13 @@
 
         <tr>
             
-                <td class="name"><code>email</code></td>
+                <td class="name"><code>pages</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Dict</span>
 
 
             
@@ -166,14 +169,37 @@
 
             
 
-            <td class="description last">Почта юзера</td>
+            <td class="description last">Стейт страниц приложения</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>password</code></td>
+                <td class="name"><code>user</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Dict</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Стейт, хранящий в себе редьюсеры для авторизации и разлогирования</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>activePage</code></td>
             
 
             <td class="type">
@@ -189,14 +215,35 @@
 
             
 
-            <td class="description last">Пароль юзера</td>
+            <td class="description last">Стейт активной страницы</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>authorized</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Стейт авторизованности</td>
         </tr>
 
     
     </tbody>
 </table>
-
-
 
 
 
@@ -230,7 +277,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_pages_signinPage.mjs.html">components/pages/signinPage.mjs</a>, <a href="components_pages_signinPage.mjs.html#line18">line 18</a>
+        <a href="components_store.mjs.html">components/store.mjs</a>, <a href="components_store.mjs.html#line6">line 6</a>
     </li></ul></dd>
     
 
@@ -246,183 +293,9 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         
-            
-
     
 
-    
-    <h4 class="name" id="signup"><span class="type-signature">(async) </span>signup<span class="signature">(email, password)</span><span class="type-signature"></span></h4>
-    
-
-    
-    <p class="summary">Функция регистрации</p>
-    
-
-
-
-<div class="description">
-    Посылает запрос на бек и получает данные пользователя после чего записывает их в хранилище
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>email</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Почта юзера</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>password</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Пароль юзера</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_pages_signupPage.mjs.html">components/pages/signupPage.mjs</a>, <a href="components_pages_signupPage.mjs.html#line19">line 19</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
     
 
     

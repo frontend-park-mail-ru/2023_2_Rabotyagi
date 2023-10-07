@@ -27,13 +27,17 @@
     --text-tertiary: #292c2f40;
 }
 
-* {
-    background-color: var(--background-primary);
+a {
     text-decoration: none;
-    border-width: 0;
 }
 
+/* * {
+    
+    border-width: 0;
+} */
+
 body {
+    background-color: var(--background-primary);
     margin: 0;
     padding: 0;
     display: flex;
@@ -59,7 +63,7 @@ body {
     gap: 2px;
     flex-shrink: 0;
     border-radius: 8px;
-    background: var(--palette-primary, #9D8DF1);
+    background: var(--palette-primary, #9d8df1);
     color: var(--background-primary);
 }
 
@@ -70,8 +74,8 @@ body {
     justify-content: center;
     align-items: center;
     border-radius: 8px;
-    background: var(--vkui-color-background-secondary, #F0F1F3);
-    color: var(--vkui-color-text-primary, #2C2D2E);
+    background: var(--vkui-color-background-secondary, #f0f1f3);
+    color: var(--vkui-color-text-primary, #2c2d2e);
     text-align: center;
     font-family: Nunito Sans;
     font-size: 15px;
@@ -83,12 +87,13 @@ body {
 
 .inputField {
     display: flex;
-padding: 12px;
-align-items: center;
-align-self: stretch;
-border-radius: 8px;
-border: 0.5px solid var(--vkui-color-stroke-field-border-alpha, rgba(0, 16, 61, 0.12));
-background: var(--vkui-color-background-field-background, #FFF);
+    padding: 12px;
+    align-items: center;
+    align-self: stretch;
+    border-radius: 8px;
+    border: 0.5px solid
+        var(--vkui-color-stroke-field-border-alpha, rgba(0, 16, 61, 0.12));
+    background: var(--vkui-color-background-field-background, #fff);
 }
 
 .searchField {
@@ -98,12 +103,14 @@ background: var(--vkui-color-background-field-background, #FFF);
     align-items: center;
     gap: 8px;
     border-radius: 8px;
-    background: var(--vkui-color-other-search-field-background, #E6E7EB);
+    background: var(--vkui-color-other-search-field-background, #e6e7eb);
 }
 
 .searchFieldInput {
-    color: var(--vkui-color-text-secondary, #87898F);
-    font-feature-settings: 'clig' off, 'liga' off;
+    color: var(--vkui-color-text-secondary, #87898f);
+    font-feature-settings:
+        'clig' off,
+        'liga' off;
     width: 100%;
     /* Text */
     font-family: Arial;
@@ -127,8 +134,8 @@ background: var(--vkui-color-background-field-background, #FFF);
     flex-direction: column;
     align-items: center;
     gap: 16px;
-/* flex: 1 0 0; */
-/* align-self: stretch; */
+    /* flex: 1 0 0; */
+    /* align-self: stretch; */
 }
 
 .signinPage-content {
@@ -156,16 +163,17 @@ background: var(--vkui-color-background-field-background, #FFF);
     /*  Установаем ширину окна  */
     width: 100%;
     max-width: 500px;
-    
+
     /*  Центрируем и задаем z-index */
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 30; /* Должен быть выше чем у подложки*/
-    
+
     /*  Побочные стили   */
     border-radius: 12px;
-    border: 0.5px solid var(--light-stroke-separator-primary-alpha, rgba(0, 16, 61, 0.12));
-    background: var(--vkui-color-background-modal, #FFF);
+    border: 0.5px solid
+        var(--light-stroke-separator-primary-alpha, rgba(0, 16, 61, 0.12));
+    background: var(--vkui-color-background-modal, #fff);
 }
