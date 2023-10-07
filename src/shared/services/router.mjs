@@ -9,9 +9,9 @@
  * @property {string} activePage Стейт активной страницы
  */
 export class Route {
-    constructor(path, callback) {
+    constructor(path, component) {
         this.path = path;
-        this.callback = callback;
+        this.component = component;
     }
 }
 
@@ -21,7 +21,7 @@ export class Route {
  */
 export class Router { /**
      * @constructor
-     * @param {Array} routes 
+     * @param {Array} routes маршруты
      */
     constructor(routes) {
         this.routes = routes;
@@ -58,7 +58,9 @@ export class Router { /**
      * @summary рендерит страницу согласно маршруту
      */
     async loadRoute() {
+        const root = document.querySelector('#root');
         const route = this.routes.find(r => r.path === location.pathname) || this.routes.find(r => r.path === '*');
-        await route.callback.render();
+        root.innerHTML = '';
+        root.appendChild(await route.component.render());
     }
 }

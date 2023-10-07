@@ -27,22 +27,14 @@ async function signup(email, password) {
     }).then(data => {
         if (data.status == 200) {
             store.user.login(email);
-            router.activePage = 'main';
-            router.redirect('main');
+            Router.navigateTo('/');
         } else {
             alert(data.body.error);
         }
     })
 }
 
-export class SignupPage {
-    #rootElement;
-
-    constructor(parent) {
-        this.#rootElement = parent;
-    }
-
-    /**
+export class SignupPage { /**
      * #check() validate email, password and repeated password
      * @param {string} email - email
      * @param {string} pass - password
@@ -76,21 +68,19 @@ export class SignupPage {
      * @returns {HTMLElement}
      */
     render() {
-        this.#rootElement.innerHTML = ''
-
+        const root = document.createElement('div');
         const content = document.createElement('div');
         const info = document.createElement('div');
 
-        this.#rootElement.classList = ['signinPage'];
+        root.classList = ['signinPage'];
         content.classList = ['signinPage-content'];
         info.classList = ['signinPage-info'];
 
-        const logoBtn = document.createElement('button');
+        const logoBtn = document.createElement('a');
         const emailInput = document.createElement('input');
         const passInput = document.createElement('input');
         const repeatPassInput = document.createElement('input');
         const submitBtn = document.createElement('button');
-        const toRegBtn = document.createElement('button');
 
         logoBtn.textContent = '(Главная) Тут должно быть лого, но пока его нет(((';
         emailInput.placeholder = 'Электронная почта';
@@ -99,17 +89,14 @@ export class SignupPage {
         submitBtn.textContent = 'Подтвердить';
 
         logoBtn.classList = ['btn-neutral'];
+        logoBtn.dataset.link = '/';
+        logoBtn.href = '/';
         submitBtn.classList = ['btn-neutral'];
-        toRegBtn.classList = ['btn-neutral'];
         emailInput.classList = ['inputField'];
         passInput.classList = ['inputField'];
         passInput.type = ['password'];
         repeatPassInput.classList = ['inputField'];
         repeatPassInput.type = ['password'];
-
-        logoBtn.addEventListener('click', (e) => {
-            router.pages['main']();
-        })
 
         submitBtn.addEventListener('click', (e) => {
             const error = this.#check(emailInput.value, passInput.value, repeatPassInput.value);
@@ -128,9 +115,11 @@ export class SignupPage {
         content.appendChild(repeatPassInput);
         content.appendChild(submitBtn);
 
-        this.#rootElement.appendChild(content);
-        this.#rootElement.appendChild(info);
+        root.appendChild(content);
+        root.appendChild(info);
 
         document.title = 'Регистрация';
+
+        return root;
     }
 }

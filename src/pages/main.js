@@ -12,20 +12,16 @@ import {Feed} from "../components/feed/feed.mjs";
  */
 
 export class MainPage {
-    #rootElement;
-
-    constructor(parent) {
-        this.#rootElement = parent;
-    }
-
     render() {
-        this.#rootElement.innerHTML = ''
 
-        const header = new Header(this.#rootElement)
-        const feed = new Feed(this.#rootElement)
+        const root = document.createElement('div');
+        const header = new Header(root)
+        const feed = new Feed(root)
 
         header.render();
         feed.render();
         document.title = 'Супер Юла | Главная';
+
+        return root;
     }
 }

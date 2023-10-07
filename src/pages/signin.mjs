@@ -26,10 +26,10 @@ async function signin(email, password) {
         body: JSON.stringify(cridentials)
     }).then(data => {
         if (data.status == 200) {
-            store.user.login(email)
-            router.pages.redirect('main')
+            store.user.login(email);
+            Router.navigateTo('/');
         } else {
-            alert(data.body.error)
+            alert(data.body.error);
         }
     })
 }
@@ -39,17 +39,7 @@ async function signin(email, password) {
  * @class signinPage
  * @summary Класс страницы авторизации
  */
-export class SigninPage {
-    #rootElement;
-
-    /**
-     * @constructor
-     */
-    constructor(parent) {
-        this.#rootElement = parent;
-    }
-
-    /**
+export class SigninPage { /**
      * #check() validate email, password and repeated password
      * @param {string} email - Почта юзера
      * @param {string} pass - Пароль юзера
@@ -81,20 +71,19 @@ export class SigninPage {
      * @returns {HTMLElement}
      */
     render() {
-        this.#rootElement.innerHTML = '';
-
+        const root = document.createElement('div');
         const content = document.createElement('div')
         const info = document.createElement('div')
 
-        this.#rootElement.classList = ['signinPage']
+        root.classList = ['signinPage']
         content.classList = ['signinPage-content']
         info.classList = ['signinPage-info']
 
-        const logoBtn = document.createElement('button')
+        const logoBtn = document.createElement('a')
         const emailInput = document.createElement('input')
         const passInput = document.createElement('input')
         const submitBtn = document.createElement('button')
-        const toRegBtn = document.createElement('button')
+        const toRegBtn = document.createElement('a')
 
         logoBtn.textContent = '(Главная) Тут должно быть лого, но пока его нет((('
         emailInput.placeholder = 'Электронная почта'
@@ -103,15 +92,15 @@ export class SigninPage {
         toRegBtn.textContent = 'Зарегистрироваться'
 
         logoBtn.classList = ['btn-neutral']
+        logoBtn.dataset.link = '/';
+        logoBtn.href = '/';
         submitBtn.classList = ['btn-neutral']
         toRegBtn.classList = ['btn-neutral']
+        toRegBtn.dataset.link = '/signup';
+        toRegBtn.href = '/signup';
         emailInput.classList = ['inputField']
         passInput.classList = ['inputField']
         passInput.type = ['password']
-
-        logoBtn.addEventListener('click', (e) => {
-            router.pages['main']()
-        })
 
         submitBtn.addEventListener('click', (e) => {
             const error = this.#check(emailInput.value, passInput.value)
@@ -123,9 +112,6 @@ export class SigninPage {
 
             signin(emailInput.value, passInput.value)
         })
-        toRegBtn.addEventListener('click', (e) => {
-            router.pages['signup']()
-        })
 
         content.appendChild(logoBtn)
         content.appendChild(emailInput)
@@ -133,10 +119,11 @@ export class SigninPage {
         content.appendChild(submitBtn)
         content.appendChild(toRegBtn)
 
-        console.log(this.#rootElement);
-        this.#rootElement.appendChild(content)
-        this.#rootElement.appendChild(info)
+        root.appendChild(content)
+        root.appendChild(info)
 
         document.title = 'Вход'
+
+        return root;
     }
 }

@@ -68,19 +68,6 @@ export class Header {
 
         this.#parent.innerHTML += template(context)
 
-        // document.querySelector('#btn-signin') ?. addEventListener('click', (e) => {
-        //     e.stopPropagation();
-        //     window.router.navigateTo('/signin');
-        //     // router.activePage = 'signin';
-        //     // router.pages['signin']();
-        // });
-
-        document.querySelector('#btn-signup') ?. addEventListener('click', (e) => {
-            e.stopPropagation();
-            router.activePage = 'signup';
-            router.pages['signup']();
-        });
-
         document.querySelector('.profile-container') ?. addEventListener('click', (e) => {
             e.stopPropagation();
             document.querySelector('#profile-dropdown') ?. classList.toggle('hidden');
@@ -89,8 +76,7 @@ export class Header {
         document.querySelector('#dropdown-btn-logout') ?. addEventListener('click', (e) => {
             e.stopPropagation();
             store.user.logout();
-            router.activePage = 'signin';
-            router.pages.redirect('signin');
+            Router.navigateTo('/signin');
         });
     }
 }
