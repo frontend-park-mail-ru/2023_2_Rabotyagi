@@ -3,6 +3,7 @@
  */
 
 import {PostCard} from "../card/card.mjs"
+import {errorMessageBox} from "../error/errorMessageBox.mjs";
 
 /**
  * @class Блок с объявлениями
@@ -33,26 +34,53 @@ export class Feed {
 
         return root
     }
+    // {
+    //     const PostsService = {
+    //         getList:(params)=>{
+    //              return window.Ajax.get("/post/list", params)
+    //         }
+    //     }
 
-    #Content() {
-        const root = document.createElement('div')
 
-        root.classList = ['feed-content']
-        POST_SERVICE.feed().then(data => {
-            data ?. body.forEach((info) => {
-                let card = new PostCard(root, info)
-                card.render()
+    //     try {
+    //         const loaderElement = new Loader().render();
+    //         root.appendChild(loaderElement);
+
+    //         const response = await PostsService.getList({page: 1 });
+    //         const postsElement = new Post(response.list).render();
+    //         root.replaceChild(postsElement, loaderElement);
+    //     } catch (err) {
+    //         const errorElement = new ErrorMessage("Ошибка загрузки объявлений").render()
+    //         root.replaceChild(errorElement, loaderElement);
+    //     }
+
+    // }
+    async #Content() {
+        const root = document.createElement('div');
+
+        root.classList = ['feed-content'];
+        try {
+            const response = await POST_SERVICE.feed();
+            response.body.forEach((info) => {
+                let card = new PostCard(info);
+                root.appendChild(card.render());
             })
-        })
 
-        return root
+        } catch (err) {
+            root.appendChild(errorMessageBox(err));
+        }
+
+        return root;
     }
 
     render() {
-        const root = document.createElement('div')
+        const root = document.createElement('div');
 
-        root.appendChild(this.#Header())
-        root.appendChild(this.#Content())
+        root.appendChild(this.#Header());
+        this.#Content().then(elem => {
+            root.appendChild(elem);
+        })
+
 
         return root;
     }

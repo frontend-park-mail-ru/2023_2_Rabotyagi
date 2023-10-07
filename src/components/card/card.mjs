@@ -1,12 +1,9 @@
 export class PostCard {
-    #parent
-    #title
-    #desc
-    #city
-    #price
-
-    constructor(parent, {title, city, price}) {
-        this.#parent = parent
+    #title;
+    #desc;
+    #city;
+    #price;
+    constructor({title, city, price}) {
         this.#title = title
         // this.#desc = desc
         this.#city = city
@@ -14,9 +11,9 @@ export class PostCard {
     }
 
 
-    render () {
-        const template = Handlebars.templates['card.hbs']
-        
+    render() {
+        const template = Handlebars.templates['card.hbs'];
+
         const context = {
             badges: {
                 safeDeal: false,
@@ -33,6 +30,6 @@ export class PostCard {
             }
         }
 
-        this.#parent.innerHTML = this.#parent.innerHTML + template(context)
+        return template(context);
     }
 }
