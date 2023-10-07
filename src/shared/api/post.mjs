@@ -1,6 +1,6 @@
 import {API} from "../constants/api.mjs";
 
-export const post = {
+export const Post = {
     feed: async () => {
         return await Ajax.get({
             url: API.POST_LIST,

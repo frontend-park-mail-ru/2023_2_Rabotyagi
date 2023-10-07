@@ -1,4 +1,4 @@
-export const errorMessageBox = (error) => {
+export const ErrorMessageBox = (error) => {
     const root = document.createElement('div');
     const text = document.createElement('p')
 

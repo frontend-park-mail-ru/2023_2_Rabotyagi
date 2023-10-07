@@ -1,4 +1,4 @@
-export class PostCard {
+export class Card {
     #title;
     #desc;
     #city;

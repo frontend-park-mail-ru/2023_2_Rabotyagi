@@ -2,10 +2,9 @@
  * @module Feed
  */
 
-import {PostCard} from "../card/card.mjs"
-import {errorMessageBox} from "../error/errorMessageBox.mjs";
-import {auth} from "../../shared/api/auth.mjs";
-import {post} from "../../shared/api/post.mjs";
+import {Card} from "../card/Card.mjs"
+import {ErrorMessageBox} from "../error/ErrorMessageBox.mjs";
+import {Post} from "../../shared/api/post.mjs";
 
 /**
  * @class Блок с объявлениями
@@ -13,7 +12,7 @@ import {post} from "../../shared/api/post.mjs";
  */
 export class Feed {
 
-    constructor(parent) {
+    constructor() {
         this.items = [];
     }
 
@@ -42,14 +41,13 @@ export class Feed {
 
         root.classList = ['feed-content'];
         try {
-            const response = await post.feed();
+            const response = await Post.feed();
             response.body.forEach((info) => {
-                let card = new PostCard(info);
-                root.appendChild(card.render());
+                root.appendChild(new Card(info).render());
             })
 
         } catch (err) {
-            root.appendChild(errorMessageBox(err));
+            root.appendChild(ErrorMessageBox(err));
         }
 
         return root;

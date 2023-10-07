@@ -5,7 +5,7 @@
 
 import {API} from "../constants/api.mjs";
 
-export const auth = { /**
+export const Auth = { /**
     * @summary Функция авторизации
     * @description Посылает запрос на бек и получает данные пользователя после чего записывает их в хранилище
     * @borrows store, Router

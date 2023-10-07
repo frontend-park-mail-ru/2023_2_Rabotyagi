@@ -5,8 +5,8 @@
 
 import {store} from "../shared/constants/store.mjs";
 import {validateEmail, validatePassword} from "../shared/utils/validation.mjs";
-import {errorMessageBox} from "../components/error/errorMessageBox.mjs";
-import {auth} from "../shared/api/auth.mjs";
+import {ErrorMessageBox} from "../components/error/ErrorMessageBox.mjs";
+import {Auth} from "../shared/api/auth.mjs";
 
 
 /**
@@ -95,20 +95,27 @@ export class SigninPage { /**
 
             if (error) {
                 errorBox.innerHTML = '';
-                errorBox.appendChild(errorMessageBox(error));
+                errorBox.appendChild(ErrorMessageBox(error));
                 return;
             }
 
-            auth.signin(emailInput.value, passInput.value).then(resp => {
-                if (resp.body.status == 200) {
-                    store.user.login(emailInput.value);
-                    Router.navigateTo('/');
-                } else {
-                    errorBox.innerHTML = '';
-                    errorBox.appendChild(errorMessageBox(error));
-                }
+            (async function () {
+                try {
+                    await Auth.signin(emailInput.value, passInput.value).then(resp => {
+                        if (resp.body.status == 200) {
+                            store.user.login(emailInput.value);
+                            Router.navigateTo('/');
+                        } else {
+                            errorBox.innerHTML = '';
+                            errorBox.appendChild(ErrorMessageBox(error));
+                        }
 
-            });
+                    });
+                } catch (err) {
+                    errorBox.innerHTML = '';
+                    errorBox.appendChild(ErrorMessageBox(err));
+                }
+            })();
         })
 
         return root;
