@@ -5,6 +5,8 @@
 
 import {store} from "../shared/constants/store.mjs";
 import {validateEmail, validatePassword} from "../shared/utils/validation.mjs";
+import {errorMessageBox} from "../components/error/errorMessageBox.mjs";
+import {auth} from "../shared/api/auth.mjs";
 
 
 /**
@@ -18,20 +20,20 @@ export class SigninPage { /**
      * @return {null|string} return null if validation ok and return string if not
      */
     #check(email, pass) {
-        email = email.trim()
-        pass = pass.trim()
+        email = email.trim();
+        pass = pass.trim();
 
-        const errEmail = validateEmail(email)
+        const errEmail = validateEmail(email);
         if (errEmail) {
-            return errEmail
+            return errEmail;
         }
 
-        const errPassword = validatePassword(pass)
+        const errPassword = validatePassword(pass);
         if (errPassword) {
-            return errPassword
+            return errPassword;
         }
 
-        return null
+        return null;
     }
 
 
@@ -44,57 +46,70 @@ export class SigninPage { /**
      */
     render() {
         const root = document.createElement('div');
-        const content = document.createElement('div')
-        const info = document.createElement('div')
+        const content = document.createElement('div');
+        const info = document.createElement('div');
 
-        root.classList = ['signinPage']
-        content.classList = ['signinPage-content']
-        info.classList = ['signinPage-info']
+        root.classList = ['signinPage'];
+        content.classList = ['signinPage-content'];
+        info.classList = ['signinPage-info'];
 
-        const logoBtn = document.createElement('a')
-        const emailInput = document.createElement('input')
-        const passInput = document.createElement('input')
-        const submitBtn = document.createElement('button')
-        const toRegBtn = document.createElement('a')
+        const logoBtn = document.createElement('a');
+        const emailInput = document.createElement('input');
+        const passInput = document.createElement('input');
+        const errorBox = document.createElement('div');
+        const submitBtn = document.createElement('button');
+        const toRegBtn = document.createElement('a');
 
-        logoBtn.textContent = '(Главная) Тут должно быть лого, но пока его нет((('
-        emailInput.placeholder = 'Электронная почта'
-        passInput.placeholder = 'Пароль'
-        submitBtn.textContent = 'Подтвердить'
-        toRegBtn.textContent = 'Зарегистрироваться'
+        logoBtn.textContent = '(Главная) Тут должно быть лого, но пока его нет(((';
+        emailInput.placeholder = 'Электронная почта';
+        passInput.placeholder = 'Пароль';
+        submitBtn.textContent = 'Подтвердить';
+        toRegBtn.textContent = 'Зарегистрироваться';
 
-        logoBtn.classList = ['btn-neutral']
+        logoBtn.classList = ['btn-neutral'];
         logoBtn.dataset.link = '/';
         logoBtn.href = '/';
-        submitBtn.classList = ['btn-neutral']
-        toRegBtn.classList = ['btn-neutral']
+        submitBtn.classList = ['btn-neutral'];
+        toRegBtn.classList = ['btn-neutral'];
         toRegBtn.dataset.link = '/signup';
         toRegBtn.href = '/signup';
-        emailInput.classList = ['inputField']
-        passInput.classList = ['inputField']
-        passInput.type = ['password']
+        emailInput.classList = ['inputField'];
+        passInput.classList = ['inputField'];
+        passInput.type = ['password'];
+
+
+        content.appendChild(logoBtn);
+        content.appendChild(emailInput);
+        content.appendChild(passInput);
+        content.appendChild(errorBox);
+        content.appendChild(submitBtn);
+        content.appendChild(toRegBtn);
+
+        root.appendChild(content);
+        root.appendChild(info);
+
+        document.title = 'Вход';
 
         submitBtn.addEventListener('click', (e) => {
-            const error = this.#check(emailInput.value, passInput.value)
+            const error = this.#check(emailInput.value, passInput.value);
 
             if (error) {
-                alert(error);
+                errorBox.innerHTML = '';
+                errorBox.appendChild(errorMessageBox(error));
                 return;
             }
 
-            AUTH_SERVICE.signin(emailInput.value, passInput.value)
+            auth.signin(emailInput.value, passInput.value).then(resp => {
+                if (resp.body.status == 200) {
+                    store.user.login(emailInput.value);
+                    Router.navigateTo('/');
+                } else {
+                    errorBox.innerHTML = '';
+                    errorBox.appendChild(errorMessageBox(error));
+                }
+
+            });
         })
-
-        content.appendChild(logoBtn)
-        content.appendChild(emailInput)
-        content.appendChild(passInput)
-        content.appendChild(submitBtn)
-        content.appendChild(toRegBtn)
-
-        root.appendChild(content)
-        root.appendChild(info)
-
-        document.title = 'Вход'
 
         return root;
     }

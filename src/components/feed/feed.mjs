@@ -4,6 +4,8 @@
 
 import {PostCard} from "../card/card.mjs"
 import {errorMessageBox} from "../error/errorMessageBox.mjs";
+import {auth} from "../../shared/api/auth.mjs";
+import {post} from "../../shared/api/post.mjs";
 
 /**
  * @class Блок с объявлениями
@@ -34,33 +36,13 @@ export class Feed {
 
         return root
     }
-    // {
-    //     const PostsService = {
-    //         getList:(params)=>{
-    //              return window.Ajax.get("/post/list", params)
-    //         }
-    //     }
 
-
-    //     try {
-    //         const loaderElement = new Loader().render();
-    //         root.appendChild(loaderElement);
-
-    //         const response = await PostsService.getList({page: 1 });
-    //         const postsElement = new Post(response.list).render();
-    //         root.replaceChild(postsElement, loaderElement);
-    //     } catch (err) {
-    //         const errorElement = new ErrorMessage("Ошибка загрузки объявлений").render()
-    //         root.replaceChild(errorElement, loaderElement);
-    //     }
-
-    // }
     async #Content() {
         const root = document.createElement('div');
 
         root.classList = ['feed-content'];
         try {
-            const response = await POST_SERVICE.feed();
+            const response = await post.feed();
             response.body.forEach((info) => {
                 let card = new PostCard(info);
                 root.appendChild(card.render());
