@@ -5,7 +5,6 @@
 
 'use strict';
 import {store} from "../../shared/constants/store.mjs";
-import {router} from "../../pages/router.mjs";
 
 /**
  * @class
@@ -69,11 +68,12 @@ export class Header {
 
         this.#parent.innerHTML += template(context)
 
-        document.querySelector('#btn-signin') ?. addEventListener('click', (e) => {
-            e.stopPropagation();
-            router.activePage = 'signin';
-            router.pages['signin']();
-        });
+        // document.querySelector('#btn-signin') ?. addEventListener('click', (e) => {
+        //     e.stopPropagation();
+        //     window.router.navigateTo('/signin');
+        //     // router.activePage = 'signin';
+        //     // router.pages['signin']();
+        // });
 
         document.querySelector('#btn-signup') ?. addEventListener('click', (e) => {
             e.stopPropagation();

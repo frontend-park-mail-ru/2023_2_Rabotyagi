@@ -1,55 +1,63 @@
 /**
- * @module signupPage
- * @file signupPage.mjs
+ * @module signinPage
+ * @file signin.mjs
  */
 
 import {store} from "../shared/constants/store.mjs";
-import {router} from "./router.mjs";
 import API from "../shared/constants/api.mjs";
 import {validateEmail, validatePassword} from "../shared/utils/validation.mjs";
 
 /**
  * @async
- * @summary Функция регистрации
+ * @summary Функция авторизации
  * @description Посылает запрос на бек и получает данные пользователя после чего записывает их в хранилище
  * @borrows store
  * @param {string} email Почта юзера
  * @param {string} password Пароль юзера
  */
-async function signup(email, password) {
-    let credentials = {
-        'email': email,
-        'password': password
+async function signin(email, password) {
+    let cridentials = {
+        email: email,
+        password: password
     }
 
     Ajax.post({
-        url: API.ADRESS_BACKEND + API.SIGNUP,
-        body: JSON.stringify(credentials)
+        url: API.ADRESS_BACKEND + API.SIGNIN,
+        body: JSON.stringify(cridentials)
     }).then(data => {
         if (data.status == 200) {
             store.user.login(email)
-            router.activePage = 'main'
-            router.redirect('main')
+            router.pages.redirect('main')
         } else {
             alert(data.body.error)
         }
     })
 }
 
-export class SignupPage {
-    constructor() {}
+
+/**
+ * @class signinPage
+ * @summary Класс страницы авторизации
+ */
+export class SigninPage {
+    #rootElement;
+
+    /**
+     * @constructor
+     */
+    constructor(parent) {
+        this.#rootElement = parent;
+    }
 
     /**
      * #check() validate email, password and repeated password
-     * @param {string} email - email
-     * @param {string} pass - password
-     * @param {string} repeatPass - repeated password
+     * @param {string} email - Почта юзера
+     * @param {string} pass - Пароль юзера
      * @return {null|string} return null if validation ok and return string if not
      */
-    #check(email, pass, repeatPass) {
+    #check(email, pass) {
         email = email.trim()
         pass = pass.trim()
-        repeatPass = repeatPass.trim()
 
         const errEmail = validateEmail(email)
         if (errEmail) {
@@ -61,38 +69,38 @@ export class SignupPage {
             return errPassword
         }
 
-        if (pass !== repeatPass) {
-            return 'Пароли не совпадают'
-        }
-
         return null
     }
 
+
     /**
-     * @summary Рендер функция
+     * @method
+     * @summary Функция рендера страницы-блока авторизации
+     * @description Формирует страницу с элементами \
+     * Навешивает обработчики событий на элементы
      * @returns {HTMLElement}
      */
     render() {
-        const root = document.createElement('div')
+        this.#rootElement.innerHTML = '';
+
         const content = document.createElement('div')
         const info = document.createElement('div')
 
-        root.classList = ['signinPage']
+        this.#rootElement.classList = ['signinPage']
         content.classList = ['signinPage-content']
         info.classList = ['signinPage-info']
 
         const logoBtn = document.createElement('button')
         const emailInput = document.createElement('input')
         const passInput = document.createElement('input')
-        const repeatPassInput = document.createElement('input')
         const submitBtn = document.createElement('button')
         const toRegBtn = document.createElement('button')
 
         logoBtn.textContent = '(Главная) Тут должно быть лого, но пока его нет((('
         emailInput.placeholder = 'Электронная почта'
         passInput.placeholder = 'Пароль'
-        repeatPassInput.placeholder = 'Повтор пароля'
         submitBtn.textContent = 'Подтвердить'
+        toRegBtn.textContent = 'Зарегистрироваться'
 
         logoBtn.classList = ['btn-neutral']
         submitBtn.classList = ['btn-neutral']
@@ -100,33 +108,35 @@ export class SignupPage {
         emailInput.classList = ['inputField']
         passInput.classList = ['inputField']
         passInput.type = ['password']
-        repeatPassInput.classList = ['inputField']
-        repeatPassInput.type = ['password']
 
         logoBtn.addEventListener('click', (e) => {
             router.pages['main']()
         })
 
         submitBtn.addEventListener('click', (e) => {
-            const error = this.#check(emailInput.value, passInput.value, repeatPassInput.value)
+            const error = this.#check(emailInput.value, passInput.value)
 
             if (error) {
                 alert(error);
                 return;
             }
 
-            signup(emailInput.value, passInput.value, repeatPassInput.value)
+            signin(emailInput.value, passInput.value)
+        })
+        toRegBtn.addEventListener('click', (e) => {
+            router.pages['signup']()
         })
 
         content.appendChild(logoBtn)
         content.appendChild(emailInput)
         content.appendChild(passInput)
-        content.appendChild(repeatPassInput)
         content.appendChild(submitBtn)
+        content.appendChild(toRegBtn)
 
-        root.appendChild(content)
-        root.appendChild(info)
+        console.log(this.#rootElement);
+        this.#rootElement.appendChild(content)
+        this.#rootElement.appendChild(info)
 
-        return root
+        document.title = 'Вход'
     }
 }

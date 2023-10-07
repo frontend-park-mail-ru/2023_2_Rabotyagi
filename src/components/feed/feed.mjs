@@ -10,8 +10,11 @@ import {PostCard} from "../card/card.mjs"
  * @description Получает посты с бекенда и формирует коллекцию для представления
  */
 export class Feed {
-    constructor() {
-        this.items = []
+    #parent;
+
+    constructor(parent) {
+        this.#parent = parent;
+        this.items = [];
     }
 
     /**
@@ -62,6 +65,6 @@ export class Feed {
         root.appendChild(this.#Header())
         root.appendChild(this.#Content())
 
-        return root
+        this.#parent.appendChild(root);
     }
 }
