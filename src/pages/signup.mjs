@@ -4,7 +4,7 @@
  */
 
 import {store} from "../shared/constants/store.mjs";
-import {validateEmail, validatePassword} from "../shared/utils/validation.mjs";
+import {validateEmail, validatePassword} from "../shared/utils/Validation.mjs";
 import {Auth} from "../shared/api/auth.mjs";
 import {ErrorMessageBox} from "../components/error/ErrorMessageBox.mjs";
 
@@ -99,13 +99,8 @@ export class SignupPage { /**
             (async function () {
                 try {
                     await Auth.signup(emailInput.value, passInput.value).then(resp => {
-                        if (resp.body.status == 200) {
-                            store.user.login(emailInput.value);
-                            Router.navigateTo('/');
-                        } else {
-                            errorBox.innerHTML = '';
-                            errorBox.appendChild(ErrorMessageBox(error));
-                        }
+                        store.user.login(emailInput.value);
+                        Router.navigateTo('/');
                     });
                 } catch (err) {
                     errorBox.innerHTML = '';

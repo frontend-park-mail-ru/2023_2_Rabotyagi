@@ -1,4 +1,4 @@
-import {API} from "../constants/api.mjs";
+import {API} from "../constants/Api.mjs";
 
 export const Post = {
     feed: async () => {
