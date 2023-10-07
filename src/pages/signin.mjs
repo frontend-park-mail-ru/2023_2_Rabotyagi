@@ -99,17 +99,13 @@ export class SigninPage { /**
                 return;
             }
 
-            (async function () {
-                try {
-                    await Auth.signin(emailInput.value, passInput.value).then(resp => {
-                        store.user.login(emailInput.value);
-                        Router.navigateTo('/');
-                    });
-                } catch (err) {
-                    errorBox.innerHTML = '';
-                    errorBox.appendChild(ErrorMessageBox(err));
-                }
-            })();
+            Auth.signin(emailInput.value, passInput.value).then(resp => {
+                store.user.login(emailInput.value);
+                Router.navigateTo('/');
+            }).catch(err => {
+                errorBox.innerHTML = '';
+                errorBox.appendChild(ErrorMessageBox(err));
+            });
         })
 
         return root;
