@@ -8,20 +8,6 @@
  * @property {Dict} pages Стейт страниц приложения
  * @property {string} activePage Стейт активной страницы
  */
-// export const router = { /**
-//      * @default 'main'
-//      */
-//     activePage: 'main',
-//     init: (pages) => {
-//         router.pages = pages;
-//         router.pages.main();
-//     },
-//     redirect: (name) => {
-//         router.pages[name]();
-//     },
-//     pages: {}
-// }
-
 export class Route {
     constructor(path, callback) {
         this.path = path;
@@ -29,13 +15,24 @@ export class Route {
     }
 }
 
-export class Router {
+/**
+ * @class
+ * @summary Класс роутера
+ */
+export class Router { /**
+     * @constructor
+     * @param {Array} routes 
+     */
     constructor(routes) {
         this.routes = routes;
         this.init();
-        this.navigateTo('/');
+        this.loadRoute();
     }
 
+    /**
+     * @method
+     * @summary метод инициализации роутов
+     */
     init() {
         window.addEventListener('popstate', () => this.loadRoute());
         document.body.addEventListener('click', e => {
@@ -46,11 +43,20 @@ export class Router {
         });
     }
 
+    /**
+     * @method
+     * @summary метод для изменения истории
+     * @param {string} url 
+     */
     navigateTo(url) {
         history.pushState(null, null, url);
         this.loadRoute();
     }
 
+    /**
+     * @method
+     * @summary рендерит страницу согласно маршруту
+     */
     async loadRoute() {
         const route = this.routes.find(r => r.path === location.pathname) || this.routes.find(r => r.path === '*');
         await route.callback.render();
