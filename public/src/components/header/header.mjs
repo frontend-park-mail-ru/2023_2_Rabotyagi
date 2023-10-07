@@ -4,9 +4,8 @@
  */
 
 'use strict';
-import {store} from "../../shared/constants/store.mjs"
-import logo from "../icons/logo.mjs"
-import search from "../icons/search.mjs"
+import {store} from "../../shared/constants/store.mjs";
+import {router} from "../../pages/router.mjs";
 
 /**
  * @class
@@ -34,10 +33,10 @@ export class Header {
 
         const context = {
             logo: {
-                icon: logo()
+                icon: '<div></div>'
             },
             search: {
-                icon: search()
+                icon: '<div></div>'
             },
             signin: {
                 caption: 'Войти'
@@ -68,31 +67,30 @@ export class Header {
             }
         }
 
-
-        this.#parent.innerHTML = this.#parent.innerHTML + template(context)
+        this.#parent.innerHTML += template(context)
 
         document.querySelector('#btn-signin') ?. addEventListener('click', (e) => {
-            e.stopPropagation()
-            store.activePage = 'signin'
-            store.pages['signin']()
-        })
+            e.stopPropagation();
+            router.activePage = 'signin';
+            router.pages['signin']();
+        });
 
         document.querySelector('#btn-signup') ?. addEventListener('click', (e) => {
-            e.stopPropagation()
-            store.activePage = 'signup'
-            store.pages['signup']()
-        })
+            e.stopPropagation();
+            router.activePage = 'signup';
+            router.pages['signup']();
+        });
 
         document.querySelector('.profile-container') ?. addEventListener('click', (e) => {
-            e.stopPropagation()
-            document.querySelector('#profile-dropdown') ?. classList.toggle('hidden')
-        })
+            e.stopPropagation();
+            document.querySelector('#profile-dropdown') ?. classList.toggle('hidden');
+        });
 
         document.querySelector('#dropdown-btn-logout') ?. addEventListener('click', (e) => {
-            e.stopPropagation()
-            store.user.logout()
-            store.activePage = 'signin'
-            store.pages.redirect('signin')
-        })
+            e.stopPropagation();
+            store.user.logout();
+            router.activePage = 'signin';
+            router.pages.redirect('signin');
+        });
     }
 }

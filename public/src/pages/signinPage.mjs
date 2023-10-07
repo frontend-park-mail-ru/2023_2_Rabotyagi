@@ -3,9 +3,10 @@
  * @file signinPage.mjs
  */
 
-import {store} from "../store.mjs"
-import API from "../../api/api.mjs"
-import {validateEmail, validatePassword} from "../../modules/validation.mjs";
+import {store} from "../shared/constants/store.mjs";
+import {router} from "./router.mjs";
+import API from "../shared/constants/api.mjs";
+import {validateEmail, validatePassword} from "../shared/utils/validation.mjs";
 
 /**
  * @async
@@ -27,7 +28,7 @@ async function signin(email, password) {
     }).then(data => {
         if (data.status == 200) {
             store.user.login(email)
-            store.pages.redirect('main')
+            router.pages.redirect('main')
         } else {
             alert(data.body.error)
         }
@@ -104,7 +105,7 @@ export class SigninPage { /**
         passInput.type = ['password']
 
         logoBtn.addEventListener('click', (e) => {
-            store.pages['main']()
+            router.pages['main']()
         })
 
         submitBtn.addEventListener('click', (e) => {
@@ -118,7 +119,7 @@ export class SigninPage { /**
             signin(emailInput.value, passInput.value)
         })
         toRegBtn.addEventListener('click', (e) => {
-            store.pages['signup']()
+            router.pages['signup']()
         })
 
         content.appendChild(logoBtn)

@@ -2,7 +2,7 @@
  * @module Feed
  */
 
-import API from "../../api/api.mjs"
+import API from "../../shared/constants/api.mjs"
 import {PostCard} from "../card/card.mjs"
 
 /**

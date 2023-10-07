@@ -3,10 +3,11 @@
  * @module Main
  */
 import {Header} from './components/header/header.mjs';
-import {SigninPage} from './components/pages/signinPage.mjs';
-import {SignupPage} from './components/pages/signupPage.mjs';
+import {SigninPage} from './pages/signinPage.mjs';
+import {SignupPage} from './pages/signupPage.mjs';
 import {store} from './shared/constants/store.mjs';
-import {Feed} from './components/posts/feed.mjs';
+import {router} from './pages/router.mjs';
+import {Feed} from './components/feed/feed.mjs';
 
 /**
  * Корневой элемент сайта
@@ -56,9 +57,7 @@ function renderSignupPage() {
     document.title = 'Супер Юла | Регистрация'
 }
 
-store.pages.appendPage('main', renderMainPage)
-store.pages.appendPage('signin', renderSignInPage)
-store.pages.appendPage('signup', renderSignupPage)
+router.init({'main': renderMainPage, 'signin': renderSignInPage, 'signup': renderSignupPage})
 
 store.user.init()
 renderMainPage()
