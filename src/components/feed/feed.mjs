@@ -39,7 +39,7 @@ export class Feed {
 
         root.classList = ['feed-content']
         POST_SERVICE.feed().then(data => {
-            data.body.forEach((info) => {
+            data ?. body.forEach((info) => {
                 let card = new PostCard(root, info)
                 card.render()
             })

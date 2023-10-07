@@ -44,19 +44,23 @@
                 url += '?' + new URLSearchParams(params)
             }
 
-            let response = await fetch(url, {
-                method: method,
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: body
-            })
+            try {
+                let response = await fetch(url, {
+                    method: method,
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: body
+                })
 
-            if (response.ok) {
-                let json = await response.json();
+                if (response.ok) {
+                    let json = await response.json();
 
-                return json
+                    return json
+                }
+            } catch (err) { /** some code */
+                return err;
             }
         }
 
@@ -66,8 +70,8 @@
          * @param {string} params Параметры для GET запроса
          * @returns {Promise}
          */
-        get({url, params}) {
-            return this.#ajax({method: AJAX_METHODS.GET, url, params});
+        async get({url, params}) {
+            return await this.#ajax({method: AJAX_METHODS.GET, url, params});
         }
 
         /**
@@ -76,8 +80,8 @@
          * @param {string} params Параметры для POST Запроса
          * @returns {Promise}
          */
-        post({url, body}) {
-            return this.#ajax({method: AJAX_METHODS.POST, url, body});
+        async post({url, body}) {
+            return await this.#ajax({method: AJAX_METHODS.POST, url, body});
         }
     }
 
