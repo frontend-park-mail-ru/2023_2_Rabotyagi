@@ -1,8 +1,4 @@
-/* Nunito Sans */
-@import url('https://fonts.googleapis.com/css2?family=Antic+Slab&family=Nunito+Sans:ital,opsz@0,6..12;1,6..12&display=swap');
-/* Antic Slab */
-@import url('https://fonts.googleapis.com/css2?family=Antic+Slab&family=Nunito+Sans:ital,opsz@0,6..12;1,6..12&display=swap');
-
+@import url('fonts.css');
 @import url('header.css');
 @import url('feed.css');
 @import url('card.css');

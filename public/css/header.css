@@ -14,7 +14,7 @@ nav {
 
 .logo-caption {
     color: var(--text-primary);
-    font-family: Nunito;
+    font-family: 'Antic Slab';
     font-size: 22px;
     font-style: normal;
     font-weight: 700;
@@ -22,9 +22,7 @@ nav {
 }
 
 .profile-container {
-
 }
-
 
 .profile-btn {
     display: flex;
@@ -49,5 +47,5 @@ nav {
     gap: 16px;
     border-radius: 12px;
     border: 1px solid var(--background-tertiary, rgba(41, 44, 47, 0.12));
-    background: var(--background-primary, #FFFAFF);
+    background: var(--background-primary, #fffaff);
 }
