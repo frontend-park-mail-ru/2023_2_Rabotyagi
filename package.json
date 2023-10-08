@@ -6,7 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "server": "node server/server.js",
-        "docs": "jsdoc .\\public\\ --recurse -d .\\docs -c .\\jsdoc.json"
+        "docs": "jsdoc .\\src\\ --recurse -d .\\docs -c .\\jsdoc.json"
     },
     "repository": {
         "type": "git",
