@@ -17,7 +17,11 @@
      * @name Ajax
      * @class
      */
-    class Ajax { /**
+    class Ajax {
+        port = '8080';
+        ADRESS_BACKEND = 'http://localhost' + ':' + this.port + '/api/v1/';
+
+        /**
          * @async
          * @private
          * @method
@@ -40,6 +44,7 @@
             params = null,
             body = null
         } = {}) {
+            url = this.ADRESS_BACKEND + url;
             if (params) {
                 url += '?' + new URLSearchParams(params)
             }
@@ -53,11 +58,7 @@
                 body: body
             })
 
-            if (response.ok) {
-                let json = await response.json();
-
-                return json
-            }
+            return await response.json()
         }
 
         /**

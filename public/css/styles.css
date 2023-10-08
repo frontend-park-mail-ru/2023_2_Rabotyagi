@@ -6,6 +6,7 @@
 @import url('header.css');
 @import url('feed.css');
 @import url('card.css');
+@import url('loader.css');
 
 :root {
     /* colors */
@@ -31,10 +32,59 @@ a {
     text-decoration: none;
 }
 
-/* * {
-    
-    border-width: 0;
-} */
+.text-caption {
+    color: var(--text-primary, #292c2f);
+    font-family:
+        Nunito Sans,
+        sans-serif;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+}
+
+.text-regular {
+    color: var(--text-primary);
+    font-family:
+        Nunito Sans,
+        sans-serif;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+}
+
+.text-subheader {
+    color: var(--text-primary, #292c2f);
+    font-family:
+        Antic Slab,
+        sans-serif;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%;
+}
+
+.text-header {
+    color: var(--text-primary, #292c2f);
+    text-align: center;
+
+    font-family:
+        Antic Slab,
+        sans-serif;
+    font-size: 33px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%;
+}
+
+.error {
+    display: flex;
+    border-radius: 8px;
+    border: 0.5px solid #ed0a34;
+    background: #faebeb;
+    padding: 4px 8px;
+}
 
 body {
     background-color: var(--background-primary);

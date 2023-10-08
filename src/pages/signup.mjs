@@ -4,35 +4,9 @@
  */
 
 import {store} from "../shared/constants/store.mjs";
-import API from "../shared/constants/api.mjs";
-import {validateEmail, validatePassword} from "../shared/utils/validation.mjs";
-
-/**
- * @async
- * @summary Функция регистрации
- * @description Посылает запрос на бек и получает данные пользователя после чего записывает их в хранилище
- * @borrows store
- * @param {string} email Почта юзера
- * @param {string} password Пароль юзера
- */
-async function signup(email, password) {
-    let credentials = {
-        'email': email,
-        'password': password
-    }
-
-    Ajax.post({
-        url: API.ADRESS_BACKEND + API.SIGNUP,
-        body: JSON.stringify(credentials)
-    }).then(data => {
-        if (data.status == 200) {
-            store.user.login(email);
-            Router.navigateTo('/');
-        } else {
-            alert(data.body.error);
-        }
-    })
-}
+import {validateEmail, validatePassword} from "../shared/utils/Validation.mjs";
+import {Auth} from "../shared/api/auth.mjs";
+import {ErrorMessageBox} from "../components/error/ErrorMessageBox.mjs";
 
 export class SignupPage { /**
      * #check() validate email, password and repeated password
@@ -63,6 +37,7 @@ export class SignupPage { /**
         return null;
     }
 
+
     /**
      * @summary Рендер функция
      * @returns {HTMLElement}
@@ -80,6 +55,7 @@ export class SignupPage { /**
         const emailInput = document.createElement('input');
         const passInput = document.createElement('input');
         const repeatPassInput = document.createElement('input');
+        const errorBox = document.createElement('div');
         const submitBtn = document.createElement('button');
 
         logoBtn.textContent = '(Главная) Тут должно быть лого, но пока его нет(((';
@@ -98,27 +74,36 @@ export class SignupPage { /**
         repeatPassInput.classList = ['inputField'];
         repeatPassInput.type = ['password'];
 
-        submitBtn.addEventListener('click', (e) => {
-            const error = this.#check(emailInput.value, passInput.value, repeatPassInput.value);
-
-            if (error) {
-                alert(error);
-                return;
-            }
-
-            signup(emailInput.value, passInput.value, repeatPassInput.value);
-        })
 
         content.appendChild(logoBtn);
         content.appendChild(emailInput);
         content.appendChild(passInput);
         content.appendChild(repeatPassInput);
+        content.appendChild(errorBox);
         content.appendChild(submitBtn);
 
         root.appendChild(content);
         root.appendChild(info);
 
         document.title = 'Регистрация';
+
+        submitBtn.addEventListener('click', (e) => {
+            const error = this.#check(emailInput.value, passInput.value, repeatPassInput.value);
+
+            if (error) {
+                errorBox.innerHTML = '';
+                errorBox.appendChild(ErrorMessageBox(error));
+                return;
+            }
+
+            Auth.signup(emailInput.value, passInput.value).then(resp => {
+                store.user.login(emailInput.value);
+                Router.navigateTo('/');
+            }).catch(err => {
+                errorBox.innerHTML = '';
+                errorBox.appendChild(ErrorMessageBox(err));
+            })
+        })
 
         return root;
     }

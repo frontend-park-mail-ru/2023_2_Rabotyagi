@@ -2,8 +2,10 @@
  * @module Feed
  */
 
-import API from "../../shared/constants/api.mjs"
-import {PostCard} from "../card/card.mjs"
+import {Card} from "../card/Card.mjs"
+import {ErrorMessageBox} from "../error/ErrorMessageBox.mjs";
+import {Post} from "../../shared/api/post.mjs";
+import {loaderRegular} from "../loader/loader.mjs";
 
 /**
  * @class Блок с объявлениями
@@ -11,7 +13,7 @@ import {PostCard} from "../card/card.mjs"
  */
 export class Feed {
 
-    constructor(parent) {
+    constructor() {
         this.items = [];
     }
 
@@ -20,14 +22,17 @@ export class Feed {
      * @description Посылает запрос на бек для получения 20 постов
      * @returns Массив постов
      */
-    #getPosts() {
-        return Ajax.get({
-            url: API.ADRESS_BACKEND + API.GET_POST_LIST,
-            params: {
-                count: 20
-            }
+    async #getPosts(root, loaderElement) {
+        try {
+            const response = await Post.feed();
+            root.removeChild(loaderElement);
 
-        })
+            response.body.forEach(elem => {
+                root.innerHTML += new Card(elem).render()
+            })
+        } catch (err) {
+            root.replaceChild(ErrorMessageBox(err), loaderElement);
+        }
     }
 
 
@@ -44,24 +49,22 @@ export class Feed {
     }
 
     #Content() {
-        const root = document.createElement('div')
+        const root = document.createElement('div');
+        const loaderElement = loaderRegular();
 
-        root.classList = ['feed-content']
-        this.#getPosts().then(data => {
-            data.body.forEach((info) => {
-                let card = new PostCard(root, info)
-                card.render()
-            })
-        })
+        root.classList = ['feed-content'];
+        root.appendChild(loaderElement);
 
-        return root
+        this.#getPosts(root, loaderElement);
+
+        return root;
     }
 
     render() {
-        const root = document.createElement('div')
+        const root = document.createElement('div');
 
-        root.appendChild(this.#Header())
-        root.appendChild(this.#Content())
+        root.appendChild(this.#Header());
+        root.appendChild(this.#Content());
 
         return root;
     }
