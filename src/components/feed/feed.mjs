@@ -22,7 +22,18 @@ export class Feed {
      * @description Посылает запрос на бек для получения 20 постов
      * @returns Массив постов
      */
-    #getPosts() {}
+    async #getPosts(root, loaderElement) {
+        try {
+            const response = await Post.feed();
+            root.removeChild(loaderElement);
+
+            response.body.forEach(elem => {
+                root.innerHTML += new Card(elem).render()
+            })
+        } catch (err) {
+            root.replaceChild(ErrorMessageBox(err), loaderElement);
+        }
+    }
 
 
     #Header() {
@@ -44,20 +55,7 @@ export class Feed {
         root.classList = ['feed-content'];
         root.appendChild(loaderElement);
 
-        (async function () {
-            try {
-                const response = await Post.feed();
-                setTimeout(() => {
-                    root.removeChild(loaderElement);
-
-                    response.body.forEach(elem => {
-                        root.innerHTML += new Card(elem).render()
-                    })
-                }, 3000);
-            } catch (err) {
-                root.replaceChild(loaderElement, ErrorMessageBox(err));
-            }
-        })();
+        this.#getPosts(root, loaderElement);
 
         return root;
     }
