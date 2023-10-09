@@ -26,6 +26,7 @@ export class Feed {
         try {
             const response = await Post.feed();
             root.removeChild(loaderElement);
+            console.log("OK");
 
             response.body.forEach(elem => {
                 root.appendChild(new Card(elem).render());

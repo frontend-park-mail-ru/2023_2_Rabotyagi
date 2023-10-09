@@ -57,15 +57,16 @@ export class SigninPage { /**
 
         root.innerHTML = template(context);
 
+
         document.title = 'Вход';
 
 
         root = root.firstChild;
 
-        const container = root.querySelector("div.right-block-content");
+        const container = root.querySelector('div.right-block-content');
         const inputEmail = container.querySelector('#inputEmail');
         const inputPass = container.querySelector('#inputPass');
-        const errorBox = container.querySelector('#errorBox')
+        const errorBox = container.querySelector('#errorBox');
 
         container.querySelector('#btnSubmit').addEventListener('click', (e) => {
             const error = this.#check(inputEmail.value, inputPass.value);
@@ -75,8 +76,6 @@ export class SigninPage { /**
                 errorBox.appendChild(ErrorMessageBox(error));
                 return;
             }
-
-            console.log(inputEmail.value, inputPass.value)
 
             Auth.signin(inputEmail.value, inputPass.value).then(resp => {
                 if (resp.status == 200) {

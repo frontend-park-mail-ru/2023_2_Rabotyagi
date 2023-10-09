@@ -18,7 +18,7 @@
      * @class
      */
     class Ajax {
-        port = '8080';
+        port = '8000';
         ADRESS_BACKEND = 'http://localhost' + ':' + this.port + '/api/v1/';
 
         /**
