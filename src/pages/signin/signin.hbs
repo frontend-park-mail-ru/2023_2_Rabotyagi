@@ -1,0 +1,33 @@
+<div style="display: flex; height: 100vh; flex-direction: column; justify-content: center; align-items: center;">
+    <div>
+        <p>Войдите, чтобы использовать все возможности</p>
+        <p>Общение об объявлениях в чатах</p>
+        <p>Бесплатное размещение объявлений</p>
+        <p>Покупки со скидкой по безопасной сделке</p>
+    </div>
+    <div class="signinPage">
+        <a href='/' data-link="/" class='logo-box'>
+            <div style="background-image: url(assets/icons/logo.svg); width: 60px; height: 60px;"></div>
+            <p class='text-subheader'>Супер Юла</p>
+        </a>
+        <div class="signinPage-content">
+            <input id="inputEmail" placeholder="Электронная почта" type="text" class="inputField">
+            <input id="inputPass" placeholder="Пароль" type="password" class="inputField">
+            <div id="errorBox"></div>
+            <button id="btnSubmit" class="btn-primary" style="width: 100%;">
+                <p class="text-regular">{{this.buttons.submit}}</p>
+            </button>
+            <a href='/signup' data-link="/signup" class='btn-neutral' style="width: 100%;">
+                <p class="text-regular">{{this.buttons.toReg}}</p>
+            </a>
+        </div>
+        <div class="signinPage-info">
+            <p class="text-caption">
+                Нажимая «Продолжить», вы принимаете пользовательское соглашение и политику конфиденциальности
+            </p>
+            <p class="text-caption">
+                Передаваемые данные
+            </p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+(function() {
+  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['signin.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=container.lambda, alias2=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "<div style=\"display: flex; height: 100vh; flex-direction: column; justify-content: center; align-items: center;\">\n    <div>\n        <p>Войдите, чтобы использовать все возможности</p>\n        <p>Общение об объявлениях в чатах</p>\n        <p>Бесплатное размещение объявлений</p>\n        <p>Покупки со скидкой по безопасной сделке</p>\n    </div>\n    <div class=\"signinPage\">\n        <a href='/' data-link=\"/\" class='logo-box'>\n            <div style=\"background-image: url(assets/icons/logo.svg); width: 60px; height: 60px;\"></div>\n            <p class='text-subheader'>Супер Юла</p>\n        </a>\n        <div class=\"signinPage-content\">\n            <input id=\"inputEmail\" placeholder=\"Электронная почта\" type=\"text\" class=\"inputField\">\n            <input id=\"inputPass\" placeholder=\"Пароль\" type=\"password\" class=\"inputField\">\n            <div id=\"errorBox\"></div>\n            <button id=\"btnSubmit\" class=\"btn-primary\" style=\"width: 100%;\">\n                <p class=\"text-regular\">"
+    + alias2(alias1(((stack1 = (depth0 != null ? lookupProperty(depth0,"buttons") : depth0)) != null ? lookupProperty(stack1,"submit") : stack1), depth0))
+    + "</p>\n            </button>\n            <a href='/signup' data-link=\"/signup\" class='btn-neutral' style=\"width: 100%;\">\n                <p class=\"text-regular\">"
+    + alias2(alias1(((stack1 = (depth0 != null ? lookupProperty(depth0,"buttons") : depth0)) != null ? lookupProperty(stack1,"toReg") : stack1), depth0))
+    + "</p>\n            </a>\n        </div>\n        <div class=\"signinPage-info\">\n            <p class=\"text-caption\">\n                Нажимая «Продолжить», вы принимаете пользовательское соглашение и политику конфиденциальности\n            </p>\n            <p class=\"text-caption\">\n                Передаваемые данные\n            </p>\n        </div>\n    </div>\n</div>";
+},"useData":true});
+})();

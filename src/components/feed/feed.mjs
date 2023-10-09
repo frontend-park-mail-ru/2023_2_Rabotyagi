@@ -2,9 +2,9 @@
  * @module Feed
  */
 
-import {Card} from "../card/Card.mjs";
-import {ErrorMessageBox} from "../error/ErrorMessageBox.mjs";
-import {Post} from "../../shared/api/Post.mjs";
+import {Card} from "../card/card.mjs";
+import {ErrorMessageBox} from "../error/errorMessageBox.mjs";
+import {Post} from "../../shared/api/post.mjs";
 import {loaderRegular} from "../loader/loader.mjs";
 
 /**
@@ -28,7 +28,7 @@ export class Feed {
             root.removeChild(loaderElement);
 
             response.body.forEach(elem => {
-                root.innerHTML += new Card(elem).render()
+                root.appendChild(new Card(elem).render());
             })
         } catch (err) {
             root.replaceChild(ErrorMessageBox(err), loaderElement);

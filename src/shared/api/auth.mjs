@@ -3,7 +3,7 @@
  * @module Api.Auth
  */
 
-import {API} from "../constants/Api.mjs";
+import {API} from "../constants/api.mjs";
 
 export const Auth = { /**
     * @summary Функция авторизации

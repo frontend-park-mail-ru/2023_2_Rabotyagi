@@ -12,6 +12,7 @@ export class Card {
 
 
     render() {
+        const root = document.createElement('div');
         const template = Handlebars.templates['card.hbs'];
 
         const context = {
@@ -30,6 +31,8 @@ export class Card {
             }
         }
 
-        return template(context);
+        root.innerHTML = template(context);
+
+        return root.firstChild;
     }
 }

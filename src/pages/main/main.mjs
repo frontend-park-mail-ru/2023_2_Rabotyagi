@@ -3,8 +3,8 @@
  * @file main.mjs
  */
 
-import {Header} from "../components/header/Header.mjs";
-import {Feed} from "../components/feed/Feed.mjs";
+import {Header} from "../../components/header/header.mjs";
+import {Feed} from "../../components/feed/feed.mjs";
 
 /**
  * @class mainPage
@@ -14,7 +14,7 @@ import {Feed} from "../components/feed/Feed.mjs";
 export class MainPage {
     render() {
         const root = document.createElement('div');
-        const header = new Header(root)
+        const header = new Header()
         const feed = new Feed(root)
 
         root.appendChild(header.render());

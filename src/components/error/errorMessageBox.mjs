@@ -1,12 +1,8 @@
 export const ErrorMessageBox = (error) => {
     const root = document.createElement('div');
-    const text = document.createElement('p')
+    const template = Handlebars.templates['errorMessageBox.hbs'];
 
-    root.classList = ['error'];
-    text.classList = ['text-regular'];
+    root.innerHTML = template({text: error});
 
-    text.innerHTML = error;
-    root.appendChild(text);
-
-    return root;
+    return root.firstChild;
 }
