@@ -20,10 +20,10 @@ export class Card {
                 delivery: false,
                 city: this.#city
             },
-            cardImage: {
-                url: null,
-                alt: 'картинка'
-            },
+            // img: {
+            //     src: null,
+            //     alt: 'картинка'
+            // },
             cardInfo: {
                 price: this.#price,
                 title: this.#title
