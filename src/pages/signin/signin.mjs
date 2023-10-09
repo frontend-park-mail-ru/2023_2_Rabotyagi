@@ -62,7 +62,7 @@ export class SigninPage { /**
 
         root = root.firstChild;
 
-        const container = root.querySelector("div.signinPage-content");
+        const container = root.querySelector("div.right-block-content");
         const inputEmail = container.querySelector('#inputEmail');
         const inputPass = container.querySelector('#inputPass');
         const errorBox = container.querySelector('#errorBox')
