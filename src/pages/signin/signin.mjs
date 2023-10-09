@@ -76,6 +76,8 @@ export class SigninPage { /**
                 return;
             }
 
+            console.log(inputEmail.value, inputPass.value)
+
             Auth.signin(inputEmail.value, inputPass.value).then(resp => {
                 if (resp.status == 200) {
                     store.user.login(inputEmail.value);

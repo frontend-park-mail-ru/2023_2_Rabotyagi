@@ -73,9 +73,9 @@ export class SignupPage { /**
                 return;
             }
 
-            Auth.signup(emailInput.value, passInput.value).then(resp => {
+            Auth.signup(inputEmail.value, inputPass.value).then(resp => {
                 if (resp.status == 200) {
-                    store.user.login(emailInput.value);
+                    store.user.login(inputEmail.value);
                     Router.navigateTo('/');
                 } else {
                     throw resp.body.error;
