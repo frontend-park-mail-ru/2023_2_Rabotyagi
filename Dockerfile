@@ -1,10 +1,10 @@
 FROM node:20-alpine3.17
 
 WORKDIR /var/frontend/app
-COPY public public
-COPY server server
-COPY src src
-COPY package*.json ./
+ADD public public
+ADD server server
+ADD src src
+ADD package*.json ./
 RUN npm install
 
 EXPOSE 3000

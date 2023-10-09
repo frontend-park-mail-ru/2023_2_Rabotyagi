@@ -3,8 +3,8 @@
  * @file main.mjs
  */
 
-import {Header} from "../components/header/header.mjs";
-import {Feed} from "../components/feed/feed.mjs";
+import {Header} from "../components/header/Header.mjs";
+import {Feed} from "../components/feed/Feed.mjs";
 
 /**
  * @class mainPage

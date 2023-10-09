@@ -4,7 +4,7 @@
  */
 
 'use strict';
-import {store} from "../../shared/constants/store.mjs";
+import {store} from "../../shared/constants/Store.mjs";
 
 /**
  * @class

@@ -2,9 +2,9 @@
  * @module Feed
  */
 
-import {Card} from "../card/Card.mjs"
+import {Card} from "../card/Card.mjs";
 import {ErrorMessageBox} from "../error/ErrorMessageBox.mjs";
-import {Post} from "../../shared/api/post.mjs";
+import {Post} from "../../shared/api/Post.mjs";
 import {loaderRegular} from "../loader/loader.mjs";
 
 /**

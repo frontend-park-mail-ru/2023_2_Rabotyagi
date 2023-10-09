@@ -3,10 +3,10 @@
  * @file signin.mjs
  */
 
-import {store} from "../shared/constants/store.mjs";
+import {store} from "../shared/constants/Store.mjs";
 import {validateEmail, validatePassword} from "../shared/utils/Validation.mjs";
 import {ErrorMessageBox} from "../components/error/ErrorMessageBox.mjs";
-import {Auth} from "../shared/api/auth.mjs";
+import {Auth} from "../shared/api/Auth.mjs";
 
 
 /**
