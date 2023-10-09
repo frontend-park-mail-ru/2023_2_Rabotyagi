@@ -12,17 +12,8 @@ nav {
     gap: 4px;
 }
 
-.logo-caption {
-    color: var(--text-primary);
-    font-family: 'Antic Slab';
-    font-size: 22px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 140%; /* 30.8px */
-}
-
-.profile-container {
-}
+/* .profile-container {
+} */
 
 .profile-btn {
     display: flex;

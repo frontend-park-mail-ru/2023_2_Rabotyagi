@@ -1,8 +1,18 @@
-@import url('fonts.css');
+/* @import url('fonts.css'); */
 @import url('header.css');
 @import url('feed.css');
 @import url('card.css');
 @import url('loader.css');
+
+@font-face {
+    font-family: 'Nunito Sans';
+    src: local('../assets/fonts/Nunito_Sans/NunitoSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Antic Slab';
+    src: local('../assets/fonts/Antic_Slab/AnticSlab-Regular.ttf');
+}
 
 :root {
     /* colors */
@@ -29,10 +39,7 @@ a {
 }
 
 .text-caption {
-    color: var(--text-primary, #292c2f);
-    font-family:
-        Nunito Sans,
-        sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     font-size: 10px;
     font-style: normal;
     font-weight: 400;
@@ -40,10 +47,7 @@ a {
 }
 
 .text-regular {
-    color: var(--text-primary);
-    font-family:
-        Nunito Sans,
-        sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
     font-size: 15px;
     font-style: normal;
     font-weight: 400;
@@ -51,10 +55,7 @@ a {
 }
 
 .text-subheader {
-    color: var(--text-primary, #292c2f);
-    font-family:
-        Antic Slab,
-        sans-serif;
+    font-family: 'Antic Slab', serif;
     font-size: 22px;
     font-style: normal;
     font-weight: 400;
@@ -62,12 +63,9 @@ a {
 }
 
 .text-header {
-    color: var(--text-primary, #292c2f);
     text-align: center;
 
-    font-family:
-        Antic Slab,
-        sans-serif;
+    font-family: 'Antic Slab', serif;
     font-size: 33px;
     font-style: normal;
     font-weight: 400;
@@ -123,11 +121,6 @@ body {
     background: var(--vkui-color-background-secondary, #f0f1f3);
     color: var(--vkui-color-text-primary, #2c2d2e);
     text-align: center;
-    font-family: Nunito Sans;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 100%; /* 15px */
     width: max-content;
 }
 

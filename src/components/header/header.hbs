@@ -1,20 +1,20 @@
 <nav>
     <a href='/' data-link="/" class='logo-box'>
         <div style="background-image: url(assets/icons/logo.svg); width: 60px; height: 60px;"></div>
-        <span class='logo-caption'>Супер Юла</span>
+        <p class='text-subheader'>Супер Юла</p>
     </a>
-    <button class='btn-primary'>Категории</button>
+    <button class='btn-primary'><p class="text-regular">Категории</p></button>
     <div class='search-box'>
         {{{this.search.icon}}}
         <input class='search-input' placeholder='Поиск'>
     </div>
-    <button class='btn-neutral'>Разместить объявление</button>
+    <button class='btn-neutral'><p class="text-regular">Разместить объявление</p></button>
     {{#if authorized}}
     {{> profile this.profileConf}}
     {{else}}
     <div class="auth-box">
-        <a href="/signin" data-link="/signin"  class='btn-primary'>{{this.signin.caption}}</a>
-        <a href="/signup" data-link="/signup"  class='btn-neutral'>{{this.signup.caption}}</a>
+        <a href="/signin" data-link="/signin"  class='btn-primary'><p class="text-regular">{{this.signin.caption}}</p></a>
+        <a href="/signup" data-link="/signup"  class='btn-neutral'><p class="text-regular">{{this.signup.caption}}</p></a>
     </div>
     {{/if}}
 </nav>
