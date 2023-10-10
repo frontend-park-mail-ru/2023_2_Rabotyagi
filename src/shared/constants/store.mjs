@@ -35,10 +35,10 @@ export const store = {
          * @function
          * @returns None
          */
-        login: (email) => {
-            localStorage.setItem('email', email);
+        login: (token) => {
+            localStorage.setItem('access_token', token.access_token);
             store.authorized = true;
-            store.user.email = email
+            store.user.accessToken = token.access_token
         }, /**
          * @summary Редьюсер для изменения стейта пользователя на авторизированного
          * @description Уздаляет из localStorage ключ email \
@@ -52,7 +52,7 @@ export const store = {
             store.user.email = null;
             store.user.accessToken = null;
             store.user.refreshToken = null;
-            localStorage.removeItem('email');
+            localStorage.removeItem('access_token');
             store.authorized = false
         },
         username: null,

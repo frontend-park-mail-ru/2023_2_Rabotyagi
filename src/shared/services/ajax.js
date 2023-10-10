@@ -19,7 +19,7 @@
      */
     class Ajax {
         port = '8080';
-        ADRESS_BACKEND = 'http://84.23.53.28' + ':' + this.port + '/api/v1/';
+        ADRESS_BACKEND = 'http://localhost' + ':' + this.port + '/api/v1/';
 
         /**
          * @async
@@ -43,25 +43,32 @@
             url = '/',
             params = null,
             body = null,
-            headers = {}
+            headers = {},
+            credentials = null
         } = {}) {
             url = this.ADRESS_BACKEND + url;
             if (params) {
                 url += '?' + new URLSearchParams(params)
             }
 
-            headers['Content-Type'] = 'application/json';
             headers['Accept'] = 'application/json';
-            // headers['Access-Control-Allow-Credentials'] = "true";
+            headers['Content-Type'] = 'application/json';
 
-            let response = await fetch(url, {
+            const config = {
                 method: method,
                 mode: 'cors',
                 headers: headers,
-                body: body,
-                credentials: 'include'
-            })
-            console.log(response.headers.get('Set-Cookie'));
+            }
+
+            if (body != null) {
+                config.body = body;
+            }
+
+            if (credentials != null) {
+                config.credentials = credentials;
+            }
+            
+            const response = await fetch(url, config);
             return await response.json();
         }
 
@@ -71,8 +78,8 @@
          * @param {string} params Параметры для GET запроса
          * @returns {Promise}
          */
-        get({url, params, headers}) {
-            return this.#ajax({method: AJAX_METHODS.GET, url, params, headers});
+        get({url, params, headers, credentials}) {
+            return this.#ajax({method: AJAX_METHODS.GET, url, params, headers, credentials});
         }
 
         /**
@@ -81,8 +88,8 @@
          * @param {string} params Параметры для POST Запроса
          * @returns {Promise}
          */
-        post({url, body, headers}) {
-            return this.#ajax({method: AJAX_METHODS.POST, url, body, headers});
+        post({url, body, headers, credentials}) {
+            return this.#ajax({method: AJAX_METHODS.POST, url, body, headers, credentials});
         }
     }
 

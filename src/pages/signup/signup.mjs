@@ -4,6 +4,7 @@
  */
 
 import {store} from "../../shared/constants/store.mjs";
+import { cookieParser } from "../../shared/utils/cookie.mjs";
 import {validateEmail, validatePassword} from "../../shared/utils/validation.mjs";
 import {Auth} from "../../shared/api/auth.mjs";
 import {ErrorMessageBox} from "../../components/error/errorMessageBox.mjs";
@@ -74,8 +75,10 @@ export class SignupPage { /**
             }
 
             Auth.signup(inputEmail.value, inputPass.value).then(resp => {
+                console.log(resp);
                 if (resp.status == 200) {
-                    store.user.login(inputEmail.value);
+                    const cookies = cookieParser(document.cookie);
+                    store.user.login(cookies);
                     Router.navigateTo('/');
                 } else {
                     throw resp.body.error;

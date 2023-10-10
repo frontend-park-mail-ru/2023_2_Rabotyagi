@@ -4,6 +4,7 @@
  */
 
 import {store} from "../../shared/constants/store.mjs";
+import { cookieParser } from "../../shared/utils/cookie.mjs";
 import {validateEmail, validatePassword} from "../../shared/utils/validation.mjs";
 import {ErrorMessageBox} from "../../components/error/errorMessageBox.mjs";
 import {Auth} from "../../shared/api/auth.mjs";
@@ -77,20 +78,25 @@ export class SigninPage { /**
                 return;
             }
 
-            Auth.signin(inputEmail.value, inputPass.value).then(resp => {
-                if (resp.status == 200) {
-
-
-                    store.user.login(inputEmail.value);
-                    Router.navigateTo('/');
-                } else {
-                    throw resp.body.error;
+            (async function() {
+                try {
+                    const resp = await Auth.signin(inputEmail.value, inputPass.value);
+                    if (resp.status == 200) {
+                        const cookies = cookieParser(document.cookie);
+                        store.user.login(cookies);
+                        Router.navigateTo('/');
+                    } else {
+                        throw resp.body.error;
+                    }
+                    
+                } catch (err) {
+                    errorBox.innerHTML = '';
+                    errorBox.appendChild(ErrorMessageBox(err));
                 }
-            }).catch(err => {
-                errorBox.innerHTML = '';
-                errorBox.appendChild(ErrorMessageBox(err));
-            });
+            })();
+            
         })
+
 
         return root;
     }

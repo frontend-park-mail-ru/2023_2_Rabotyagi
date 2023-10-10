@@ -19,7 +19,8 @@ export const Auth = { /**
             url: API.SIGNIN,
             body: JSON.stringify(
                 {email: email, password: password}
-            )
+            ),
+            credentials: 'include'
         });
     },
     /**
@@ -36,7 +37,8 @@ export const Auth = { /**
             url: API.SIGNUP,
             body: JSON.stringify(
                 {email: email, password: password}
-            )
+            ),
+            credentials: 'include'
         });
     }
 }
