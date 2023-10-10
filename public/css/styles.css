@@ -1,4 +1,3 @@
-/* @import url('fonts.css'); */
 @import url('header.css');
 @import url('feed.css');
 @import url('card.css');
@@ -6,16 +5,17 @@
 
 @font-face {
     font-family: 'Nunito Sans';
-    src: local('../assets/fonts/Nunito_Sans/NunitoSans-Regular.ttf');
+    src: url('/assets/fonts/Nunito_Sans/NunitoSans-Regular.ttf');
 }
 
 @font-face {
-    font-family: 'Antic Slab';
-    src: local('../assets/fonts/Antic_Slab/AnticSlab-Regular.ttf');
+    font-family: 'Roboto Medium';
+    src: url('/assets/fonts/Roboto/Roboto-Medium.ttf');
 }
 
-* {
-    /* border: none; */
+@font-face {
+    font-family: 'Roboto Regular';
+    src: url('/assets/fonts/Roboto/Roboto-Regular.ttf');
 }
 
 :root {
@@ -59,7 +59,7 @@ a {
 }
 
 .text-subheader {
-    font-family: 'Antic Slab', serif;
+    font-family: 'Roboto Medium', serif;
     font-size: 22px;
     font-style: normal;
     font-weight: 400;
@@ -69,7 +69,7 @@ a {
 .text-header {
     text-align: center;
 
-    font-family: 'Antic Slab', serif;
+    font-family: 'Roboto Regular', serif;
     font-size: 33px;
     font-style: normal;
     font-weight: 400;
@@ -138,21 +138,20 @@ body {
     align-self: stretch;
     border-radius: 8px;
     border-color: var(--background-tertiary);
-    &:focus {
-        border-color: var(--palette-primary);
-    }
-    &:active {
-        display: flex;
+}
+
+.inputField:focus {
+    border-color: var(--palette-primary);
+}
+
+.inputField:active {
+    display: flex;
     padding: 8px 12px 8px 10px;
     border-width: 1px;
     align-items: center;
     align-self: stretch;
     border-radius: 8px;
         border-color: var(--palette-primary);
-    }
-    /* &:hover {
-        border-color: var(--palette-primary);
-    } */
 }
 
 .searchField {
@@ -175,10 +174,10 @@ input {
     border: 0.5px solid var(--vkui-color-stroke-field-border-alpha, rgba(0, 16, 61, 0.12));
     background: var(--background-primary);
     outline: none;
+}
 
-    &:focus-visible {
-        border: 0.5px solid var(--palette-primary);
-    }
+input:focus-visible {
+    border: 0.5px solid var(--palette-primary);
 }
 
 /* input:focus-visible {
@@ -255,9 +254,9 @@ input {
     align-self: stretch;
 }
 
-.right-block-info{
+/* .right-block-info{
 
-}
+} */
 
 .signin-page-content {
     display: flex;
