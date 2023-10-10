@@ -79,6 +79,8 @@ export class SigninPage { /**
 
             Auth.signin(inputEmail.value, inputPass.value).then(resp => {
                 if (resp.status == 200) {
+
+
                     store.user.login(inputEmail.value);
                     Router.navigateTo('/');
                 } else {

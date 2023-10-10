@@ -1,8 +1,8 @@
 nav {
     display: flex;
-    padding: 8px 32px;
+    padding: 8px 0px;
     gap: 64px;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 

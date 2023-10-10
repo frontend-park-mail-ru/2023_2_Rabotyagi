@@ -42,23 +42,27 @@
             method = AJAX_METHODS.GET,
             url = '/',
             params = null,
-            body = null
+            body = null,
+            headers = {}
         } = {}) {
             url = this.ADRESS_BACKEND + url;
             if (params) {
                 url += '?' + new URLSearchParams(params)
             }
 
+            headers['Content-Type'] = 'application/json';
+            headers['Accept'] = 'application/json';
+            // headers['Access-Control-Allow-Credentials'] = "true";
+
             let response = await fetch(url, {
                 method: method,
                 mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: body
+                headers: headers,
+                body: body,
+                credentials: 'include'
             })
-
-            return await response.json()
+            console.log(response.headers.get('Set-Cookie'));
+            return await response.json();
         }
 
         /**
@@ -67,8 +71,8 @@
          * @param {string} params Параметры для GET запроса
          * @returns {Promise}
          */
-        get({url, params}) {
-            return this.#ajax({method: AJAX_METHODS.GET, url, params});
+        get({url, params, headers}) {
+            return this.#ajax({method: AJAX_METHODS.GET, url, params, headers});
         }
 
         /**
@@ -77,8 +81,8 @@
          * @param {string} params Параметры для POST Запроса
          * @returns {Promise}
          */
-        post({url, body}) {
-            return this.#ajax({method: AJAX_METHODS.POST, url, body});
+        post({url, body, headers}) {
+            return this.#ajax({method: AJAX_METHODS.POST, url, body, headers});
         }
     }
 

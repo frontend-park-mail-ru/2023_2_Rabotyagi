@@ -45,7 +45,7 @@ export class SignupPage { /**
     render() {
         let root = document.createElement('div');
         const template = Handlebars.templates['signup.hbs'];
-        
+
         const context = {
             buttons: {
                 submit: 'Продолжить'
