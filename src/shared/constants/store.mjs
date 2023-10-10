@@ -3,6 +3,8 @@
  * @module Store
  */
 
+import {cookieParser} from "../utils/cookie.mjs";
+
 /**
  * @constant {Dict} store Хранилище стейта всего приложения
  * @property {Dict} user Стейт, хранящий в себе редьюсеры для авторизации и разлогирования
@@ -11,7 +13,7 @@
 export const store = {
     user: {
         isAuth: () => {
-            return this.user.accessToken ? true : false;
+            return store.user.accessToken ? true : false;
         }, /**
          * @summary Редьюсер для инициализирования стейта пользователя
          * @description Забирает из localStorage ключ email \
@@ -21,8 +23,8 @@ export const store = {
          * @returns None
          */
         init: () => {
-            const accessToken = localStorage.getItem('access_token');
-            if (this.user.isAuth()) {
+            const accessToken = cookieParser(document.cookie).access_token;
+            if (store.user.isAuth()) {
                 store.user.accessToken = accessToken
             }
         }, /**
@@ -35,7 +37,6 @@ export const store = {
          * @returns None
          */
         login: (token) => {
-            localStorage.setItem('access_token', token.access_token);
             store.user.accessToken = token.access_token
         }, /**
          * @summary Редьюсер для изменения стейта пользователя на авторизированного
@@ -50,7 +51,6 @@ export const store = {
             store.user.email = null;
             store.user.accessToken = null;
             store.user.refreshToken = null;
-            localStorage.removeItem('access_token');
         },
         username: null,
         email: null,

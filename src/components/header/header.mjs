@@ -33,7 +33,7 @@ export class Header { /**
             signup: {
                 caption: 'Зарегистрироваться'
             },
-            authorized: store.authorized,
+            authorized: store.user.isAuth(),
             profile: profileBtn.render()
         }
 

@@ -60,6 +60,7 @@ export class SignupPage { /**
         const errorBox = container.querySelector('#errorBox');
 
         container.querySelector('#btnSubmit').addEventListener('click', (e) => {
+            e.stopPropagation();
             const inputEmail = container.querySelector('#inputEmail');
             const inputPass = container.querySelector('#inputPass');
             const inputPassRepeat = container.querySelector('#inputPassRepeat');
@@ -74,9 +75,9 @@ export class SignupPage { /**
 
             (async function () {
                 try {
-                    const resp = await Auth.signup(inputEmail.value, inputPass.value);
+                    let resp = await Auth.signup(inputEmail.value, inputPass.value);
                     if (resp.status == 200) {
-                        const cookies = cookieParser(document.cookie);
+                        let cookies = cookieParser(document.cookie);
                         store.user.login(cookies);
                         Router.navigateTo('/');
                     } else {
