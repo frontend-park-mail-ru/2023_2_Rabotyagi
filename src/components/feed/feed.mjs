@@ -6,6 +6,7 @@ import {Card} from "../card/card.mjs";
 import {ErrorMessageBox} from "../error/errorMessageBox.mjs";
 import {Post} from "../../shared/api/post.mjs";
 import {loaderRegular} from "../loader/loader.mjs";
+import {stringToElement} from "../../shared/utils/parsing.mjs";
 
 /**
  * @class Блок с объявлениями
@@ -13,16 +14,13 @@ import {loaderRegular} from "../loader/loader.mjs";
  */
 export class Feed {
     render() {
-        let root = document.createElement('div');
         const template = Handlebars.templates['feed.hbs'];
 
         const context = {
-            feedName: 'Все объявления',
+            feedName: 'Все объявления'
         }
 
-        root.innerHTML = template(context);
-
-        root = root.firstChild;
+        const root = stringToElement(template(context));
 
         const container = root.querySelector('div.feed-content');
         container.appendChild(loaderRegular());

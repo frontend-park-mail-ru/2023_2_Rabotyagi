@@ -4,10 +4,11 @@
  */
 
 import {store} from "../../shared/constants/store.mjs";
-import { cookieParser } from "../../shared/utils/cookie.mjs";
+import {cookieParser} from "../../shared/utils/cookie.mjs";
 import {validateEmail, validatePassword} from "../../shared/utils/validation.mjs";
 import {Auth} from "../../shared/api/auth.mjs";
 import {ErrorMessageBox} from "../../components/error/errorMessageBox.mjs";
+import {stringToElement} from "../../shared/utils/parsing.mjs";
 
 export class SignupPage { /**
      * #check() validate email, password and repeated password
@@ -44,7 +45,6 @@ export class SignupPage { /**
      * @returns {HTMLElement}
      */
     render() {
-        let root = document.createElement('div');
         const template = Handlebars.templates['signup.hbs'];
 
         const context = {
@@ -53,13 +53,11 @@ export class SignupPage { /**
             }
         };
 
-        root.innerHTML = template(context);
-        root = root.firstChild;
-
         document.title = 'Регистрация';
 
+        const root = stringToElement(template(context));
         const container = root.querySelector('#content');
-        const errorBox = container.querySelector('#errorBox')
+        const errorBox = container.querySelector('#errorBox');
 
         container.querySelector('#btnSubmit').addEventListener('click', (e) => {
             const inputEmail = container.querySelector('#inputEmail');

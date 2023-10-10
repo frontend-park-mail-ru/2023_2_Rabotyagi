@@ -5,21 +5,21 @@
                 <div style="background-image: url(assets/icons/logo.svg); width: 60px; height: 60px;"></div>
             </a>
             <p class='text-subheader'>Регистрация в «Юла»</p>
-            <input id="inputEmail" placeholder="Электронная почта" type="text" class="inputField">
-            <input id="inputPass" placeholder="Пароль" type="password" class="inputField">
-            <input id="inputPassRepeat" placeholder="Повтор пароля" type="password" class="inputField">
+            <input id="inputEmail" class="text-regular" placeholder="Электронная почта" type="text" class="inputField">
+            <input id="inputPass" class="text-regular" placeholder="Пароль" type="password" class="inputField">
+            <input id="inputPassRepeat" class="text-regular" placeholder="Повтор пароля" type="password" class="inputField">
             <div id="errorBox"></div>
-            <button id="btnSubmit" class="btn-primary">
+            <button id="btnSubmit" class="btn-primary" style="width: -webkit-fill-available;">
                 <p class="text-regular">{{this.buttons.submit}}</p>
             </button>
         </div>
         <div id="info" style="display: flex; flex-direction: column; align-items: center; gap: 8px; align-self: stretch;">
-            <p class="text-caption" style="text-align: center;">
+            <span class="text-caption" style="text-align: center; color: var(--text-secondary);">
                 Нажимая «Продолжить», вы принимаете пользовательское соглашение и политику конфиденциальности
-            </p>
-            <p class="text-caption" style="text-align: center;">
+            </span>
+            <span class="text-caption" style="text-align: center; color: var(--text-secondary);">
                 Передаваемые данные
-            </p>
+            </span>
         </div>
     </div>
 </div>

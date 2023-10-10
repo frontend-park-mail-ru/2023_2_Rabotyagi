@@ -3,7 +3,7 @@
 templates['card.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "";
 },"3":function(container,depth0,helpers,partials,data) {
-    return "            <div class='badge'>\n            </div>\n";
+    return "            <div class='badge'>\r\n            </div>\r\n";
 },"5":function(container,depth0,helpers,partials,data) {
     var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
@@ -12,9 +12,9 @@ templates['card.hbs'] = template({"1":function(container,depth0,helpers,partials
         return undefined
     };
 
-  return "            <div class='badge'>\n                "
+  return "            <div class='badge'>\r\n                "
     + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? lookupProperty(depth0,"badges") : depth0)) != null ? lookupProperty(stack1,"city") : stack1), depth0))
-    + "\n            </div>\n";
+    + "\r\n            </div>\r\n";
 },"7":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
@@ -23,13 +23,13 @@ templates['card.hbs'] = template({"1":function(container,depth0,helpers,partials
         return undefined
     };
 
-  return "            <img\n                class='card-img'\n                src='"
+  return "            <img\r\n                class='card-img'\r\n                src='"
     + alias2(alias1(((stack1 = (depth0 != null ? lookupProperty(depth0,"img") : depth0)) != null ? lookupProperty(stack1,"src") : stack1), depth0))
-    + "'\n                alt='"
+    + "'\r\n                alt='"
     + alias2(alias1(((stack1 = (depth0 != null ? lookupProperty(depth0,"img") : depth0)) != null ? lookupProperty(stack1,"alt") : stack1), depth0))
-    + "'\n            />\n";
+    + "'\r\n            />\r\n";
 },"9":function(container,depth0,helpers,partials,data) {
-    return "            <svg\n                width='218'\n                height='218'\n                viewBox='0 0 218 218'\n                fill='none'\n                xmlns='http://www.w3.org/2000/svg'\n            >\n                <path\n                    d='M17.0312 200.969H200.969V17.0312H17.0312V200.969ZM187.344 148.232L139.924 100.812L159.765 80.9704L187.344 108.547V148.232ZM30.6562 30.6562H187.344V89.2778L159.766 61.7L130.289 91.1776L87.7109 48.5995L30.6562 105.654V30.6562ZM30.6562 124.924L87.7109 67.8695L187.344 167.502V187.344H30.6562V124.924Z'\n                    fill='#292C2F'\n                />\n            </svg>\n";
+    return "            <div class=\"card-img\"></div>\r\n";
 },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.lambda, alias3=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
@@ -38,18 +38,18 @@ templates['card.hbs'] = template({"1":function(container,depth0,helpers,partials
         return undefined
     };
 
-  return "<div class='card'>\n    <div class='badges'>\n"
+  return "<div class='card'>\r\n    <div class='badges'>\r\n"
     + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = (depth0 != null ? lookupProperty(depth0,"badges") : depth0)) != null ? lookupProperty(stack1,"safeDeal") : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":3,"column":8},"end":{"line":5,"column":15}}})) != null ? stack1 : "")
-    + "\n"
+    + "\r\n"
     + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = (depth0 != null ? lookupProperty(depth0,"badges") : depth0)) != null ? lookupProperty(stack1,"delivery") : stack1),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":7,"column":8},"end":{"line":11,"column":15}}})) != null ? stack1 : "")
-    + "\n"
+    + "\r\n"
     + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = (depth0 != null ? lookupProperty(depth0,"badges") : depth0)) != null ? lookupProperty(stack1,"city") : stack1),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":13,"column":8},"end":{"line":17,"column":15}}})) != null ? stack1 : "")
-    + "    </div>\n    <div class='card-body'>\n"
-    + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"img") : depth0),{"name":"if","hash":{},"fn":container.program(7, data, 0),"inverse":container.program(9, data, 0),"data":data,"loc":{"start":{"line":20,"column":8},"end":{"line":39,"column":15}}})) != null ? stack1 : "")
-    + "        <div class='card-info'>\n            <span class='card-info-price'>"
+    + "    </div>\r\n    <div class='card-body'>\r\n"
+    + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"img") : depth0),{"name":"if","hash":{},"fn":container.program(7, data, 0),"inverse":container.program(9, data, 0),"data":data,"loc":{"start":{"line":20,"column":8},"end":{"line":40,"column":15}}})) != null ? stack1 : "")
+    + "        <div class='card-info'>\r\n            <span class='card-info-price'>"
     + alias3(alias2(((stack1 = (depth0 != null ? lookupProperty(depth0,"cardInfo") : depth0)) != null ? lookupProperty(stack1,"price") : stack1), depth0))
-    + " ₽</span>\n            <span class='card-info-title'>"
+    + " ₽</span>\r\n            <span class='card-info-title'>"
     + alias3(alias2(((stack1 = (depth0 != null ? lookupProperty(depth0,"cardInfo") : depth0)) != null ? lookupProperty(stack1,"title") : stack1), depth0))
-    + "</span>\n        </div>\n    </div>\n</div>";
+    + "</span>\r\n        </div>\r\n    </div>\r\n</div>";
 },"useData":true});
 })();

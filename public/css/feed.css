@@ -7,10 +7,10 @@
     align-self: stretch;
 }
 
-.feed .feed-name {
-    font-family: 'Roboto Regular';
-    margin-bottom: 32px;
-    font-size: 33px;
+.feed-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .feed-content {
@@ -18,7 +18,7 @@
     padding: 0px 16px;
     align-items: flex-start;
     align-content: flex-start;
-    gap: 32px 24px;
+    gap: 16px 24px;
     align-self: stretch;
     flex-wrap: wrap;
 }

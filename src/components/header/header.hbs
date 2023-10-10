@@ -1,20 +1,19 @@
 <nav>
     <a href='/' data-link="/" class='logo-box'>
         <div style="background-image: url(assets/icons/logo.svg); width: 60px; height: 60px;"></div>
-        <p class='text-subheader'>Супер Юла</p>
+        <span class='text-subheader'>Супер Юла</span>
     </a>
-    <button class='btn-primary'><p class="text-regular">Категории</p></button>
+    <button class='btn-primary'><span class="text-regular">Категории</span></button>
     <div class='search-box'>
-        {{{this.search.icon}}}
-        <input class='search-input' placeholder='Поиск'>
+        <input class='search-input text-regular searchField' placeholder='Поиск'>
     </div>
-    <button class='btn-neutral'><p class="text-regular">Разместить объявление</p></button>
+    <button class='btn-neutral'><span class="text-regular">Разместить объявление</span></button>
     {{#if authorized}}
     {{{this.profile}}}
     {{else}}
     <div class="auth-box">
-        <a href="/signin" data-link="/signin"  class='btn-primary'><p class="text-regular">{{this.signin.caption}}</p></a>
-        <a href="/signup" data-link="/signup"  class='btn-neutral'><p class="text-regular">{{this.signup.caption}}</p></a>
+        <a href="/signin" data-link="/signin"  class='btn-primary'><span class="text-regular">{{this.signin.caption}}</span></a>
+        <a href="/signup" data-link="/signup"  class='btn-neutral'><span class="text-regular">{{this.signup.caption}}</span></a>
     </div>
     {{/if}}
 </nav>

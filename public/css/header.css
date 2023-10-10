@@ -1,7 +1,6 @@
 nav {
     display: flex;
-    padding: 8px 0px;
-    gap: 64px;
+    padding-top: 8px;
     justify-content: space-between;
     align-items: center;
 }
@@ -10,6 +9,13 @@ nav {
     display: flex;
     align-items: center;
     gap: 4px;
+    color: var(--text-primary);
+}
+
+.auth-box {
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 /* .profile-container {
