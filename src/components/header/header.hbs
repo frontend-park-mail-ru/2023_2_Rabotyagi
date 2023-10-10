@@ -9,7 +9,7 @@
     </div>
     <button class='btn-neutral'><span class="text-regular">Разместить объявление</span></button>
     {{#if authorized}}
-    {{this.profile}}
+    {{{this.profile}}}
     {{else}}
     <div class="auth-box">
         <a href="/signin" data-link="/signin"  class='btn-primary'><span class="text-regular">{{this.signin.caption}}</span></a>

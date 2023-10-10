@@ -74,19 +74,21 @@ export class SigninPage { /**
                 return;
             }
 
-            Auth.signin(inputEmail.value, inputPass.value).then(resp => {
-                if (resp.status == 200) {
-                    const cookies = cookieParser(document.cookie);
-                    store.user.login(cookies);
-                    Router.navigateTo('/');
-                } else {
-                    throw resp.body.error;
+            (async function () {
+                try {
+                    const resp = await Auth.signin(inputEmail.value, inputPass.value);
+                    if (resp.status == 200) {
+                        const cookies = cookieParser(document.cookie);
+                        store.user.login(cookies);
+                        Router.navigateTo('/');
+                    } else {
+                        throw resp.body.error;
+                    }
+                } catch (err) {
+                    errorBox.innerHTML = '';
+                    errorBox.appendChild(ErrorMessageBox(err));
                 }
-            }).catch(err => {
-                errorBox.innerHTML = '';
-                errorBox.appendChild(ErrorMessageBox(err));
-            });
-
+            })();
         })
 
 

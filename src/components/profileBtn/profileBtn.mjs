@@ -26,6 +26,6 @@ export class ProfileBtn {
             }
         }
 
-        return stringToElement(template(context));
+        return template(context);
     }
 }

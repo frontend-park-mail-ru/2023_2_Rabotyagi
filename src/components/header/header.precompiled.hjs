@@ -1,7 +1,7 @@
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['header.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
-    var lookupProperty = container.lookupProperty || function(parent, propertyName) {
+    var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
           return parent[propertyName];
         }
@@ -9,7 +9,7 @@ templates['header.hbs'] = template({"1":function(container,depth0,helpers,partia
     };
 
   return "    "
-    + container.escapeExpression(container.lambda((depth0 != null ? lookupProperty(depth0,"profile") : depth0), depth0))
+    + ((stack1 = container.lambda((depth0 != null ? lookupProperty(depth0,"profile") : depth0), depth0)) != null ? stack1 : "")
     + "\r\n";
 },"3":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {

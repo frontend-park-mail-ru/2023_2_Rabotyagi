@@ -72,19 +72,21 @@ export class SignupPage { /**
                 return;
             }
 
-            Auth.signup(inputEmail.value, inputPass.value).then(resp => {
-                console.log(resp);
-                if (resp.status == 200) {
-                    const cookies = cookieParser(document.cookie);
-                    store.user.login(cookies);
-                    Router.navigateTo('/');
-                } else {
-                    throw resp.body.error;
+            (async function () {
+                try {
+                    const resp = await Auth.signup(inputEmail.value, inputPass.value);
+                    if (resp.status == 200) {
+                        const cookies = cookieParser(document.cookie);
+                        store.user.login(cookies);
+                        Router.navigateTo('/');
+                    } else {
+                        throw resp.body.error;
+                    }
+                } catch (err) {
+                    errorBox.innerHTML = '';
+                    errorBox.appendChild(ErrorMessageBox(err));
                 }
-            }).catch(err => {
-                errorBox.innerHTML = '';
-                errorBox.appendChild(ErrorMessageBox(err));
-            })
+            })();
         });
 
         return root;
