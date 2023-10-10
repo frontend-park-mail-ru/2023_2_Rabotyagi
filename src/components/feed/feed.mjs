@@ -12,60 +12,34 @@ import {loaderRegular} from "../loader/loader.mjs";
  * @description Получает посты с бекенда и формирует коллекцию для представления
  */
 export class Feed {
-
-    constructor() {
-        this.items = [];
-    }
-
-    /**
-     * @async
-     * @description Посылает запрос на бек для получения 20 постов
-     * @returns Массив постов
-     */
-    async #getPosts(root, loaderElement) {
-        try {
-            const response = await Post.feed();
-            root.removeChild(loaderElement);
-
-            response.body.forEach(elem => {
-                root.appendChild(new Card(elem).render());
-            })
-        } catch (err) {
-            root.replaceChild(ErrorMessageBox(err), loaderElement);
-        }
-    }
-
-
-    #Header() {
-        const root = document.createElement('div')
-
-        root.classList = ['feed']
-        const header = document.createElement('div')
-        header.classList = ['header-name']
-        header.textContent = 'Все объявления'
-
-        root.appendChild(header)
-
-        return root
-    }
-
-    #Content() {
-        const root = document.createElement('div');
-        const loaderElement = loaderRegular();
-
-        root.classList = ['feed-content'];
-        root.appendChild(loaderElement);
-
-        this.#getPosts(root, loaderElement);
-
-        return root;
-    }
-
     render() {
-        const root = document.createElement('div');
+        let root = document.createElement('div');
+        const template = Handlebars.templates['feed.hbs'];
 
-        root.appendChild(this.#Header());
-        root.appendChild(this.#Content());
+        const context = {
+            feedName: 'Все объявления',
+        }
+
+        root.innerHTML = template(context);
+
+        root = root.firstChild;
+
+        const container = root.querySelector('div.feed-content');
+        container.appendChild(loaderRegular());
+
+        Post.feed().then(response => {
+            if (response.status == 200) {
+                container.innerHTML = '';
+                response.body.forEach(elem => {
+                    container.appendChild(new Card(elem).render());
+                })
+            } else {
+                throw response.body.error;
+            }
+        }).catch(err => {
+            container.innerHTML = '';
+            container.appendChild(ErrorMessageBox(err));
+        })
 
         return root;
     }

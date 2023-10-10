@@ -7,10 +7,8 @@
     align-self: stretch;
 }
 
-.feed .header-name {
+.feed .feed-name {
     font-family: 'Roboto Regular';
-    margin-left: 16px;
-    margin-top: 32px;
     margin-bottom: 32px;
     font-size: 33px;
 }

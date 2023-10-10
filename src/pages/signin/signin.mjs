@@ -48,6 +48,7 @@ export class SigninPage { /**
     render() {
         let root = document.createElement('div');
         const template = Handlebars.templates['signin.hbs'];
+        console.log(template);
 
         const context = {
             buttons: {

@@ -1,0 +1,6 @@
+(function() {
+  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['feed.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div>\r\n    <div class=\"feed\">\r\n        <div class=\"feed-name\">Все объявления</div>\r\n        <div class=\"feed-content\">\r\n        </div>\r\n    </div>\r\n</div>";
+},"useData":true});
+})();
