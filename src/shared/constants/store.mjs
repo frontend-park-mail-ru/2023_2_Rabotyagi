@@ -10,8 +10,8 @@
  */
 export const store = {
     user: {
-        setName: (name) => {
-            store.user.username = name
+        isAuth: () => {
+            return this.user.accessToken ? true : false;
         }, /**
          * @summary Редьюсер для инициализирования стейта пользователя
          * @description Забирает из localStorage ключ email \
@@ -22,8 +22,7 @@ export const store = {
          */
         init: () => {
             const accessToken = localStorage.getItem('access_token');
-            if (accessToken != null) {
-                store.authorized = true;
+            if (this.user.isAuth()) {
                 store.user.accessToken = accessToken
             }
         }, /**
@@ -37,7 +36,6 @@ export const store = {
          */
         login: (token) => {
             localStorage.setItem('access_token', token.access_token);
-            store.authorized = true;
             store.user.accessToken = token.access_token
         }, /**
          * @summary Редьюсер для изменения стейта пользователя на авторизированного
@@ -52,7 +50,6 @@ export const store = {
             store.user.email = null;
             store.user.accessToken = null;
             store.user.refreshToken = null;
-            store.authorized = false
             localStorage.removeItem('access_token');
         },
         username: null,
@@ -62,5 +59,4 @@ export const store = {
     }, /**
      * @default false
      */
-    authorized: false
 }
