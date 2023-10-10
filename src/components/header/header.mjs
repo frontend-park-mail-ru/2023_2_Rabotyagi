@@ -5,7 +5,8 @@
 
 'use strict';
 import {store} from "../../shared/constants/store.mjs";
-import { ProfileBtn } from "../profileBtn/profileBtn.mjs";
+import {stringToElement} from "../../shared/utils/parsing.mjs";
+import {ProfileBtn} from "../profileBtn/profileBtn.mjs";
 
 /**
  * @class
@@ -16,7 +17,6 @@ export class Header { /**
      * @summary Метод рендера хедера
      */
     render() {
-        let root = document.createElement('div');
         const template = Handlebars.templates['header.hbs'];
         const profileBtn = new ProfileBtn();
 
@@ -34,19 +34,17 @@ export class Header { /**
                 caption: 'Зарегистрироваться'
             },
             authorized: store.authorized,
-            profile: profileBtn.render(),
+            profile: profileBtn.render()
         }
 
-        root.innerHTML = template(context);
+        const root = stringToElement(template(context));
 
-        root = root.firstChild;
-
-        root.querySelector('.profile-container')?.addEventListener('click', (e) => {
+        root.querySelector('.profile-container') ?. addEventListener('click', (e) => {
             e.stopPropagation();
             root.querySelector('#profile-dropdown').classList.toggle('hidden');
         });
 
-        root.querySelector('#dropdown-btn-logout')?.addEventListener('click', (e) => {
+        root.querySelector('#dropdown-btn-logout') ?. addEventListener('click', (e) => {
             e.stopPropagation();
             store.user.logout();
             Router.navigateTo('/signin');

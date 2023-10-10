@@ -1,3 +1,5 @@
+import {stringToElement} from "../../shared/utils/parsing.mjs";
+
 export class Card {
     #title;
     #desc;
@@ -12,7 +14,6 @@ export class Card {
 
 
     render() {
-        const root = document.createElement('div');
         const template = Handlebars.templates['card.hbs'];
 
         const context = {
@@ -31,8 +32,6 @@ export class Card {
             }
         }
 
-        root.innerHTML = template(context);
-
-        return root.firstChild;
+        return stringToElement(template(context));;
     }
 }

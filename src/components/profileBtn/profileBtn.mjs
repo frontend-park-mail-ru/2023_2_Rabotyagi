@@ -1,6 +1,7 @@
+import {stringToElement} from "../../shared/utils/parsing.mjs";
+
 export class ProfileBtn {
     render() {
-        const root = document.createElement('div');
         const template = Handlebars.templates['profileBtn.hbs'];
         Handlebars.registerPartial('dropdown', Handlebars.templates['dropdown.hbs']);
 
@@ -25,8 +26,6 @@ export class ProfileBtn {
             }
         }
 
-        root.innerHTML = template(context);
-
-        return root.innerHTML;
+        return stringToElement(template(context));
     }
 }

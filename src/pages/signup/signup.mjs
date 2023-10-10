@@ -53,9 +53,9 @@ export class SignupPage { /**
             }
         };
 
+        const root = stringToElement(template(context));
         document.title = 'Регистрация';
 
-        const root = stringToElement(template(context));
         const container = root.querySelector('#content');
         const errorBox = container.querySelector('#errorBox');
 

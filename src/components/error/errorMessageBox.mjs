@@ -1,8 +1,7 @@
+import {stringToElement} from "../../shared/utils/parsing.mjs";
+
 export const ErrorMessageBox = (error) => {
-    const root = document.createElement('div');
     const template = Handlebars.templates['errorMessageBox.hbs'];
 
-    root.innerHTML = template({text: error});
-
-    return root.firstChild;
+    return stringToElement(template({text: error}));
 }

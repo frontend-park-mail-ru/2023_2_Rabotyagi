@@ -4,10 +4,11 @@
  */
 
 import {store} from "../../shared/constants/store.mjs";
-import { cookieParser } from "../../shared/utils/cookie.mjs";
+import {cookieParser} from "../../shared/utils/cookie.mjs";
 import {validateEmail, validatePassword} from "../../shared/utils/validation.mjs";
 import {ErrorMessageBox} from "../../components/error/errorMessageBox.mjs";
 import {Auth} from "../../shared/api/auth.mjs";
+import {stringToElement} from "../../shared/utils/parsing.mjs";
 
 
 /**
@@ -46,7 +47,6 @@ export class SigninPage { /**
      * @returns {HTMLElement}
      */
     render() {
-        let root = document.createElement('div');
         const template = Handlebars.templates['signin.hbs'];
         console.log(template);
 
@@ -57,13 +57,8 @@ export class SigninPage { /**
             }
         }
 
-        root.innerHTML = template(context);
-
-
+        const root = stringToElement(template(context));
         document.title = 'Вход';
-
-
-        root = root.firstChild;
 
         const container = root.querySelector('div.right-block-content');
         const inputEmail = container.querySelector('#inputEmail');
@@ -91,7 +86,7 @@ export class SigninPage { /**
                 errorBox.innerHTML = '';
                 errorBox.appendChild(ErrorMessageBox(err));
             });
-            
+
         })
 
 
