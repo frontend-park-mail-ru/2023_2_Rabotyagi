@@ -21,10 +21,10 @@ export const store = {
          * @returns None
          */
         init: () => {
-            let email = localStorage.getItem('email');
-            if (email != null) {
+            const accessToken = localStorage.getItem('access_token');
+            if (accessToken != null) {
                 store.authorized = true;
-                store.user.email = email
+                store.user.accessToken = accessToken
             }
         }, /**
          * @summary Редьюсер для изменения стейта пользователя на авторизированного
@@ -52,8 +52,8 @@ export const store = {
             store.user.email = null;
             store.user.accessToken = null;
             store.user.refreshToken = null;
-            localStorage.removeItem('access_token');
             store.authorized = false
+            localStorage.removeItem('access_token');
         },
         username: null,
         email: null,
