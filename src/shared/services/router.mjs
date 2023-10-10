@@ -61,6 +61,6 @@ export class Router { /**
         const root = document.querySelector('#root');
         const route = this.routes.find(r => r.path === location.pathname) || this.routes.find(r => r.path === '*');
         root.innerHTML = '';
-        root.appendChild(await route.component.render());
+        root.appendChild(route.component.render());
     }
 }

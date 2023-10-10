@@ -34,7 +34,7 @@ export class Header { /**
                 caption: 'Зарегистрироваться'
             },
             authorized: store.authorized,
-            profile: profileBtn.render()
+            profile: new Handlebars.SafeString(profileBtn.render())
         }
 
         const root = stringToElement(template(context));

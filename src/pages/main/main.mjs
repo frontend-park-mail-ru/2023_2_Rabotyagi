@@ -13,7 +13,7 @@ import {Feed} from "../../components/feed/feed.mjs";
 
 export class MainPage {
     render() {
-        const root = document.querySelector('#root');
+        const root = document.createElement('div');
         const header = new Header()
         const feed = new Feed(root)
 

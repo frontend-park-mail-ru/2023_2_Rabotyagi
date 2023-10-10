@@ -1,7 +1,7 @@
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['header.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
-    var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+    var lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
           return parent[propertyName];
         }
@@ -9,7 +9,7 @@ templates['header.hbs'] = template({"1":function(container,depth0,helpers,partia
     };
 
   return "    "
-    + ((stack1 = container.lambda((depth0 != null ? lookupProperty(depth0,"profile") : depth0), depth0)) != null ? stack1 : "")
+    + container.escapeExpression(container.lambda((depth0 != null ? lookupProperty(depth0,"profile") : depth0), depth0))
     + "\r\n";
 },"3":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -32,7 +32,7 @@ templates['header.hbs'] = template({"1":function(container,depth0,helpers,partia
         return undefined
     };
 
-  return "<nav>\r\n    <a href='/' data-link=\"/\" class='logo-box'>\r\n        <div style=\"background-image: url(assets/icons/logo.svg); width: 60px; height: 60px;\"></div>\r\n        <span class='text-subheader'>Супер Юла</span>\r\n    </a>\r\n    <button class='btn-primary'><span class=\"text-regular\">Категории</span></button>\r\n    <div class='search-box'>\r\n        <input class='search-input text-regular searchField' style=\"width: 100%;\" placeholder='Поиск'>\r\n    </div>\r\n    <button class='btn-neutral'><span class=\"text-regular\">Разместить объявление</span></button>\r\n"
+  return "<nav>\r\n    <a href='/' data-link=\"/\" class='logo-box'>\r\n        <div style=\"background-image: url(assets/icons/logo.svg); width: 60px; height: 60px;\"></div>\r\n        <span class='text-subheader'>Супер Юла</span>\r\n    </a>\r\n    <button class='btn-primary'><span class=\"text-regular\">Категории</span></button>\r\n    <div class='search-box'>\r\n        <input class='search-input text-regular searchField' placeholder='Поиск'>\r\n    </div>\r\n    <button class='btn-neutral'><span class=\"text-regular\">Разместить объявление</span></button>\r\n"
     + ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? lookupProperty(depth0,"authorized") : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data,"loc":{"start":{"line":11,"column":4},"end":{"line":18,"column":11}}})) != null ? stack1 : "")
     + "</nav>";
 },"useData":true});

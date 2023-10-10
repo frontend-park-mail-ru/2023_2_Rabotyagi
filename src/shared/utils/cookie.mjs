@@ -1,19 +1,18 @@
-export function cookieParser(cookieString) { 
-      
-    if (cookieString === "") 
-        return {}; 
-  
-    let pairs = cookieString.split(";"); 
-  
-    let splittedPairs = pairs.map(cookie => cookie.split("=")); 
+export function cookieParser(cookieString) {
 
-    const cookieObj = splittedPairs.reduce(function (obj, cookie) { 
-  
-        obj[decodeURIComponent(cookie[0].trim())] 
-            = decodeURIComponent(cookie[1].trim()); 
-  
-        return obj; 
-    }, {}) 
-  
-    return cookieObj; 
-} 
+    if (cookieString === "") {
+        return {};
+    }
+
+    const pairs = cookieString.split(";");
+    const splittedPairs = pairs.map(cookie => cookie.split("="));
+    const cookieObj = splittedPairs.reduce((obj, cookie) => {
+        const key = obj[decodeURIComponent(cookie[0].trim())];
+        const value = decodeURIComponent(cookie[1].trim());
+
+        key = value;
+        return obj;
+    }, {})
+
+    return cookieObj;
+}
