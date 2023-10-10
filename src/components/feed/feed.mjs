@@ -40,7 +40,8 @@ export class Feed {
         const root = document.createElement('div')
 
         root.classList = ['feed']
-        const header = document.createElement('span')
+        const header = document.createElement('div')
+        header.classList = ['header-name']
         header.textContent = 'Все объявления'
 
         root.appendChild(header)

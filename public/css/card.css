@@ -6,6 +6,8 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
+    font-family: 'Nunito Sans';
+    font-size: 15px;
 }
 
 .card-body {
@@ -28,13 +30,17 @@
 
 .card-info {
     display: flex;
-    padding: 12px;
+    margin: 22px 12px;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     gap: 10px;
     flex: 1 0 0;
     align-self: stretch;
+}
+
+.card-info .card-info-title {
+    font-size: 10px;
 }
 
 /* .card-fav-btn {
@@ -48,6 +54,12 @@
 /* .card-fav-btn:active {
 
 } */
+
+.card .badges .badge {
+    background-color: var(--background-secondary);
+    padding: 8px 9px;
+    border-radius: 10px 10px 0px 0px;
+}
 
 .badge-conatiner {
     display: flex;
