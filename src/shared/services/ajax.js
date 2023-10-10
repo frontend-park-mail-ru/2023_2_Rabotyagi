@@ -18,8 +18,8 @@
      * @class
      */
     class Ajax {
-        port = '8000';
-        ADRESS_BACKEND = 'http://localhost' + ':' + this.port + '/api/v1/';
+        port = '8080';
+        ADRESS_BACKEND = 'http://84.23.53.28' + ':' + this.port + '/api/v1/';
 
         /**
          * @async

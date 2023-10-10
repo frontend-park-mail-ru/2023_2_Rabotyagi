@@ -12,8 +12,7 @@ export const store = {
     user: {
         setName: (name) => {
             store.user.username = name
-        },
-        /**
+        }, /**
          * @summary Редьюсер для инициализирования стейта пользователя
          * @description Забирает из localStorage ключ email \
          * Выставляет необходимые флаги и заполняет стейт user.email
@@ -22,13 +21,12 @@ export const store = {
          * @returns None
          */
         init: () => {
-            let email = localStorage.getItem('email')
+            let email = localStorage.getItem('email');
             if (email != null) {
-                store.authorized = true
+                store.authorized = true;
                 store.user.email = email
             }
-        },
-        /**
+        }, /**
          * @summary Редьюсер для изменения стейта пользователя на авторизированного
          * @description Сетит в localStorage ключ email \
          * Выставляет необходимые флаги и заполняет стейт user.email
@@ -38,11 +36,10 @@ export const store = {
          * @returns None
          */
         login: (email) => {
-            localStorage.setItem('email', email)
-            store.authorized = true
+            localStorage.setItem('email', email);
+            store.authorized = true;
             store.user.email = email
-        },
-        /**
+        }, /**
          * @summary Редьюсер для изменения стейта пользователя на авторизированного
          * @description Уздаляет из localStorage ключ email \
          * Выставляет необходимые флаги и очищает стейты user
@@ -51,20 +48,18 @@ export const store = {
          * @returns None
          */
         logout: () => {
-            store.user.username = null
-            store.user.email = null
-            store.user.accessToken = null
-            store.user.refreshToken = null
-            localStorage.removeItem('email')
+            store.user.username = null;
+            store.user.email = null;
+            store.user.accessToken = null;
+            store.user.refreshToken = null;
+            localStorage.removeItem('email');
             store.authorized = false
         },
         username: null,
         email: null,
         accessToken: null,
         refreshToken: null
-    },
-
-    /**
+    }, /**
      * @default false
      */
     authorized: false
