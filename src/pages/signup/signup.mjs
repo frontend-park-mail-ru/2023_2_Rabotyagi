@@ -93,11 +93,10 @@ export class SignupPage {
                     );
                     if (resp.status != 200) {
                         throw resp.body.error;
-                    } else {
-                        const cookies = cookieParser(document.cookie);
-                        store.user.login(cookies);
-                        Router.navigateTo('/');
                     }
+                    const cookies = cookieParser(document.cookie);
+                    store.user.login(cookies);
+                    Router.navigateTo('/');
                 } catch (err) {
                     errorBox.innerHTML = '';
                     errorBox.appendChild(ErrorMessageBox(err));
