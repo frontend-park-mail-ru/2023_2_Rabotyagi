@@ -1,10 +1,10 @@
 /**
- * @param {String} HTML representing a single element
+ * @param {String} string HTML элемент в виде строки
  * @return {Element}
  */
 export function stringToElement(string) {
     var template = document.createElement('template');
-    string = string.trim(); // Never return a text node of whitespace as the result
+    string = string.trim();
     template.innerHTML = string;
     return template.content.firstChild;
 }

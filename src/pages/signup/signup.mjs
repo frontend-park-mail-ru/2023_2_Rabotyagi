@@ -3,7 +3,7 @@
  * @file signupPage.mjs
  */
 
-import {store} from "../../shared/constants/store.mjs";
+import {store} from "../../shared/store/store.mjs";
 import {cookieParser} from "../../shared/utils/cookie.mjs";
 import {validateEmail, validatePassword} from "../../shared/utils/validation.mjs";
 import {Auth} from "../../shared/api/auth.mjs";
@@ -76,12 +76,12 @@ export class SignupPage { /**
             (async function () {
                 try {
                     let resp = await Auth.signup(inputEmail.value, inputPass.value);
-                    if (resp.status == 200) {
-                        let cookies = cookieParser(document.cookie);
-                        store.user.login(cookies);
-                        Router.navigateTo('/');
-                    } else {
+                    if (resp.status != 200) {
                         throw resp.body.error;
+                    } else {
+                        let cookies = cookieParser(document.cookie);
+                        store.user.setAccessToken(cookies);
+                        Router.navigateTo('/');
                     }
                 } catch (err) {
                     errorBox.innerHTML = '';

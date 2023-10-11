@@ -1,17 +1,27 @@
 export function cookieParser(cookieString) {
 
-    if (cookieString === "") {
+    if (typeof cookieString !== "string" || ! cookieString.length) {
         return {};
     }
 
     const pairs = cookieString.split(";");
     const splittedPairs = pairs.map(cookie => cookie.split("="));
     const cookieObj = splittedPairs.reduce((obj, cookie) => {
-        const value = decodeURIComponent(cookie[1].trim());
-        obj[decodeURIComponent(cookie[0].trim())] = value;
+        const [key, value] = cookie;
+        const decodedKey = decodeURIComponent(key.trim());
+        const decodedValue = decodeURIComponent(value.trim());
+        obj[decodedKey] = decodedValue;
 
         return obj;
     }, {})
 
     return cookieObj;
+}
+
+export function deleteCookie(key) {
+    if (typeof key !== "string" || ! key.length) {
+        return false;
+    }
+    document.cookie = key + "=" + ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
+    return true;
 }

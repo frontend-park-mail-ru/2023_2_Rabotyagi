@@ -3,7 +3,7 @@
  * @file signin.mjs
  */
 
-import {store} from "../../shared/constants/store.mjs";
+import {store} from "../../shared/store/store.mjs";
 import {cookieParser} from "../../shared/utils/cookie.mjs";
 import {validateEmail, validatePassword} from "../../shared/utils/validation.mjs";
 import {ErrorMessageBox} from "../../components/error/errorMessageBox.mjs";
@@ -48,7 +48,6 @@ export class SigninPage { /**
      */
     render() {
         const template = Handlebars.templates['signin.hbs'];
-        console.log(template);
 
         const context = {
             buttons: {
@@ -77,12 +76,12 @@ export class SigninPage { /**
             (async function () {
                 try {
                     const resp = await Auth.signin(inputEmail.value, inputPass.value);
-                    if (resp.status == 200) {
-                        const cookies = cookieParser(document.cookie);
-                        store.user.login(cookies);
-                        Router.navigateTo('/');
-                    } else {
+                    if (resp.status != 200) {
                         throw resp.body.error;
+                    } else {
+                        const cookies = cookieParser(document.cookie);
+                        store.user.setAccessToken(cookies);
+                        Router.navigateTo('/');
                     }
                 } catch (err) {
                     errorBox.innerHTML = '';

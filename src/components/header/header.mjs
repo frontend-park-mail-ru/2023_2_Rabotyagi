@@ -4,7 +4,8 @@
  */
 
 'use strict';
-import {store} from "../../shared/constants/store.mjs";
+import {store} from "../../shared/store/store.mjs";
+import {deleteCookie} from "../../shared/utils/cookie.mjs";
 import {stringToElement} from "../../shared/utils/parsing.mjs";
 import {ProfileBtn} from "../profileBtn/profileBtn.mjs";
 
@@ -46,7 +47,8 @@ export class Header { /**
 
         root.querySelector('#dropdown-btn-logout') ?. addEventListener('click', (e) => {
             e.stopPropagation();
-            store.user.logout();
+            store.user.clear();
+            deleteCookie('access_token');
             Router.navigateTo('/signin');
         });
 
