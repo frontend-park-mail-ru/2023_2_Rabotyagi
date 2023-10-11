@@ -6,18 +6,6 @@ module.exports = {
     "extends": [
         "eslint:recommended", "plugin:prettier/recommended"
     ],
-    "overrides": [
-        {
-            "env": {
-                "node": true,
-                "es6": true
-            },
-            "files": [".eslintrc.{mjs,js}"],
-            "parserOptions": {
-                "sourceType": "script"
-            }
-        }
-    ],
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module"

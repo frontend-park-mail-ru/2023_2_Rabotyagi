@@ -6,7 +6,6 @@
     "editor.formatOnSaveMode": "file", // required to format on save
     // "prettier.eslintIntegration": true,
     "files.autoSave": "onFocusChange", // optional but recommended
-    "vs-code-prettier-eslint.prettierLast": false, // set as "true" to run 'prettier' last not first
     "eslint.format.enable": true,
     "eslint.run": "onSave",
     "editor.codeActionsOnSave": {

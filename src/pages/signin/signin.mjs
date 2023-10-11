@@ -41,6 +41,24 @@ export class SigninPage {
         return null;
     }
 
+    async signin(email, pass, errorBox) {
+        try {
+            const resp = await Auth.signin(
+                email,
+                pass
+            );
+            if (resp.status != 200) {
+                throw resp.body.error;
+            }
+            const cookies = cookieParser(document.cookie);
+            store.user.login(cookies);
+            Router.navigateTo('/');
+        } catch (err) {
+            errorBox.innerHTML = '';
+            errorBox.appendChild(ErrorMessageBox(err));
+        }
+    }
+
     /**
      * @method
      * @summary Функция рендера страницы-блока авторизации
@@ -81,23 +99,7 @@ export class SigninPage {
                 return;
             }
 
-            (async function () {
-                try {
-                    const resp = await Auth.signin(
-                        inputEmail.value,
-                        inputPass.value
-                    );
-                    if (resp.status != 200) {
-                        throw resp.body.error;
-                    }
-                    const cookies = cookieParser(document.cookie);
-                    store.user.login(cookies);
-                    Router.navigateTo('/');
-                } catch (err) {
-                    errorBox.innerHTML = '';
-                    errorBox.appendChild(ErrorMessageBox(err));
-                }
-            })();
+            this.signin(inputEmail.value, inputPass.value, errorBox);
         });
 
         return root;

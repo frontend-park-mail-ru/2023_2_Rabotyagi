@@ -43,6 +43,23 @@ export class SignupPage {
         return null;
     }
 
+    async signup(email, pass, errorBox) {
+        try {
+            const resp = await Auth.signup(
+                email, pass
+            );
+            if (resp.status != 200) {
+                throw resp.body.error;
+            }
+            const cookies = cookieParser(document.cookie);
+            store.user.login(cookies);
+            Router.navigateTo('/');
+        } catch (err) {
+            errorBox.innerHTML = '';
+            errorBox.appendChild(ErrorMessageBox(err));
+        }
+    }
+
     /**
      * @summary Рендер функция
      * @returns {HTMLElement}
@@ -85,23 +102,7 @@ export class SignupPage {
                 return;
             }
 
-            (async function () {
-                try {
-                    const resp = await Auth.signup(
-                        inputEmail.value,
-                        inputPass.value
-                    );
-                    if (resp.status != 200) {
-                        throw resp.body.error;
-                    }
-                    const cookies = cookieParser(document.cookie);
-                    store.user.login(cookies);
-                    Router.navigateTo('/');
-                } catch (err) {
-                    errorBox.innerHTML = '';
-                    errorBox.appendChild(ErrorMessageBox(err));
-                }
-            })();
+            this.signup(inputEmail.value, inputPass.value, errorBox);
         });
 
         return root;

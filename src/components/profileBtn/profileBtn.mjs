@@ -1,5 +1,3 @@
-import { stringToElement } from '../../shared/utils/parsing.mjs';
-
 export class ProfileBtn {
     render() {
         const template = Handlebars.templates['profileBtn.hbs'];
