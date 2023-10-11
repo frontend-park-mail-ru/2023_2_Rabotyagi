@@ -62,11 +62,17 @@ export class SigninPage {
         document.title = 'Вход';
 
         const container = root.querySelector('div.right-block-content');
-        const inputEmail = container.querySelector('#inputEmail');
-        const inputPass = container.querySelector('#inputPass');
-        const errorBox = container.querySelector('#errorBox');
 
         container.querySelector('#btnSubmit').addEventListener('click', (e) => {
+            const inputEmail = container.querySelector('#inputEmail');
+            const inputPass = container.querySelector('#inputPass');
+            const errorBox = container.querySelector('#errorBox');
+
+            if (!inputEmail || !inputPass) {
+                console.log('signin | не найдены инпуты, что-то пошло не так');
+                return;
+            }
+
             const error = this.#check(inputEmail.value, inputPass.value);
 
             if (error) {

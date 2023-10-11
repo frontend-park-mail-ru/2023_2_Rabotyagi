@@ -68,6 +68,11 @@ export class SignupPage {
             const inputPass = container.querySelector('#inputPass');
             const inputPassRepeat = container.querySelector('#inputPassRepeat');
 
+            if (!inputEmail || !inputPass || !inputPassRepeat) {
+                console.log('signup | не найдены инпуты, что-то пошло не так');
+                return;
+            }
+
             const error = this.#check(
                 inputEmail.value,
                 inputPass.value,
