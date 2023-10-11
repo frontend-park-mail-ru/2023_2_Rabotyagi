@@ -13,6 +13,22 @@ import { stringToElement } from '../../shared/utils/parsing.mjs';
  * @description Получает посты с бекенда и формирует коллекцию для представления
  */
 export class Feed {
+    async getPosts(container) {
+        try {
+            const resp = await Post.feed();
+            if (resp.status != 200) {
+                throw resp.body.error;
+            }
+            container.innerHTML = '';
+            resp.body.forEach((elem) => {
+                container.appendChild(new Card(elem).render());
+            });
+        } catch (err) {
+            container.innerHTML = '';
+            container.appendChild(ErrorMessageBox(err));
+        }
+    }
+
     render() {
         const template = Handlebars.templates['feed.hbs'];
 
@@ -25,21 +41,7 @@ export class Feed {
         const container = root.querySelector('div.feed-content');
         container.appendChild(loaderRegular());
 
-        (async function () {
-            try {
-                const resp = await Post.feed();
-                if (resp.status != 200) {
-                    throw resp.body.error;
-                }
-                container.innerHTML = '';
-                resp.body.forEach((elem) => {
-                    container.appendChild(new Card(elem).render());
-                });
-            } catch (err) {
-                container.innerHTML = '';
-                container.appendChild(ErrorMessageBox(err));
-            }
-        })();
+        this.getPosts(container);
 
         return root;
     }
