@@ -3,11 +3,14 @@ module.exports = {
         "browser": true,
         "es2021": true
     },
-    "extends": ["eslint:all"],
+    "extends": [
+        "eslint:all", "prettier"
+    ],
     "overrides": [
         {
             "env": {
-                "node": true
+                "node": true,
+                "es6": true
             },
             "files": [".eslintrc.{mjs,js}"],
             "parserOptions": {
