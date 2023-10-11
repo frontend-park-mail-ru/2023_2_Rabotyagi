@@ -19,7 +19,8 @@
      */
     class Ajax {
         port = '8080';
-        ADRESS_BACKEND = 'http://localhost' + ':' + this.port + '/api/v1/';
+
+        ADRESS_BACKEND = `http://localhost` + `:${  this.port  }/api/v1/`;
 
         /**
          * @async
@@ -48,16 +49,16 @@
         } = {}) {
             url = this.ADRESS_BACKEND + url;
             if (params) {
-                url += '?' + new URLSearchParams(params)
+                url += `?${  new URLSearchParams(params)}`
             }
 
-            headers['Accept'] = 'application/json';
-            headers['Content-Type'] = 'application/json';
+            headers.Accept = 'application/json';
+            headers[ 'Content-Type' ] = 'application/json';
 
             const config = {
-                method: method,
+                method,
                 mode: 'cors',
-                headers: headers,
+                headers,
             }
 
             if (body != null) {
@@ -78,8 +79,8 @@
          * @param {string} params Параметры для GET запроса
          * @returns {Promise}
          */
-        get({url, params, headers, credentials}) {
-            return this.#ajax({method: AJAX_METHODS.GET, url, params, headers, credentials});
+        get({ url, params, headers, credentials }) {
+            return this.#ajax({ method: AJAX_METHODS.GET, url, params, headers, credentials });
         }
 
         /**
@@ -88,8 +89,8 @@
          * @param {string} params Параметры для POST Запроса
          * @returns {Promise}
          */
-        post({url, body, headers, credentials}) {
-            return this.#ajax({method: AJAX_METHODS.POST, url, body, headers, credentials});
+        post({ url, body, headers, credentials }) {
+            return this.#ajax({ method: AJAX_METHODS.POST, url, body, headers, credentials });
         }
     }
 

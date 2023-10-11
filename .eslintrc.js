@@ -3,9 +3,7 @@ module.exports = {
         "browser": true,
         "es2021": true
     },
-    "extends": [
-        "airbnb-base", "prettier"
-    ],
+    "extends": ["eslint:all"],
     "overrides": [
         {
             "env": {
@@ -21,5 +19,20 @@ module.exports = {
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
-    "rules": {}
+    "rules": {
+        "prefer-const": [
+            "error", {
+                "destructuring": "any",
+                "ignoreReadBeforeAssign": false
+            }
+        ],
+        "object-curly-spacing": [
+            "error", "always"
+        ],
+        "array-bracket-spacing": [
+            "error", "always"
+        ],
+        "computed-property-spacing": ["error", "always"]
+
+    }
 }
