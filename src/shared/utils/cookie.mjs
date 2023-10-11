@@ -1,11 +1,10 @@
 export function cookieParser(cookieString) {
-
-    if (typeof cookieString !== "string" || ! cookieString.length) {
+    if (typeof cookieString !== 'string' || !cookieString.length) {
         return {};
     }
 
-    const pairs = cookieString.split(";");
-    const splittedPairs = pairs.map(cookie => cookie.split("="));
+    const pairs = cookieString.split(';');
+    const splittedPairs = pairs.map((cookie) => cookie.split('='));
     const cookieObj = splittedPairs.reduce((obj, cookie) => {
         const [key, value] = cookie;
         const decodedKey = decodeURIComponent(key.trim());
@@ -13,15 +12,15 @@ export function cookieParser(cookieString) {
         obj[decodedKey] = decodedValue;
 
         return obj;
-    }, {})
+    }, {});
 
     return cookieObj;
 }
 
 export function deleteCookie(key) {
-    if (typeof key !== "string" || ! key.length) {
+    if (typeof key !== 'string' || !key.length) {
         return false;
     }
-    document.cookie = key + "=" + ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
+    document.cookie = key + '=' + ';expires=Thu, 01 Jan 1970 00:00:01 GMT';
     return true;
 }

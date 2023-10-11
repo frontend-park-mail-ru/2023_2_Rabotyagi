@@ -3,14 +3,18 @@
  * @file signupPage.mjs
  */
 
-import {store} from "../../shared/store/store.mjs";
-import {cookieParser} from "../../shared/utils/cookie.mjs";
-import {validateEmail, validatePassword} from "../../shared/utils/validation.mjs";
-import {Auth} from "../../shared/api/auth.mjs";
-import {ErrorMessageBox} from "../../components/error/errorMessageBox.mjs";
-import {stringToElement} from "../../shared/utils/parsing.mjs";
+import { store } from '../../shared/store/store.mjs';
+import { cookieParser } from '../../shared/utils/cookie.mjs';
+import {
+    validateEmail,
+    validatePassword,
+} from '../../shared/utils/validation.mjs';
+import { Auth } from '../../shared/api/auth.mjs';
+import { ErrorMessageBox } from '../../components/error/errorMessageBox.mjs';
+import { stringToElement } from '../../shared/utils/parsing.mjs';
 
-export class SignupPage { /**
+export class SignupPage {
+    /**
      * #check() validate email, password and repeated password
      * @param {string} email - email
      * @param {string} pass - password
@@ -24,7 +28,7 @@ export class SignupPage { /**
 
         const errEmail = validateEmail(email);
         if (errEmail) {
-            return errEmail
+            return errEmail;
         }
 
         const errPassword = validatePassword(pass);
@@ -39,7 +43,6 @@ export class SignupPage { /**
         return null;
     }
 
-
     /**
      * @summary Рендер функция
      * @returns {HTMLElement}
@@ -49,8 +52,8 @@ export class SignupPage { /**
 
         const context = {
             buttons: {
-                submit: 'Продолжить'
-            }
+                submit: 'Продолжить',
+            },
         };
 
         const root = stringToElement(template(context));
@@ -65,7 +68,11 @@ export class SignupPage { /**
             const inputPass = container.querySelector('#inputPass');
             const inputPassRepeat = container.querySelector('#inputPassRepeat');
 
-            const error = this.#check(inputEmail.value, inputPass.value, inputPassRepeat.value);
+            const error = this.#check(
+                inputEmail.value,
+                inputPass.value,
+                inputPassRepeat.value
+            );
 
             if (error) {
                 errorBox.innerHTML = '';
@@ -75,7 +82,10 @@ export class SignupPage { /**
 
             (async function () {
                 try {
-                    let resp = await Auth.signup(inputEmail.value, inputPass.value);
+                    let resp = await Auth.signup(
+                        inputEmail.value,
+                        inputPass.value
+                    );
                     if (resp.status != 200) {
                         throw resp.body.error;
                     } else {

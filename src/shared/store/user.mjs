@@ -1,4 +1,4 @@
-import {cookieParser} from "../utils/cookie.mjs";
+import { cookieParser } from '../utils/cookie.mjs';
 
 export const user = {
     clear: () => {
@@ -8,9 +8,7 @@ export const user = {
         user.state.refreshToken = null;
         user.state.id = null;
     },
-    fill: (
-        {email, username, userID}
-    ) => {
+    fill: ({ email, username, userID }) => {
         user.state.email = email;
         user.state.username = username;
         user.state.id = userID;
@@ -49,6 +47,6 @@ export const user = {
         email: null,
         id: null,
         accessToken: null,
-        refreshToken: null
-    }
-}
+        refreshToken: null,
+    },
+};

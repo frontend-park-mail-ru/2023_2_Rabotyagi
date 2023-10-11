@@ -19,7 +19,8 @@ export class Route {
  * @class
  * @summary Класс роутера
  */
-export class Router { /**
+export class Router {
+    /**
      * @constructor
      * @param {Array} routes маршруты
      */
@@ -35,7 +36,7 @@ export class Router { /**
      */
     init() {
         window.addEventListener('popstate', () => this.loadRoute());
-        document.body.addEventListener('click', e => {
+        document.body.addEventListener('click', (e) => {
             if (e.target.matches('[data-link]')) {
                 e.preventDefault();
                 this.navigateTo(e.target.href);
@@ -46,7 +47,7 @@ export class Router { /**
     /**
      * @method
      * @summary метод для изменения истории
-     * @param {string} url 
+     * @param {string} url
      */
     navigateTo(url) {
         history.pushState(null, null, url);
@@ -59,7 +60,9 @@ export class Router { /**
      */
     async loadRoute() {
         const root = document.querySelector('#root');
-        const route = this.routes.find(r => r.path === location.pathname) || this.routes.find(r => r.path === '*');
+        const route =
+            this.routes.find((r) => r.path === location.pathname) ||
+            this.routes.find((r) => r.path === '*');
         root.innerHTML = '';
         root.appendChild(route.component.render());
     }

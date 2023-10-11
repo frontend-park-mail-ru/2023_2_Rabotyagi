@@ -3,19 +3,22 @@
  * @file signin.mjs
  */
 
-import {store} from "../../shared/store/store.mjs";
-import {cookieParser} from "../../shared/utils/cookie.mjs";
-import {validateEmail, validatePassword} from "../../shared/utils/validation.mjs";
-import {ErrorMessageBox} from "../../components/error/errorMessageBox.mjs";
-import {Auth} from "../../shared/api/auth.mjs";
-import {stringToElement} from "../../shared/utils/parsing.mjs";
-
+import { store } from '../../shared/store/store.mjs';
+import { cookieParser } from '../../shared/utils/cookie.mjs';
+import {
+    validateEmail,
+    validatePassword,
+} from '../../shared/utils/validation.mjs';
+import { ErrorMessageBox } from '../../components/error/errorMessageBox.mjs';
+import { Auth } from '../../shared/api/auth.mjs';
+import { stringToElement } from '../../shared/utils/parsing.mjs';
 
 /**
  * @class signinPage
  * @summary Класс страницы авторизации
  */
-export class SigninPage { /**
+export class SigninPage {
+    /**
      * #check() validate email, password and repeated password
      * @param {string} email - Почта юзера
      * @param {string} pass - Пароль юзера
@@ -38,7 +41,6 @@ export class SigninPage { /**
         return null;
     }
 
-
     /**
      * @method
      * @summary Функция рендера страницы-блока авторизации
@@ -52,9 +54,9 @@ export class SigninPage { /**
         const context = {
             buttons: {
                 submit: 'Продолжить',
-                toReg: 'Регистрация'
-            }
-        }
+                toReg: 'Регистрация',
+            },
+        };
 
         const root = stringToElement(template(context));
         document.title = 'Вход';
@@ -75,7 +77,10 @@ export class SigninPage { /**
 
             (async function () {
                 try {
-                    const resp = await Auth.signin(inputEmail.value, inputPass.value);
+                    const resp = await Auth.signin(
+                        inputEmail.value,
+                        inputPass.value
+                    );
                     if (resp.status != 200) {
                         throw resp.body.error;
                     } else {
@@ -88,8 +93,7 @@ export class SigninPage { /**
                     errorBox.appendChild(ErrorMessageBox(err));
                 }
             })();
-        })
-
+        });
 
         return root;
     }

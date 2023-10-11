@@ -4,7 +4,7 @@ module.exports = {
         "es2021": true
     },
     "extends": [
-        "eslint:all", "prettier"
+        "eslint:recommended", "plugin:prettier/recommended"
     ],
     "overrides": [
         {
@@ -24,7 +24,7 @@ module.exports = {
     },
     "rules": {
         "prefer-const": [
-            "error", {
+            "warning", {
                 "destructuring": "any",
                 "ignoreReadBeforeAssign": false
             }

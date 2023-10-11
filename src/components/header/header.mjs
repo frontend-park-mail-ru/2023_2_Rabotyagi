@@ -4,16 +4,17 @@
  */
 
 'use strict';
-import {store} from "../../shared/store/store.mjs";
-import {deleteCookie} from "../../shared/utils/cookie.mjs";
-import {stringToElement} from "../../shared/utils/parsing.mjs";
-import {ProfileBtn} from "../profileBtn/profileBtn.mjs";
+import { store } from '../../shared/store/store.mjs';
+import { deleteCookie } from '../../shared/utils/cookie.mjs';
+import { stringToElement } from '../../shared/utils/parsing.mjs';
+import { ProfileBtn } from '../profileBtn/profileBtn.mjs';
 
 /**
  * @class
  * @classdesc Класс страницы авторизации
  */
-export class Header { /**
+export class Header {
+    /**
      * @method
      * @summary Метод рендера хедера
      */
@@ -23,34 +24,42 @@ export class Header { /**
 
         const context = {
             logo: {
-                icon: '<div></div>'
+                icon: '<div></div>',
             },
             search: {
-                icon: '<div></div>'
+                icon: '<div></div>',
             },
             signin: {
-                caption: 'Войти'
+                caption: 'Войти',
             },
             signup: {
-                caption: 'Зарегистрироваться'
+                caption: 'Зарегистрироваться',
             },
             authorized: store.user.isAuth(),
-            profile: profileBtn.render()
-        }
+            profile: profileBtn.render(),
+        };
 
         const root = stringToElement(template(context));
 
-        root.querySelector('.profile-container') ?. addEventListener('click', (e) => {
-            e.stopPropagation();
-            root.querySelector('#profile-dropdown').classList.toggle('hidden');
-        });
+        root.querySelector('.profile-container')?.addEventListener(
+            'click',
+            (e) => {
+                e.stopPropagation();
+                root.querySelector('#profile-dropdown').classList.toggle(
+                    'hidden'
+                );
+            }
+        );
 
-        root.querySelector('#dropdown-btn-logout') ?. addEventListener('click', (e) => {
-            e.stopPropagation();
-            store.user.clear();
-            deleteCookie('access_token');
-            Router.navigateTo('/signin');
-        });
+        root.querySelector('#dropdown-btn-logout')?.addEventListener(
+            'click',
+            (e) => {
+                e.stopPropagation();
+                store.user.clear();
+                deleteCookie('access_token');
+                Router.navigateTo('/signin');
+            }
+        );
 
         return root;
     }

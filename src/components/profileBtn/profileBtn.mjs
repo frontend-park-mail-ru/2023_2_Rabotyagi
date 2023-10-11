@@ -1,9 +1,12 @@
-import {stringToElement} from "../../shared/utils/parsing.mjs";
+import { stringToElement } from '../../shared/utils/parsing.mjs';
 
 export class ProfileBtn {
     render() {
         const template = Handlebars.templates['profileBtn.hbs'];
-        Handlebars.registerPartial('dropdown', Handlebars.templates['dropdown.hbs']);
+        Handlebars.registerPartial(
+            'dropdown',
+            Handlebars.templates['dropdown.hbs']
+        );
 
         const context = {
             dropdown: {
@@ -12,19 +15,13 @@ export class ProfileBtn {
                 items: {
                     ref: 'profileBtn',
                     content: [
-                        [
-                            'dropdown-btn-fav', 'Избранное'
-                        ],
-                        [
-                            'dropdown-btn-profile', 'Профиль'
-                        ],
-                        [
-                            'dropdown-btn-logout', 'Выйти'
-                        ]
-                    ]
-                }
-            }
-        }
+                        ['dropdown-btn-fav', 'Избранное'],
+                        ['dropdown-btn-profile', 'Профиль'],
+                        ['dropdown-btn-logout', 'Выйти'],
+                    ],
+                },
+            },
+        };
 
         return template(context);
     }

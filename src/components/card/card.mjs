@@ -1,17 +1,16 @@
-import {stringToElement} from "../../shared/utils/parsing.mjs";
+import { stringToElement } from '../../shared/utils/parsing.mjs';
 
 export class Card {
     #title;
     #desc;
     #city;
     #price;
-    constructor({title, city, price}) {
-        this.#title = title
+    constructor({ title, city, price }) {
+        this.#title = title;
         // this.#desc = desc
-        this.#city = city
-        this.#price = price
+        this.#city = city;
+        this.#price = price;
     }
-
 
     render() {
         const template = Handlebars.templates['card.hbs'];
@@ -20,7 +19,7 @@ export class Card {
             badges: {
                 safeDeal: false,
                 delivery: false,
-                city: this.#city
+                city: this.#city,
             },
             // img: {
             //     src: null,
@@ -28,10 +27,10 @@ export class Card {
             // },
             cardInfo: {
                 price: this.#price,
-                title: this.#title
-            }
-        }
+                title: this.#title,
+            },
+        };
 
-        return stringToElement(template(context));;
+        return stringToElement(template(context));
     }
 }
