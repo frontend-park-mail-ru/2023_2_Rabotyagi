@@ -25,21 +25,21 @@ export class Feed {
         const container = root.querySelector('div.feed-content');
         container.appendChild(loaderRegular());
 
-        Post.feed()
-            .then((response) => {
-                if (response.status == 200) {
-                    container.innerHTML = '';
-                    response.body.forEach((elem) => {
-                        container.appendChild(new Card(elem).render());
-                    });
-                } else {
-                    throw response.body.error;
+        (async function () {
+            try {
+                const resp = await Post.feed();
+                if (resp.status != 200) {
+                    throw resp.body.error;
                 }
-            })
-            .catch((err) => {
+                container.innerHTML = '';
+                resp.body.forEach((elem) => {
+                    container.appendChild(new Card(elem).render());
+                });
+            } catch (err) {
                 container.innerHTML = '';
                 container.appendChild(ErrorMessageBox(err));
-            });
+            }
+        })();
 
         return root;
     }
