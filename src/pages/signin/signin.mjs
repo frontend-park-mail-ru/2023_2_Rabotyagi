@@ -91,7 +91,7 @@ export class SigninPage {
                         throw resp.body.error;
                     } else {
                         const cookies = cookieParser(document.cookie);
-                        store.user.setAccessToken(cookies);
+                        store.user.login(cookies);
                         Router.navigateTo('/');
                     }
                 } catch (err) {

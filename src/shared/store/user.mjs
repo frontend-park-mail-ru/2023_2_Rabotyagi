@@ -8,11 +8,6 @@ export const user = {
         user.state.refreshToken = null;
         user.state.id = null;
     },
-    fill: ({ email, username, userID }) => {
-        user.state.email = email;
-        user.state.username = username;
-        user.state.id = userID;
-    },
     /**
      * @summary Редьюсер для инициализирования стейта пользователя
      * @description Забирает из localStorage ключ email \
@@ -37,10 +32,12 @@ export const user = {
      * @function
      * @returns None
      */
-    setAccessToken: (token) => {
+    login: (token) => {
         user.state.accessToken = token.access_token;
         const decoded = jwt_decode(token.access_token);
-        user.fill(decoded);
+        user.state.email = decoded.email;
+        user.state.username = decoded.username;
+        user.state.id = decoded.userID;
     },
     state: {
         username: null,
