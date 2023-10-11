@@ -87,14 +87,14 @@ export class SignupPage {
 
             (async function () {
                 try {
-                    let resp = await Auth.signup(
+                    const resp = await Auth.signup(
                         inputEmail.value,
                         inputPass.value
                     );
                     if (resp.status != 200) {
                         throw resp.body.error;
                     } else {
-                        let cookies = cookieParser(document.cookie);
+                        const cookies = cookieParser(document.cookie);
                         store.user.setAccessToken(cookies);
                         Router.navigateTo('/');
                     }
