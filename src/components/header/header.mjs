@@ -23,12 +23,6 @@ export class Header {
         const profileBtn = new ProfileBtn();
 
         const context = {
-            logo: {
-                icon: '<div></div>',
-            },
-            search: {
-                icon: '<div></div>',
-            },
             signin: {
                 caption: 'Войти',
             },
@@ -40,6 +34,13 @@ export class Header {
         };
 
         const root = stringToElement(template(context));
+
+        root.querySelectorAll('button[data-link]').forEach(item => 
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                Router.navigateTo(item.dataset.link);
+            }, { capture: false })
+        )
 
         root.querySelector('.profile-container')?.addEventListener(
             'click',

@@ -78,6 +78,13 @@ export class SigninPage {
 
         const container = root.querySelector('div.right-block-content');
 
+        container.querySelectorAll('button[data-link]').forEach(item => 
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                Router.navigateTo(item.dataset.link);
+            }, { capture: false })
+        )
+
         container.querySelector('#btnSubmit').addEventListener('click', () => {
             const inputEmail = container.querySelector('#inputEmail');
             const inputPass = container.querySelector('#inputPass');

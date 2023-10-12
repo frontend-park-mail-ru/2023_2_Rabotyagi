@@ -77,6 +77,13 @@ export class SignupPage {
         const container = root.querySelector('#content');
         const errorBox = container.querySelector('#errorBox');
 
+        container.querySelectorAll('button[data-link]').forEach(item => 
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                Router.navigateTo(item.dataset.link);
+            }, { capture: false })
+        )
+
         container.querySelector('#btnSubmit').addEventListener('click', (e) => {
             e.stopPropagation();
             const inputEmail = container.querySelector('#inputEmail');
