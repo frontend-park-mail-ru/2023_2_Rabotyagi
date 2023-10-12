@@ -1,19 +1,30 @@
 <nav>
-    <a href='/' data-link="/" class='logo-box'>
-        <div style="background-image: url(assets/icons/logo.svg); width: 60px; height: 60px;"></div>
+    <button data-link='/' class='logo-box'>
+        <div
+            style='background-image: url(assets/icons/logo.svg); width: 60px; height: 60px;'
+        ></div>
         <span class='text-subheader'>Супер Юла</span>
-    </a>
-    <button class='btn-primary'><span class="text-regular">Категории</span></button>
+    </button>
+    <button class='btn-primary'><span
+            class='text-regular'
+        >Категории</span></button>
     <div class='search-box'>
-        <input class='search-input text-regular searchField' placeholder='Поиск'>
+        <input
+            class='search-input text-regular searchField'
+            placeholder='Поиск'
+        />
     </div>
-    <button class='btn-neutral'><span class="text-regular">Разместить объявление</span></button>
+    <button class='btn-neutral'><span class='text-regular'>Разместить объявление</span></button>
     {{#if authorized}}
-    {{{this.profile}}}
+        {{{this.profile}}}
     {{else}}
-    <div class="auth-box">
-        <a href="/signin" data-link="/signin"  class='btn-primary'><span class="text-regular">{{this.signin.caption}}</span></a>
-        <a href="/signup" data-link="/signup"  class='btn-neutral'><span class="text-regular">{{this.signup.caption}}</span></a>
-    </div>
+        <div class='auth-box'>
+            <button data-link='/signin' class='btn-primary'><span
+                    class='text-regular'
+                >{{this.signin.caption}}</span></button>
+            <button data-link='/signup' class='btn-neutral'><span
+                    class='text-regular'
+                >{{this.signup.caption}}</span></button>
+        </div>
     {{/if}}
 </nav>
