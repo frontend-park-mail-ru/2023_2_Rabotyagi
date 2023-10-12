@@ -30,7 +30,7 @@ export class Feed {
     }
 
     render() {
-        const template = Handlebars.templates['feed.hbs'];
+        const template = Handlebars.templates[ 'feed.hbs' ];
 
         const context = {
             feedName: 'Все объявления',

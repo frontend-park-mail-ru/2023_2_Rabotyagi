@@ -17,9 +17,10 @@ export const user = {
      * @returns None
      */
     init: () => {
-        const accessToken = cookieParser(document.cookie).access_token;
-        if (accessToken) {
-            user.state.accessToken = accessToken;
+        const cookie = cookieParser(document.cookie);
+        if (cookie) {
+            console.log(cookie);
+            user.login(cookie);
         }
     },
     isAuth: () => Boolean(user.state.accessToken),
@@ -32,9 +33,9 @@ export const user = {
      * @function
      * @returns None
      */
-    login: (token) => {
-        user.state.accessToken = token.access_token;
-        const decoded = jwt_decode(token.access_token);
+    login: ({ access_token }) => {
+        user.state.accessToken = access_token;
+        const decoded = jwt_decode(access_token);
         user.state.email = decoded.email;
         user.state.username = decoded.username;
         user.state.id = decoded.userID;

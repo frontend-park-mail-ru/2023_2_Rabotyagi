@@ -1,15 +1,15 @@
 export function cookieParser(cookieString) {
     if (typeof cookieString !== 'string' || !cookieString.length) {
-        return {};
+        return null;
     }
 
     const pairs = cookieString.split(';');
     const splittedPairs = pairs.map((cookie) => cookie.split('='));
     const cookieObj = splittedPairs.reduce((obj, cookie) => {
-        const [key, value] = cookie;
+        const [ key, value ] = cookie;
         const decodedKey = decodeURIComponent(key.trim());
         const decodedValue = decodeURIComponent(value.trim());
-        obj[decodedKey] = decodedValue;
+        obj[ decodedKey ] = decodedValue;
 
         return obj;
     }, {});

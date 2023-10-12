@@ -43,10 +43,7 @@ export class SigninPage {
 
     async signin(email, pass, errorBox) {
         try {
-            const resp = await Auth.signin(
-                email,
-                pass
-            );
+            const resp = await Auth.signin(email, pass);
             if (resp.status != 200) {
                 throw resp.body.error;
             }
@@ -67,7 +64,7 @@ export class SigninPage {
      * @returns {HTMLElement}
      */
     render() {
-        const template = Handlebars.templates['signin.hbs'];
+        const template = Handlebars.templates[ 'signin.hbs' ];
 
         const context = {
             buttons: {
@@ -81,7 +78,7 @@ export class SigninPage {
 
         const container = root.querySelector('div.right-block-content');
 
-        container.querySelector('#btnSubmit').addEventListener('click', (e) => {
+        container.querySelector('#btnSubmit').addEventListener('click', () => {
             const inputEmail = container.querySelector('#inputEmail');
             const inputPass = container.querySelector('#inputPass');
             const errorBox = container.querySelector('#errorBox');

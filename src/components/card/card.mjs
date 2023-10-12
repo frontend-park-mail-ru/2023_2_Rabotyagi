@@ -13,7 +13,7 @@ export class Card {
     }
 
     render() {
-        const template = Handlebars.templates['card.hbs'];
+        const template = Handlebars.templates[ 'card.hbs' ];
 
         const context = {
             badges: {

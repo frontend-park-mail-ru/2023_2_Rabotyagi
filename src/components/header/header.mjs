@@ -19,7 +19,7 @@ export class Header {
      * @summary Метод рендера хедера
      */
     render() {
-        const template = Handlebars.templates['header.hbs'];
+        const template = Handlebars.templates[ 'header.hbs' ];
         const profileBtn = new ProfileBtn();
 
         const context = {

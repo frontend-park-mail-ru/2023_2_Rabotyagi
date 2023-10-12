@@ -45,9 +45,7 @@ export class SignupPage {
 
     async signup(email, pass, errorBox) {
         try {
-            const resp = await Auth.signup(
-                email, pass
-            );
+            const resp = await Auth.signup(email, pass);
             if (resp.status != 200) {
                 throw resp.body.error;
             }
@@ -65,7 +63,7 @@ export class SignupPage {
      * @returns {HTMLElement}
      */
     render() {
-        const template = Handlebars.templates['signup.hbs'];
+        const template = Handlebars.templates[ 'signup.hbs' ];
 
         const context = {
             buttons: {
