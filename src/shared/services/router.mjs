@@ -36,12 +36,6 @@ export class Router {
      */
     init() {
         window.addEventListener('popstate', () => this.loadRoute());
-        document.body.addEventListener('click', (e) => {
-            if (e.target.matches('[data-link]')) {
-                e.preventDefault();
-                this.navigateTo(e.target.href);
-            }
-        });
     }
 
     /**
