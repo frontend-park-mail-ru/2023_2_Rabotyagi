@@ -2,66 +2,46 @@
  * @module Feed
  */
 
-import API from "../../shared/constants/api.mjs"
-import {PostCard} from "../card/card.mjs"
+import { Card } from '../card/card.mjs';
+import { ErrorMessageBox } from '../error/errorMessageBox.mjs';
+import { Post } from '../../shared/api/post.mjs';
+import { loaderRegular } from '../loader/loader.mjs';
+import { stringToElement } from '../../shared/utils/parsing.mjs';
 
 /**
  * @class Блок с объявлениями
  * @description Получает посты с бекенда и формирует коллекцию для представления
  */
 export class Feed {
-
-    constructor(parent) {
-        this.items = [];
-    }
-
-    /**
-     * @async
-     * @description Посылает запрос на бек для получения 20 постов
-     * @returns Массив постов
-     */
-    #getPosts() {
-        return Ajax.get({
-            url: API.ADRESS_BACKEND + API.GET_POST_LIST,
-            params: {
-                count: 20
+    async getPosts(container) {
+        try {
+            const resp = await Post.feed();
+            if (resp.status != 200) {
+                throw resp.body.error;
             }
-
-        })
-    }
-
-
-    #Header() {
-        const root = document.createElement('div')
-
-        root.classList = ['feed']
-        const header = document.createElement('span')
-        header.textContent = 'Все объявления'
-
-        root.appendChild(header)
-
-        return root
-    }
-
-    #Content() {
-        const root = document.createElement('div')
-
-        root.classList = ['feed-content']
-        this.#getPosts().then(data => {
-            data.body.forEach((info) => {
-                let card = new PostCard(root, info)
-                card.render()
-            })
-        })
-
-        return root
+            container.innerHTML = '';
+            resp.body.forEach((elem) => {
+                container.appendChild(new Card(elem).render());
+            });
+        } catch (err) {
+            container.innerHTML = '';
+            container.appendChild(ErrorMessageBox(err));
+        }
     }
 
     render() {
-        const root = document.createElement('div')
+        const template = Handlebars.templates[ 'feed.hbs' ];
 
-        root.appendChild(this.#Header())
-        root.appendChild(this.#Content())
+        const context = {
+            feedName: 'Все объявления',
+        };
+
+        const root = stringToElement(template(context));
+
+        const container = root.querySelector('div.feed-content');
+        container.appendChild(loaderRegular());
+
+        this.getPosts(container);
 
         return root;
     }

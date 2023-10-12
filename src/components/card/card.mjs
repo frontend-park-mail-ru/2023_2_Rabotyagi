@@ -1,38 +1,36 @@
-export class PostCard {
-    #parent
-    #title
-    #desc
-    #city
-    #price
+import { stringToElement } from '../../shared/utils/parsing.mjs';
 
-    constructor(parent, {title, city, price}) {
-        this.#parent = parent
-        this.#title = title
+export class Card {
+    #title;
+    #desc;
+    #city;
+    #price;
+    constructor({ title, city, price }) {
+        this.#title = title;
         // this.#desc = desc
-        this.#city = city
-        this.#price = price
+        this.#city = city;
+        this.#price = price;
     }
 
+    render() {
+        const template = Handlebars.templates[ 'card.hbs' ];
 
-    render () {
-        const template = Handlebars.templates['card.hbs']
-        
         const context = {
             badges: {
                 safeDeal: false,
                 delivery: false,
-                city: this.#city
+                city: this.#city,
             },
-            cardImage: {
-                url: null,
-                alt: 'картинка'
-            },
+            // img: {
+            //     src: null,
+            //     alt: 'картинка'
+            // },
             cardInfo: {
                 price: this.#price,
-                title: this.#title
-            }
-        }
+                title: this.#title,
+            },
+        };
 
-        this.#parent.innerHTML = this.#parent.innerHTML + template(context)
+        return stringToElement(template(context));
     }
 }
