@@ -19,7 +19,6 @@ export const user = {
     init: () => {
         const cookie = cookieParser(document.cookie);
         if (cookie) {
-            console.log(cookie);
             user.login(cookie);
         }
     },
