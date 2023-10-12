@@ -4,70 +4,62 @@
  */
 
 'use strict';
-import {store} from "../../shared/constants/store.mjs";
+import { store } from '../../shared/store/store.mjs';
+import { deleteCookie } from '../../shared/utils/cookie.mjs';
+import { stringToElement } from '../../shared/utils/parsing.mjs';
+import { ProfileBtn } from '../profileBtn/profileBtn.mjs';
 
 /**
  * @class
  * @classdesc Класс страницы авторизации
  */
-export class Header { /**
+export class Header {
+    /**
      * @method
      * @summary Метод рендера хедера
      */
     render() {
-        const root = document.createElement('div');
-        const template = Handlebars.templates['header.hbs'];
-        Handlebars.registerPartial('profile', Handlebars.templates['profileBtn.hbs']);
-        Handlebars.registerPartial('dropdown', Handlebars.templates['dropdown.hbs']);
+        const template = Handlebars.templates[ 'header.hbs' ];
+        const profileBtn = new ProfileBtn();
 
         const context = {
             logo: {
-                icon: '<div></div>'
+                icon: '<div></div>',
             },
             search: {
-                icon: '<div></div>'
+                icon: '<div></div>',
             },
             signin: {
-                caption: 'Войти'
+                caption: 'Войти',
             },
             signup: {
-                caption: 'Зарегистрироваться'
+                caption: 'Зарегистрироваться',
             },
-            authorized: store.authorized,
-            profileConf: {
-                dropdownConf: {
-                    id: 'profile-dropdown',
-                    search: false,
-                    items: {
-                        ref: 'profileBtn',
-                        content: [
-                            [
-                                'dropdown-btn-fav', 'Избранное'
-                            ],
-                            [
-                                'dropdown-btn-profile', 'Профиль'
-                            ],
-                            [
-                                'dropdown-btn-logout', 'Выйти'
-                            ]
-                        ]
-                    }
-                }
+            authorized: store.user.isAuth(),
+            profile: profileBtn.render(),
+        };
+
+        const root = stringToElement(template(context));
+
+        root.querySelector('.profile-container')?.addEventListener(
+            'click',
+            (e) => {
+                e.stopPropagation();
+                root.querySelector('#profile-dropdown').classList.toggle(
+                    'hidden'
+                );
             }
-        }
+        );
 
-        root.innerHTML = template(context);
-
-        root.querySelector('.profile-container') ?. addEventListener('click', (e) => {
-            e.stopPropagation();
-            document.querySelector('#profile-dropdown') ?. classList.toggle('hidden');
-        });
-
-        root.querySelector('#dropdown-btn-logout') ?. addEventListener('click', (e) => {
-            e.stopPropagation();
-            store.user.logout();
-            Router.navigateTo('/signin');
-        });
+        root.querySelector('#dropdown-btn-logout')?.addEventListener(
+            'click',
+            (e) => {
+                e.stopPropagation();
+                store.user.clear();
+                deleteCookie('access_token');
+                Router.navigateTo('/signin');
+            }
+        );
 
         return root;
     }

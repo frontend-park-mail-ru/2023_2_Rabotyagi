@@ -7,6 +7,12 @@
     align-self: stretch;
 }
 
+.feed-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
 .feed-content {
     display: flex;
     padding: 0px 16px;

@@ -18,7 +18,7 @@ const minLenPassword = 4;
  * @returns {boolean}
  */
 function regexpEmail(email) {
-    return EMAIL_REGEXP.test(email)
+    return EMAIL_REGEXP.test(email);
 }
 
 /**
@@ -28,13 +28,13 @@ function regexpEmail(email) {
  */
 export function validateEmail(email) {
     if (email === '') {
-        return 'Поле почты не может быть пустым'
+        return 'Поле почты не может быть пустым';
     }
-    if (! regexpEmail(email)) {
-        return 'Некорректый email'
+    if (!regexpEmail(email)) {
+        return 'Некорректый email';
     }
 
-    return null
+    return null;
 }
 
 /**
@@ -44,11 +44,11 @@ export function validateEmail(email) {
  */
 export function validatePassword(password) {
     if (password === '') {
-        return 'Поле пароля не может быть пустым'
+        return 'Поле пароля не может быть пустым';
     }
     if (password.length < minLenPassword) {
-        return `Пароль не должен быть короче ${minLenPassword} символов`
+        return `Пароль не должен быть короче ${minLenPassword} символов`;
     }
 
-    return null
+    return null;
 }

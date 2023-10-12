@@ -1,0 +1,14 @@
+/* Nunito Sans */
+/* @import url('https://fonts.googleapis.com/css2?family=Antic+Slab&family=Nunito+Sans:ital,opsz@0,6..12;1,6..12&display=swap'); */
+/* Antic Slab */
+/* @import url('https://fonts.googleapis.com/css2?family=Antic+Slab&family=Nunito+Sans:ital,opsz@0,6..12;1,6..12&display=swap'); */
+
+@font-face {
+    font-family: 'Nunito Sans';
+    src: url('../assets/fonts/Nunito_Sans/NunitoSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Antic Slab';
+    src: url('../assets/fonts/Antic_Slab/AnticSlab-Regular.ttf');
+}
