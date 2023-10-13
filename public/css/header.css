@@ -1,8 +1,8 @@
 nav {
     display: flex;
     padding-top: 8px;
-    justify-content: space-between;
     align-items: center;
+    gap: 32px;
 }
 
 .logo-box {
