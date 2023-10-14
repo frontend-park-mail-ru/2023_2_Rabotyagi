@@ -2,11 +2,12 @@
  * @module Feed
  */
 
-import { Card } from '../card/card.mjs';
-import { ErrorMessageBox } from '../error/errorMessageBox.mjs';
-import { Post } from '../../shared/api/post.mjs';
-import { loaderRegular } from '../loader/loader.mjs';
-import { stringToElement } from '../../shared/utils/parsing.mjs';
+import { Card } from '../card/card.js';
+import { ErrorMessageBox } from '../error/errorMessageBox.js';
+import { Post } from '../../shared/api/post.js';
+import { loaderRegular } from '../loader/loader.js';
+import { stringToElement } from '../../shared/utils/parsing.js';
+import Template from './feed.hbs'
 
 /**
  * @class Блок с объявлениями
@@ -30,7 +31,7 @@ export class Feed {
     }
 
     render() {
-        const template = Handlebars.templates[ 'feed.hbs' ];
+        const template = Template;
 
         const context = {
             feedName: 'Все объявления',

@@ -1,10 +1,8 @@
+import Template from './profileBtn.hbs'
+
 export class ProfileBtn {
     render() {
-        const template = Handlebars.templates[ 'profileBtn.hbs' ];
-        Handlebars.registerPartial(
-            'dropdown',
-            Handlebars.templates[ 'dropdown.hbs' ]
-        );
+        const template = Template;
 
         const context = {
             dropdown: {
