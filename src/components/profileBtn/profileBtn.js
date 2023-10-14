@@ -3,7 +3,7 @@ import Template from './profileBtn.hbs'
 export class ProfileBtn {
     render() {
         const template = Template;
-
+        
         const context = {
             dropdown: {
                 id: 'profile-dropdown',

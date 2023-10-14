@@ -9,6 +9,7 @@ import { deleteCookie } from '../../shared/utils/cookie.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import { ProfileBtn } from '../profileBtn/profileBtn.js';
 import Template from './header.hbs'
+import css from './header.css'
 
 /**
  * @class
@@ -62,6 +63,8 @@ export class Header {
                 Router.navigateTo('/signin');
             }
         );
+        
+        root.style = css;
 
         return root;
     }

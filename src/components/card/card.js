@@ -1,5 +1,6 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './card.hbs'
+import css from './card.css'
 
 export class Card {
     #title;
@@ -32,6 +33,9 @@ export class Card {
             },
         };
 
-        return stringToElement(template(context));
+        const root = stringToElement(template(context));
+        root.style = css;
+
+        return root;
     }
 }

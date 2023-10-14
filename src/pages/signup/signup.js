@@ -13,6 +13,7 @@ import { Auth } from '../../shared/api/auth.js';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './signup.hbs'
+import css from './signup.css'
 
 export class SignupPage {
     /**
@@ -111,6 +112,7 @@ export class SignupPage {
             this.signup(inputEmail.value, inputPass.value, errorBox);
         });
 
+        root.style = css;
         return root;
     }
 }
