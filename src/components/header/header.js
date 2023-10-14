@@ -26,7 +26,7 @@ export class Header {
 
         const context = {
             signin: {
-                caption: 'Войти',
+                caption: 'Войти eeeeeee',
             },
             signup: {
                 caption: 'Зарегистрироваться',
