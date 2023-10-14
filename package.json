@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx webpack build --no-watch --no-devtool",
+    "build": "npx webpack --env production --mode production --no-watch --no-devtool",
+    "dev": "npx webpack-dev-server --env development --mode development",
     "server": "node server/server.js",
     "docs": "jsdoc .\\src\\ --recurse -d .\\docs -c .\\jsdoc.json",
     "lint": "npx eslint src"
