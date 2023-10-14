@@ -4,11 +4,11 @@
  */
 const env = process.env.NODE_ENV;
 let addres;
-    if (env === 'development') {
-        addres = 'http://localhost'
+    if (env === 'production') {
+        addres = 'http://84.23.53.28'
     }
     else {
-        addres = 'http://84.23.53.28/'
+        addres = 'http://localhost'
     }
 
 /**

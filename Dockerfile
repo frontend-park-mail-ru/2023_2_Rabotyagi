@@ -9,7 +9,6 @@ COPY webpack.config.js .
 RUN apk add tmux
 RUN apk add tree
 RUN npm install
-RUN npm run build
 
 EXPOSE 3000
-ENTRYPOINT [ "node", "./server/server.js" ]
+ENTRYPOINT [ "npm", "run", "server" ]
