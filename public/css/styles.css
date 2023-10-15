@@ -1,8 +1,4 @@
 @import url('reset.css');
-@import url('header.css');
-@import url('feed.css');
-@import url('card.css');
-@import url('loader.css');
 
 @font-face {
     font-family: 'Nunito Sans';
@@ -206,69 +202,6 @@ input:focus-visible {
     display: none;
 }
 
-.signin-page {
-    display: flex;
-    width: 702px;
-    align-items: center;
-    flex-shrink: 0;
-    border-radius: 12px;
-    border: 1px solid var(--text-tertiary, rgba(41, 44, 47, 0.25));
-    align-self: stretch;
-}
-
-.left-block {
-    display: flex;
-    padding: 16px 32px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 32px;
-    flex: 1 0 0;
-    align-self: stretch;
-    background: var(--background-secondary);
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-}
-
-.right-block {
-    display: flex;
-    padding: 16px 32px;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    flex: 1 0 0;
-    align-self: stretch;
-}
-
-.right-block-content {
-    /* width: 100%; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    align-self: stretch;
-}
-
-/* .right-block-info{
-
-} */
-
-.signin-page-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    align-self: stretch;
-}
-
-.signin-page-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    align-self: stretch;
-}
-
 .modal {
     display: flex;
     width: 420px;
@@ -300,4 +233,12 @@ input:focus-visible {
     align-items: center;
     border-radius: 12px;
     border: 1px solid var(--background-tertiary, rgba(41, 44, 47, 0.12));
+}
+
+.centred-page {
+    display: flex;
+        height: 100vh;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 }

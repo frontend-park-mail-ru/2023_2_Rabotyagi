@@ -1,13 +1,15 @@
 /**
- * @file header.mjs
+ * @file header.js
  * @module Header
  */
 
 'use strict';
-import { store } from '../../shared/store/store.mjs';
-import { deleteCookie } from '../../shared/utils/cookie.mjs';
-import { stringToElement } from '../../shared/utils/parsing.mjs';
-import { ProfileBtn } from '../profileBtn/profileBtn.mjs';
+import { store } from '../../shared/store/store.js';
+import { deleteCookie } from '../../shared/utils/cookie.js';
+import { stringToElement } from '../../shared/utils/parsing.js';
+import { ProfileBtn } from '../profileBtn/profileBtn.js';
+import Template from './header.hbs'
+import css from './header.css'
 
 /**
  * @class
@@ -19,7 +21,7 @@ export class Header {
      * @summary Метод рендера хедера
      */
     render() {
-        const template = Handlebars.templates[ 'header.hbs' ];
+        const template = Template;
         const profileBtn = new ProfileBtn();
 
         const context = {
@@ -61,6 +63,8 @@ export class Header {
                 Router.navigateTo('/signin');
             }
         );
+        
+        root.style = css;
 
         return root;
     }
