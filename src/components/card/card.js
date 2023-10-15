@@ -1,4 +1,6 @@
-import { stringToElement } from '../../shared/utils/parsing.mjs';
+import { stringToElement } from '../../shared/utils/parsing.js';
+import Template from './card.hbs'
+import css from './card.css'
 
 export class Card {
     #title;
@@ -13,7 +15,7 @@ export class Card {
     }
 
     render() {
-        const template = Handlebars.templates[ 'card.hbs' ];
+        const template = Template;
 
         const context = {
             badges: {
@@ -31,6 +33,9 @@ export class Card {
             },
         };
 
-        return stringToElement(template(context));
+        const root = stringToElement(template(context));
+        root.style = css;
+
+        return root;
     }
 }

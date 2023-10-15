@@ -3,7 +3,8 @@
  * @module Api.Auth
  */
 
-import { API } from '../constants/api.mjs';
+import { API } from '../constants/api.js';
+import ajax from '../services/ajax.js';
 
 export const Auth = {
     /**
@@ -14,7 +15,7 @@ export const Auth = {
      * @param {string} password Пароль юзера
      */
     signin: async ({ email, password }) => {
-        return await Ajax.post({
+        return await ajax.post({
             url: API.SIGNIN,
             body: JSON.stringify({ email: email, password: password }),
             credentials: 'include',
@@ -28,7 +29,7 @@ export const Auth = {
      * @param {string} password Пароль юзера
      */
     signup: async ({ email, password }) => {
-        return await Ajax.post({
+        return await ajax.post({
             url: API.SIGNUP,
             body: JSON.stringify({ email: email, password: password }),
             credentials: 'include',

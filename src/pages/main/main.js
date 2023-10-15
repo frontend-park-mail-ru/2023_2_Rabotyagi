@@ -1,10 +1,10 @@
 /**
  * @module mainPage
- * @file main.mjs
+ * @file main.js
  */
 
-import { Header } from '../../components/header/header.mjs';
-import { Feed } from '../../components/feed/feed.mjs';
+import { Header } from '../../components/header/header.js';
+import { Feed } from '../../components/feed/feed.js';
 
 /**
  * @class mainPage

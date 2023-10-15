@@ -1,4 +1,5 @@
-import { cookieParser } from '../utils/cookie.mjs';
+import { cookieParser } from '../utils/cookie.js';
+import jwtDecode from 'jwt-decode';
 
 export const user = {
     clear: () => {
@@ -34,7 +35,7 @@ export const user = {
      */
     login: ({ access_token }) => {
         user.state.accessToken = access_token;
-        const decoded = jwt_decode(access_token);
+        const decoded = jwtDecode(access_token);
         user.state.email = decoded.email;
         user.state.username = decoded.username;
         user.state.id = decoded.userID;
