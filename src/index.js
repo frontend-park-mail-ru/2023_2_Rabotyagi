@@ -3,11 +3,11 @@
  * @module Main
  */
 
-import { MainPage } from './pages/main/main.mjs';
-import { SigninPage } from './pages/signin/signin.mjs';
-import { SignupPage } from './pages/signup/signup.mjs';
-import { store } from './shared/store/store.mjs';
-import { Route, Router } from './shared/services/router.mjs';
+import { MainPage } from './pages/main/main.js';
+import { SigninPage } from './pages/signin/signin.js';
+import { SignupPage } from './pages/signup/signup.js';
+import { store } from './shared/store/store.js';
+import { Route, Router } from './shared/services/router.js';
 
 store.user.init();
 

@@ -1,32 +1,32 @@
 /**
- * @module signinPage
- * @file signin.mjs
+ * @module signupPage
+ * @file signupPage.js
  */
 
-import { store } from '../../shared/store/store.mjs';
-import { cookieParser } from '../../shared/utils/cookie.mjs';
+import { store } from '../../shared/store/store.js';
+import { cookieParser } from '../../shared/utils/cookie.js';
 import {
     validateEmail,
     validatePassword,
-} from '../../shared/utils/validation.mjs';
-import { ErrorMessageBox } from '../../components/error/errorMessageBox.mjs';
-import { Auth } from '../../shared/api/auth.mjs';
-import { stringToElement } from '../../shared/utils/parsing.mjs';
+} from '../../shared/utils/validation.js';
+import { Auth } from '../../shared/api/auth.js';
+import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
+import { stringToElement } from '../../shared/utils/parsing.js';
+import Template from './signup.hbs'
+import css from './signup.css'
 
-/**
- * @class signinPage
- * @summary Класс страницы авторизации
- */
-export class SigninPage {
+export class SignupPage {
     /**
      * #check() validate email, password and repeated password
-     * @param {string} email - Почта юзера
-     * @param {string} pass - Пароль юзера
+     * @param {string} email - email
+     * @param {string} pass - password
+     * @param {string} repeatPass - repeated password
      * @return {null|string} return null if validation ok and return string if not
      */
-    #check(email, pass) {
+    #check(email, pass, repeatPass) {
         email = email.trim();
         pass = pass.trim();
+        repeatPass = repeatPass.trim();
 
         const errEmail = validateEmail(email);
         if (errEmail) {
@@ -38,12 +38,16 @@ export class SigninPage {
             return errPassword;
         }
 
+        if (pass !== repeatPass) {
+            return 'Пароли не совпадают';
+        }
+
         return null;
     }
 
-    async signin(email, pass, errorBox) {
+    async signup(email, pass, errorBox) {
         try {
-            const resp = await Auth.signin(email, pass);
+            const resp = await Auth.signup(email, pass);
             if (resp.status != 200) {
                 throw resp.body.error;
             }
@@ -57,26 +61,23 @@ export class SigninPage {
     }
 
     /**
-     * @method
-     * @summary Функция рендера страницы-блока авторизации
-     * @description Формирует страницу с элементами \
-     * Навешивает обработчики событий на элементы
+     * @summary Рендер функция
      * @returns {HTMLElement}
      */
     render() {
-        const template = Handlebars.templates[ 'signin.hbs' ];
+        const template = Template;
 
         const context = {
             buttons: {
                 submit: 'Продолжить',
-                toReg: 'Регистрация',
             },
         };
 
         const root = stringToElement(template(context));
-        document.title = 'Вход';
+        document.title = 'Регистрация';
 
-        const container = root.querySelector('div.right-block-content');
+        const container = root.querySelector('#content');
+        const errorBox = container.querySelector('#errorBox');
 
         container.querySelectorAll('button[data-link]').forEach(item => 
             item.addEventListener('click', (e) => {
@@ -85,17 +86,22 @@ export class SigninPage {
             }, { capture: false })
         )
 
-        container.querySelector('#btnSubmit').addEventListener('click', () => {
+        container.querySelector('#btnSubmit').addEventListener('click', (e) => {
+            e.stopPropagation();
             const inputEmail = container.querySelector('#inputEmail');
             const inputPass = container.querySelector('#inputPass');
-            const errorBox = container.querySelector('#errorBox');
+            const inputPassRepeat = container.querySelector('#inputPassRepeat');
 
-            if (!inputEmail || !inputPass) {
-                console.log('signin | не найдены инпуты, что-то пошло не так');
+            if (!inputEmail || !inputPass || !inputPassRepeat) {
+                console.log('signup | не найдены инпуты, что-то пошло не так');
                 return;
             }
 
-            const error = this.#check(inputEmail.value, inputPass.value);
+            const error = this.#check(
+                inputEmail.value,
+                inputPass.value,
+                inputPassRepeat.value
+            );
 
             if (error) {
                 errorBox.innerHTML = '';
@@ -103,9 +109,10 @@ export class SigninPage {
                 return;
             }
 
-            this.signin(inputEmail.value, inputPass.value, errorBox);
+            this.signup(inputEmail.value, inputPass.value, errorBox);
         });
 
+        root.style = css;
         return root;
     }
 }
