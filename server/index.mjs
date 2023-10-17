@@ -1,16 +1,13 @@
 'use strict';
 import express from 'express';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import { server as mockServer } from './mocks/server';
+import { fileURLToPath } from 'url'
 
-mockServer.listen();
-
+const filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(filename);
+// const re = /^\/(?!api.+)(.+)$/;
 // This configures a request mocking server with the given request handlers.
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 const PORT = process.env.PORT || 3000;
 const app = express();
 

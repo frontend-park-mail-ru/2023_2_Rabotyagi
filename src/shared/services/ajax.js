@@ -2,9 +2,12 @@
  * @file ajax.mjs
  * @module Ajax
  */
-const env = process.env.NODE_ENV;
+const {
+    NODE_ENV
+} = process.env;
+
 let addres;
-    if (env === 'production') {
+    if (NODE_ENV === 'production') {
         addres = 'http://84.23.53.28'
     }
     else {
@@ -77,8 +80,7 @@ class Ajax {
             config.credentials = credentials;
         }
 
-        const response = await fetch(url, config);
-        return await response.json();
+        return await fetch(url, config);
     }
 
     /**
