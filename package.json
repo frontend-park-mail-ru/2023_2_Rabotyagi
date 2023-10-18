@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --node-env development --mode development",
-    "preserver": "webpack --node-env $ENV --mode $ENV --no-watch --no-devtool",
+    "preserver": "webpack --node-env ${NODE_ENV} --mode ${NODE_ENV} --no-watch --no-devtool",
     "server": "node server/index.mjs",
     "docs": "jsdoc .\\src\\ --recurse -d .\\docs -c .\\jsdoc.json",
     "lint": "npx eslint src",

@@ -4,6 +4,8 @@ const dotenv = require('dotenv').config( {
   path: path.join(__dirname, '.env')
 } );
 
+console.log(process.env);
+
 module.exports = {
   mode: 'development',
   entry: path.join(__dirname, 'src', 'index'),
@@ -51,7 +53,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin( {
-      "process.env": dotenv.parsed
+      "process.env": JSON.stringify(process.env)
     } ),
   ],
   resolve: {
@@ -59,10 +61,4 @@ module.exports = {
     modules: [ 'node_modules' ]
   },
   devtool: 'source-map',
-  devServer: {
-    contentBase: path.join(__dirname, '/public/'),
-    inline: true,
-    host: 'localhost',
-    port: 8080,
-  },
 };

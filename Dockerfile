@@ -6,9 +6,10 @@ COPY src src
 COPY server server
 COPY package*.json . 
 COPY webpack.config.js .
-RUN apk add tmux
-RUN apk add tree
 RUN npm install
+
+ENV NODE_ENV=development
+ENV APP_URL=http://localhost
 
 EXPOSE 3000
 ENTRYPOINT [ "npm", "run", "server" ]
