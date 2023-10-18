@@ -1,22 +1,20 @@
-module.exports = [
-    {
-        "id": 0,
-        "author": 0,
-        "city": "Москва",
-        "delivery": false,
-        "description": "Котиков для шаурмешной",
-        "price": 1000,
-        "safe": true,
-        "title": "Котики"        
-    },
-    {
-        "id": 0,
-        "author": 1,
-        "city": "Санкт-Питербург",
-        "delivery": true,
-        "description": "Офигенная щетка",
-        "price": 231,
-        "safe": true,
-        "title": "Щетка"        
-    },
-];
+const { fakerRU } = require('@faker-js/faker');
+
+const generatePosts = () => {
+    var posts = [];
+    for (let index = 0; index < 100; index++) {
+        posts = [ ...posts, {
+            "id": index,
+            "author": 0,
+            "city": fakerRU.location.city(),
+            "delivery": fakerRU.datatype.boolean(),
+            "description": fakerRU.lorem.paragraph(),
+            "price": fakerRU.finance.amount(500, 5000, 0),
+            "safe": fakerRU.datatype.boolean(),
+            "title": fakerRU.lorem.lines(1) 
+        } ]
+    }
+    return posts;
+}
+
+module.exports = generatePosts();
