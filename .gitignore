@@ -4,3 +4,4 @@ js/
 # IDE
 .idea
 *.ps1
+.env
