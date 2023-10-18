@@ -3,7 +3,11 @@
  * @module Ajax
  */
 
-const { APP_URL } = process.env;
+const { NODE_ENV, APP_URL } = process.env;
+
+if (NODE_ENV === 'development'){
+    console.warn('Development mode');
+}
 
 /**
  * @constant
