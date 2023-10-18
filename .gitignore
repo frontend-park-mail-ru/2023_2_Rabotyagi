@@ -1,7 +1,6 @@
 node_modules
-
 js/
+.env
 # IDE
 .idea
 *.ps1
-.env
