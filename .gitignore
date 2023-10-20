@@ -3,6 +3,7 @@ js/
 .env
 package-lock.json
 
+js/
 # IDE
 .idea
 *.ps1
