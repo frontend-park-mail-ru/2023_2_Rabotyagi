@@ -5,3 +5,4 @@ js/
 .idea
 *.ps1
 .env
+package-lock.json
