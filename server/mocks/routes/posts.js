@@ -2,7 +2,7 @@ const { fakerRU } = require('@faker-js/faker');
 
 const generatePosts = () => {
     var posts = [];
-    for (let index = 0; index < 100; index++) {
+    for (let index = 0; index < 20; index++) {
         posts = [ ...posts, {
             "id": index,
             "author": 0,
