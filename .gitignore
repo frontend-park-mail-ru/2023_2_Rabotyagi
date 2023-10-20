@@ -1,8 +1,8 @@
 node_modules
 js/
 .env
+package-lock.json
+
 # IDE
 .idea
 *.ps1
-.env
-package-lock.json
