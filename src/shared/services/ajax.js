@@ -3,11 +3,7 @@
  * @module Ajax
  */
 
-const { NODE_ENV, APP_URL } = process.env;
-
-if (NODE_ENV === 'development'){
-    console.warn('Development mode');
-}
+const { API_URL } = process.env;
 
 /**
  * @constant
@@ -26,7 +22,7 @@ const AJAX_METHODS = {
 class Ajax {
     port = '8080';
 
-    ADRESS_BACKEND = APP_URL + `:${this.port}/api/v1/`;
+    ADRESS_BACKEND = API_URL + `:${this.port}/api/v1/`;
 
     /**
      * @async
