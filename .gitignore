@@ -1,7 +1,6 @@
 node_modules
 js/
 .env
-package-lock.json
 
 js/
 # IDE

@@ -10,17 +10,11 @@ module.exports = [
         id: "enabled", // variant id
         type: "middleware", // variant of type "middleware"
         options: {
-          middleware: (req, res, next, core) => { // middleware to use
+          middleware: (req, res) => { // middleware to use
             res.status(200);
-            const data = allPosts.slice(0,req.params.count);
-            res.body(data);
-            res.send();
+            res.send(allPosts);
           },
         },
-      },
-      {
-        id: "disabled", // variant id
-        disabled: true,
       },
     ],
   },
