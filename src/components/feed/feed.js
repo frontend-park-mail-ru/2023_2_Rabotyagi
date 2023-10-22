@@ -18,11 +18,19 @@ export class Feed {
     async getPosts(container) {
         try {
             const resp = await Post.feed();
-            if (resp.status != 200) {
-                throw resp.body.error;
+            const body = await resp.json();
+
+            switch (resp.status) {
+                case 222:
+                    throw resp.body.error;
+                case 405:
+                    throw "Method Not Allowed"
+                case 500:
+                    throw "Internal Server Error"
+                default:
             }
             container.innerHTML = '';
-            resp.body.forEach((elem) => {
+            body.forEach((elem) => {
                 container.appendChild(new Card(elem).render());
             });
         } catch (err) {

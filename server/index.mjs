@@ -1,10 +1,14 @@
 'use strict';
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url'
+
+const filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(filename);
+// const re = /^\/(?!api.+)(.+)$/;
+// This configures a request mocking server with the given request handlers.
 
 const PORT = process.env.PORT || 3000;
-const HOSTNAME_BACKEND =
-    process.env.HOSTNAME_BACKEND || 'http://localhost:8080';
 const app = express();
 
 app.use(express.static(path.resolve(__dirname, '..', 'node_modules')));

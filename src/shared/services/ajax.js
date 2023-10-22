@@ -2,14 +2,8 @@
  * @file ajax.mjs
  * @module Ajax
  */
-const env = process.env.NODE_ENV;
-let addres;
-    if (env === 'production') {
-        addres = 'http://84.23.53.28'
-    }
-    else {
-        addres = 'http://localhost'
-    }
+
+const { API_URL } = process.env;
 
 /**
  * @constant
@@ -28,7 +22,7 @@ const AJAX_METHODS = {
 class Ajax {
     port = '8080';
 
-    ADRESS_BACKEND = addres + `:${this.port}/api/v1/`;
+    ADRESS_BACKEND = API_URL + `:${this.port}/api/v1/`;
 
     /**
      * @async
@@ -77,8 +71,7 @@ class Ajax {
             config.credentials = credentials;
         }
 
-        const response = await fetch(url, config);
-        return await response.json();
+        return await fetch(url, config);
     }
 
     /**
