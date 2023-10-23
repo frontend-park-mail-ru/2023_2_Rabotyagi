@@ -5,9 +5,9 @@ export const Post = {
     feed: async () => {
         return await ajax.get({
             url: API.POST_LIST,
-            params: {
-                count: 20,
-            },
+            // params: {
+            //     count: 20,
+            // },
         });
     },
 };

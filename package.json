@@ -9,8 +9,7 @@
     "preserver": "webpack --node-env ${NODE_ENV} --mode ${NODE_ENV} --no-watch --no-devtool",
     "server": "node server/index.mjs",
     "docs": "jsdoc .\\src\\ --recurse -d .\\docs -c .\\jsdoc.json",
-    "lint": "npx eslint src",
-    "mocks": "mocks-server"
+    "lint": "npx eslint src"
   },
   "repository": {
     "type": "git",
@@ -36,7 +35,6 @@
     "@babel/core": "^7.18.13",
     "@babel/preset-env": "^7.18.10",
     "@faker-js/faker": "^8.2.0",
-    "@mocks-server/main": "^4.1.0",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.8.1",
     "eslint": "^8.50.0",
@@ -52,6 +50,8 @@
     "handlebars-loader": "^1.7.3",
     "handlebars-webpack-plugin": "^2.2.1",
     "jwt-decode": "^3.1.2",
+    "jwt-encode": "^1.0.1",
+    "miragejs": "^0.1.47",
     "prettier": "3.0.3",
     "style-loader": "^3.3.3",
     "webpack": "^5.74.0",

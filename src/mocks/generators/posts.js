@@ -1,6 +1,6 @@
-const { fakerRU } = require('@faker-js/faker');
+import { fakerRU } from '@faker-js/faker';
 
-const generatePosts = () => {
+export const generatePosts = () => {
     var posts = [];
     for (let index = 0; index < 20; index++) {
         posts = [ ...posts, {
@@ -16,5 +16,3 @@ const generatePosts = () => {
     }
     return posts;
 }
-
-module.exports = generatePosts();

@@ -46,8 +46,9 @@ export class SigninPage {
     async signin(email, pass, errorBox) {
         try {
             const resp = await Auth.signin(email, pass);
+            const body = await resp.json();
             if (resp.status != 200) {
-                throw resp.body.error;
+                throw body.error;
             }
             const cookies = cookieParser(document.cookie);
             store.user.login(cookies);

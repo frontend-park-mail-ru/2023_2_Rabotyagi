@@ -3,7 +3,7 @@
  * @module Ajax
  */
 
-const { API_URL } = process.env;
+const { NODE_ENV, API_URL } = process.env;
 
 /**
  * @constant
@@ -53,12 +53,13 @@ class Ajax {
         if (params) {
             url += `?${new URLSearchParams(params)}`;
         }
-
+        
         headers.Accept = 'application/json';
         headers[ 'Content-Type' ] = 'application/json';
 
         const config = {
             method,
+            // mode: NODE_ENV === 'development' ? 'no-cors' : 'cors',
             mode: 'cors',
             headers,
         };
@@ -68,6 +69,7 @@ class Ajax {
         }
 
         if (credentials != null) {
+        // if (credentials != null && NODE_ENV !== 'development') {
             config.credentials = credentials;
         }
 

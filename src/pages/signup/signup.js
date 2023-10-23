@@ -48,8 +48,10 @@ export class SignupPage {
     async signup(email, pass, errorBox) {
         try {
             const resp = await Auth.signup(email, pass);
+            const body = await resp.json();
             if (resp.status != 200) {
-                throw resp.body.error;
+                console.log
+                throw body.error;
             }
             const cookies = cookieParser(document.cookie);
             store.user.login(cookies);

@@ -1,6 +1,0 @@
-[
-  {
-    "id": "base",
-    "routes": ["posts:enabled"]
-  }
-]
