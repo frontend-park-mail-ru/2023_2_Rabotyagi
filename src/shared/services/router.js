@@ -2,33 +2,20 @@
  * @file router.mjs
  * @module Router
  */
-
-/**
- * @constant {Dict} router Хранилище страниц и callback функций для отрисовки
- * @property {Dict} pages Стейт страниц приложения
- * @property {string} activePage Стейт активной страницы
- */
-export class Route {
-    constructor(path, component) {
-        this.path = path;
-        this.component = component;
-    }
-}
-
 /**
  * @class
  * @summary Класс роутера
  */
 export class Router {
-    /**
-     * @constructor
-     * @param {Array} routes маршруты
-     */
-    constructor(routes) {
-        this.routes = routes;
-        this.init();
-        this.loadRoute();
-    }
+    // /**
+    //  * @constructor
+    //  * @param {Array} routes маршруты
+    //  */
+    // constructor(routes) {
+    //     this.routes = routes;
+    //     this.init();
+    //     this.loadRoute();
+    // }
 
     /**
      * @method
@@ -36,6 +23,12 @@ export class Router {
      */
     init() {
         window.addEventListener('popstate', () => this.loadRoute());
+    }
+
+    addRoutes(routes) {
+        this.routes = routes;
+        this.init();
+        this.loadRoute();
     }
 
     /**
@@ -58,6 +51,13 @@ export class Router {
             this.routes.find((r) => r.path === location.pathname) ||
             this.routes.find((r) => r.path === '*');
         root.innerHTML = '';
-        root.appendChild(route.component.render());
+        try {
+            root.appendChild(route.component.render());
+        }
+        catch {
+            root.append(...route.component.render())
+        }
     }
 }
+
+export default new Router();

@@ -14,6 +14,7 @@ import { Auth } from '../../shared/api/auth.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './signin.hbs';
 import css from './signin.css'
+import Router from '../../shared/services/router.js';
 
 /**
  * @class signinPage

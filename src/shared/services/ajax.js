@@ -3,7 +3,7 @@
  * @module Ajax
  */
 
-const { NODE_ENV, API_URL } = process.env;
+const { API_URL } = process.env;
 
 /**
  * @constant

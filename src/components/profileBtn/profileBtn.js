@@ -1,24 +1,43 @@
-import Template from './profileBtn.hbs'
+import template from './profileBtn.hbs'
+import { stringToElement } from '../../shared/utils/parsing';
+import Dropdown from '../dropdown/dropdown';
+import { store } from '../../shared/store/store';
+import { deleteCookie } from '../../shared/utils/cookie';
+import Router from '../../shared/services/router';
 
-export class ProfileBtn {
+class ProfileBtn {
     render() {
-        const template = Template;
-        
-        const context = {
-            dropdown: {
-                id: 'profile-dropdown',
-                search: false,
-                items: {
-                    ref: 'profileBtn',
-                    content: [
-                        [ 'dropdown-btn-fav', 'Избранное' ],
-                        [ 'dropdown-btn-profile', 'Профиль' ],
-                        [ 'dropdown-btn-logout', 'Выйти' ],
-                    ],
-                },
-            },
+        const dropdownContext = {
+            id: 'profile-dropdown',
+            search: false,
+            items: [
+                [ 'dropdown-btn-fav', 'Избранное' ],
+                [ 'dropdown-btn-profile', 'Профиль' ],
+                [ 'dropdown-btn-logout', 'Выйти' ],
+            ],
         };
 
-        return template(context);
+        const root = stringToElement(template());
+        const dropdown = new Dropdown(dropdownContext);
+        root.querySelector('#profile-dropdown').replaceWith(dropdown.render());
+
+        root.querySelector('#dropdown-btn-logout')?.addEventListener(
+            'click',
+            (e) => {
+                e.stopPropagation();
+                store.user.clear();
+                deleteCookie('access_token');
+                Router.navigateTo('/signin');
+            }
+        );
+
+        root.querySelector('#dropdown-btn-profile')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            Router.navigateTo('/profile');
+        });
+
+        return root;
     }
-}
+};
+
+export default ProfileBtn;

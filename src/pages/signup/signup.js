@@ -14,6 +14,7 @@ import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './signup.hbs'
 import css from './signup.css'
+import Router from '../../shared/services/router.js';
 
 export class SignupPage {
     /**

@@ -5,11 +5,11 @@
 
 'use strict';
 import { store } from '../../shared/store/store.js';
-import { deleteCookie } from '../../shared/utils/cookie.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
-import { ProfileBtn } from '../profileBtn/profileBtn.js';
+import ProfileBtn from '../profileBtn/profileBtn.js';
 import Template from './header.hbs'
 import css from './header.css'
+import Router from '../../shared/services/router.js';
 
 /**
  * @class
@@ -32,10 +32,11 @@ export class Header {
                 caption: 'Зарегистрироваться',
             },
             authorized: store.user.isAuth(),
-            profile: profileBtn.render(),
+            profile: store.user.isAuth() ? profileBtn.render() : null,
         };
 
         const root = stringToElement(template(context));
+        root.querySelector('#profileBtn')?.replaceWith(profileBtn.render());
 
         root.querySelectorAll('button[data-link]').forEach(item => 
             item.addEventListener('click', (e) => {
@@ -51,16 +52,6 @@ export class Header {
                 root.querySelector('#profile-dropdown').classList.toggle(
                     'hidden'
                 );
-            }
-        );
-
-        root.querySelector('#dropdown-btn-logout')?.addEventListener(
-            'click',
-            (e) => {
-                e.stopPropagation();
-                store.user.clear();
-                deleteCookie('access_token');
-                Router.navigateTo('/signin');
             }
         );
         
