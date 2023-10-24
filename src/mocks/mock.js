@@ -5,7 +5,7 @@ import sign from "jwt-encode";
 const createMockServer = function () {
     var usersCount = 1;
 
-    let server = createServer({
+    const server = createServer({
         models: {
             users: Model,
         },
@@ -19,7 +19,7 @@ const createMockServer = function () {
             });
         
             this.get("/signin", (schema, request) => {
-                const res = schema.users.findBy({email: request.queryParams.email});
+                const res = schema.users.findBy({ email: request.queryParams.email });
                 if (res == null) {
                     return new Response(222, {}, {
                         'error': 'User not found'
@@ -37,7 +37,7 @@ const createMockServer = function () {
         
             this.post('/signup', (schema, request) => {
                 const body = JSON.parse(request.requestBody);
-                const res = schema.users.findBy({email: body.email});
+                const res = schema.users.findBy({ email: body.email });
         
                 if (res == null) {
                     console.log(usersCount);
