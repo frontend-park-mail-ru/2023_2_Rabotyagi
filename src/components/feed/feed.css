@@ -5,6 +5,8 @@
     align-items: flex-start;
     gap: 32px;
     align-self: stretch;
+    width: 1280px;
+    padding-top: 32px;
 }
 
 .feed-header {
@@ -15,10 +17,10 @@
 
 .feed-content {
     display: flex;
-    padding: 0px 16px;
     align-items: flex-start;
     align-content: flex-start;
-    gap: 16px 24px;
+    row-gap: 24px;
+    justify-content: space-between;
     align-self: stretch;
     flex-wrap: wrap;
 }

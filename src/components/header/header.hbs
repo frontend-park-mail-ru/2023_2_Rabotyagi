@@ -7,14 +7,14 @@
     <div class='search-box'>
         <input class='search-input text-regular searchField' placeholder='Поиск' />
     </div>
-    <button class='btn-neutral'><span class='text-regular'>Разместить объявление</span></button>
+    <button class='btn-neutral-primary'><span class='text-regular'>Разместить объявление</span></button>
     {{#if authorized}}
         <div id="profileBtn"></div>
     {{else}}
         <div class='auth-box'>
             <button data-link='/signin' class='btn-primary'><span
                     class='text-regular'>{{this.signin.caption}}</span></button>
-            <button data-link='/signup' class='btn-neutral'><span
+            <button data-link='/signup' class='btn-neutral-primary'><span
                     class='text-regular'>{{this.signup.caption}}</span></button>
         </div>
     {{/if}}

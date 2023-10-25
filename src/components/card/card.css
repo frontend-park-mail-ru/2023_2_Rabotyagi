@@ -38,8 +38,13 @@
     align-self: stretch;
 }
 
-.card-info .card-info-title {
-    font-size: 10px;
+.card-info-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    align-self: stretch;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* .card-fav-btn {

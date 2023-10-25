@@ -88,10 +88,16 @@ body {
 }
 
 #root {
-    max-width: 1280px;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    width: 100%;
+    align-items: center;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: center;
 }
 
 .btn-primary {
@@ -107,7 +113,7 @@ body {
     color: var(--background-primary);
 }
 
-.btn-neutral {
+.btn-neutral-primary {
     display: inline-flex;
     height: 36px;
     padding: 6px 12px;
@@ -118,6 +124,21 @@ body {
     border-radius: 8px;
     background: var(--background-secondary);
     color: var(--text-primary);
+}
+
+.btn-neutral-tertiary {
+    display: flex;
+    /* height: 36px; */
+    padding: 4px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    border-radius: 8px;
+}
+
+.btn-neutral-tertiary:hover {
+    color: var(--primary-active);
 }
 
 .inputField {
@@ -150,7 +171,7 @@ body {
 }
 
 .search-box {
-    width: 326px;
+    width: 50%;
 }
 
 input {
@@ -202,29 +223,6 @@ input:focus-visible {
     display: none;
 }
 
-.modal {
-    display: flex;
-    width: 420px;
-    flex-direction: column;
-    align-items: flex-start;
-    /*  Установаем ширину окна  */
-    width: 100%;
-    max-width: 500px;
-
-    /*  Центрируем и задаем z-index */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 30; /* Должен быть выше чем у подложки*/
-
-    /*  Побочные стили   */
-    border-radius: 12px;
-    border: 0.5px solid
-        var(--light-stroke-separator-primary-alpha, rgba(0, 16, 61, 0.12));
-    background: var(--vkui-color-background-modal, #fff);
-}
-
 .logo {
     display: flex;
     width: 60px;
@@ -237,8 +235,8 @@ input:focus-visible {
 
 .centred-page {
     display: flex;
-        height: 100vh;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

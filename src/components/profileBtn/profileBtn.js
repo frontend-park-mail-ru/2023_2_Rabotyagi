@@ -1,4 +1,5 @@
 import template from './profileBtn.hbs'
+import styles from './profileBtn.css'
 import { stringToElement } from '../../shared/utils/parsing';
 import Dropdown from '../dropdown/dropdown';
 import { store } from '../../shared/store/store';
@@ -8,7 +9,7 @@ import Router from '../../shared/services/router';
 class ProfileBtn {
     render() {
         const dropdownContext = {
-            id: 'profile-dropdown',
+            id: 'profileBtn-dropdown',
             search: false,
             items: [
                 [ 'dropdown-btn-fav', 'Избранное' ],
@@ -19,9 +20,19 @@ class ProfileBtn {
 
         const root = stringToElement(template());
         const dropdown = new Dropdown(dropdownContext);
-        root.querySelector('#profile-dropdown').replaceWith(dropdown.render());
+        root.querySelector('#profileBtn-dropdown').replaceWith(dropdown.render());
+        
+        root.addEventListener(
+            'click',
+            (e) => {
+                e.stopPropagation();
+                root.querySelector('#profileBtn-dropdown').classList.toggle(
+                    'hidden'
+                );
+            }
+        );
 
-        root.querySelector('#dropdown-btn-logout')?.addEventListener(
+        root.querySelector('#dropdown-btn-logout').addEventListener(
             'click',
             (e) => {
                 e.stopPropagation();
@@ -31,10 +42,13 @@ class ProfileBtn {
             }
         );
 
-        root.querySelector('#dropdown-btn-profile')?.addEventListener('click', (e) => {
+        root.querySelector('#dropdown-btn-profile').addEventListener('click', (e) => {
             e.stopPropagation();
             Router.navigateTo('/profile');
         });
+
+
+        root.style = styles;
 
         return root;
     }

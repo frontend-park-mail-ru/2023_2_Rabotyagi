@@ -44,19 +44,12 @@ export class Header {
                 Router.navigateTo(item.dataset.link);
             }, { capture: false })
         )
-
-        root.querySelector('.profile-container')?.addEventListener(
-            'click',
-            (e) => {
-                e.stopPropagation();
-                root.querySelector('#profile-dropdown').classList.toggle(
-                    'hidden'
-                );
-            }
-        );
         
         root.style = css;
+        const wrapper = document.createElement('div');
+        wrapper.classList.toggle('wrapper');
+        wrapper.appendChild(root);
 
-        return root;
+        return wrapper;
     }
 }
