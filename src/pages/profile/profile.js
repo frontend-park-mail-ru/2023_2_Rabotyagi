@@ -1,6 +1,6 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
 import template from './profile.hbs'
-import styles from './profile.css'
+import styles from './profile.scss'
 import { Header } from '../../components/header/header.js';
 
 class Profile {

@@ -1,0 +1,13 @@
+.btn-neutral-tertiary {
+    display: flex;
+    /* height: 36px; */
+    padding: 4px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    border-radius: 8px;
+
+    .selected {
+    }
+}
