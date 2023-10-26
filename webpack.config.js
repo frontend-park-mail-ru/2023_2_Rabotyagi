@@ -4,8 +4,6 @@ require('dotenv').config( {
   path: path.join(__dirname, '.env')
 } );
 
-console.log(process.env);
-
 module.exports = {
   mode: 'development',
   entry: path.join(__dirname, 'src', 'index'),

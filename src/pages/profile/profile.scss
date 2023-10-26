@@ -32,12 +32,10 @@
 .tab {
     padding: 8px 24px;
     border-bottom: 3px solid var(--text-tertiary);
-
-    
 }
 
 .tab:hover {
-    border-color: var(--palette-primary);
+    // border-color: var(--palette-primary);
     color: var(--palette-primary);
 }
 

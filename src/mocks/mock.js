@@ -40,7 +40,6 @@ const createMockServer = function () {
             const res = schema.users.findBy({ email: body.email });
     
             if (res == null) {
-                console.log(usersCount);
                 const userData = {
                     id: usersCount,
                     email: body.email
