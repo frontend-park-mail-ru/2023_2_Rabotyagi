@@ -8,6 +8,7 @@ class Dropdown {
     }
 
     render() {
+
         this.context.searchIcon = searchIcon.stringify();
         const root = stringToElement(template(this.context));
         return root;

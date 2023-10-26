@@ -6,6 +6,8 @@ import { store } from '../../shared/store/store';
 import { deleteCookie } from '../../shared/utils/cookie';
 import Router from '../../shared/services/router';
 
+
+
 class ProfileBtn {
     render() {
         const dropdownContext = {
@@ -19,16 +21,26 @@ class ProfileBtn {
         };
 
         const root = stringToElement(template());
-        const dropdown = new Dropdown(dropdownContext);
+        let dropdown = new Dropdown(dropdownContext);
         root.querySelector('#profileBtn-dropdown').replaceWith(dropdown.render());
+        dropdown = root.querySelector('#profileBtn-dropdown');
+
+        function openDropdown(e) {
+            dropdown.classList.toggle(
+                'hidden'
+            );
+            document.body.removeEventListener('click', openDropdown);
+        }
         
         root.addEventListener(
             'click',
             (e) => {
                 e.stopPropagation();
-                root.querySelector('#profileBtn-dropdown').classList.toggle(
+                dropdown.classList.toggle(
                     'hidden'
                 );
+
+                document.body.addEventListener('click', openDropdown);
             }
         );
 
