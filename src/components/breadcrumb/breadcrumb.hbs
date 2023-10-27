@@ -3,7 +3,8 @@
         {{#if this.isDelimiter}}
             <span class="text-regular">{{this.text}}</span>
         {{else}}
-            <button id="{{this.id}}"><span class="text-regular">{{this.text}}</span></button>
+            <button id="i{{this.id}}" {{#if this.isActive}}class="active" {{/if}}><span
+                    class="text-regular">{{this.text}}</span></button>
         {{/if}}
     {{/each}}
     {{!-- <div class="text-regular" style="color: #9D8DF1;">Главная</div> --}}

@@ -3,5 +3,9 @@
     justify-content: flex-start;
     align-items: center;
     gap: 4px;
-    display: inline-flex
+    display: inline-flex;
+
+    .active {
+        color: var(--palette-primary);
+    }
 }

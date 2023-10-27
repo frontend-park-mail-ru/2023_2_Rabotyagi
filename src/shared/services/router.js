@@ -3,13 +3,11 @@
  * @module Router
  */
 
-import { store } from "../store/store";
-
 /**
  * @class
  * @summary Класс роутера
  */
-export class Router {
+class Router {
     // /**
     //  * @constructor
     //  * @param {Array} routes маршруты

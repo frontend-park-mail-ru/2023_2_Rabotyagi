@@ -1,7 +1,7 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './card.hbs'
 import css from './card.css'
-import { Router } from '../../shared/services/router.js';
+import Router from '../../shared/services/router.js';
 
 export class Card {
     #title;

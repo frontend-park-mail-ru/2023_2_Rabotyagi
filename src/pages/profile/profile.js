@@ -5,7 +5,7 @@ import { Header } from '../../components/header/header.js';
 import Breadcrumb from '../../components/breadcrumb/breadcrumb.js';
 import { store } from '../../shared/store/store.js';
 import uid from '../../shared/utils/uid.js';
-import { Router } from '../../shared/services/router.js';
+import Router from '../../shared/services/router.js';
 
 class Profile {
     constructor() {
@@ -26,10 +26,8 @@ class Profile {
                 id: uid(),
                 text: "Главная",
                 isActive: true,
-                delegate: (container) => {
-                    console.log(container);
-                    console.log(this)
-                    container.querySelector(`#${this.id}`).addEventListener('click', (e) => {
+                delegate: function(container) {
+                    container.querySelector(`#i${this.id}`).addEventListener('click', (e) => {
                         e.stopPropagation();
                         Router.navigateTo('/');
                     })
