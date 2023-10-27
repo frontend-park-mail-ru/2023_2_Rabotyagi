@@ -14,15 +14,15 @@ const createMockServer = function () {
         this.urlPrefix = 'http://localhost:8080';
         this.namespace = "api/v1";
     
-        this.get("post/get_list", (schema, request) => {
+        this.get("post/get_list", () => {
             return generatePosts();
         });
     
         this.get("/signin", (schema, request) => {
             const res = schema.users.findBy({ email: request.queryParams.email });
-            if (res == null) {
+            if ((res == null) || (res.attrs.password != request.queryParams.password)) {
                 return new Response(222, {}, {
-                    'error': 'User not found'
+                    'error': 'Неверная почта или пароль'
                 })
             }
             else {
@@ -68,7 +68,10 @@ const createMockServer = function () {
         server.create("user", {
             id: usersCount,
             email: "NikDem@gmail.com",
-            pass: '363Nikita',
+            phone: "+7 999 999 66 66",
+            name: "Никита",
+            password: '363Nikita',
+            birthday: Date.now()
         });
         usersCount += 1;
    },

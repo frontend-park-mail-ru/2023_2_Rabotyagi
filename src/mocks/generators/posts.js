@@ -5,6 +5,7 @@ export const generatePosts = () => {
     for (let index = 0; index < 20; index++) {
         posts = [ ...posts, {
             "id": index,
+            "image": '/images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg',
             "author": 0,
             "city": fakerRU.location.city(),
             "delivery": fakerRU.datatype.boolean(),

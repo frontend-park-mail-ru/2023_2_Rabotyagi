@@ -1,5 +1,5 @@
 import { cookieParser } from '../utils/cookie.js';
-import jwtDecode from 'jwt-decode';
+import jwtDecode from '../utils/jwt-decode.js';
 
 export const user = {
     clear: () => {

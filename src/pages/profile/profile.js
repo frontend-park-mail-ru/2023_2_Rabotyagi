@@ -14,7 +14,7 @@ class Profile {
 
     render() {
         const context = {
-
+            
         };
         const header = new Header();
         const root = stringToElement(template(context));

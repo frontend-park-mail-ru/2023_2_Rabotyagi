@@ -4,14 +4,15 @@ import css from './card.css'
 
 export class Card {
     #title;
-    #desc;
     #city;
     #price;
-    constructor({ title, city, price }) {
+    #image;
+
+    constructor({ title, city, price, image }) {
         this.#title = title;
-        // this.#desc = desc
         this.#city = city;
         this.#price = price;
+        this.#image = image
     }
 
     render() {
@@ -23,10 +24,7 @@ export class Card {
                 delivery: false,
                 city: this.#city,
             },
-            // img: {
-            //     src: null,
-            //     alt: 'картинка'
-            // },
+            img: this.#image,
             cardInfo: {
                 price: this.#price,
                 title: this.#title,

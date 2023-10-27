@@ -25,7 +25,7 @@ class ProfileBtn {
         root.querySelector('#profileBtn-dropdown').replaceWith(dropdown.render());
         dropdown = root.querySelector('#profileBtn-dropdown');
 
-        function openDropdown(e) {
+        function openDropdown() {
             dropdown.classList.toggle(
                 'hidden'
             );
