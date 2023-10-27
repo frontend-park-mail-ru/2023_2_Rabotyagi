@@ -2,6 +2,9 @@
  * @file router.mjs
  * @module Router
  */
+
+import { store } from "../store/store";
+
 /**
  * @class
  * @summary Класс роутера
@@ -51,6 +54,7 @@ export class Router {
             this.routes.find((r) => r.path === location.pathname) ||
             this.routes.find((r) => r.path === '*');
         root.innerHTML = '';
+
         try {
             root.appendChild(route.component.render());
         }

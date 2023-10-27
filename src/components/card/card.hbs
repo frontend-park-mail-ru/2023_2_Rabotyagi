@@ -1,4 +1,4 @@
-<div class='card'>
+<button class='card'>
     <div class='badges'>
         {{#if this.badges.safeDeal}}
             {{!-- {{this.badges.safeDeal}} --}}
@@ -18,24 +18,9 @@
     </div>
     <div class='card-body'>
         {{#if this.img}}
-            <img
-                class='card-img'
-                src='{{this.img}}'
-            />
+            <img class='card-img' src='{{this.img}}' />
         {{else}}
             <div class="card-img"></div>
-            {{!-- <svg
-                width='218'
-                height='218'
-                viewBox='0 0 218 218'
-                fill='none'
-                xmlns='http://www.w3.org/2000/svg'
-            >
-                <path
-                    d='M17.0312 200.969H200.969V17.0312H17.0312V200.969ZM187.344 148.232L139.924 100.812L159.765 80.9704L187.344 108.547V148.232ZM30.6562 30.6562H187.344V89.2778L159.766 61.7L130.289 91.1776L87.7109 48.5995L30.6562 105.654V30.6562ZM30.6562 124.924L87.7109 67.8695L187.344 167.502V187.344H30.6562V124.924Z'
-                    fill='#292C2F'
-                />
-            </svg> --}}
         {{/if}}
         <div class='card-info'>
             <span class='text-regular'>{{this.cardInfo.price}} ₽</span>
@@ -43,4 +28,4 @@
         </div>
         {{! <div class="card-fav-btn"></div> }}
     </div>
-</div>
+    </div>

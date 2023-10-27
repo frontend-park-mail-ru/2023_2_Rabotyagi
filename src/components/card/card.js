@@ -1,6 +1,7 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './card.hbs'
 import css from './card.css'
+import { Router } from '../../shared/services/router.js';
 
 export class Card {
     #title;
@@ -32,7 +33,12 @@ export class Card {
         };
 
         const root = stringToElement(template(context));
-        root.style = css;
+
+        root.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            Router.navigateTo('/product')
+        })
 
         return root;
     }

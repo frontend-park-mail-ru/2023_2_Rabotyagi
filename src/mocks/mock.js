@@ -8,15 +8,14 @@ const createMockServer = function () {
     const server = createServer({
         models: {
             users: Model,
+            product: Model,
         },
 
     routes() {
         this.urlPrefix = 'http://localhost:8080';
         this.namespace = "api/v1";
     
-        this.get("post/get_list", () => {
-            return generatePosts();
-        });
+        this.get("post/get_list", (schema) => schema.products.all().models);
     
         this.get("/signin", (schema, request) => {
             const res = schema.users.findBy({ email: request.queryParams.email });
@@ -74,6 +73,9 @@ const createMockServer = function () {
             birthday: Date.now()
         });
         usersCount += 1;
+
+        // Проинициализировал модельки с постами, чтобы в in-memory db хранились, а не генерились постоянно
+        generatePosts().forEach((product) => server.create("product", product));
    },
  });
 
