@@ -8,7 +8,7 @@ export default function jwtDecode(token) {
     const idxStart = token.indexOf('.');
     const idxEnd = token.lastIndexOf('.');
     let payload = token.slice(idxStart + 1, idxEnd);
-    payload = atob(payload);
+    payload = decodeURIComponent(escape(window.atob(payload)));
     payload = JSON.parse(payload);
 
     return payload;
