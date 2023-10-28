@@ -4,9 +4,6 @@ import { stringToElement } from '../../shared/utils/parsing';
 import Dropdown from '../dropdown/dropdown';
 import { store } from '../../shared/store/store';
 import { deleteCookie } from '../../shared/utils/cookie';
-import Router from '../../shared/services/router';
-
-
 
 class ProfileBtn {
     render() {
@@ -50,13 +47,13 @@ class ProfileBtn {
                 e.stopPropagation();
                 store.user.clear();
                 deleteCookie('access_token');
-                Router.navigateTo('/signin');
+                window.Router.navigateTo('/signin');
             }
         );
 
         root.querySelector('#dropdown-btn-profile').addEventListener('click', (e) => {
             e.stopPropagation();
-            Router.navigateTo('/profile');
+            window.Router.navigateTo('/profile');
         });
 
 

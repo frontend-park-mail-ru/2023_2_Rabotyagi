@@ -49,7 +49,7 @@ const button = (context) => {
     if (context.link){
         root.dataset.link = context.link;
     }
-    console.log(root);
+    
     return root;
 }
 

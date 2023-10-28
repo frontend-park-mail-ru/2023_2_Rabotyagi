@@ -4,19 +4,33 @@
  */
 
 /**
+ * @constant {Dict} router Хранилище страниц и callback функций для отрисовки
+ * @property {Dict} pages Стейт страниц приложения
+ * @property {string} activePage Стейт активной страницы
+ */
+export class Route {
+    constructor(path, component, routes = null) {
+        this.path = path;
+        this.component = component;
+        this.routes = routes;
+    }
+}
+
+/**
  * @class
  * @summary Класс роутера
  */
-class Router {
+export class Router {
     // /**
     //  * @constructor
     //  * @param {Array} routes маршруты
     //  */
-    // constructor(routes) {
-    //     this.routes = routes;
-    //     this.init();
-    //     this.loadRoute();
-    // }
+    constructor(routes, container) {
+        this.container = container;
+        this.routes = routes;
+        this.init();
+        this.loadRoute();
+    }
 
     /**
      * @method
@@ -47,19 +61,49 @@ class Router {
      * @summary рендерит страницу согласно маршруту
      */
     async loadRoute() {
-        const root = document.querySelector('#root');
+        
+        // const nodes = location.pathname.split('/').filter((value) => value != '' || undefined);
+
+        // let node = this;
+        // nodes.forEach((path) => {
+        //     node = node.routes;
+        //     const res = node.find((r) => r.path === '/'+path);
+        //     console.log(res);
+        //     node = res;
+        // });
         const route =
             this.routes.find((r) => r.path === location.pathname) ||
             this.routes.find((r) => r.path === '*');
-        root.innerHTML = '';
+
+        console.log(route, this.routes, location.pathname);
+        
+        this.container.innerHTML = '';
 
         try {
-            root.appendChild(route.component.render());
+            this.container.appendChild(route.component.render());
         }
-        catch {
-            root.append(...route.component.render())
+        catch (err) {
+            console.log(route, this.routes, location.pathname);
         }
+
     }
 }
 
-export default new Router();
+// const routes = {
+//     '/': {
+//         parent: null,
+//     },
+//     '/profile': {
+//         parent: null,
+//         routes: {
+//             '/products': {},
+//             '/orders': {}
+//         }
+//     },
+//     '/signin': {
+//         parent: null,
+//     },
+//     '/signup' : {
+//         parent: null,
+//     },
+// }

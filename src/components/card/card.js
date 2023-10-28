@@ -1,7 +1,6 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './card.hbs'
-import css from './card.css'
-import Router from '../../shared/services/router.js';
+import styles from './card.scss' // eslint-disable-line no-unused-vars
 
 export class Card {
     #title;
@@ -37,7 +36,7 @@ export class Card {
         root.addEventListener('click', (e) => {
             e.stopPropagation();
 
-            Router.navigateTo('/product')
+            window.Router.navigateTo('/product')
         })
 
         return root;

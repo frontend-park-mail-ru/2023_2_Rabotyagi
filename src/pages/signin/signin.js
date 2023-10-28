@@ -14,7 +14,6 @@ import { Auth } from '../../shared/api/auth.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './signin.hbs';
 import css from './signin.scss' // eslint-disable-line no-unused-vars
-import Router from '../../shared/services/router.js';
 import button from '../../components/button/button.js';
 import svg from '../../components/svg/svg.js';
 import logo from '../../assets/icons/logo.svg'
@@ -56,7 +55,7 @@ export class SigninPage {
             }
             const cookies = cookieParser(document.cookie);
             store.user.login(cookies);
-            Router.navigateTo('/');
+            window.Router.navigateTo('/');
         } catch (err) {
             errorBox.innerHTML = '';
             errorBox.appendChild(ErrorMessageBox(err));
@@ -120,7 +119,7 @@ export class SigninPage {
         container.querySelectorAll('button[data-link]').forEach(item => 
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
-                Router.navigateTo(item.dataset.link);
+                window.Router.navigateTo(item.dataset.link);
             }, { capture: false })
         )
 

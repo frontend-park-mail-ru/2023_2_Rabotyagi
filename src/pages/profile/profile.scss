@@ -1,3 +1,5 @@
+@use '../../assets/css/vars.scss';
+
 .profile-container {
     width: 1280px;
     height: 100%;
@@ -31,14 +33,14 @@
 
 .tab {
     padding: 8px 24px;
-    border-bottom: 3px solid var(--text-tertiary);
+    border-bottom: 3px solid vars.$text-tertiary;
 
     &:hover {
-        color: var(--palette-primary);
+        color: vars.$palette-primary;
     };
 
     &.selected {
-        border-color: var(--palette-primary);
-        color: var(--palette-primary);
+        border-color: vars.$palette-primary;
+        color: vars.$palette-primary;
     }
 }

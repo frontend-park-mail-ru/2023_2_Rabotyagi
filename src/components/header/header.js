@@ -9,7 +9,6 @@ import { stringToElement } from '../../shared/utils/parsing.js';
 import ProfileBtn from '../profileBtn/profileBtn.js';
 import Template from './header.hbs'
 import css from './header.scss' //eslint-disable-line no-unused-vars
-import Router from '../../shared/services/router.js';
 import button from '../button/button.js';
 import svg from '../svg/svg.js';
 import logo from '../../assets/icons/logo.svg'
@@ -92,7 +91,7 @@ export class Header {
         root.querySelectorAll('button[data-link]').forEach(item => 
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
-                Router.navigateTo(item.dataset.link);
+                window.Router.navigateTo(item.dataset.link);
             }, { capture: false })
         )
         

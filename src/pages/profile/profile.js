@@ -5,7 +5,10 @@ import { Header } from '../../components/header/header.js';
 import Breadcrumb from '../../components/breadcrumb/breadcrumb.js';
 import { store } from '../../shared/store/store.js';
 import uid from '../../shared/utils/uid.js';
-import Router from '../../shared/services/router.js';
+import { Router, Route } from '../../shared/services/router.js';
+import Orders from './orders/orders.js';
+import Products from './products/product.js';
+import Favourite from './favourite/favourite.js';
 
 class Profile {
     constructor() {
@@ -29,7 +32,7 @@ class Profile {
                 delegate: function(container) {
                     container.querySelector(`#i${this.id}`).addEventListener('click', (e) => {
                         e.stopPropagation();
-                        Router.navigateTo('/');
+                        window.Router.navigateTo('/');
                     })
                 }
             },
@@ -38,26 +41,31 @@ class Profile {
             }
         ])
         const root = stringToElement(template(context));
-        const wrapper = document.createElement('div');
+        root.querySelector('#header').replaceWith(header.render());
+        const content = root.querySelector('.profile-content');
 
-        wrapper.classList.toggle('wrapper');
-        wrapper.appendChild(root);
-        wrapper.style.backgroundColor = '#F0F1F3';
+        const router = new Router([
+            new Route('/profile/products', new Products()),
+            new Route('/profile/orders', new Orders()),
+            new Route('/profile/favourites', new Favourite()),
+        ], content);
 
-        root.querySelector('.breadcrumb').replaceWith(breadcrumb.render());
-
-        root.querySelectorAll('.tab').forEach((value) => {
-            value.addEventListener('click', (e) => {
-                if (this.selected != null) {
-                    this.selected.classList.toggle('selected');
-                }
-                e.currentTarget.classList.toggle('selected');
-                this.selected = e.currentTarget;
-                console.log(this.selected);
-            });
-        })
-
-        return [ header.render(), wrapper ];
+        
+        // root.querySelector('.breadcrumb').replaceWith(breadcrumb.render());
+        
+        // root.querySelectorAll('.tab').forEach((value) => {
+            //     value.addEventListener('click', (e) => {
+                //         if (this.selected != null) {
+                    //             this.selected.classList.toggle('selected');
+                    //         }
+                    //         e.currentTarget.classList.toggle('selected');
+                    //         this.selected = e.currentTarget;
+                    //         console.log(this.selected);
+                    //     });
+                    // })
+        // router.navigateTo('/profile/products');
+                    
+        return root;
     }
 }
 
