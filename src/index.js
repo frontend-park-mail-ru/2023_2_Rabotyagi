@@ -22,7 +22,7 @@ const root = document.querySelector('#root');
 store.user.init();
 
 window.Router = new Router([
-    new Route(new R, new MainPage()),
+    new Route(new RegExp('^/$'), new MainPage()),
     new Route(new RegExp('^/signin$'), new SigninPage()),
     new Route(new RegExp('^/signup$'), new SignupPage()),
     new Route(new RegExp('^/profile.*'), new Profile()),

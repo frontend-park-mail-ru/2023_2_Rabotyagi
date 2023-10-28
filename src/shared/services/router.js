@@ -71,9 +71,7 @@ export class Router {
         //     console.log(res);
         //     node = res;
         // });
-        const route =
-            this.routes.find((r) => r.path === location.pathname) ||
-            this.routes.find((r) => r.path === '*');
+        const route = this.routes.find((r) => r.path.exec(location.pathname));
 
         console.log(route, this.routes, location.pathname);
         

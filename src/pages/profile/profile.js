@@ -44,10 +44,10 @@ class Profile {
         root.querySelector('#header').replaceWith(header.render());
         const content = root.querySelector('.profile-content');
 
-        const router = new Router([
-            new Route('/profile/products', new Products()),
-            new Route('/profile/orders', new Orders()),
-            new Route('/profile/favourites', new Favourite()),
+        this.router = new Router([
+            new Route(new RegExp('^/profile/products$'), new Products()),
+            new Route(new RegExp('^/profile/orders$'), new Orders()),
+            new Route(new RegExp('^/profile/favourites$'), new Favourite()),
         ], content);
 
         
