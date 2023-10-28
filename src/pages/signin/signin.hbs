@@ -61,11 +61,7 @@
         </div>
         <div class='right-block'>
             <div class='right-block-content'>
-                <button data-link='/' class='logo'>
-                    <div
-                        style='background-image: url(assets/icons/logo.svg); width: 60px; height: 60px;'
-                    ></div>
-                </button>
+                <div id="logo-btn"></div>
                 <span class='text-subheader'>Вход в «Юла»</span>
                 <input
                     id='inputEmail'
@@ -82,20 +78,8 @@
                     style='width: 100%;'
                 />
                 <div id='errorBox'></div>
-                <button
-                    id='btnSubmit'
-                    class='btn-primary'
-                    style='width: -webkit-fill-available;'
-                >
-                    <span class='text-regular'>{{this.buttons.submit}}</span>
-                </button>
-                <button
-                    data-link='/signup'
-                    class='btn-neutral-primary'
-                    style='width: -webkit-fill-available;'
-                >
-                    <p class='text-regular'>{{this.buttons.toReg}}</p>
-                </button>
+                <div id="btnSubmit"></div>
+                <div id="signup"></div>
             </div>
             <div
                 class='right-block-info'

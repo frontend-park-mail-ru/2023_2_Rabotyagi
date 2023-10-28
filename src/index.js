@@ -11,6 +11,7 @@ import Route from './shared/services/route.js';
 import Router from './shared/services/router.js';
 import createMockServer from './mocks/mock.js';
 import Profile from './pages/profile/profile.js';
+import styles from './assets/css/styles.scss' //eslint-disable-line no-unused-vars
 
 if (process.env.NODE_ENV === 'development') {
     createMockServer();

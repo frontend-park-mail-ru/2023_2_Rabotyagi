@@ -13,8 +13,11 @@ import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
 import { Auth } from '../../shared/api/auth.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './signin.hbs';
-import css from './signin.css'
+import css from './signin.scss' // eslint-disable-line no-unused-vars
 import Router from '../../shared/services/router.js';
+import button from '../../components/button/button.js';
+import svg from '../../components/svg/svg.js';
+import logo from '../../assets/icons/logo.svg'
 
 /**
  * @class signinPage
@@ -82,6 +85,38 @@ export class SigninPage {
 
         const container = root.querySelector('div.right-block-content');
 
+        container.querySelector('#logo-btn').replaceWith(button({
+            leftIcon: svg({ content: logo }),
+            link: '/',
+            variant: 'neutral',
+            subVariant: 'outlined',
+            style: 'height: auto; padding: 0;'
+        }));
+
+        const btnSubmit = button({
+            variant: 'primary',
+            style: 'width: 100%',
+            text: {
+                content: 'Продолжить',
+                class: 'text-regular'
+            }
+        });
+
+        const btnReg = button({
+            link: '/signup',
+            variant: 'neutral',
+            style: 'width: 100%',
+            subVariant: 'primary',
+            text: {
+                content: 'Регистрация',
+                class: 'text-regular'
+            }
+        })
+
+        container.querySelector('#btnSubmit').replaceWith(btnSubmit);
+        container.querySelector('#signup').replaceWith(btnReg);
+
+
         container.querySelectorAll('button[data-link]').forEach(item => 
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -89,7 +124,7 @@ export class SigninPage {
             }, { capture: false })
         )
 
-        container.querySelector('#btnSubmit').addEventListener('click', () => {
+        btnSubmit.addEventListener('click', () => {
             const inputEmail = container.querySelector('#inputEmail');
             const inputPass = container.querySelector('#inputPass');
             const errorBox = container.querySelector('#errorBox');
@@ -110,7 +145,6 @@ export class SigninPage {
             this.signin(inputEmail.value, inputPass.value, errorBox);
         });
 
-        root.style = css;
         return root;
     }
 }

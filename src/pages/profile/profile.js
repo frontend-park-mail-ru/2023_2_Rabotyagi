@@ -49,9 +49,9 @@ class Profile {
         root.querySelectorAll('.tab').forEach((value) => {
             value.addEventListener('click', (e) => {
                 if (this.selected != null) {
-                    this.selected.classList.toggle('tab-selected');
+                    this.selected.classList.toggle('selected');
                 }
-                e.currentTarget.classList.toggle('tab-selected');
+                e.currentTarget.classList.toggle('selected');
                 this.selected = e.currentTarget;
                 console.log(this.selected);
             });

@@ -1,6 +1,4 @@
-.signin-root {
-    
-}
+@use '../../assets/css/vars.scss';
 
 .signin-page {
     display: flex;
@@ -8,7 +6,7 @@
     align-items: center;
     flex-shrink: 0;
     border-radius: 12px;
-    border: 1px solid var(--text-tertiary, rgba(41, 44, 47, 0.25));
+    border: 1px solid vars.$text-tertiary;
     align-self: stretch;
 }
 
@@ -20,7 +18,7 @@
     gap: 32px;
     flex: 1 0 0;
     align-self: stretch;
-    background: var(--background-secondary);
+    background: vars.$background-secondary;
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
 }

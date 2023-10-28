@@ -8,8 +8,11 @@ import { store } from '../../shared/store/store.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import ProfileBtn from '../profileBtn/profileBtn.js';
 import Template from './header.hbs'
-import css from './header.css'
+import css from './header.scss' //eslint-disable-line no-unused-vars
 import Router from '../../shared/services/router.js';
+import button from '../button/button.js';
+import svg from '../svg/svg.js';
+import logo from '../../assets/icons/logo.svg'
 
 /**
  * @class
@@ -36,6 +39,54 @@ export class Header {
         };
 
         const root = stringToElement(template(context));
+
+        root.querySelector('#logo-btn').replaceWith(button({
+            id: 'logo-btn',
+            variant: 'neutral',
+            link: '/',
+            leftIcon: svg({ content: logo }),
+            text: {
+                class: 'text-subheader',
+                content: 'Супер Юла',
+            }
+        }));
+
+        root.querySelector('#category').replaceWith(button({
+            variant: 'primary',
+            text: {
+                class: 'text-regular',
+                content: 'Категории'
+            }
+        }));
+
+        root.querySelector('#product-create').replaceWith(button({
+            variant: 'neutral',
+            subVariant: 'primary',
+            text: {
+                class: 'text-regular',
+                content: 'Разместить объявление'
+            }
+        }));
+
+        root.querySelector('#signin')?.replaceWith(button({
+            variant: 'primary',
+            link: '/signin',
+            text: {
+                class: 'text-regular',
+                content: 'Войти'
+            }
+        }));
+
+        root.querySelector('#signup')?.replaceWith(button({
+            variant: 'neutral',
+            subVariant: 'primary',
+            link: '/signup',
+            text: {
+                class: 'text-regular',
+                content: 'Зарегистрироваться'
+            }
+        }));
+
         root.querySelector('#profileBtn')?.replaceWith(profileBtn.render());
 
         root.querySelectorAll('button[data-link]').forEach(item => 
@@ -45,7 +96,6 @@ export class Header {
             }, { capture: false })
         )
         
-        root.style = css;
         const wrapper = document.createElement('div');
         wrapper.classList.toggle('wrapper');
         wrapper.appendChild(root);

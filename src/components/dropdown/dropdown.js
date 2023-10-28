@@ -1,6 +1,6 @@
 import { stringToElement } from '../../shared/utils/parsing';
 import template from './dropdown.hbs';
-import searchIcon from './search.svg'
+import searchIcon from '../../assets/icons/search.svg'
 
 class Dropdown {
     constructor(context) {
@@ -8,8 +8,7 @@ class Dropdown {
     }
 
     render() {
-
-        this.context.searchIcon = searchIcon.stringify();
+        this.context.searchIcon = searchIcon;
         const root = stringToElement(template(this.context));
         return root;
     }

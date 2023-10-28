@@ -15,7 +15,12 @@ module.exports = {
     chunkFilename: '[name].js'
   },
   module: {
-    rules: [ 
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      }, 
       {
         test: /.jsx?$/,
         include: [
@@ -49,7 +54,7 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        loader: 'svg-sprite-loader'
+        loader: 'svg-inline-loader'
       }
   ],
   },
@@ -59,7 +64,7 @@ module.exports = {
     } ),
   ],
   resolve: {
-    extensions: [ '.json', '.js', '.jsx', '.hbs' ],
+    extensions: [ '.json', '.js', '.jsx', '.hbs', '.ts', '.tsx' ],
     modules: [ 'node_modules' ]
   },
   devtool: 'source-map',

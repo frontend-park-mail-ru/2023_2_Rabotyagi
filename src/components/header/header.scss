@@ -1,17 +1,22 @@
 nav {
     display: flex;
-    padding-top: 8px;
+    /* padding-top: 8px; */
     align-items: center;
     justify-content: space-between;
     width: 1280px;
 }
 
-.logo-box {
+#logo-btn {
+    height: auto;
+    padding: 0;
+}
+
+/* .logo-box {
     display: flex;
     align-items: center;
     gap: 4px;
     color: var(--text-primary);
-}
+} */
 
 .auth-box {
     display: flex;

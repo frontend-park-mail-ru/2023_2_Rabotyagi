@@ -13,8 +13,11 @@ import { Auth } from '../../shared/api/auth.js';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './signup.hbs'
-import css from './signup.css'
+import styles from './signup.scss' // eslint-disable-line no-unused-vars
 import Router from '../../shared/services/router.js';
+import button from '../../components/button/button.js';
+import svg from '../../components/svg/svg.js';
+import logo from '../../assets/icons/logo.svg'
 
 export class SignupPage {
     /**
@@ -82,14 +85,16 @@ export class SignupPage {
         const container = root.querySelector('#content');
         const errorBox = container.querySelector('#errorBox');
 
-        container.querySelectorAll('button[data-link]').forEach(item => 
-            item.addEventListener('click', (e) => {
-                e.stopPropagation();
-                Router.navigateTo(item.dataset.link);
-            }, { capture: false })
-        )
+        const btnSubmit = button({
+            variant: 'primary',
+            style: 'width: 100%',
+            text: {
+                content: 'Продолжить',
+                class: 'text-regular'
+            }
+        });
 
-        container.querySelector('#btnSubmit').addEventListener('click', (e) => {
+        btnSubmit.addEventListener('click', (e) => {
             e.stopPropagation();
             const inputEmail = container.querySelector('#inputEmail');
             const inputPass = container.querySelector('#inputPass');
@@ -115,7 +120,24 @@ export class SignupPage {
             this.signup(inputEmail.value, inputPass.value, errorBox);
         });
 
-        root.style = css;
+        container.querySelector('#btnSubmit').replaceWith(btnSubmit);
+
+        container.querySelector('#logo-btn').replaceWith(button({
+            leftIcon: svg({ content: logo }),
+            link: '/',
+            variant: 'neutral',
+            subVariant: 'outlined',
+            style: 'height: auto; padding: 0;'
+        }));
+
+        container.querySelectorAll('button[data-link]').forEach(item => 
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                Router.navigateTo(item.dataset.link);
+            }, { capture: false })
+        )
+
+
         return root;
     }
 }
