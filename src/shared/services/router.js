@@ -73,15 +73,13 @@ export class Router {
         // });
         const route = this.routes.find((r) => r.path.exec(location.pathname));
 
-        console.log(route, this.routes, location.pathname);
-        
         this.container.innerHTML = '';
 
         try {
             this.container.appendChild(route.component.render());
         }
         catch (err) {
-            console.log(route, this.routes, location.pathname);
+            // console.log(route, this.routes, location.pathname);
         }
 
     }

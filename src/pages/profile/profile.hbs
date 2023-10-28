@@ -1,8 +1,8 @@
-<div id="profile">
+<div class="profile">
     <div id="header"></div>
-    <div id="wrapper">
-        <div class="profile-container">
-            <div class="profile-menu">
+    <div class="wrapper">
+        <div class="container">
+            <div class="menu">
                 <div class="breadcrumb"></div>
                 <div
                     style="align-self: stretch; height: 121px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 10px; display: flex">
@@ -79,14 +79,14 @@
                 <div
                     style="width: 267px; height: 1px; position: relative; background: rgba(41, 44, 47, 0.25); border-radius: 1px">
                 </div>
-                <button class="btn-neutral-tertiary">
+                <button data-link="/profile/products" class="btn-neutral-tertiary">
                     <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M6.25 3.75H17.5V5H6.25V3.75ZM6.25 15H17.5V16.25H6.25V15ZM6.25 9.375H17.5V10.625H6.25V9.375ZM2.5 9.375H3.75V10.625H2.5V9.375ZM2.5 3.75H3.75V5H2.5V3.75ZM2.5 15H3.75V16.25H2.5V15Z" />
                     </svg>
                     <span class="text-regular">Мои объявления</span>
                 </button>
-                <button class="btn-neutral-tertiary">
+                <button data-link="/profile/orders" class="btn-neutral-tertiary">
                     <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M2.60319 5.46514C2.3535 4.48976 1.60028 3.7538 0.666626 3.57295L0.878193 2.33325C2.25995 2.60091 3.37468 3.6901 3.74421 5.13361L4.01119 6.17655H19.3333L17.344 12.5348C17.0622 13.4352 16.2713 14.0425 15.3804 14.0425H7.50892C5.90891 14.0425 4.50685 12.9016 4.08586 11.257L2.60319 5.46514ZM4.33374 7.43657L5.22688 10.9255C5.50754 12.0219 6.44225 12.7825 7.50892 12.7825H15.3804C15.7622 12.7825 16.1012 12.5222 16.2219 12.1363L17.6924 7.43657H4.33374Z" />
@@ -128,64 +128,7 @@
                     <span class="text-regular">Поддержка</span>
                 </button>
             </div>
-            <div class="profile-content">
-                {{!-- <div style="justify-content: flex-start; align-items: flex-start; display: inline-flex; width: 100%;">
-                    <button class="tab">
-                        <span class="text-regular">Всего</span>
-                    </button>
-                    <button class="tab">
-                        <span class="text-regular">Неактивные</span>
-                    </button>
-                    <button class="tab">
-                        <span class="text-regular">Активные</span>
-                    </button>
-                    <button class="tab">
-                        <span class="text-regular">Проданные</span>
-                    </button>
-                </div>
-                <div
-                    style="align-self: stretch; flex: 1 1 0; flex-direction: column; justify-content: center; align-items: center; gap: 8px; display: flex">
-                    <svg width="183" height="118" viewBox="0 0 183 118" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M81.7523 0.499756H3.74893C1.95487 0.499756 0.500488 1.95889 0.500488 3.75883V114.24C0.500488 116.04 1.95487 117.5 3.74893 117.5H81.7523C83.5463 117.5 85.0007 116.04 85.0007 114.24V3.75883C85.0007 1.95889 83.5463 0.499756 81.7523 0.499756Z"
-                            fill="white" />
-                        <path
-                            d="M81.1722 1.08179H4.32901C2.53495 1.08179 1.08057 2.54092 1.08057 4.34086V113.659C1.08057 115.458 2.53495 116.918 4.32901 116.918H81.1722C82.9662 116.918 84.4206 115.458 84.4206 113.659V4.34086C84.4206 2.54092 82.9662 1.08179 81.1722 1.08179Z"
-                            stroke="#EBEBEB" stroke-width="1.4" />
-                        <mask id="mask0_304_497" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="86"
-                            height="118">
-                            <path
-                                d="M81.7523 0.499756H3.74893C1.95487 0.499756 0.500488 1.95889 0.500488 3.75883V114.24C0.500488 116.04 1.95487 117.5 3.74893 117.5H81.7523C83.5463 117.5 85.0007 116.04 85.0007 114.24V3.75883C85.0007 1.95889 83.5463 0.499756 81.7523 0.499756Z"
-                                fill="#EBEBEB" />
-                        </mask>
-                        <g mask="url(#mask0_304_497)">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M85.0007 0.499756H0.500488V84.9995H85.0007V0.499756ZM68.751 91.5001H6.99987V98H68.7494L68.751 91.5001ZM37.8759 101.25H7.0007V107.75H37.8759V101.25Z"
-                                fill="#EBEBEB" />
-                        </g>
-                        <path
-                            d="M179.252 0.499756H101.249C99.4546 0.499756 98.0002 1.95889 98.0002 3.75883V114.24C98.0002 116.04 99.4546 117.5 101.249 117.5H179.252C181.046 117.5 182.5 116.04 182.5 114.24V3.75883C182.5 1.95889 181.046 0.499756 179.252 0.499756Z"
-                            fill="white" />
-                        <path
-                            d="M178.672 1.08179H101.829C100.035 1.08179 98.5803 2.54092 98.5803 4.34086V113.659C98.5803 115.458 100.035 116.918 101.829 116.918H178.672C180.466 116.918 181.92 115.458 181.92 113.659V4.34086C181.92 2.54092 180.466 1.08179 178.672 1.08179Z"
-                            stroke="#EBEBEB" stroke-width="1.4" />
-                        <mask id="mask1_304_497" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="98" y="0" width="85"
-                            height="118">
-                            <path
-                                d="M179.252 0.499756H101.249C99.4546 0.499756 98.0002 1.95889 98.0002 3.75883V114.24C98.0002 116.04 99.4546 117.5 101.249 117.5H179.252C181.046 117.5 182.5 116.04 182.5 114.24V3.75883C182.5 1.95889 181.046 0.499756 179.252 0.499756Z"
-                                fill="#EBEBEB" />
-                        </mask>
-                        <g mask="url(#mask1_304_497)">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M182.5 0.499756H98.0002V84.9995H182.5V0.499756ZM166.251 91.5001H104.5V98H166.249L166.251 91.5001ZM135.376 101.25H104.5V107.75H135.376V101.25Z"
-                                fill="#EBEBEB" />
-                        </g>
-                    </svg>
-                    <span class="text-regular"
-                        style="width: 328px; text-align: center; color: rgba(41, 44, 47, 0.50); word-wrap: break-word">Все
-                        созданные объявления будут отображаться на этой странице.</span>
-                </div> --}}
-            </div>
+            <div class="content"></div>
         </div>
     </div>
 </div>
