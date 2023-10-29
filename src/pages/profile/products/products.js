@@ -15,7 +15,7 @@ class Products {
     async getProducts(container) {
         try {
             const resp = await UserApi.getProducts();
-            const body = await resp.json();
+            const products = (await resp.json()).products;
 
             switch (resp.status) {
                 case 222:
@@ -27,9 +27,16 @@ class Products {
                 default:
             }
             container.innerHTML = '';
-            body.products.forEach((elem) => {
-                container.appendChild(new Card(elem).render());
-            });
+
+            if (products.length == 0) {
+                container.innerHTML = placeholder();
+            }
+            else {
+                products.forEach((elem) => {
+                    container.appendChild(new Card(elem).render());
+                });
+            }
+
         } catch (err) {
             container.innerHTML = '';
             container.appendChild(ErrorMessageBox(err));
