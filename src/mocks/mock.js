@@ -1,6 +1,9 @@
 import { createServer, Model, Response } from "miragejs";
 import { generatePosts } from "./generators/posts";
 import sign from "jwt-encode";
+import jwtDecode from "../shared/utils/jwt-decode";
+import { cookieParser } from "../shared/utils/cookie";
+import { fakerRU } from "@faker-js/faker";
 
 const createMockServer = function () {
     var usersCount = 1;
@@ -61,21 +64,66 @@ const createMockServer = function () {
                 })
             }
         });
+
+        this.get('/user/products', (schema, request) => {
+            const token = cookieParser(document.cookie).access_token;
+            if (token == undefined) {
+                return new Response(401);
+            }
+            const user = jwtDecode(token);
+            const res = schema.products.all().models.filter(({ attrs }) => attrs.saler.email === user.email);
+            let data = [];
+            res.forEach(({ attrs }) => data = [ ...data, attrs ]);
+
+            return new Response(200, {}, {
+                products: data
+            })
+        });
     },
 
     seeds(server) {
-        server.create("user", {
+        const user = {
             id: usersCount,
             email: "NikDem@gmail.com",
             phone: "+7 999 999 66 66",
             name: "Никита",
             password: '363Nikita',
             birthday: Date.now()
-        });
+        }
+        server.create("user", user);
         usersCount += 1;
 
         // Проинициализировал модельки с постами, чтобы в in-memory db хранились, а не генерились постоянно
         generatePosts().forEach((product) => server.create("product", product));
+
+        const saler = {
+            email: "NikDem@gmail.com",
+            phone: "+7 999 999 66 66",
+            name: "Никита",
+        };
+
+        for (let index = 0; index < 10; index++) {
+            server.create('product', {
+                "id": index,
+                "saler": saler,
+                "category": [
+                    "Категория 1",
+                    "Категория 2",
+                    "Категория 3",
+                ],
+                "title": fakerRU.lorem.lines(1),
+                "description": fakerRU.lorem.paragraph(),
+                "price": fakerRU.finance.amount(500, 5000, 0),
+                "created_at": Date.now(),
+                "views": 0,
+                "availableCount": Math.floor(Math.random() * (100 - 1) + 1),
+                "city": fakerRU.location.city(),
+                "delivery": fakerRU.datatype.boolean(),
+                "safeDeal": fakerRU.datatype.boolean(),
+                "image": '/images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg',
+                "isActive": true
+            })
+        }
    },
  });
 

@@ -77,7 +77,7 @@ module.exports = {
             },
           ]
       },
-      { test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/, use: "file-loader" },
+      { test: /\.ttf$/, use: 'url-loader?limit=100000' },
       // {
       //   test: /\.ttf$/i,
       //   loader: "file-loader",

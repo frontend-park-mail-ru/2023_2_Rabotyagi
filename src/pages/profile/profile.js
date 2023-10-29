@@ -15,10 +15,6 @@ class Profile {
         this.selected = null;
     }
 
-    async getProfile() {
-        console.log('loaded');
-    };
-
     render() {
         const context = {
             user: store.user.state.fields
@@ -43,8 +39,6 @@ class Profile {
         const root = stringToElement(template(context));
         root.querySelector('#header').replaceWith(header.render());
         const content = root.querySelector('.content');
-
-        this.getProfile();
 
         this.router = new Router([
             new Route(new RegExp('^/profile/products$'), new Products()),

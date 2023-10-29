@@ -1,5 +1,12 @@
 export const API = {
     SIGNUP: 'signup',
     SIGNIN: 'signin',
-    POST_LIST: 'post/get_list',
+    POST: {
+        LIST: 'post/get_list',
+    },
+    USER: {
+        PRODUCTS: 'user/products',
+        PROFILE: 'user/profile',
+        ORDERS: 'user/orders'
+    }
 };
