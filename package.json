@@ -24,7 +24,9 @@
   "dependencies": {
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "file-loader": "^6.2.0",
     "handlebars-loader": "^1.7.3",
+    "mini-css-extract-plugin": "^2.7.6",
     "svg-inline-loader": "^0.8.2",
     "webpack-cli": "^4.10.0"
   },

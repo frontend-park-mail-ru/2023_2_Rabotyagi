@@ -8,7 +8,7 @@ import { store } from '../../shared/store/store.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import ProfileBtn from '../profileBtn/profileBtn.js';
 import Template from './header.hbs'
-import css from './header.scss' //eslint-disable-line no-unused-vars
+import './header.scss';
 import button from '../button/button.js';
 import svg from '../svg/svg.js';
 import logo from '../../assets/icons/logo.svg'

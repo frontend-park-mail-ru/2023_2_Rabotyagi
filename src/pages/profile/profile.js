@@ -1,6 +1,6 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
-import template from './profile.hbs'
-import styles from './profile.scss' // eslint-disable-line no-unused-vars
+import template from './profile.hbs';
+import './profile.scss';
 import { Header } from '../../components/header/header.js';
 // import Breadcrumb from '../../components/breadcrumb/breadcrumb.js';
 import { store } from '../../shared/store/store.js';

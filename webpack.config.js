@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 require('dotenv').config( {
   path: path.join(__dirname, '.env')
 } );
@@ -9,8 +10,8 @@ module.exports = {
   entry: path.join(__dirname, 'src', 'index'),
   watch: true,
   output: {
-    path: path.join(__dirname, 'public/js'),
-    publicPath: '/public/js/',
+    path: path.join(__dirname, 'public/build'),
+    publicPath: '/public/build/',
     filename: "bundle.js",
     chunkFilename: '[name].js'
   },
@@ -49,9 +50,47 @@ module.exports = {
         loader: 'handlebars-loader',
       },
       { 
-        test: /\.(scss|css)$/, 
-        use: [ 'style-loader', 'css-loader', 'postcss-loader', 'sass-loader' ]
+        test: /\.(css|sass|scss)$/, 
+        use: [ 
+          MiniCssExtractPlugin.loader,
+            {
+                loader: 'css-loader',
+                options: {
+                    importLoaders: 2,
+                    sourceMap: true
+                }
+            },
+            // {
+            //     loader: 'postcss-loader',
+            //     options: {
+            //         plugins: () => [
+            //             require('autoprefixer')
+            //         ],
+            //         sourceMap: true
+            //     }
+            // },
+            {
+                loader: 'sass-loader',
+                options: {
+                    sourceMap: true
+                }
+            },
+          ]
       },
+      { test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/, use: "file-loader" },
+      // {
+      //   test: /\.ttf$/i,
+      //   loader: "file-loader",
+      //   options: {
+      //     name(file) {
+      //       return "[hash].[ext]";
+      //     },
+      //   },
+      // },
+      // {
+      //   test: /\.css$/i,
+      //   use: [MiniCssExtractPlugin.loader, "css-loader"],
+      // },
       {
         test: /\.svg$/,
         loader: 'svg-inline-loader'
@@ -62,9 +101,10 @@ module.exports = {
     new webpack.DefinePlugin( {
       "process.env": JSON.stringify(process.env)
     } ),
+    new MiniCssExtractPlugin(),
   ],
   resolve: {
-    extensions: [ '.json', '.js', '.jsx', '.hbs', '.ts', '.tsx' ],
+    extensions: [ '.json', '.js', '.jsx', '.hbs', '.scss' ],
     modules: [ 'node_modules' ]
   },
   devtool: 'source-map',

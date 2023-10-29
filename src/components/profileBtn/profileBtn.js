@@ -1,5 +1,5 @@
-import template from './profileBtn.hbs'
-import styles from './profileBtn.css'
+import template from './profileBtn.hbs';
+import './profileBtn.scss';
 import { stringToElement } from '../../shared/utils/parsing';
 import Dropdown from '../dropdown/dropdown';
 import { store } from '../../shared/store/store';
@@ -55,9 +55,6 @@ class ProfileBtn {
             e.stopPropagation();
             window.Router.navigateTo('/profile/products');
         });
-
-
-        root.style = styles;
 
         return root;
     }

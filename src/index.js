@@ -3,6 +3,12 @@
  * @module Main
  */
 
+import './assets/css/reset.scss';
+import './assets/css/styles.scss';
+import './assets/fonts/Nunito_Sans/NunitoSans-Regular.ttf';
+import './assets/fonts/Roboto/Roboto-Regular.ttf';
+import './assets/fonts/Roboto/Roboto-Medium.ttf';
+
 import { MainPage } from './pages/main/main.js';
 import { SigninPage } from './pages/signin/signin.js';
 import { SignupPage } from './pages/signup/signup.js';
@@ -10,7 +16,6 @@ import { store } from './shared/store/store.js';
 import { Router, Route } from './shared/services/router.js';
 import createMockServer from './mocks/mock.js';
 import Profile from './pages/profile/profile.js';
-import styles from './assets/css/styles.scss' //eslint-disable-line no-unused-vars
 
 if (process.env.NODE_ENV === 'development') {
     createMockServer();

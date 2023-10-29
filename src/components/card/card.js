@@ -1,6 +1,6 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './card.hbs'
-import styles from './card.scss' // eslint-disable-line no-unused-vars
+import './card.scss'
 
 export class Card {
     #title;

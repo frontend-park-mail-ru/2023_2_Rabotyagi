@@ -1,8 +1,7 @@
 node_modules
-js/
+build/
 .env
 
-js/
 # IDE
 .idea
 *.ps1

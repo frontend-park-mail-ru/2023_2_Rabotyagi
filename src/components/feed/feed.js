@@ -8,7 +8,7 @@ import { Post } from '../../shared/api/post.js';
 import { loaderRegular } from '../loader/loader.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './feed.hbs'
-import css from './feed.css'
+import './feed.scss'
 
 /**
  * @class Блок с объявлениями
@@ -52,8 +52,6 @@ export class Feed {
         container.appendChild(loaderRegular());
 
         this.getPosts(container);
-
-        root.style = css;
 
         return root;
     }

@@ -1,6 +1,6 @@
 import { stringToElement } from '../../../shared/utils/parsing';
 import template from './products.hbs';
-import styles from './products.scss'; // eslint-disable-line no-unused-vars
+import './products.scss';
 
 class Products {
     constructor() {
