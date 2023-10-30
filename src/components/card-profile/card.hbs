@@ -1,0 +1,33 @@
+<button class='card'>
+    <div class='badges'>
+        {{#if this.badges.safeDeal}}
+            {{!-- {{this.badges.safeDeal}} --}}
+        {{/if}}
+
+        {{#if this.badges.delivery}}
+            <div class='badge'>
+                {{!-- {{this.badges.delivery}} --}}
+            </div>
+        {{/if}}
+
+        {{#if this.badges.city}}
+            <div class='badge'>
+                <span class="text-regular">{{this.badges.city}}</span>
+            </div>
+        {{/if}}
+    </div>
+    <div class='body'>
+        {{#if this.img}}
+            <img class='img' src='{{this.img}}' />
+        {{else}}
+            <div class="img"></div>
+        {{/if}}
+        <div class='info'>
+            <span class='text-regular'>{{this.cardInfo.price}} ₽</span>
+            <span class='text-regular title'>{{this.cardInfo.title}}</span>
+        </div>
+        {{! <div class="card-fav-btn"></div> }}
+    </div>
+    </div>
+
+sudo yum install docker-ce-3:20.10.9-3.el8 docker-ce-cli-3:20.10.9-3.el8 containerd.io docker-buildx-plugin docker-compose-plugin

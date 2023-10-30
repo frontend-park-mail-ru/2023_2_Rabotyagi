@@ -26,6 +26,7 @@ class Products {
                     throw "Internal Server Error"
                 default:
             }
+            console.log(products);
             container.innerHTML = '';
 
             if (products.length == 0) {

@@ -11,7 +11,7 @@ module.exports = {
   watch: true,
   output: {
     path: path.join(__dirname, 'public/build'),
-    publicPath: '/public/build/',
+    publicPath: '/build/',
     filename: "bundle.js",
     chunkFilename: '[name].js'
   },
@@ -77,7 +77,10 @@ module.exports = {
             },
           ]
       },
-      { test: /\.ttf$/, use: 'url-loader?limit=100000' },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
+      },
       // {
       //   test: /\.ttf$/i,
       //   loader: "file-loader",

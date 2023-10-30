@@ -5,9 +5,9 @@
 
 import './assets/css/reset.scss';
 import './assets/css/styles.scss';
-import './assets/fonts/Nunito_Sans/NunitoSans-Regular.ttf';
-import './assets/fonts/Roboto/Roboto-Regular.ttf';
-import './assets/fonts/Roboto/Roboto-Medium.ttf';
+// import './assets/fonts/Nunito_Sans/NunitoSans-Regular.ttf';
+// import './assets/fonts/Roboto/Roboto-Regular.ttf';
+// import './assets/fonts/Roboto/Roboto-Medium.ttf';
 
 import { MainPage } from './pages/main/main.js';
 import { SigninPage } from './pages/signin/signin.js';
