@@ -41,6 +41,13 @@ body {
     justify-content: center;
 }
 
+.divider {
+    height: 1px;
+    align-self: stretch;
+    border-radius: 12px;
+    background: vars.$background-tertiary;
+}
+
 .inputField {
     display: flex;
     padding: 8px 12px 8px 10px;

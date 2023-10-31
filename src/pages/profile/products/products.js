@@ -20,13 +20,8 @@ class Products {
             switch (resp.status) {
                 case 222:
                     throw resp.body.error;
-                case 405:
-                    throw "Method Not Allowed"
-                case 500:
-                    throw "Internal Server Error"
                 default:
             }
-            console.log(products);
             container.innerHTML = '';
 
             if (products.length == 0) {
@@ -34,6 +29,7 @@ class Products {
             }
             else {
                 products.forEach((elem) => {
+                    elem.variant = 'profile';
                     container.appendChild(new Card(elem).render());
                 });
             }
