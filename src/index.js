@@ -26,6 +26,7 @@ if (process.env.NODE_ENV === 'development') {
 const root = document.querySelector('#root');
 
 store.user.init();
+store.cart.init();
 
 window.Router = new Router([
     new Route(new RegExp('^/$'), new MainPage()),

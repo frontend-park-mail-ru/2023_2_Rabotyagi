@@ -101,7 +101,7 @@ export class Header {
             }),
             text: {
                 class: 'text-regular',
-                content: 0,
+                content: store.cart.getCount(),
             }
         }));
 

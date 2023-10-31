@@ -13,7 +13,7 @@ class Cart {
 
     render() {
         const context = {
-            user: store.user.state.fields
+            cart: store.cart.state.goods,
         };
         const header = new Header();
 

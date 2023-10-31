@@ -1,6 +1,7 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
-import Template from './card.hbs'
-import './card.scss'
+import Template from './card.hbs';
+import './card.scss';
+import { store } from '../../shared/store/store.js';
 
 export class Card {
     #title;
@@ -35,8 +36,13 @@ export class Card {
 
         root.addEventListener('click', (e) => {
             e.stopPropagation();
-
-            window.Router.navigateTo('/product')
+            store.cart.addInCart({
+                title: this.#title,
+                city: this.#city,
+                price: this.#price,
+                image: this.#image,
+            });
+            window.Router.navigateTo('/product');
         })
 
         return root;
