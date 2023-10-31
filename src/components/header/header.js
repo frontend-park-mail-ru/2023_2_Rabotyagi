@@ -11,7 +11,8 @@ import Template from './header.hbs'
 import './header.scss';
 import button from '../button/button.js';
 import svg from '../svg/svg.js';
-import logo from '../../assets/icons/logo.svg'
+import logo from '../../assets/icons/logo.svg';
+import cart from '../../assets/icons/cart.svg';
 
 /**
  * @class
@@ -32,6 +33,9 @@ export class Header {
             },
             signup: {
                 caption: 'Зарегистрироваться',
+            },
+            cart: {
+                count: 0,
             },
             authorized: store.user.isAuth(),
             profile: store.user.isAuth() ? profileBtn.render() : null,
@@ -83,6 +87,21 @@ export class Header {
             text: {
                 class: 'text-regular',
                 content: 'Зарегистрироваться'
+            }
+        }));
+
+        root.querySelector('#cart-btn')?.replaceWith(button({
+            id: 'cart-btn',
+            variant: 'neutral',
+            link: '/cart',
+            leftIcon: svg({ 
+                content: cart,
+                width: 28,
+                height: 28
+            }),
+            text: {
+                class: 'text-regular',
+                content: 0,
             }
         }));
 
