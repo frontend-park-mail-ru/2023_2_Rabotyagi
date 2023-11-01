@@ -55,6 +55,7 @@ export class SigninPage {
             }
             const cookies = cookieParser(document.cookie);
             store.user.login(cookies);
+            store.cart.emptyCart();
             window.Router.navigateTo('/');
         } catch (err) {
             errorBox.innerHTML = '';

@@ -7,11 +7,13 @@ import { fakerRU } from "@faker-js/faker";
 
 const createMockServer = function () {
     var usersCount = 1;
+    var ordersCount = 1;
 
     const server = createServer({
         models: {
             users: Model,
             product: Model,
+            orders: Model,
         },
 
     routes() {
@@ -63,6 +65,64 @@ const createMockServer = function () {
                     'error': 'User already exists'
                 })
             }
+        });
+
+        this.post('/orders', (schema, request) => {
+            const token = cookieParser(document.cookie).access_token;
+            if (token == undefined) {
+                return new Response(401);
+            }
+            const user = jwtDecode(token);
+            const body = JSON.parse(request.requestBody);
+            const res = schema.orders.all().models.filter(({ attrs }) => {
+                return attrs.owner.email === user.email && attrs.product.id === body.product.id;
+            });
+            console.log(res);
+            /*const res = schema.orders.findBy({ 
+                product_id: body.product_id, 
+                owner: {...user} 
+            });*/
+
+            if (res.length === 0) {
+                const orderData = {
+                    "id": ordersCount,
+                    "owner": {...user},
+                    "product": {...body.product},
+                    "count": 1,
+                    "status": 0,
+                    "create_date": Date.now(),
+                    "update_date": Date.now(),
+                    "close_date": Date.now(),
+                };        
+                ordersCount += 1;
+                schema.orders.create(orderData);
+                return new Response(200, {}, {
+                    order: orderData,
+                });
+            }
+            else {
+                return new Response(222, {}, {
+                    'error': 'Order already exists'
+                })
+            }
+        });
+
+        this.get('/orders', (schema, request) => {
+            const params = request.queryParams;
+            const token = cookieParser(document.cookie).access_token;
+            if (token == undefined) {
+                return new Response(401);
+            }
+            const user = jwtDecode(token);
+            const res = schema.orders.all().models.filter(({ attrs }) => {
+                return attrs.owner.email === user.email && attrs.status === Number(params.status);
+            });
+            let data = [];
+            res.forEach(({ attrs }) => data = [ ...data, attrs ]);
+
+            return new Response(200, {}, {
+                orders: data,
+            });
         });
 
         this.get('/user/products', (schema, request) => {

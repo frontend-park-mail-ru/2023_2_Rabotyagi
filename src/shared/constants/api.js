@@ -8,5 +8,9 @@ export const API = {
         PRODUCTS: 'user/products',
         PROFILE: 'user/profile',
         ORDERS: 'user/orders'
-    }
+    },
+    ORDER: {
+        BASE: 'orders',
+        GET_CART: 'orders?status=0',
+    },
 };

@@ -2,18 +2,39 @@ import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './card.hbs';
 import './card.scss';
 import { store } from '../../shared/store/store.js';
+import { Order } from '../../shared/api/order.js';
 
 export class Card {
+    #id;
     #title;
     #city;
     #price;
     #image;
 
-    constructor({ title, city, price, image }) {
+    constructor({ id, title, city, price, image }) {
+        this.#id = id;
         this.#title = title;
         this.#city = city;
         this.#price = price;
         this.#image = image
+    }
+
+    async putInCart(product) {
+        try {
+            const resp = await Order.create(product);
+            const body = await resp.json();
+            if (resp.status != 200) {
+                console.log("Error!");
+                console.log(resp);
+                throw body.error;
+            }
+            store.cart.addInCart({...body});
+            console.log(store.cart.state);
+            window.Router.navigateTo('/product');
+        } catch(err) {
+            console.log(err);
+            window.Router.navigateTo('/product');
+        }
     }
 
     render() {
@@ -36,14 +57,14 @@ export class Card {
 
         root.addEventListener('click', (e) => {
             e.stopPropagation();
-            store.cart.addInCart({
-                title: this.#title,
-                city: this.#city,
-                price: this.#price,
-                image: this.#image,
+            this.putInCart({
+                "id": this.#id,
+                "title": this.#title,
+                "city": this.#city,
+                "price": this.#price,
+                "image": this.#image,
             });
-            window.Router.navigateTo('/product');
-        })
+        });
 
         return root;
     }

@@ -10,7 +10,7 @@ const cart = {
     init: () => {
         cart.state.goods = [];
     },
-    fullCart: ({ goods }) => {
+    fullCart: (goods) => {
         cart.state.goods = [...goods];
     },
     addInCart: (good) => {

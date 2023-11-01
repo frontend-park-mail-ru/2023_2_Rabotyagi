@@ -18,6 +18,23 @@ import createMockServer from './mocks/mock.js';
 import Profile from './pages/profile/profile.js';
 import Cart from './pages/cart/cart';
 import Product from './pages/product/product';
+import { Order } from './shared/api/order';
+
+async function getOrders() {
+    try {
+        const resp = await Order.getCart();
+        const body = await resp.json();
+        if (resp.status != 200) {
+            console.log("Error!");
+            console.log(resp);
+            throw body.error;
+        }
+        store.cart.fullCart([...body.orders]);
+        console.log("OK");
+    } catch(err) {
+        console.log(err);
+    }
+}
 
 if (process.env.NODE_ENV === 'development') {
     createMockServer();
@@ -28,6 +45,7 @@ const root = document.querySelector('#root');
 
 store.user.init();
 store.cart.init();
+getOrders();
 
 window.Router = new Router([
     new Route(new RegExp('^/$'), new MainPage()),
