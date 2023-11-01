@@ -11,11 +11,17 @@ class Product {
         this.selected = null;
     }
 
+    getId() {
+        return window.location.pathname.split("/")[2];
+    }
+
     render() {
         const context = {
             product: "product",
         };
         const header = new Header();
+
+        console.log(this.getId());
 
         const root = stringToElement(template(context));
         root.querySelector('#header').replaceWith(header.render());

@@ -25,12 +25,9 @@ async function getOrders() {
         const resp = await Order.getCart();
         const body = await resp.json();
         if (resp.status != 200) {
-            console.log("Error!");
-            console.log(resp);
             throw body.error;
         }
         store.cart.fullCart([...body.orders]);
-        console.log("OK");
     } catch(err) {
         console.log(err);
     }

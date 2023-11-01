@@ -2,6 +2,7 @@ export const API = {
     SIGNUP: 'signup',
     SIGNIN: 'signin',
     POST: {
+        BASE: 'post',
         LIST: 'post/get_list',
     },
     USER: {

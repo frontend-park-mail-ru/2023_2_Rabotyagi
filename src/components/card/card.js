@@ -24,16 +24,13 @@ export class Card {
             const resp = await Order.create(product);
             const body = await resp.json();
             if (resp.status != 200) {
-                console.log("Error!");
-                console.log(resp);
                 throw body.error;
             }
             store.cart.addInCart({...body});
-            console.log(store.cart.state);
-            window.Router.navigateTo('/product');
+            window.Router.navigateTo('/product/' + this.#id);
         } catch(err) {
             console.log(err);
-            window.Router.navigateTo('/product');
+            window.Router.navigateTo('/product/' + this.#id);
         }
     }
 

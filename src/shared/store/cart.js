@@ -1,6 +1,7 @@
 const cart = {
     clear: () => {
         cart.state.goods = null;
+        cart.state.saler = null;
     },
     /**
      * @summary Редьюсер для инициализирования стейта корзины
@@ -9,6 +10,10 @@ const cart = {
      */
     init: () => {
         cart.state.goods = [];
+        cart.state.saler = {
+            name: '',
+            email: ''
+        };
     },
     fullCart: (goods) => {
         cart.state.goods = [...goods];

@@ -77,11 +77,6 @@ const createMockServer = function () {
             const res = schema.orders.all().models.filter(({ attrs }) => {
                 return attrs.owner.email === user.email && attrs.product.id === body.product.id;
             });
-            console.log(res);
-            /*const res = schema.orders.findBy({ 
-                product_id: body.product_id, 
-                owner: {...user} 
-            });*/
 
             if (res.length === 0) {
                 const orderData = {
