@@ -7,7 +7,7 @@
 import { store } from '../../shared/store/store.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import ProfileBtn from '../profileBtn/profileBtn.js';
-import Template from './header.hbs'
+import template from './header.hbs'
 import './header.scss';
 import button from '../button/button.js';
 import svg from '../svg/svg.js';
@@ -23,8 +23,8 @@ export class Header {
      * @summary Метод рендера хедера
      */
     render() {
-        const template = Template;
         const profileBtn = new ProfileBtn();
+        console.log(store.user.isAuth());
 
         const context = {
             signin: {
@@ -95,10 +95,6 @@ export class Header {
             }, { capture: false })
         )
         
-        const wrapper = document.createElement('div');
-        wrapper.classList.toggle('wrapper');
-        wrapper.appendChild(root);
-
-        return wrapper;
+        return root;
     }
 }
