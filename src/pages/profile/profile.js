@@ -11,8 +11,10 @@ import Products from './products/products.js';
 import Favourite from './favourite/favourite.js';
 
 class Profile {
+    activePage;
+
     constructor() {
-        this.selected = null;
+        this.activePage = null;
     }
 
     render() {
@@ -20,28 +22,13 @@ class Profile {
             user: store.user.state.fields
         };
         const header = new Header();
-        // const breadcrumb = new Breadcrumb([
-        //     {
-        //         id: uid(),
-        //         text: "Главная",
-        //         isActive: true,
-        //         delegate: function(container) {
-        //             container.querySelector(`#i${this.id}`).addEventListener('click', (e) => {
-        //                 e.stopPropagation();
-        //                 window.Router.navigateTo('/');
-        //             })
-        //         }
-        //     },
-        //     {
-        //         text: "Мои объявления"
-        //     }
-        // ])
+
         const root = stringToElement(template(context));
         root.querySelector('#header').replaceWith(header.render());
         const content = root.querySelector('.content');
 
         this.router = new Router([
-            new Route(new RegExp('^/profile/products$'), new Products()),
+            new Route(new RegExp('^/profile/products$'), new Products(this)),
             new Route(new RegExp('^/profile/orders$'), new Orders()),
             new Route(new RegExp('^/profile/favourites$'), new Favourite()),
         ], content);
@@ -52,9 +39,6 @@ class Profile {
                 this.router.navigateTo(item.dataset.link);
             }, { capture: false })
         )
-        // root.querySelector('.breadcrumb').replaceWith(breadcrumb.render());
-    
-        // router.navigateTo('/profile/products');
                     
         return root;
     }

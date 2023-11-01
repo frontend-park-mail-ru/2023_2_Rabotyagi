@@ -8,7 +8,9 @@ import { ErrorMessageBox } from '../../../components/error/errorMessageBox';
 import { Card } from '../../../components/card/card';
 
 class Products {
-    constructor() {
+
+    constructor(parent) {
+        this.parent = parent;
     }
 
     async getProducts(container) {
@@ -110,11 +112,9 @@ class Products {
     }
 
     render() {
+        this.parent.activePage = this;
         const root = stringToElement(template());
         const container = root.querySelector('#products-container');
-        // container.appendChild(loaderRegular());
-
-        // this.getProducts(container);
 
         root.querySelector('#tab-all').addEventListener('click', (e) => {
             if (this.selected != e.currentTarget) {
