@@ -1,41 +1,42 @@
 @use '../../assets/css/vars.scss';
 
-.btn-primary {
+.btn-base {
     display: inline-flex;
     height: 36px;
     padding: 6px 12px;
     justify-content: center;
     align-items: center;
-    gap: 2px;
+    gap: 8px;
     flex-shrink: 0;
     border-radius: 8px;
+
+}
+
+.btn-primary {
+    @extend .btn-base;
     background: vars.$palette-primary;
     color: vars.$background-primary;
 
 }
 
-.btn-neutral{
-    display: inline-flex;
-    height: 36px;
-    padding: 6px 12px;
-    justify-content: center;
-    align-items: center;
-    gap: 2px;
-    flex-shrink: 0;
-    border-radius: 8px;
+.btn-neutral {
+    @extend .btn-base;
 
     &.primary {
         background: vars.$background-secondary;
         color: vars.$text-primary;
-    };
+    }
 
     &.tertiary {
         &:hover {
             color: vars.$primary-active;
-        };
-    };
+        }
+
+    }
 
     &.outlined {
         border: 1px solid vars.$background-tertiary;
     }
+
+    &.selected {}
 }
