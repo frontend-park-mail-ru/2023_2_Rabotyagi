@@ -9,7 +9,6 @@ import { Card } from '../../../components/card/card';
 
 class Products {
     constructor() {
-
     }
 
     async getProducts(container) {
@@ -22,17 +21,8 @@ class Products {
                     throw resp.body.error;
                 default:
             }
-            container.innerHTML = '';
-
-            if (products.length == 0) {
-                container.innerHTML = placeholder();
-            }
-            else {
-                products.forEach((elem) => {
-                    elem.variant = 'profile';
-                    container.appendChild(new Card(elem).render());
-                });
-            }
+            
+            return products;
 
         } catch (err) {
             container.innerHTML = '';
@@ -40,23 +30,128 @@ class Products {
         }
     }
 
+    async renderAll(container) {
+        container.innerHTML = '';
+        container.appendChild(loaderRegular());
+
+        const products = await this.getProducts(container);
+
+        container.innerHTML = '';
+
+        if (products.length == 0) {
+            container.innerHTML = placeholder();
+        }
+        else {
+            products.forEach((elem) => {
+                elem.variant = 'profile';
+                container.appendChild(new Card(elem).render());
+            });
+        }
+    }
+
+    async renderNotActive(container) {
+        container.innerHTML = '';
+        container.appendChild(loaderRegular());
+
+        let products = await this.getProducts(container);
+
+        container.innerHTML = '';
+
+        if (products.length == 0) {
+            container.innerHTML = placeholder();
+        }
+        else {
+            products = products.filter((value) => !value.isActive);
+            products.forEach((elem) => {
+                elem.variant = 'profile';
+                container.appendChild(new Card(elem).render());
+            });
+        }
+    }
+
+    async renderActive(container) {
+        container.innerHTML = '';
+        container.appendChild(loaderRegular());
+
+        let products = await this.getProducts(container);
+
+        container.innerHTML = '';
+
+        if (products.length == 0) {
+            container.innerHTML = placeholder();
+        }
+        else {
+            products = products.filter((value) => value.isActive);
+            products.forEach((elem) => {
+                elem.variant = 'profile';
+                container.appendChild(new Card(elem).render());
+            });
+        }
+    }
+
+    async renderSoled(container) {
+        container.innerHTML = '';
+        container.appendChild(loaderRegular());
+
+        let products = [];
+
+        container.innerHTML = '';
+
+        if (products.length == 0) {
+            container.innerHTML = placeholder();
+        }
+        else {
+            products = products.filter((value) => value.isActive);
+            products.forEach((elem) => {
+                elem.variant = 'profile';
+                container.appendChild(new Card(elem).render());
+            });
+        }
+    }
+
     render() {
         const root = stringToElement(template());
         const container = root.querySelector('#products-container');
-        container.appendChild(loaderRegular());
+        // container.appendChild(loaderRegular());
 
-        this.getProducts(container);
+        // this.getProducts(container);
 
+        root.querySelector('#tab-all').addEventListener('click', (e) => {
+            if (this.selected != e.currentTarget) {
+                this.renderAll(container);
+            }
+        });
+
+        root.querySelector('#tab-notActive').addEventListener('click', (e) => {
+            if (this.selected != e.currentTarget) {
+                this.renderNotActive(container);
+            }
+        });
+
+        root.querySelector('#tab-active').addEventListener('click', (e) => {
+            if (this.selected != e.currentTarget) {
+                this.renderActive(container);
+            }
+        });
+
+        root.querySelector('#tab-soled').addEventListener('click', (e) => {
+            if (this.selected != e.currentTarget) {
+                this.renderSoled(container);
+            }
+        });
+        
         root.querySelectorAll('.tab').forEach((value) => {
             value.addEventListener('click', (e) => {
                 if (this.selected != null) {
-                        this.selected.classList.toggle('selected');
+                    this.selected.classList.toggle('selected');
                 }
 
                 e.currentTarget.classList.toggle('selected');
                 this.selected = e.currentTarget;
             });
         });
+        
+        root.querySelector('#tab-all').click();
 
         return root;
     }

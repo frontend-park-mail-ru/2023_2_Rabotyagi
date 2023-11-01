@@ -25,7 +25,7 @@ export const generatePosts = () => {
             "delivery": fakerRU.datatype.boolean(),
             "safeDeal": fakerRU.datatype.boolean(),
             "image": '/images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg',
-            "isActive": true
+            "isActive": fakerRU.datatype.boolean()
         } ]
     }
     return posts;

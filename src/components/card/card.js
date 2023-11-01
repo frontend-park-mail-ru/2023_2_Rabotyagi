@@ -18,8 +18,7 @@ export class Card {
         });
 
         Handlebars.registerHelper('haveBadges', function () {
-            console.log(this);
-            return (this.safeDeal !== undefined | this.delivery !== undefined);
+            return (this.safeDeal || this.delivery);
         });
 
         const template = Template;

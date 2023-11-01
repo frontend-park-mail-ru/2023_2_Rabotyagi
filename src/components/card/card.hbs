@@ -1,12 +1,19 @@
 {{#if (isprofile this.variant)}}
     <button class="card-profile">
-        <img class="image" src="https://via.placeholder.com/120x154" />
+        {{#if this.image}}
+                <img class='image' src='{{this.image}}' />
+            {{else}}
+                <div class="img"></div>
+            {{/if}}
         <div class="content">
             <span class='text-regular'>{{this.price}} ₽</span>
             <span class='text-regular title'>{{this.title}}</span>
             <div class="divider"></div>
             {{#if (haveBadges)}}
                 <div class="badges">
+                    {{!-- {{haveBadges}}
+                    {{this.safeDeal}}
+                    {{this.delivery}} --}}
                     {{#if this.safeDeal}}
                         <div class="badge">
                             <svg width="20" height="20" viewBox="0 0 64 64" fill="none"
@@ -33,11 +40,13 @@
                     {{/if}}
                 </div>
             {{/if}}
-            <div class="badges"></div>
+            
             {{#if this.city}}
+            <div class="badges">
                 <div class='badge'>
                     <span class="text-regular">{{this.city}}</span>
                 </div>
+            </div>
             {{/if}}
         </div>
     </button>
