@@ -10,4 +10,10 @@ export const Post = {
             // },
         });
     },
+    getPost: async (postId) => {
+        return await ajax.get({
+            url: API.POST.BASE + "/" + postId,
+            credentials: 'include',
+        });
+    },
 };

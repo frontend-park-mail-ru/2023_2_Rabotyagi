@@ -21,6 +21,20 @@ const createMockServer = function () {
         this.namespace = "api/v1";
     
         this.get("post/get_list", (schema) => schema.products.all().models);
+
+        this.get("post/:id", (schema, request) => {
+            const postId = request.params.id;
+            const res = schema.products.findBy({ id: postId });
+            if (res != null) {
+                return new Response(200, {}, {
+                    product: res,
+                });
+            } else {
+                return new Response(222, {}, {
+                    'error': 'Post with this id does not exist'
+                });
+            }
+        });
     
         this.get("/signin", (schema, request) => {
             const res = schema.users.findBy({ email: request.queryParams.email });

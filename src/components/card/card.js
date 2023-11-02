@@ -19,21 +19,6 @@ export class Card {
         this.#image = image
     }
 
-    async putInCart(product) {
-        try {
-            const resp = await Order.create(product);
-            const body = await resp.json();
-            if (resp.status != 200) {
-                throw body.error;
-            }
-            store.cart.addInCart({...body});
-            window.Router.navigateTo('/product/' + this.#id);
-        } catch(err) {
-            console.log(err);
-            window.Router.navigateTo('/product/' + this.#id);
-        }
-    }
-
     render() {
         const template = Template;
 
@@ -54,13 +39,7 @@ export class Card {
 
         root.addEventListener('click', (e) => {
             e.stopPropagation();
-            this.putInCart({
-                "id": this.#id,
-                "title": this.#title,
-                "city": this.#city,
-                "price": this.#price,
-                "image": this.#image,
-            });
+            window.Router.navigateTo('/product/' + this.#id);
         });
 
         return root;
