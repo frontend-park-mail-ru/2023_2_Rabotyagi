@@ -23,12 +23,17 @@ class Product {
 
     async addInCart() {
         try {
-            const resp = await Order.create(this.#attrs);
-            const body = await resp.json();
-            if (resp.status != 200) {
-                throw body.error;
+            if (store.cart.sameUser(this.#attrs.saler.email)) {
+                const resp = await Order.create(this.#attrs);
+                const body = await resp.json();
+                if (resp.status != 200) {
+                    throw body.error;
+                }
+                console.log('body', body);
+                store.cart.addInCart({...body});
+            } else {
+                throw new Error("Other orders have not this user");
             }
-            store.cart.addInCart({...body});
         } catch(err) {
             console.log(err);
         }
@@ -43,7 +48,7 @@ class Product {
                 throw body.error;
             }
             Object.keys(body.product).forEach((attrKey) => {
-                this.#attrs[attrKey] = body[attrKey];
+                this.#attrs[attrKey] = body.product[attrKey];
             });
             container.querySelector('div.product-loader').innerHTML = '';
             const titleBox = container.querySelector('div.product-title');

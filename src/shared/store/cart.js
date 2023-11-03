@@ -15,11 +15,39 @@ const cart = {
             email: ''
         };
     },
+    hasUser: () => {
+        return cart.state.saler.email !== '';
+    },
+    sameUser: (email) => {
+        return !cart.hasUser() || email === cart.state.saler.email;
+    },
+    updateUser: (saler) => {
+        cart.state.saler.name = saler.name;
+        cart.state.saler.email = saler.email;
+    },
     fullCart: (goods) => {
+        goods.forEach(element => {
+            if (!cart.sameUser(element.order.product.saler.email)) {
+                console.log("Error: other user");
+                return false;
+            }
+            if (!cart.hasUser()) {
+                cart.updateUser(element.order.product.saler);
+            }
+        });
         cart.state.goods = [...goods];
+        return true;
     },
     addInCart: (good) => {
-        cart.state.goods.push(good);
+        if (cart.sameUser(good.order.product.saler.email)) {
+            cart.state.goods.push(good);
+            if (!cart.hasUser()) {
+                cart.updateUser(good.order.product.saler);
+            }
+            return true;
+        }
+        console.log("Error: other user");
+        return false;
     },
     deleteFromCart: ({ index }) => {
         if (index >= 0 && index < cart.state.goods.length) {
