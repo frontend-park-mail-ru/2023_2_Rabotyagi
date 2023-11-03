@@ -2,40 +2,28 @@
  * @module OrderFeed
  */
 
-import { Card } from '../card/card.js';
+import { store } from '../../shared/store/store.js';
+import { OrderCard } from '../orderCard/orderCard.js';
 import { ErrorMessageBox } from '../error/errorMessageBox.js';
-import { Post } from '../../shared/api/post.js';
+import { Order } from '../../shared/api/order.js';
 import { loaderRegular } from '../loader/loader.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './orderFeed.hbs'
-import '.orderFeed.scss'
+import './orderFeed.scss'
 
 /**
  * @class Блок с объявлениями
  * @description Получает товары из корзины с бекенда и формирует коллекцию для представления
  */
 export class OrderFeed {
-    async getPosts(container) {
-        try {
-            const resp = await Post.feed();
-            const body = await resp.json();
-
-            switch (resp.status) {
-                case 222:
-                    throw resp.body.error;
-                case 405:
-                    throw "Method Not Allowed"
-                case 500:
-                    throw "Internal Server Error"
-                default:
-            }
-            container.innerHTML = '';
-            body.forEach((elem) => {
-                container.appendChild(new Card(elem).render());
+    getOrders(container) {
+        if (store.cart.getCount !== 0) {
+            store.cart.state.goods.forEach((elem) => {
+                container.innerHTML = '';
+                container.appendChild(new OrderCard(elem).render());
             });
-        } catch (err) {
-            container.innerHTML = '';
-            container.appendChild(ErrorMessageBox(err));
+        } else {
+            container.innerHTML = 'Пока в корзине нет товаров';
         }
     }
 
@@ -43,15 +31,15 @@ export class OrderFeed {
         const template = Template;
 
         const context = {
-            feedName: 'Все объявления',
+            name: '',
         };
 
         const root = stringToElement(template(context));
 
-        const container = root.querySelector('div.feed-content');
+        const container = root.querySelector('div.order-feed-content');
         container.appendChild(loaderRegular());
 
-        this.getPosts(container);
+        this.getOrders(container);
 
         return root;
     }
