@@ -65,7 +65,7 @@ const createMockServer = function () {
             }
         });
 
-        this.get('/user/products', (schema, request) => {
+        this.get('/user/products', (schema) => {
             const token = cookieParser(document.cookie).access_token;
             if (token == undefined) {
                 return new Response(401);
@@ -78,6 +78,10 @@ const createMockServer = function () {
             return new Response(200, {}, {
                 products: data
             })
+        });
+
+        this.get('/user/orders', () => {
+            return new Response(200);
         });
     },
 
