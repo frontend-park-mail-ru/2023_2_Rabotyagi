@@ -1,8 +1,6 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './card.hbs';
 import './card.scss';
-import { store } from '../../shared/store/store.js';
-import { Order } from '../../shared/api/order.js';
 
 export class Card {
     #id;
