@@ -159,6 +159,6 @@ export class SigninPage {
         btnSubmit.addEventListener('click', this.signinEvent(container));
         document.body.addEventListener('keydown', this.signinEvent(container));
 
-        return root;
+        return [ root ];
     }
 }

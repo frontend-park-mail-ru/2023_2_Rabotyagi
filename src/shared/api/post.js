@@ -10,4 +10,13 @@ export const Post = {
             // },
         });
     },
+
+    get: async (id) => {
+        return await ajax.get({
+            url: API.POST.GET,
+            params: {
+                id: id
+            },
+        });
+    }
 };

@@ -153,7 +153,7 @@ class Products {
         
         root.querySelector('#tab-all').click();
 
-        return root;
+        return [ root ];
     }
 }
 

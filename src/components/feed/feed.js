@@ -7,7 +7,7 @@ import { ErrorMessageBox } from '../error/errorMessageBox.js';
 import { Post } from '../../shared/api/post.js';
 import { loaderRegular } from '../loader/loader.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
-import Template from './feed.hbs'
+import template from './feed.hbs'
 import './feed.scss'
 
 /**
@@ -40,8 +40,6 @@ export class Feed {
     }
 
     render() {
-        const template = Template;
-
         const context = {
             feedName: 'Все объявления',
         };

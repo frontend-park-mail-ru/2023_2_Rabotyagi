@@ -26,10 +26,9 @@ class Profile {
         const context = {
             user: store.user.state.fields
         };
-        const header = new Header();
+        const header = new Header().render();
 
         const root = stringToElement(template(context));
-        root.querySelector('#header').replaceWith(header.render());
         const content = root.querySelector('.content');
 
         this.router = new Router([
@@ -81,8 +80,7 @@ class Profile {
             }, { capture: false })
         );
 
-                    
-        return root;
+        return [ header, root ];
     }
 }
 

@@ -1,9 +1,8 @@
 import { createServer, Model, Response } from "miragejs";
-import { generatePosts } from "./generators/posts";
+import { generatePost } from "./generators/posts";
 import sign from "jwt-encode";
 import jwtDecode from "../shared/utils/jwt-decode";
 import { cookieParser } from "../shared/utils/cookie";
-import { fakerRU } from "@faker-js/faker";
 
 const createMockServer = function () {
     var usersCount = 1;
@@ -19,6 +18,18 @@ const createMockServer = function () {
         this.namespace = "api/v1";
     
         this.get("post/get_list", (schema) => schema.products.all().models);
+
+        this.get('post', (schema, request) => {
+            const res = schema.products.findBy({ id: request.queryParams.id });
+
+            if (res == null) {
+                return new Response(222, {}, {
+                    'error': 'Такого объявления не существует'
+                })
+            }
+
+            return new Response(200, {}, res.attrs);
+        });
     
         this.get("/signin", (schema, request) => {
             const res = schema.users.findBy({ email: request.queryParams.email });
@@ -98,7 +109,11 @@ const createMockServer = function () {
         usersCount += 1;
 
         // Проинициализировал модельки с постами, чтобы в in-memory db хранились, а не генерились постоянно
-        generatePosts().forEach((product) => server.create("product", product));
+        let postCount = 0;
+        for (; postCount < 20; postCount++) {
+            server.create("product", generatePost(postCount));            
+        }
+        // generatePosts().forEach((product) => server.create("product", product));
 
         const saler = {
             email: "NikDem@gmail.com",
@@ -106,27 +121,10 @@ const createMockServer = function () {
             name: "Никита",
         };
 
-        for (let index = 0; index < 10; index++) {
-            server.create('product', {
-                "id": index,
-                "saler": saler,
-                "category": [
-                    "Категория 1",
-                    "Категория 2",
-                    "Категория 3",
-                ],
-                "title": fakerRU.lorem.lines(1),
-                "description": fakerRU.lorem.paragraph(),
-                "price": fakerRU.finance.amount(500, 5000, 0),
-                "created_at": Date.now(),
-                "views": 0,
-                "availableCount": Math.floor(Math.random() * (100 - 1) + 1),
-                "city": fakerRU.location.city(),
-                "delivery": fakerRU.datatype.boolean(),
-                "safeDeal": fakerRU.datatype.boolean(),
-                "image": '/images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg',
-                "isActive": fakerRU.datatype.boolean()
-            })
+        for (; postCount < 30; postCount++) {
+            const post = generatePost(postCount);
+            post.saler = saler;
+            server.create('product', post);
         }
    },
  });

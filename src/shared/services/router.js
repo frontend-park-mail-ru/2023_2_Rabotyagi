@@ -51,8 +51,8 @@ export class Router {
      * @summary метод для изменения истории
      * @param {string} url
      */
-    navigateTo(url) {
-        history.pushState(null, null, url);
+    navigateTo(url, state) {
+        history.pushState(state, null, url);
         this.loadRoute();
     }
 
@@ -75,11 +75,10 @@ export class Router {
 
         this.container.innerHTML = '';
 
-        try {
-            this.container.appendChild(route.component.render());
-        }
-        catch (err) {
-            // console.log(route, this.routes, location.pathname);
+        const component = route?.component.render();
+        
+        if (component !== undefined){
+            this.container.append(...component);
         }
 
     }

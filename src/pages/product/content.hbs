@@ -1,0 +1,41 @@
+<div class="content">
+    <div class="header">
+        <span class="text-subheader">{{this.title}}</span>
+        <button>
+            <svg width="25" height="26" viewBox="0 0 25 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M7.81254 4.66699C4.64848 4.66699 2.08337 7.2321 2.08337 10.3962C2.08337 16.1253 8.85421 21.3337 12.5 22.5451C16.1459 21.3337 22.9167 16.1253 22.9167 10.3962C22.9167 7.2321 20.3516 4.66699 17.1875 4.66699C15.25 4.66699 13.5365 5.62897 12.5 7.10137C11.9718 6.34887 11.2699 5.73475 10.454 5.311C9.63801 4.88725 8.73197 4.66634 7.81254 4.66699Z"
+                    stroke="#9D8DF1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span class="text-regular">Добавить в избранное</span>
+        </button>
+    </div>
+    <div class="body">
+        {{!-- <img src="{{this.image}}" alt="" srcset=""> --}}
+        <div
+            style="width: 100%; height: 100%; background: rgba(41, 44, 47, 0.50); justify-content: center; align-items: center; gap: 10px; display: inline-flex">
+            <img style="width: 247px; height: 218px" src="https://via.placeholder.com/247x218" />
+        </div>
+        <div class="info">
+            <span class="text-regular">Город</span>
+            <span class="text-regular">{{this.city}}</span>
+            <span class="text-regular">Описание</span>
+            <span class="text-regular">{{this.description}}</span>
+            <span class="text-regular">Категория</span>
+            <span class="text-regular">{{this.category}}</span>
+            <span class="text-regular">В избранном</span>
+            <span class="text-regular">13</span>
+            <span class="text-regular">Просмотры</span>
+            <span class="text-regular">110</span>
+            <span class="text-regular">Размещено</span>
+            <span class="text-regular">{{this.created_at}}</span>
+        </div>
+    </div>
+
+    {{!-- <button id="fav"></button>
+    <img src="" alt="" srcset="">
+    <div class="info">
+
+    </div> --}}
+
+</div>
