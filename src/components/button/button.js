@@ -25,6 +25,9 @@ const button = (context) => {
         case 'neutral':
             context.variant = 'btn-neutral';
             break;
+        case 'secondary':
+            context.variant = 'btn-secondary';
+            break;
     }
     const root = stringToElement(template(context));
 

@@ -55,10 +55,19 @@ const cart = {
         }
     },
     emptyCart: () => {
+        cart.state.saler.name = '';
+        cart.state.saler.email = '';
         cart.state.goods = [];
     },
     getCount: () => {
         return cart.state.goods.length;
+    },
+    getPrice: () => {
+        let result = 0;
+        cart.state.goods.forEach((elem) => {
+            result += Number(elem.order.product.price);
+        });
+        return result;
     },
     state: {
         goods: null,

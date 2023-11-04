@@ -1,0 +1,13 @@
+@use '../../assets/css/vars.scss';
+
+.user-card {
+    display: inline-flex;
+    background: vars.$background-primary;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+}
+
+.user-email {
+    color: vars.$palette-primary;
+}

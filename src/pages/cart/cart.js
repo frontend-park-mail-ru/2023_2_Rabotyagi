@@ -11,6 +11,7 @@ class Cart {
     render() {
         const context = {
             pageTitle: 'Корзина',
+            authorized: store.user.isAuth(),
         };
         const header = new Header();
         const feed = new OrderFeed();
