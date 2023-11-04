@@ -17,10 +17,10 @@ import './orderFeed.scss'
  */
 export class OrderFeed {
     getOrders(container) {
-        if (store.cart.getCount !== 0) {
+        if (store.cart.getCount() !== 0) {
+            container.innerHTML = '';
             store.cart.state.goods.forEach((elem) => {
-                container.innerHTML = '';
-                container.appendChild(new OrderCard(elem).render());
+                container.appendChild(new OrderCard(elem.order).render());
             });
         } else {
             container.innerHTML = 'Пока в корзине нет товаров';

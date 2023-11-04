@@ -8,14 +8,13 @@ export class OrderCard {
 
     constructor(order) {
         this.#order = structuredClone(order);
-        console.log(this.#order);
     }
 
     render() {
         const template = Template;
 
         const context = {
-            product: {...order.product},
+            product: this.#order.product,
         };
 
         const root = stringToElement(template(context));

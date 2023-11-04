@@ -29,7 +29,6 @@ class Product {
                 if (resp.status != 200) {
                     throw body.error;
                 }
-                console.log('body', body);
                 store.cart.addInCart({...body});
             } else {
                 throw new Error("Other orders have not this user");

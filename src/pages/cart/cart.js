@@ -17,7 +17,7 @@ class Cart {
 
         const root = stringToElement(template(context));
         root.querySelector('#header').replaceWith(header.render());
-        root.querySelector('#cartContent').replaceWith(feed);
+        root.querySelector('#cartContent').replaceWith(feed.render());
                     
         return root;
     }
