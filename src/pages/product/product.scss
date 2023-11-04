@@ -38,6 +38,13 @@
                     padding: 16px;
                 }
 
+                >.image {
+                    width: 100%;
+                    height: 400px;
+                    flex-shrink: 0;
+                    align-self: stretch;
+                }
+
             }
         }
         
