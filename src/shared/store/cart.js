@@ -12,7 +12,8 @@ const cart = {
         cart.state.goods = [];
         cart.state.saler = {
             name: '',
-            email: ''
+            email: '',
+            image: '',
         };
     },
     hasUser: () => {
@@ -24,6 +25,7 @@ const cart = {
     updateUser: (saler) => {
         cart.state.saler.name = saler.name;
         cart.state.saler.email = saler.email;
+        cart.state.saler.image = saler.image;
     },
     fullCart: (goods) => {
         goods.forEach(element => {
@@ -57,6 +59,7 @@ const cart = {
     emptyCart: () => {
         cart.state.saler.name = '';
         cart.state.saler.email = '';
+        cart.state.saler.image = '';
         cart.state.goods = [];
     },
     getCount: () => {

@@ -31,6 +31,9 @@ export class UserCard {
             }
         });
 
+        console.log(this);
+        console.log(context);
+
         const root = stringToElement(template(context));
 
         const container = root.querySelector('div.user-info');

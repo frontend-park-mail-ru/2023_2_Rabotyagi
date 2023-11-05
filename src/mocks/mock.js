@@ -169,6 +169,7 @@ const createMockServer = function () {
             email: "NikDem@gmail.com",
             phone: "+7 999 999 66 66",
             name: "Никита",
+            image: '/images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg',
         };
 
         for (let index = 0; index < 10; index++) {
