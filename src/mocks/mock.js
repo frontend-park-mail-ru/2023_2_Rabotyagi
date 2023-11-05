@@ -134,6 +134,21 @@ const createMockServer = function () {
             });
         });
 
+        this.delete('/orders/:id', (schema, request) => {
+            const id = request.params.id;
+
+            try {
+                schema.orders.find(id).destroy();
+                return new Response(200, {}, {
+                    'message': 'Successful deletion',
+                });
+            } catch (err) {
+                return new Response(222, {}, {
+                    'error': 'Something went wrong when deleting'
+                });
+            }   
+        });
+
         this.get('/user/products', (schema, request) => {
             const token = cookieParser(document.cookie).access_token;
             if (token == undefined) {

@@ -1,6 +1,35 @@
+@use '../../assets/css/vars.scss';
+
 .order-card {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
+    height: 218px;
     width: 100%;
-    border: 1px solid red;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+
+    .left-content {
+        img {
+            width: -webkit-fill-available;
+            height: 218px;
+        }
+    }
+
+    .center-content {
+        padding: 16px;
+
+        .product-title {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .right-content {
+        padding: 16px;
+        background-color: vars.$palette-primary;
+    }
 }

@@ -51,9 +51,12 @@ const cart = {
         console.log("Error: other user");
         return false;
     },
-    deleteFromCart: ({ index }) => {
-        if (index >= 0 && index < cart.state.goods.length) {
+    deleteFromCart: (orderId) => {
+        const index = cart.state.goods.map(elem => elem.order.id).indexOf(orderId);
+        if (index != -1) {
             cart.state.goods.splice(index, 1);
+        } else {
+            console.log('Error when deleting from cart');
         }
     },
     emptyCart: () => {

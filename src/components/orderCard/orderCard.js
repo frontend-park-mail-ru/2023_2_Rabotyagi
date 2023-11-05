@@ -1,6 +1,7 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './orderCard.hbs';
 import './orderCard.scss';
+import { Order } from '../../shared/api/order.js';
 import button from '../button/button.js';
 
 export class OrderCard {
@@ -8,6 +9,18 @@ export class OrderCard {
 
     constructor(order) {
         this.#order = structuredClone(order);
+    }
+
+    async deleteOrder() {
+        try {
+            const resp = Order.deleteOrder(this.#order.id);
+            const body = await resp.json();
+            if (resp.status != 200) {
+                throw body.error;
+            }
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     render() {
@@ -18,6 +31,18 @@ export class OrderCard {
         };
 
         const root = stringToElement(template(context));
+
+        const deleteBtn = button({
+            variant: 'accent',
+            subVariant: 'primary',
+            text: {
+                class: 'text-regular',
+                content: 'Удалить'
+            }
+        });
+
+        const container = root.querySelector('div.right-content');
+        container.querySelector('#deleteBtn').replaceWith(deleteBtn);
 
         return root;
     }

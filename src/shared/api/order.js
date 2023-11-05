@@ -15,4 +15,10 @@ export const Order = {
             credentials: 'include',
         });
     },
+    deleteOrder: async(orderId) => {
+        return await ajax.delete({
+            url: API.ORDER.BASE + "/" + orderId,
+            credentials: 'include',
+        });
+    }
 };

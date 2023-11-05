@@ -12,6 +12,7 @@ const { API_URL } = process.env;
 const AJAX_METHODS = {
     GET: 'GET',
     POST: 'POST',
+    DELETE: 'DELETE',
 };
 
 /**
@@ -105,6 +106,15 @@ class Ajax {
             body,
             headers,
             credentials,
+        });
+    }
+
+    delete({ url, headers, credentials }) {
+        return this.#ajax({
+            method: AJAX_METHODS.DELETE,
+            url,
+            headers,
+            credentials,            
         });
     }
 }

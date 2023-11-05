@@ -1,6 +1,6 @@
 @use '../../assets/css/vars.scss';
 
-.btn-primary, .btn-secondary {
+.btn-primary, .btn-secondary, .btn-accent {
     display: inline-flex;
     height: 36px;
     padding: 6px 12px;
@@ -20,6 +20,11 @@
 .btn-secondary {
     background: vars.$palette-secondary;
     color: vars.$background-primary;
+}
+
+.btn-accent {
+    background: vars.$background-primary;
+    color: vars.$text-accent;
 }
 
 .btn-neutral{

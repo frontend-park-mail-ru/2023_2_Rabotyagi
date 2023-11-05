@@ -28,6 +28,9 @@ const button = (context) => {
         case 'secondary':
             context.variant = 'btn-secondary';
             break;
+        case 'accent':
+            context.variant = 'btn-accent';
+            break;
     }
     const root = stringToElement(template(context));
 
