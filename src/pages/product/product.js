@@ -3,12 +3,14 @@ import template from './product.hbs';
 import './product.scss';
 import { Header } from '../../components/header/header.js';
 // import Breadcrumb from '../../components/breadcrumb/breadcrumb.js';
-import { store } from '../../shared/store/store.js';
 import { Post } from '../../shared/api/post.js';
 import { Order } from '../../shared/api/order.js';
 import { loaderRegular } from '../../components/loader/loader.js';
 import button from '../../components/button/button.js';
 // import uid from '../../shared/utils/uid.js';
+
+import { store } from '../../shared/store/store.js';
+import dispatcher from '../../shared/dispatcher/dispathcer.js';
 
 class Product {
     #attrs
@@ -29,7 +31,8 @@ class Product {
                 if (resp.status != 200) {
                     throw body.error;
                 }
-                store.cart.addInCart({...body});
+                dispatcher.dispatch({ type: 'ADD_GOOD', payload: {...body} });
+                //store.cart.addInCart({...body});
             } else {
                 throw new Error("Other orders have not this user");
             }

@@ -41,6 +41,11 @@ export class OrderCard {
             }
         });
 
+        deleteBtn.addEventListener('click', (e) => {
+            this.deleteOrder();
+            //signal
+        });
+
         const container = root.querySelector('div.right-content');
         container.querySelector('#deleteBtn').replaceWith(deleteBtn);
 

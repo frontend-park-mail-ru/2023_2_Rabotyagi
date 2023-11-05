@@ -1,83 +1,127 @@
-const cart = {
-    clear: () => {
-        cart.state.goods = null;
-        cart.state.saler = null;
-    },
+import { BaseStore } from "./baseStore";
+import dispathcer from "../dispatcher/dispathcer";
+
+class Cart {
+    constructor() {
+        this.state = {
+            goods: [],
+            saler: {
+                id: 0,
+                name: '',
+                email: '',
+                image: '',
+            }
+        }
+
+        dispathcer.register((action) => {
+            switch(action.type) {
+                case 'ADD_GOOD':
+                    this.addInCart(action.payload);
+                    this.emitChange();
+                    break;
+                case 'DELETE_GOOD':
+                    this.deleteFromCart(action.payload);
+                    this.emitChange();
+                    break;
+                case 'ADD_SALER':
+                    this.updateUser(action.payload);
+                    this.emitChange();
+                    break;
+                case 'FULL_CART':
+                    this.fullCart(action.payload);
+                    this.emitChange();
+                    break;
+            }
+        });
+    }
+
+    clear() {
+        this.state.saler.name = '';
+        this.state.saler.email = '';
+        this.state.saler.image = '';
+        this.state.goods = [];
+    }
     /**
      * @summary Редьюсер для инициализирования стейта корзины
      * @function
      * @returns None
      */
-    init: () => {
-        cart.state.goods = [];
-        cart.state.saler = {
-            name: '',
-            email: '',
-            image: '',
-        };
-    },
-    hasUser: () => {
-        return cart.state.saler.email !== '';
-    },
-    sameUser: (email) => {
-        return !cart.hasUser() || email === cart.state.saler.email;
-    },
-    updateUser: (saler) => {
-        cart.state.saler.name = saler.name;
-        cart.state.saler.email = saler.email;
-        cart.state.saler.image = saler.image;
-    },
-    fullCart: (goods) => {
+    init() {
+        this.state.saler.name = '';
+        this.state.saler.email = '';
+        this.state.saler.image = '';
+        this.state.goods = [];
+    }
+
+    hasUser() {
+        return this.state.saler.email !== '';
+    }
+
+    sameUser(email) {
+        return !this.hasUser() || email === this.state.saler.email;
+    }
+
+    updateUser(saler) {
+        this.state.saler.name = saler.name;
+        this.state.saler.email = saler.email;
+        this.state.saler.image = saler.image;
+    }
+
+    fullCart(goods) {
         goods.forEach(element => {
-            if (!cart.sameUser(element.order.product.saler.email)) {
+            if (!this.sameUser(element.order.product.saler.email)) {
                 console.log("Error: other user");
                 return false;
             }
-            if (!cart.hasUser()) {
-                cart.updateUser(element.order.product.saler);
+            if (!this.hasUser()) {
+                this.updateUser(element.order.product.saler);
             }
         });
-        cart.state.goods = [...goods];
+        this.state.goods = [...goods];
         return true;
-    },
-    addInCart: (good) => {
-        if (cart.sameUser(good.order.product.saler.email)) {
-            cart.state.goods.push(good);
-            if (!cart.hasUser()) {
-                cart.updateUser(good.order.product.saler);
+    }
+
+    addInCart(good) {
+        if (this.sameUser(good.order.product.saler.email)) {
+            this.state.goods.push(good);
+            if (!this.hasUser()) {
+                this.updateUser(good.order.product.saler);
             }
             return true;
         }
         console.log("Error: other user");
         return false;
-    },
-    deleteFromCart: (orderId) => {
-        const index = cart.state.goods.map(elem => elem.order.id).indexOf(orderId);
+    }
+
+    deleteFromCart(orderId) {
+        const index = this.state.goods.map(elem => elem.order.id).indexOf(orderId);
         if (index != -1) {
-            cart.state.goods.splice(index, 1);
+            this.state.goods.splice(index, 1);
         } else {
             console.log('Error when deleting from cart');
         }
-    },
-    emptyCart: () => {
-        cart.state.saler.name = '';
-        cart.state.saler.email = '';
-        cart.state.saler.image = '';
-        cart.state.goods = [];
-    },
-    getCount: () => {
-        return cart.state.goods.length;
-    },
-    getPrice: () => {
+    }
+
+    emptyCart() {
+        this.state.saler.name = '';
+        this.state.saler.email = '';
+        this.state.saler.image = '';
+        this.state.goods = [];
+    }
+
+    getCount() {
+        return this.state.goods.length;
+    }
+
+    getPrice() {
         let result = 0;
-        cart.state.goods.forEach((elem) => {
+        this.state.goods.forEach((elem) => {
             result += Number(elem.order.product.price);
         });
         return result;
-    },
-    state: {
-        goods: null,
-    },
+    }
 };
 
-export default cart;
+Object.assign(Cart.prototype, BaseStore);
+
+export default new Cart();

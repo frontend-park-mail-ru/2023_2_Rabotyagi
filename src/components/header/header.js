@@ -23,6 +23,47 @@ export class Header {
      * @method
      * @summary Метод рендера хедера
      */
+
+    constructor() {
+        //store.cart.addListener(this.addCartCount.bind(this));
+    }
+
+    /*addCartCount() {
+        const template = Template;
+        const profileBtn = new ProfileBtn();
+
+        const context = {
+            signin: {
+                caption: 'Войти',
+            },
+            signup: {
+                caption: 'Зарегистрироваться',
+            },
+            cart: {
+                count: 0,
+            },
+            authorized: store.user.isAuth(),
+            profile: store.user.isAuth() ? profileBtn.render() : null,
+        };
+
+        const root = stringToElement(template(context));
+
+        root.querySelector('div.cart-btn')?.replaceWith(button({
+            id: 'cart-btn',
+            variant: 'neutral',
+            link: '/cart',
+            leftIcon: svg({ 
+                content: cart,
+                width: 28,
+                height: 28
+            }),
+            text: {
+                class: 'text-regular',
+                content: store.cart.getCount(),
+            }
+        }));
+    }*/
+
     render() {
         const template = Template;
         const profileBtn = new ProfileBtn();
@@ -90,7 +131,11 @@ export class Header {
             }
         }));
 
-        root.querySelector('#cart-btn')?.replaceWith(button({
+        //////
+
+        //this.addCartCount();
+
+        root.querySelector('div.cart-btn')?.replaceWith(button({
             id: 'cart-btn',
             variant: 'neutral',
             link: '/cart',
