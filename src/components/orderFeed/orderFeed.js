@@ -12,6 +12,7 @@ import { stringToElement } from '../../shared/utils/parsing.js';
 import button from '../button/button.js';
 import Template from './orderFeed.hbs';
 import './orderFeed.scss';
+import dispatcher from '../../shared/dispatcher/dispatcher.js';
 
 /**
  * @class Блок с объявлениями
@@ -33,6 +34,9 @@ export class OrderFeed {
                 class: 'text-regular',
                 content: 'Оплатить'
             }
+        });
+        this.buyBtn.addEventListener('click', (e) => {
+            dispatcher.dispatch({ type: 'BUY_ALL' });
         });
         this.root = stringToElement(this.template(this.context));
         this.feedHeader = this.root.querySelector('div.order-feed-header');
