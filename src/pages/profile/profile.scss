@@ -1,15 +1,11 @@
 @use '../../assets/css/vars';
 @use '../../assets/css/utility';
 
-.profile {
-    width: 100%;
-}
-
 .wrapper-profile {
     @extend .wrapper !optional;
     background-color: vars.$background-secondary;
 
-    >.container {
+    >.profile {
         width: 1280px;
         height: 100%;
         justify-content: flex-start;

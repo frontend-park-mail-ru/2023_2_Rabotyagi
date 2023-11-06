@@ -14,6 +14,8 @@ import svg from '../../components/svg/svg.js';
 import listIcon from '../../assets/icons/list-ad.svg';
 import cartIcon from '../../assets/icons/cart.svg';
 import heartIcon from '../../assets/icons/heart.svg';
+import settingsIcon from '../../assets/icons/settings.svg'
+import Settings from './settings/settings.js';
 
 class Profile {
     activePage;
@@ -26,16 +28,16 @@ class Profile {
         const context = {
             user: store.user.state.fields
         };
-        const header = new Header();
+        const header = new Header().render();
 
         const root = stringToElement(template(context));
-        root.querySelector('#header').replaceWith(header.render());
         const content = root.querySelector('.content');
 
         this.router = new Router([
             new Route(new RegExp('^/profile/products$'), new Products(this)),
             new Route(new RegExp('^/profile/orders$'), new Orders()),
             new Route(new RegExp('^/profile/favourites$'), new Favourite()),
+            new Route(new RegExp('^/profile/settings$'), new Settings()),
         ], content);
 
         root.querySelector('#btn-products')?.replaceWith(button({
@@ -71,6 +73,17 @@ class Profile {
             leftIcon: svg({ content: heartIcon, width: 20, height: 20 })
         }));
 
+        root.querySelector('#btn-settings')?.replaceWith(button({
+            variant: 'neutral',
+            subVariant: 'tertiary',
+            text: {
+                class: 'text-regular',
+                content: 'Настройки'
+            },
+            link: '/profile/settings',
+            leftIcon: svg({ content: settingsIcon, width: 20, height: 20 })
+        }));
+
         root.querySelectorAll('button[data-link]').forEach(item => 
             
             item.addEventListener('click', (e) => {
@@ -81,8 +94,7 @@ class Profile {
             }, { capture: false })
         );
 
-                    
-        return root;
+        return [ header, root ];
     }
 }
 

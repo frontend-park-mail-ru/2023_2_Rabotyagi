@@ -17,6 +17,13 @@
     background: vars.$palette-primary;
     color: vars.$background-primary;
 
+    &:hover {
+        background: var(--primary-hover, rgba(157, 141, 241, 0.80));
+    }
+
+    &:active {
+        background: vars.$palette-primary;
+    }
 }
 
 .btn-neutral {
@@ -25,11 +32,34 @@
     &.primary {
         background: vars.$background-secondary;
         color: vars.$text-primary;
+
+        &:hover {
+            background: var(--vkui-color-states-background-secondary-hover, #E6E8EC);
+        }
+
+        &:active {
+            background: var(--vkui-color-states-background-secondary-active, #DDDFE4);
+        }
+
+        
     }
 
     &.tertiary {
         &:hover {
             color: vars.$primary-active;
+            >svg {
+                >* {
+                    fill: vars.$primary-active;
+                }
+            }
+        }
+
+        &.active {
+            >svg {
+                    >* {
+                        fill: vars.$primary-active;
+                    }
+                }
         }
 
     }
@@ -37,6 +67,21 @@
     &.outlined {
         border: 1px solid vars.$background-tertiary;
     }
+}
 
-    &.selected {}
+.btn-outlined {
+    @extend .btn-base;
+    border: 1px solid var(--palette-primary, #9D8DF1);
+
+    >span {
+        color: #9D8DF1;
+    }
+
+    &:hover {
+        background: var(--vkui-color-states-transparent-hover, rgba(0, 16, 61, 0.04));
+    }
+
+    &:active {
+        background: var(--vkui-color-states-transparent-active, rgba(0, 16, 61, 0.08));
+    }
 }

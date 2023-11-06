@@ -16,7 +16,7 @@ const config = {
         content: null,
     }
 }
-
+// Добавить в избранное
 const button = (context) => {
     switch (context.variant) {
         case 'primary':
@@ -24,6 +24,9 @@ const button = (context) => {
             break;
         case 'neutral':
             context.variant = 'btn-neutral';
+            break;
+        case 'outlined':
+            context.variant = 'btn-outlined';
             break;
     }
     const root = stringToElement(template(context));

@@ -21,5 +21,22 @@ export const UserApi = {
             url: API.USER.ORDERS,
             credentials: 'include'
         });
+    },
+
+    getFavs: async () => {
+        return await ajax.get({
+            url: API.USER.FAVS,
+            credentials: 'include'
+        });
+    },
+
+    addToFav: async (id) => {
+        return await ajax.get({
+            url: API.USER.ADD_TO_FAV,
+            credentials: 'include',
+            params: {
+                id: id
+            }
+        });
     }
 };

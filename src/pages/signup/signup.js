@@ -149,6 +149,6 @@ export class SignupPage {
         )
 
 
-        return root;
+        return [ root ];
     }
 }

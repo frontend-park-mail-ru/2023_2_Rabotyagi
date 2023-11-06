@@ -33,6 +33,8 @@ body {
     flex-direction: column;
     width: 100%;
     align-items: center;
+    height: -webkit-fill-available;
+    // gap: 24px;
 }
 
 .inputField {

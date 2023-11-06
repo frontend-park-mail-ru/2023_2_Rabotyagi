@@ -1,17 +1,16 @@
 import { createServer, Model, Response } from "miragejs";
-import { generatePosts } from "./generators/posts";
+import { generatePost } from "./generators/posts";
 import sign from "jwt-encode";
 import jwtDecode from "../shared/utils/jwt-decode";
 import { cookieParser } from "../shared/utils/cookie";
-import { fakerRU } from "@faker-js/faker";
+import { generateUser } from "./generators/users";
 
 const createMockServer = function () {
-    var usersCount = 1;
-
     const server = createServer({
         models: {
             users: Model,
             product: Model,
+            favourite: Model,
         },
 
     routes() {
@@ -19,6 +18,20 @@ const createMockServer = function () {
         this.namespace = "api/v1";
     
         this.get("post/get_list", (schema) => schema.products.all().models);
+
+        this.get('post', (schema, request) => {
+            const res = schema.products.findBy({ id: request.queryParams.id });
+
+            if (res == null) {
+                return new Response(222, {}, {
+                    'error': 'Такого объявления не существует'
+                })
+            }
+            const model = res.attrs;
+            model.saler = schema.users.find(model.salerId).attrs;
+            delete model.salerId;
+            return new Response(200, {}, model);
+        });
     
         this.get("/signin", (schema, request) => {
             const res = schema.users.findBy({ email: request.queryParams.email });
@@ -71,63 +84,77 @@ const createMockServer = function () {
                 return new Response(401);
             }
             const user = jwtDecode(token);
-            const res = schema.products.all().models.filter(({ attrs }) => attrs.saler.email === user.email);
+            const res = schema.products.all().models.filter(({ attrs }) => attrs.salerId === user.id);
             let data = [];
             res.forEach(({ attrs }) => data = [ ...data, attrs ]);
 
-            return new Response(200, {}, {
-                products: data
-            })
+            return new Response(200, {}, data);
         });
 
         this.get('/user/orders', () => {
             return new Response(200);
         });
+
+        this.get('/user/favourites', (schema) => {
+            const user = jwtDecode(cookieParser(document.cookie).access_token);
+
+            const favs = schema.favourites.where({ userId: user.id }).models;
+            let data = [];
+
+            favs.forEach(({ attrs }) => {
+                const product = schema.products.find(attrs.productId);
+                data = [ ...data, product.attrs ];
+            });
+            return new Response(200, {}, data);
+        })
+
+        this.get('/user/add-to-fav', (schema, request) => {
+            const product = schema.products.find(request.queryParams.id);
+            const fav = schema.favourites.findBy({ productId: product.id });
+
+            if (fav == null) {
+                const user = jwtDecode(cookieParser(document.cookie).access_token);
+                const fav = schema.create('favourite', {
+                    productId: product.id,
+                    userId: user.id
+                })
+                console.log(fav);
+                return new Response(200);
+            }
+
+            fav.destroy();
+            return new Response(200);
+
+        });
     },
 
+    // Проинициализировал модельки с постами, чтобы в in-memory db хранились, а не генерились постоянно
     seeds(server) {
-        const user = {
-            id: usersCount,
+        let user;
+        
+        for (let index = 0; index < 10; index++) {
+            user = server.create('user', generateUser());
+            
+            for (let index = 0; index < 5; index++) {
+                server.create("product", generatePost(user.id));            
+            }
+        }
+
+        user = server.create("user", {
             email: "NikDem@gmail.com",
             phone: "+7 999 999 66 66",
             name: "Никита",
             password: '363Nikita',
             birthday: Date.now()
+        });
+
+        for (let index = 0; index < 5; index++) {
+            server.create("product", generatePost(user.id));            
         }
-        server.create("user", user);
-        usersCount += 1;
+        // generatePosts().forEach((product) => server.create("product", product));
 
-        // Проинициализировал модельки с постами, чтобы в in-memory db хранились, а не генерились постоянно
-        generatePosts().forEach((product) => server.create("product", product));
 
-        const saler = {
-            email: "NikDem@gmail.com",
-            phone: "+7 999 999 66 66",
-            name: "Никита",
-        };
-
-        for (let index = 0; index < 10; index++) {
-            server.create('product', {
-                "id": index,
-                "saler": saler,
-                "category": [
-                    "Категория 1",
-                    "Категория 2",
-                    "Категория 3",
-                ],
-                "title": fakerRU.lorem.lines(1),
-                "description": fakerRU.lorem.paragraph(),
-                "price": fakerRU.finance.amount(500, 5000, 0),
-                "created_at": Date.now(),
-                "views": 0,
-                "availableCount": Math.floor(Math.random() * (100 - 1) + 1),
-                "city": fakerRU.location.city(),
-                "delivery": fakerRU.datatype.boolean(),
-                "safeDeal": fakerRU.datatype.boolean(),
-                "image": '/images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg',
-                "isActive": fakerRU.datatype.boolean()
-            })
-        }
+        
    },
  });
 

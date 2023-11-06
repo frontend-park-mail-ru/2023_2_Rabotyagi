@@ -53,7 +53,7 @@ class ProfileBtn {
 
         root.querySelector('#dropdown-btn-profile').addEventListener('click', (e) => {
             e.stopPropagation();
-            window.Router.navigateTo('/profile/products');
+            window.Router.navigateTo('/profile');
         });
 
         return root;

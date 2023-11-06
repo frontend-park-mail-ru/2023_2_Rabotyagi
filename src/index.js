@@ -16,6 +16,7 @@ import { store } from './shared/store/store.js';
 import { Router, Route } from './shared/services/router.js';
 import createMockServer from './mocks/mock.js';
 import Profile from './pages/profile/profile.js';
+import Product from './pages/product/product';
 
 if (process.env.NODE_ENV === 'development') {
     createMockServer();
@@ -31,4 +32,5 @@ window.Router = new Router([
     new Route(new RegExp('^/signin$'), new SigninPage()),
     new Route(new RegExp('^/signup$'), new SignupPage()),
     new Route(new RegExp('^/profile.*'), new Profile()),
+    new Route(new RegExp('^/product$'), new Product()),
 ], root);

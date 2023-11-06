@@ -16,15 +16,15 @@ class Products {
     async getProducts(container) {
         try {
             const resp = await UserApi.getProducts();
-            const products = (await resp.json()).products;
+            const body = (await resp.json());
 
             switch (resp.status) {
                 case 222:
-                    throw resp.body.error;
+                    throw body.error;
                 default:
             }
             
-            return products;
+            return body;
 
         } catch (err) {
             container.innerHTML = '';
@@ -153,7 +153,7 @@ class Products {
         
         root.querySelector('#tab-all').click();
 
-        return root;
+        return [ root ];
     }
 }
 
