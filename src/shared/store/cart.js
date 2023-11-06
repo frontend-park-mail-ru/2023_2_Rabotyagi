@@ -37,6 +37,16 @@ class Cart {
                     this.fullCart(action.payload);
                     this.emitChange();
                     break;
+                case 'UPDATE_COUNT_CART':
+                    console.log('ACTION: ', action.type);
+                    this.updateOrderCount(action.payload);
+                    this.emitChange();
+                    break;
+                case 'BUY_ALL':
+                    console.log('ACTION: ', action.type);
+                    this.clear();
+                    this.emitChange();
+                    break;
             }
         });
     }
@@ -101,6 +111,14 @@ class Cart {
         return false;
     }
 
+    updateOrderCount({ orderId, count }) {
+        const index = this.state.goods.map(elem => elem.order.id).indexOf(orderId);
+        if (index != -1) {
+            this.state.goods[index].order.count = count;
+            console.log(this.state.goods[index]);
+        }
+    }
+
     deleteFromCart(orderId) {
         const index = this.state.goods.map(elem => elem.order.id).indexOf(orderId);
         if (index != -1) {
@@ -115,13 +133,17 @@ class Cart {
     }
 
     getCount() {
-        return this.state.goods.length;
+        let result = 0;
+        this.state.goods.forEach((elem) => {
+            result += Number(elem.order.count);
+        });
+        return result;
     }
 
     getPrice() {
         let result = 0;
         this.state.goods.forEach((elem) => {
-            result += Number(elem.order.product.price);
+            result += Number(elem.order.product.price) * Number(elem.order.count);
         });
         return result;
     }

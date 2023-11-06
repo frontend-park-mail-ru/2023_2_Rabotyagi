@@ -31,5 +31,12 @@
     .right-content {
         padding: 16px;
         background-color: vars.$palette-primary;
+        display: flex;
+        align-content: space-between;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+        align-self: stretch;
+        justify-content: space-around;
     }
 }
