@@ -32,7 +32,7 @@ class Product {
                     throw body.error;
                 }
                 dispatcher.dispatch({ type: 'ADD_GOOD', payload: {...body} });
-                //store.cart.addInCart({...body});
+                
             } else {
                 throw new Error("Other orders have not this user");
             }

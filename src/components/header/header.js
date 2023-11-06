@@ -25,30 +25,24 @@ export class Header {
      */
 
     constructor() {
-        //store.cart.addListener(this.addCartCount.bind(this));
-    }
-
-    /*addCartCount() {
-        const template = Template;
-        const profileBtn = new ProfileBtn();
-
-        const context = {
+        this.template = Template;
+        this.profileBtn = new ProfileBtn();
+        this.context = {
             signin: {
                 caption: 'Войти',
             },
             signup: {
                 caption: 'Зарегистрироваться',
             },
-            cart: {
-                count: 0,
-            },
             authorized: store.user.isAuth(),
-            profile: store.user.isAuth() ? profileBtn.render() : null,
+            profile: store.user.isAuth() ? this.profileBtn.render() : null,
         };
+        this.root = stringToElement(this.template(this.context));
+        store.cart.addListener(this.updateCartButton.bind(this));
+    }
 
-        const root = stringToElement(template(context));
-
-        root.querySelector('div.cart-btn')?.replaceWith(button({
+    updateCartButton() {
+        this.root.querySelector('#cart-btn').replaceWith(button({
             id: 'cart-btn',
             variant: 'neutral',
             link: '/cart',
@@ -62,29 +56,15 @@ export class Header {
                 content: store.cart.getCount(),
             }
         }));
-    }*/
+
+        this.root.querySelector('#cart-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            window.Router.navigateTo('/cart');
+        }, { capture: false });
+    }
 
     render() {
-        const template = Template;
-        const profileBtn = new ProfileBtn();
-
-        const context = {
-            signin: {
-                caption: 'Войти',
-            },
-            signup: {
-                caption: 'Зарегистрироваться',
-            },
-            cart: {
-                count: 0,
-            },
-            authorized: store.user.isAuth(),
-            profile: store.user.isAuth() ? profileBtn.render() : null,
-        };
-
-        const root = stringToElement(template(context));
-
-        root.querySelector('#logo-btn').replaceWith(button({
+        this.root.querySelector('#logo-btn').replaceWith(button({
             id: 'logo-btn',
             variant: 'neutral',
             link: '/',
@@ -95,7 +75,7 @@ export class Header {
             }
         }));
 
-        root.querySelector('#category').replaceWith(button({
+        this.root.querySelector('#category').replaceWith(button({
             variant: 'primary',
             text: {
                 class: 'text-regular',
@@ -103,7 +83,7 @@ export class Header {
             }
         }));
 
-        root.querySelector('#product-create').replaceWith(button({
+        this.root.querySelector('#product-create').replaceWith(button({
             variant: 'neutral',
             subVariant: 'primary',
             text: {
@@ -112,7 +92,7 @@ export class Header {
             }
         }));
 
-        root.querySelector('#signin')?.replaceWith(button({
+        this.root.querySelector('#signin')?.replaceWith(button({
             variant: 'primary',
             link: '/signin',
             text: {
@@ -121,7 +101,7 @@ export class Header {
             }
         }));
 
-        root.querySelector('#signup')?.replaceWith(button({
+        this.root.querySelector('#signup')?.replaceWith(button({
             variant: 'neutral',
             subVariant: 'primary',
             link: '/signup',
@@ -131,11 +111,7 @@ export class Header {
             }
         }));
 
-        //////
-
-        //this.addCartCount();
-
-        root.querySelector('div.cart-btn')?.replaceWith(button({
+        this.root.querySelector('#cart-btn')?.replaceWith(button({
             id: 'cart-btn',
             variant: 'neutral',
             link: '/cart',
@@ -150,9 +126,9 @@ export class Header {
             }
         }));
 
-        root.querySelector('#profileBtn')?.replaceWith(profileBtn.render());
+        this.root.querySelector('#profileBtn')?.replaceWith(this.profileBtn.render());
 
-        root.querySelectorAll('button[data-link]').forEach(item => 
+        this.root.querySelectorAll('button[data-link]').forEach(item => 
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
                 window.Router.navigateTo(item.dataset.link);
@@ -161,7 +137,7 @@ export class Header {
         
         const wrapper = document.createElement('div');
         wrapper.classList.toggle('wrapper');
-        wrapper.appendChild(root);
+        wrapper.appendChild(this.root);
 
         return wrapper;
     }

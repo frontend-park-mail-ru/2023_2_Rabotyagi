@@ -13,9 +13,12 @@ class Cart {
             }
         }
 
+        this.listeners = [];
+
         dispathcer.register((action) => {
             switch(action.type) {
                 case 'ADD_GOOD':
+                    console.log('action: add good');
                     this.addInCart(action.payload);
                     this.emitChange();
                     break;
@@ -28,6 +31,7 @@ class Cart {
                     this.emitChange();
                     break;
                 case 'FULL_CART':
+                    console.log('action: full cart');
                     this.fullCart(action.payload);
                     this.emitChange();
                     break;
