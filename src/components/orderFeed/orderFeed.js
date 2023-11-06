@@ -24,7 +24,18 @@ export class OrderFeed {
             name: '',
             fullPrice: store.cart.getPrice(),
         };
+        this.buyBtn = button({
+            id: 'buyBtn',
+            variant: 'primary',
+            subVariant: 'primary',
+            style: 'margin-left: 24px;',
+            text: {
+                class: 'text-regular',
+                content: 'Оплатить'
+            }
+        });
         this.root = stringToElement(this.template(this.context));
+        this.feedHeader = this.root.querySelector('div.order-feed-header');
         this.feedContent = this.root.querySelector('div.order-feed-content');
         store.cart.addListener(this.getOrders.bind(this));
     }
@@ -35,30 +46,29 @@ export class OrderFeed {
             store.cart.state.goods.forEach((elem) => {
                 this.feedContent.appendChild(new OrderCard(elem.order).render());
             });
+            this.feedHeader.querySelector('#order-full-price').innerHTML = store.cart.getPrice();
         } else {
+            const deletingBuyBtn = this.feedHeader.querySelector('#buyBtn');
+            const parentElement = deletingBuyBtn.parentNode;
+            parentElement.removeChild(deletingBuyBtn);
+            const newBuyBtn = document.createElement("div");
+            newBuyBtn.id = 'buyBtn';
+            parentElement.appendChild(newBuyBtn);
+            this.feedHeader.querySelector('#userCard').classList.remove('user-card');
+            this.feedHeader.querySelector('#userCard').innerHTML = '';
+            this.feedHeader.querySelector('#order-full-price').innerHTML = 0;
             this.feedContent.innerHTML = 'Пока в корзине нет товаров';
         }
     }
 
     render() {
-        const buyBtn = button({
-            variant: 'primary',
-            subVariant: 'primary',
-            style: 'margin-left: 24px;',
-            text: {
-                class: 'text-regular',
-                content: 'Оплатить'
-            }
-        });
-
-        const feedHeader = this.root.querySelector('div.order-feed-header');
         if (store.cart.getCount() !== 0) {
-            feedHeader.querySelector('#buyBtn').replaceWith(buyBtn);
+            this.feedHeader.querySelector('#buyBtn').replaceWith(this.buyBtn);
         }
 
         if (store.cart.hasUser()) {
             const saler = new UserCard(store.cart.state.saler);
-            feedHeader.querySelector('#orderSaler').replaceWith(saler.render());
+            this.feedHeader.querySelector('#userCard').replaceWith(saler.render());
         }
 
         this.feedContent.appendChild(loaderRegular());

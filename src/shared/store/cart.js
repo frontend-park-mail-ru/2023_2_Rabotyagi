@@ -41,10 +41,14 @@ class Cart {
         });
     }
 
-    clear() {
+    emptySaler() {
         this.state.saler.name = '';
         this.state.saler.email = '';
         this.state.saler.image = '';
+    }
+
+    clear() {
+        this.emptySaler();
         this.state.goods = [];
     }
     /**
@@ -53,9 +57,7 @@ class Cart {
      * @returns None
      */
     init() {
-        this.state.saler.name = '';
-        this.state.saler.email = '';
-        this.state.saler.image = '';
+        this.emptySaler();
         this.state.goods = [];
     }
 
@@ -103,16 +105,13 @@ class Cart {
         const index = this.state.goods.map(elem => elem.order.id).indexOf(orderId);
         if (index != -1) {
             this.state.goods.splice(index, 1);
+            if (this.getCount() === 0) {
+                this.emptySaler();
+            }
         } else {
             console.log('Error when deleting from cart');
         }
-    }
-
-    emptyCart() {
-        this.state.saler.name = '';
-        this.state.saler.email = '';
-        this.state.saler.image = '';
-        this.state.goods = [];
+        console.log(this.state);
     }
 
     getCount() {
