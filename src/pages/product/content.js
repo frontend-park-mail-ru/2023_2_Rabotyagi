@@ -4,6 +4,7 @@ import { store } from '../../shared/store/store';
 import button from '../../components/button/button';
 import svg from '../../components/svg/svg';
 import favIcon from '../../assets/icons/fav.svg';
+import { UserApi } from '../../shared/api/user';
 
 class Content {
     render(context) {
@@ -21,9 +22,11 @@ class Content {
             }));
         }
 
-        root.querySelector('.content>.header>button')?.addEventListener('click', function() {
-            console.log('added to fav');
-            this.classList.toggle('active');
+        root.querySelector('.content>.header>button')?.addEventListener('click', async function() {
+            const res = await UserApi.addToFav(context.id);
+            const body = await res.json();
+            console.log(body);
+            // this.classList.toggle('active');
         });
 
         return root;

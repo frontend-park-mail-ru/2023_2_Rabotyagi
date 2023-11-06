@@ -3,14 +3,14 @@ import { generatePost } from "./generators/posts";
 import sign from "jwt-encode";
 import jwtDecode from "../shared/utils/jwt-decode";
 import { cookieParser } from "../shared/utils/cookie";
+import { generateUser } from "./generators/users";
 
 const createMockServer = function () {
-    var usersCount = 1;
-
     const server = createServer({
         models: {
             users: Model,
             product: Model,
+            favourite: Model,
         },
 
     routes() {
@@ -27,8 +27,10 @@ const createMockServer = function () {
                     'error': 'Такого объявления не существует'
                 })
             }
-
-            return new Response(200, {}, res.attrs);
+            const model = res.attrs;
+            model.saler = schema.users.find(model.salerId).attrs;
+            delete model.salerId;
+            return new Response(200, {}, model);
         });
     
         this.get("/signin", (schema, request) => {
@@ -82,46 +84,77 @@ const createMockServer = function () {
                 return new Response(401);
             }
             const user = jwtDecode(token);
-            const res = schema.products.all().models.filter(({ attrs }) => attrs.saler.email === user.email);
+            const res = schema.products.all().models.filter(({ attrs }) => attrs.salerId === user.id);
             let data = [];
             res.forEach(({ attrs }) => data = [ ...data, attrs ]);
 
-            return new Response(200, {}, {
-                products: data
-            })
+            return new Response(200, {}, data);
         });
 
         this.get('/user/orders', () => {
             return new Response(200);
         });
+
+        this.get('/user/favourites', (schema) => {
+            const user = jwtDecode(cookieParser(document.cookie).access_token);
+
+            const favs = schema.favourites.where({ userId: user.id }).models;
+            let data = [];
+
+            favs.forEach(({ attrs }) => {
+                const product = schema.products.find(attrs.productId);
+                data = [ ...data, product.attrs ];
+            });
+            return new Response(200, {}, data);
+        })
+
+        this.get('/user/add-to-fav', (schema, request) => {
+            const product = schema.products.find(request.queryParams.id);
+            const fav = schema.favourites.findBy({ productId: product.id });
+
+            if (fav == null) {
+                const user = jwtDecode(cookieParser(document.cookie).access_token);
+                const fav = schema.create('favourite', {
+                    productId: product.id,
+                    userId: user.id
+                })
+                console.log(fav);
+                return new Response(200);
+            }
+
+            fav.destroy();
+            return new Response(200);
+
+        });
     },
 
+    // Проинициализировал модельки с постами, чтобы в in-memory db хранились, а не генерились постоянно
     seeds(server) {
-        const user = {
-            id: usersCount,
+        let user;
+        
+        for (let index = 0; index < 10; index++) {
+            user = server.create('user', generateUser());
+            
+            for (let index = 0; index < 5; index++) {
+                server.create("product", generatePost(user.id));            
+            }
+        }
+
+        user = server.create("user", {
             email: "NikDem@gmail.com",
             phone: "+7 999 999 66 66",
             name: "Никита",
             password: '363Nikita',
             birthday: Date.now()
-        }
+        });
 
-        server.create("user", user);
-        usersCount += 1;
-
-        // Проинициализировал модельки с постами, чтобы в in-memory db хранились, а не генерились постоянно
-        let postCount = 0;
-        for (; postCount < 20; postCount++) {
-            server.create("product", generatePost(postCount));            
+        for (let index = 0; index < 5; index++) {
+            server.create("product", generatePost(user.id));            
         }
         // generatePosts().forEach((product) => server.create("product", product));
 
 
-        for (; postCount < 30; postCount++) {
-            const post = generatePost(postCount);
-            post.saler = user;
-            server.create('product', post);
-        }
+        
    },
  });
 

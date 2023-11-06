@@ -18,5 +18,6 @@ export const Post = {
                 id: id
             },
         });
-    }
+    },
+
 };
