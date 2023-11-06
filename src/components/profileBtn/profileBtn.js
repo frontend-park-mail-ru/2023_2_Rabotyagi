@@ -46,6 +46,7 @@ class ProfileBtn {
             (e) => {
                 e.stopPropagation();
                 store.user.clear();
+                store.cart.clear();
                 deleteCookie('access_token');
                 window.Router.navigateTo('/signin');
             }

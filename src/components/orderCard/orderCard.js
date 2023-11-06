@@ -3,6 +3,7 @@ import Template from './orderCard.hbs';
 import './orderCard.scss';
 import { Order } from '../../shared/api/order.js';
 import button from '../button/button.js';
+import dispatcher from '../../shared/dispatcher/dispatcher.js';
 
 export class OrderCard {
     #order
@@ -13,11 +14,12 @@ export class OrderCard {
 
     async deleteOrder() {
         try {
-            const resp = Order.deleteOrder(this.#order.id);
+            const resp = await Order.deleteOrder(this.#order.id);
             const body = await resp.json();
             if (resp.status != 200) {
                 throw body.error;
             }
+            dispatcher.dispatch({ type: 'DELETE_GOOD', payload: this.#order.id });
         } catch(err) {
             console.log(err);
         }
@@ -43,7 +45,6 @@ export class OrderCard {
 
         deleteBtn.addEventListener('click', (e) => {
             this.deleteOrder();
-            //signal
         });
 
         const container = root.querySelector('div.right-content');

@@ -10,7 +10,7 @@ import button from '../../components/button/button.js';
 // import uid from '../../shared/utils/uid.js';
 
 import { store } from '../../shared/store/store.js';
-import dispatcher from '../../shared/dispatcher/dispathcer.js';
+import dispatcher from '../../shared/dispatcher/dispatcher.js';
 
 class Product {
     #attrs

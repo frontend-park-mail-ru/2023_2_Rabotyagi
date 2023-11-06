@@ -1,5 +1,5 @@
 import { BaseStore } from "./baseStore";
-import dispathcer from "../dispatcher/dispathcer";
+import dispathcer from "../dispatcher/dispatcher";
 
 class Cart {
     constructor() {
@@ -18,20 +18,22 @@ class Cart {
         dispathcer.register((action) => {
             switch(action.type) {
                 case 'ADD_GOOD':
-                    console.log('action: add good');
+                    console.log('ACTION: ', action.type);
                     this.addInCart(action.payload);
                     this.emitChange();
                     break;
                 case 'DELETE_GOOD':
+                    console.log('ACTION: ', action.type);
                     this.deleteFromCart(action.payload);
                     this.emitChange();
                     break;
                 case 'ADD_SALER':
+                    console.log('ACTION: ', action.type);
                     this.updateUser(action.payload);
                     this.emitChange();
                     break;
                 case 'FULL_CART':
-                    console.log('action: full cart');
+                    console.log('ACTION: ', action.type);
                     this.fullCart(action.payload);
                     this.emitChange();
                     break;
