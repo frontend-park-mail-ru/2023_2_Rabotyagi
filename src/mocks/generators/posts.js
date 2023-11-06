@@ -4,15 +4,11 @@ export const generatePost = (id) => {
     return {
         "id": id,
         "saler": {
-            email: "owner@gmail.com",
+            email: fakerRU.internet.email(),
             phone: "+7 999 999 99 99",
-            name: "Супер продавец",
+            name: fakerRU.person.fullName(),
         },
-        "category": [
-            "Категория 1",
-            "Категория 2",
-            "Категория 3",
-        ],
+        "category": "Категория 1",
         "title": fakerRU.lorem.lines(1),
         "description": fakerRU.lorem.paragraphs(10),
         "price": fakerRU.finance.amount(500, 5000, 0),

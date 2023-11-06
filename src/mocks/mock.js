@@ -105,6 +105,7 @@ const createMockServer = function () {
             password: '363Nikita',
             birthday: Date.now()
         }
+
         server.create("user", user);
         usersCount += 1;
 
@@ -115,15 +116,10 @@ const createMockServer = function () {
         }
         // generatePosts().forEach((product) => server.create("product", product));
 
-        const saler = {
-            email: "NikDem@gmail.com",
-            phone: "+7 999 999 66 66",
-            name: "Никита",
-        };
 
         for (; postCount < 30; postCount++) {
             const post = generatePost(postCount);
-            post.saler = saler;
+            post.saler = user;
             server.create('product', post);
         }
    },

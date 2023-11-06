@@ -14,7 +14,6 @@ class Product {
     }
 
     async getProduct(id, container) {
-        // const errorBox = container.querySelector('#errorBox');
         container.appendChild(loaderRegular());
 
         try {
@@ -31,14 +30,11 @@ class Product {
                 safeDeal: body.safeDeal,
                 delivery: body.delivery,
             };
-            container.append(...[ 
+            container.append(
                 new Content().render(body), 
                 new Menu().render(menuContext) 
-            ]);
-            // const cookies = cookieParser(document.cookie);
-            // store.user.login(cookies);
-            // window.Router.navigateTo('/');
-            // errorBox.remove();
+            );
+
             return;
         } catch (err) {
             container.innerHTML = '';
@@ -55,13 +51,8 @@ class Product {
         const root = stringToElement(template(context));
         const header = new Header().render();
         const container = root.querySelector('.product');
-        // const menu = new Menu();
-        // const content = new Content();
-        
-        // const container = root.querySelector('.wrapper-product .product .content .body');
-        this.getProduct(params.productId, container);
 
-        // root.querySelector('#menu').replaceWith(menu.render());
+        this.getProduct(params.productId, container);
 
         return [ header, root ];
     }

@@ -24,7 +24,6 @@ export class Header {
      */
     render() {
         const profileBtn = new ProfileBtn();
-        console.log(store.user.isAuth());
 
         const context = {
             signin: {
