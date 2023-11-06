@@ -81,27 +81,30 @@ const createMockServer = function () {
             }
         });
 
-        this.post('/orders', (schema, request) => {
+        this.post('/order/add', (schema, request) => {
             const token = cookieParser(document.cookie).access_token;
             if (token == undefined) {
                 return new Response(401);
             }
             const user = jwtDecode(token);
             const body = JSON.parse(request.requestBody);
-            const res = schema.orders.all().models.filter(({ attrs }) => {
-                return attrs.owner.email === user.email && attrs.product.id === body.product.id;
-            });
+            const product = schema.products.findBy({ id: body.product_id });
 
-            if (res.length === 0) {
+            if (product !== null) {
                 const orderData = {
                     "id": ordersCount,
-                    "owner": {...user},
-                    "product": {...body.product},
-                    "count": 1,
+                    "owner_id": user.id,
+                    "count": body.count,
                     "status": 0,
-                    "create_date": Date.now(),
-                    "update_date": Date.now(),
-                    "close_date": Date.now(),
+                    "product_id": body.product_id,
+                    "city": product.city,
+                    "delivery": product.delivery,
+                    "in_favourites": product.in_favourites,
+                    "available_count": product.available_count,
+                    "price": product.price,
+                    "safe_deal": product.safe_deal,
+                    "title": product.title,
+                    "images": product.images,
                 };        
                 ordersCount += 1;
                 schema.orders.create(orderData);
@@ -116,15 +119,41 @@ const createMockServer = function () {
             }
         });
 
-        this.get('/orders', (schema, request) => {
-            const params = request.queryParams;
+        this.patch('/order/buy_full_basket', (schema, request) => {
             const token = cookieParser(document.cookie).access_token;
             if (token == undefined) {
                 return new Response(401);
             }
             const user = jwtDecode(token);
+
+            try {
+                const res = schema.orders.all().models.filter(({ attrs }) => {
+                    return attrs.owner.id === user.id && attrs.status === 0;
+                });            
+
+                res.forEach(({ attrs }) => {
+                    schema.orders.findBy({ id: attrs.id }).update({ status: 1 });
+                });
+
+                return new Response(200, {}, {
+                    'message': 'OK'
+                });
+            } catch(err) {
+                return new Response(222, {}, {
+                    'error': err
+                });
+            }
+        });
+
+        this.get('/order/get_basket', (schema, request) => {
+            const token = cookieParser(document.cookie).access_token;
+            if (token == undefined) {
+                return new Response(401);
+            }
+            const user = jwtDecode(token);
+            
             const res = schema.orders.all().models.filter(({ attrs }) => {
-                return attrs.owner.email === user.email && attrs.status === Number(params.status);
+                return attrs.owner.id === user.id && attrs.status === 0;
             });
             let data = [];
             res.forEach(({ attrs }) => data = [ ...data, attrs ]);
@@ -190,7 +219,7 @@ const createMockServer = function () {
         for (let index = 0; index < 10; index++) {
             server.create('product', {
                 "id": index,
-                "saler": saler,
+                "saler": user,
                 "category": [
                     "Категория 1",
                     "Категория 2",
@@ -201,11 +230,15 @@ const createMockServer = function () {
                 "price": fakerRU.finance.amount(500, 5000, 0),
                 "created_at": Date.now(),
                 "views": 0,
-                "availableCount": Math.floor(Math.random() * (100 - 1) + 1),
+                "available_count": Math.floor(Math.random() * (100 - 1) + 1),
                 "city": fakerRU.location.city(),
                 "delivery": fakerRU.datatype.boolean(),
-                "safeDeal": fakerRU.datatype.boolean(),
-                "image": '/images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg',
+                "safe_deal": fakerRU.datatype.boolean(),
+                "images": [
+                    {
+                        "url": '/images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg'
+                    }
+                ],
                 "isActive": true
             })
         }

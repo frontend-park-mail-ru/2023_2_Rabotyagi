@@ -13,6 +13,8 @@ const AJAX_METHODS = {
     GET: 'GET',
     POST: 'POST',
     DELETE: 'DELETE',
+    PATCH: 'PATCH',
+    PUT: 'PUT',
 };
 
 /**
@@ -115,6 +117,26 @@ class Ajax {
             url,
             headers,
             credentials,            
+        });
+    }
+
+    patch({ url, body, headers, credentials }) {
+        return this.#ajax({
+            method: AJAX_METHODS.PATCH,
+            url,
+            body,
+            headers,
+            credentials,
+        });
+    }
+
+    put({ url, body, headers, credentials }) {
+        return this.#ajax({
+            method: AJAX_METHODS.PUT,
+            url,
+            body,
+            headers,
+            credentials,
         });
     }
 }
