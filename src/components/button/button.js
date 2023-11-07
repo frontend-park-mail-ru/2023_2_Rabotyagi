@@ -14,7 +14,8 @@ const config = {
     text: {
         class: null,
         content: null,
-    }
+    },
+    type: null
 }
 // Добавить в избранное
 const button = (context) => {

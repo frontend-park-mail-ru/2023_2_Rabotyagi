@@ -78,6 +78,27 @@ const createMockServer = function () {
             }
         });
 
+        this.patch('/user', (schema, request) => {
+            const body = JSON.parse(request.requestBody);
+            const user = schema.users.find(body.id);
+
+            if (user == null) {
+                return new Response(222, {}, {
+                    error: 'Пользователь не найден'
+                });
+            }
+            delete body.id;
+            user.update(body);
+
+            const now = new Date();
+            const cookieExpiration = new Date(now.getTime() + 24 * 3600 * 1000);
+            const access_token = sign(user.attrs, 'xxx');
+
+            document.cookie = `access_token=${access_token}; path=/; expires=${cookieExpiration.toUTCString()};`;
+
+            return new Response(200);
+        });
+
         this.get('/user/products', (schema) => {
             const token = cookieParser(document.cookie).access_token;
             if (token == undefined) {
