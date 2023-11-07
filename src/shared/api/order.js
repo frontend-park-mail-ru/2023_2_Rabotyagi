@@ -5,7 +5,7 @@ export const Order = {
     create: async (product) => {
         return await ajax.post({
             url: API.ORDER.ADD,
-            body: JSON.stringify({ product: product }),
+            body: JSON.stringify(product),
             credentials: 'include',
         });
     },
@@ -17,7 +17,7 @@ export const Order = {
     },
     deleteOrder: async(orderId) => {
         return await ajax.delete({
-            url: API.ORDER.BASE + "/" + orderId,
+            url: API.ORDER.BASE + orderId,
             credentials: 'include',
         });
     },

@@ -20,15 +20,13 @@ const createMockServer = function () {
         this.urlPrefix = 'http://localhost:8080';
         this.namespace = "api/v1";
     
-        this.get("post/get_list", (schema) => schema.products.all().models);
+        this.get("product/get_list", (schema) => schema.products.all().models);
 
-        this.get("post/:id", (schema, request) => {
+        this.get("product/get/:id", (schema, request) => {
             const postId = request.params.id;
             const res = schema.products.findBy({ id: postId });
             if (res != null) {
-                return new Response(200, {}, {
-                    product: res,
-                });
+                return new Response(200, {}, {...res.attrs});
             } else {
                 return new Response(222, {}, {
                     'error': 'Post with this id does not exist'
@@ -38,6 +36,7 @@ const createMockServer = function () {
     
         this.get("/signin", (schema, request) => {
             const res = schema.users.findBy({ email: request.queryParams.email });
+            console.log(res);
             if ((res == null) || (res.attrs.password != request.queryParams.password)) {
                 return new Response(222, {}, {
                     'error': 'Неверная почта или пароль'
@@ -60,7 +59,8 @@ const createMockServer = function () {
             if (res == null) {
                 const userData = {
                     id: usersCount,
-                    email: body.email
+                    email: body.email,
+                    password: body.password
                 }
                 
                 schema.users.create(userData);
@@ -89,8 +89,9 @@ const createMockServer = function () {
             const user = jwtDecode(token);
             const body = JSON.parse(request.requestBody);
             const product = schema.products.findBy({ id: body.product_id });
+            const order = schema.orders.findBy({ product_id: body.product_id, owner_id: user.id, status: 0 });
 
-            if (product !== null) {
+            if (product !== null && order === null) {
                 const orderData = {
                     "id": ordersCount,
                     "owner_id": user.id,
@@ -108,9 +109,7 @@ const createMockServer = function () {
                 };        
                 ordersCount += 1;
                 schema.orders.create(orderData);
-                return new Response(200, {}, {
-                    order: orderData,
-                });
+                return new Response(200, {}, orderData);
             }
             else {
                 return new Response(222, {}, {
@@ -128,7 +127,7 @@ const createMockServer = function () {
 
             try {
                 const res = schema.orders.all().models.filter(({ attrs }) => {
-                    return attrs.owner.id === user.id && attrs.status === 0;
+                    return attrs.owner_id === Number(user.id) && attrs.status === 0;
                 });            
 
                 res.forEach(({ attrs }) => {
@@ -153,17 +152,57 @@ const createMockServer = function () {
             const user = jwtDecode(token);
             
             const res = schema.orders.all().models.filter(({ attrs }) => {
-                return attrs.owner.id === user.id && attrs.status === 0;
+                return attrs.owner_id === Number(user.id) && attrs.status === 0;
             });
             let data = [];
             res.forEach(({ attrs }) => data = [ ...data, attrs ]);
 
-            return new Response(200, {}, {
-                orders: data,
-            });
+            return new Response(200, {}, data);
         });
 
-        this.delete('/orders/:id', (schema, request) => {
+        this.patch('/order/update_count', (schema, request) => {
+            const token = cookieParser(document.cookie).access_token;
+            if (token == undefined) {
+                return new Response(401);
+            }
+            const body = JSON.parse(request.requestBody);
+
+            try {
+                schema.orders.findBy({ id: body.id }).update({
+                    count: body.count,
+                });
+                return new Response(200, {}, {
+                    'message': 'Successful update count',
+                });
+            } catch (err) {
+                return new Response(222, {}, {
+                    'error': 'Something went wrong when updating status'
+                });
+            }   
+        });
+
+        this.patch('/order/update_status', (schema, request) => {
+            const token = cookieParser(document.cookie).access_token;
+            if (token == undefined) {
+                return new Response(401);
+            }
+            const body = JSON.parse(request.requestBody);
+
+            try {
+                schema.orders.findBy({ id: body.id }).update({
+                    status: body.status,
+                });
+                return new Response(200, {}, {
+                    'message': 'Successful update status',
+                });
+            } catch (err) {
+                return new Response(222, {}, {
+                    'error': 'Something went wrong when updating status'
+                });
+            }   
+        });
+
+        this.delete('/order/delete/:id', (schema, request) => {
             const id = request.params.id;
 
             try {
@@ -192,6 +231,24 @@ const createMockServer = function () {
                 products: data
             })
         });
+
+        this.get('/profile/get/:id', (schema, request) => {
+            const profileId = request.params.id;
+            const res = schema.users.findBy({ id: profileId });
+            if (res != null) {
+                return new Response(200, {}, {
+                    "birthday": res.birthday,
+                    "email": res.email,
+                    "id": res.id,
+                    "name": res.name,
+                    "phone": res.phone
+                });
+            } else {
+                return new Response(222, {}, {
+                    'error': 'Profile with this id does not exist'
+                });
+            } 
+        });
     },
 
     seeds(server) {
@@ -206,20 +263,31 @@ const createMockServer = function () {
         server.create("user", user);
         usersCount += 1;
 
-        // Проинициализировал модельки с постами, чтобы в in-memory db хранились, а не генерились постоянно
-        generatePosts().forEach((product) => server.create("product", product));
+        const superUser = {
+            id: usersCount,
+            email: "owner@gmail.com",
+            phone: "+7 999 999 99 99",
+            name: "Супер продавец",
+            password: '363Super',
+            birthday: Date.now()
+        }
+        server.create("user", superUser);
+        usersCount += 1;
 
-        const saler = {
+        // Проинициализировал модельки с постами, чтобы в in-memory db хранились, а не генерились постоянно
+        //generatePosts().forEach((product) => server.create("product", product));
+
+        /*const saler = {
             email: "NikDem@gmail.com",
             phone: "+7 999 999 66 66",
             name: "Никита",
             image: '/images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg',
-        };
+        };*/
 
-        for (let index = 0; index < 10; index++) {
+        for (let index = 0; index < 20; index++) {
             server.create('product', {
                 "id": index,
-                "saler": user,
+                "saler_id": superUser.id,
                 "category": [
                     "Категория 1",
                     "Категория 2",
@@ -239,7 +307,34 @@ const createMockServer = function () {
                         "url": '/images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg'
                     }
                 ],
-                "isActive": true
+                "is_active": true
+            })
+        }
+
+        for (let index = 0; index < 10; index++) {
+            server.create('product', {
+                "id": index,
+                "saler_id": user.id,
+                "category": [
+                    "Категория 1",
+                    "Категория 2",
+                    "Категория 3",
+                ],
+                "title": fakerRU.lorem.lines(1),
+                "description": fakerRU.lorem.paragraph(),
+                "price": fakerRU.finance.amount(500, 5000, 0),
+                "created_at": Date.now(),
+                "views": 0,
+                "available_count": Math.floor(Math.random() * (100 - 1) + 1),
+                "city": fakerRU.location.city(),
+                "delivery": fakerRU.datatype.boolean(),
+                "safe_deal": fakerRU.datatype.boolean(),
+                "images": [
+                    {
+                        "url": '/images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg'
+                    }
+                ],
+                "is_active": true
             })
         }
    },

@@ -4,6 +4,7 @@
  */
 
 import { store } from '../../shared/store/store.js';
+import dispatcher from '../../shared/dispatcher/dispatcher.js';
 import { cookieParser } from '../../shared/utils/cookie.js';
 import {
     validateEmail,
@@ -17,6 +18,7 @@ import css from './signin.scss' // eslint-disable-line no-unused-vars
 import button from '../../components/button/button.js';
 import svg from '../../components/svg/svg.js';
 import logo from '../../assets/icons/logo.svg'
+import { Order } from '../../shared/api/order.js';
 
 /**
  * @class signinPage
@@ -55,7 +57,14 @@ export class SigninPage {
             }
             const cookies = cookieParser(document.cookie);
             store.user.login(cookies);
-            store.cart.emptyCart();
+            store.cart.clear();
+            const respCart = await Order.getCart();
+            const bodyCart = await respCart.json();
+            console.log(respCart);
+            if (respCart.status != 200) {
+                throw bodyCart.error;
+            }
+            dispatcher.dispatch({ type: 'FULL_CART', payload: bodyCart});
             window.Router.navigateTo('/');
         } catch (err) {
             errorBox.innerHTML = '';

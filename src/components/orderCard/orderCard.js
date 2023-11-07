@@ -16,7 +16,8 @@ export class OrderCard {
 
         this.template = Template;
         this.context = {
-            product: this.#order.product,
+            product: this.#order,
+            image: this.#order.images[0].url,
         };
         this.root = stringToElement(this.template(this.context));
 
@@ -34,19 +35,31 @@ export class OrderCard {
         });
 
         this.counter = new Counter({
-            unitPrice: Number(this.#order.product.price),
+            unitPrice: Number(this.#order.price),
             minCount: 1,
-            maxCount: Number(this.#order.product.availableCount),
+            maxCount: Number(this.#order.available_count),
             currentCount: Number(this.#order.count),
             counterFunc: this.updateCount.bind(this),
         });
     }
 
-    updateCount(count) {
-        dispatcher.dispatch({ type: 'UPDATE_COUNT_CART', payload: {
-            orderId: Number(this.#order.id),
-            count: count
-        }});
+    async updateCount(count) {
+        try {
+            const resp = await Order.updateCount({
+                id: this.#order.id,
+                count: count
+            });
+            const body = await resp.json();
+            if (resp.status != 200) {
+                throw body.error;
+            }
+            dispatcher.dispatch({ type: 'UPDATE_COUNT_CART', payload: {
+                orderId: Number(this.#order.id),
+                count: count
+            }});
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     async deleteOrder() {

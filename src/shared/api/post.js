@@ -4,7 +4,7 @@ import ajax from '../services/ajax.js';
 export const Post = {
     feed: async () => {
         return await ajax.get({
-            url: API.POST.LIST,
+            url: API.PRODUCT.LIST,
             // params: {
             //     count: 20,
             // },
@@ -12,7 +12,7 @@ export const Post = {
     },
     getPost: async (postId) => {
         return await ajax.get({
-            url: API.POST.BASE + "/" + postId,
+            url: API.PRODUCT.GET + postId,
             credentials: 'include',
         });
     },

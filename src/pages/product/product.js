@@ -5,6 +5,7 @@ import { Header } from '../../components/header/header.js';
 // import Breadcrumb from '../../components/breadcrumb/breadcrumb.js';
 import { Post } from '../../shared/api/post.js';
 import { Order } from '../../shared/api/order.js';
+import { UserApi } from '../../shared/api/user.js';
 import { loaderRegular } from '../../components/loader/loader.js';
 import button from '../../components/button/button.js';
 // import uid from '../../shared/utils/uid.js';
@@ -25,13 +26,19 @@ class Product {
 
     async addInCart() {
         try {
-            if (store.cart.sameUser(this.#attrs.saler.email)) {
-                const resp = await Order.create(this.#attrs);
+            if (store.cart.sameUser(this.#attrs.saler.id) && !store.cart.hasProduct(this.#attrs.id)) {
+                const resp = await Order.create({
+                    count: 1,
+                    product_id: this.#attrs.id,
+                });
                 const body = await resp.json();
                 if (resp.status != 200) {
                     throw body.error;
                 }
-                dispatcher.dispatch({ type: 'ADD_GOOD', payload: {...body} });
+                dispatcher.dispatch({ type: 'ADD_GOOD', payload: {
+                    order: body,
+                    saler: this.#attrs.saler
+                }});
                 
             } else {
                 throw new Error("Other orders have not this user");
@@ -49,12 +56,27 @@ class Product {
             if (resp.status != 200) {
                 throw body.error;
             }
-            Object.keys(body.product).forEach((attrKey) => {
-                this.#attrs[attrKey] = body.product[attrKey];
-            });
+
+            const respUser = await UserApi.getSaler(body.saler_id);
+            const bodyUser = await respUser.json();
+
+            if (respUser.status != 200) {
+                throw bodyUser.error;
+            }
+
+            this.#attrs.saler = {
+                id: bodyUser.id,
+                name: bodyUser.name,
+                email: bodyUser.email,
+            };
+            Object.keys(body).forEach((attrKey) => {
+                this.#attrs[attrKey] = body[attrKey];
+            }); 
+            console.log(this.#attrs);
+
             container.querySelector('div.product-loader').innerHTML = '';
             const titleBox = container.querySelector('div.product-title');
-            titleBox.innerHTML = body.product.title;
+            titleBox.innerHTML = this.#attrs.title;
             const buyButton = button({
                 variant: 'primary',
                 style: 'width: 100%',

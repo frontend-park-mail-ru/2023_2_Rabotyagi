@@ -36,7 +36,7 @@ export class OrderFeed {
             }
         });
         this.buyBtn.addEventListener('click', (e) => {
-            dispatcher.dispatch({ type: 'BUY_ALL' });
+            this.buyAll();
         });
         this.root = stringToElement(this.template(this.context));
         this.feedHeader = this.root.querySelector('div.order-feed-header');
@@ -44,11 +44,24 @@ export class OrderFeed {
         store.cart.addListener(this.getOrders.bind(this));
     }
 
+    async buyAll() {
+        try {
+            const resp = await Order.buyAll();
+            const body = await resp.json();
+            if (resp.status != 200) {
+                throw body.error;
+            }
+            dispatcher.dispatch({ type: 'BUY_ALL' });
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
     getOrders() {
         if (store.cart.getCount() !== 0) {
             this.feedContent.innerHTML = '';
             store.cart.state.goods.forEach((elem) => {
-                this.feedContent.appendChild(new OrderCard(elem.order).render());
+                this.feedContent.appendChild(new OrderCard(elem).render());
             });
             this.feedHeader.querySelector('#order-full-price').innerHTML = store.cart.getPrice();
         } else {
@@ -58,6 +71,9 @@ export class OrderFeed {
             const newBuyBtn = document.createElement("div");
             newBuyBtn.id = 'buyBtn';
             parentElement.appendChild(newBuyBtn);
+            newBuyBtn.addEventListener('click', (e) => {
+                this.buyAll();
+            });
             this.feedHeader.querySelector('#userCard').classList.remove('user-card');
             this.feedHeader.querySelector('#userCard').innerHTML = '';
             this.feedHeader.querySelector('#order-full-price').innerHTML = 0;

@@ -9,12 +9,12 @@ export class Card {
     #price;
     #image;
 
-    constructor({ id, title, city, price, image }) {
+    constructor({ id, title, city, price, images }) {
         this.#id = id;
         this.#title = title;
         this.#city = city;
         this.#price = price;
-        this.#image = image
+        this.#image = images[0].url;
     }
 
     render() {

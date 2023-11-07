@@ -21,5 +21,12 @@ export const UserApi = {
             url: API.USER.ORDERS,
             credentials: 'include'
         });
+    },
+
+    getSaler: async (salerId) => {
+        return await ajax.get({
+            url: API.PROFILE.GET + salerId,
+            credentials: 'include'
+        });
     }
 };
