@@ -5,8 +5,6 @@
 
 import { Header } from '../../components/header/header.js';
 import { Feed } from '../../components/feed/feed.js';
-import { store } from '../../shared/store/store.js';
-import { Order } from '../../shared/api/order.js';
 
 /**
  * @class mainPage
