@@ -126,7 +126,6 @@ class Cart {
         const index = this.state.goods.map(elem => elem.id).indexOf(orderId);
         if (index != -1) {
             this.state.goods[index].count = count;
-            console.log(this.state.goods[index]);
         }
     }
 
@@ -140,7 +139,6 @@ class Cart {
         } else {
             console.log('Error when deleting from cart');
         }
-        console.log(this.state);
     }
 
     getCount() {
@@ -153,7 +151,6 @@ class Cart {
 
     getPrice() {
         let result = 0;
-        console.log(this.state.goods);
         this.state.goods.forEach((elem) => {
             result += Number(elem.price) * Number(elem.count);
         });

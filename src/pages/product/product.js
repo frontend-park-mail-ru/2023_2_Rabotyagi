@@ -12,6 +12,7 @@ import button from '../../components/button/button.js';
 
 import { store } from '../../shared/store/store.js';
 import dispatcher from '../../shared/dispatcher/dispatcher.js';
+import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
 
 class Product {
     #attrs
@@ -24,26 +25,30 @@ class Product {
         return window.location.pathname.split("/")[2];
     }
 
-    async addInCart() {
+    async addInCart(container) {
         try {
-            if (store.cart.sameUser(this.#attrs.saler.id) && !store.cart.hasProduct(this.#attrs.id)) {
-                const resp = await Order.create({
-                    count: 1,
-                    product_id: this.#attrs.id,
-                });
-                const body = await resp.json();
-                if (resp.status != 200) {
-                    throw body.error;
-                }
-                dispatcher.dispatch({ type: 'ADD_GOOD', payload: {
-                    order: body,
-                    saler: this.#attrs.saler
-                }});
-                
-            } else {
-                throw new Error("Other orders have not this user");
+            if (!store.cart.sameUser(this.#attrs.saler.id)) {
+                throw new Error("В корзину можно добавлять продукты только с одинаковым пользователем");
             }
+            if (store.cart.hasProduct(this.#attrs.id)) {
+                throw new Error("Данный продукт уже есть в корзине");
+            }
+            const resp = await Order.create({
+                count: 1,
+                product_id: this.#attrs.id,
+            });
+            const body = await resp.json();
+            if (resp.status != 200) {
+                throw body.error;
+            }
+            dispatcher.dispatch({ type: 'ADD_GOOD', payload: {
+                order: body,
+                saler: this.#attrs.saler
+            }});
+            container.querySelector('#errorBox').innerHTML = '';
         } catch(err) {
+            container.querySelector('#errorBox').innerHTML = '';
+            container.querySelector('#errorBox').appendChild(ErrorMessageBox(err));
             console.log(err);
         }
     }
@@ -87,10 +92,13 @@ class Product {
             });
             buyButton.addEventListener('click', (e) => {
                 e.stopPropagation();
-                this.addInCart();
+                this.addInCart(container);
             });
             container.querySelector('#addProduct').replaceWith(buyButton);
+            container.querySelector('#errorBox').innerHTML = '';
         } catch(err) {
+            container.querySelector('#errorBox').innerHTML = '';
+            container.querySelector('#errorBox').appendChild(ErrorMessageBox(err));
             console.log(err);
         }
     }
