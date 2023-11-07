@@ -17,7 +17,7 @@ export const Order = {
     },
     deleteOrder: async(orderId) => {
         return await ajax.delete({
-            url: API.ORDER.BASE + orderId,
+            url: API.ORDER.DELETE + orderId,
             credentials: 'include',
         });
     },
