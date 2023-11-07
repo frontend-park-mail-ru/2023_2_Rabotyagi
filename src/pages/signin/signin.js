@@ -64,7 +64,7 @@ export class SigninPage {
             if (respCart.status != 200) {
                 throw bodyCart.error;
             }
-            dispatcher.dispatch({ type: 'FULL_CART', payload: bodyCart});
+            dispatcher.dispatch({ type: 'FULL_CART', payload: bodyCart });
             window.Router.navigateTo('/');
             return true;
         } catch (err) {

@@ -10,5 +10,7 @@ export const loaderRegular = () => {
     root.classList.toggle('loader-regular');
     root.classList.toggle('rotating');
 
+    root.style = css;
+
     return root;
 }

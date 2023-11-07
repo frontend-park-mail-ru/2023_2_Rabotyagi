@@ -51,6 +51,8 @@ export class Feed {
 
         this.getPosts(container);
 
+        root.style = css;
+
         return root;
     }
 }
