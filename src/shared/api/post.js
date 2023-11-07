@@ -13,7 +13,7 @@ export const Post = {
 
     get: async (id) => {
         return await ajax.get({
-            url: API.POST.GET,
+            url: API.PRODUCT.GET,
             params: {
                 id: id
             },

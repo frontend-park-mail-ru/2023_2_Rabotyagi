@@ -8,6 +8,7 @@ import { UserApi } from '../../shared/api/user';
 
 class Content {
     render(context) {
+        context.image = context.images[ 0 ].url;
         const root = stringToElement(template(context));
 
         if (store.user.isAuth() && (context.saler.id != store.user.state.fields.id)) {
@@ -23,10 +24,9 @@ class Content {
         }
 
         root.querySelector('.content>.header>button')?.addEventListener('click', async function() {
-            const res = await UserApi.addToFav(context.id);
-            const body = await res.json();
-            console.log(body);
-            // this.classList.toggle('active');
+            await UserApi.addToFav(context.id);
+            // console.log(body);
+            this.classList.toggle('active');
         });
 
         return root;

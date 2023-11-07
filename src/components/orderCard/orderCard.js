@@ -6,18 +6,19 @@ import button from '../button/button.js';
 import { Counter } from '../counter/counter.js';
 import dispatcher from '../../shared/dispatcher/dispatcher.js';
 
-import { store } from '../../shared/store/store.js';
+// import { store } from '../../shared/store/store.js';
 
 export class OrderCard {
     #order
 
     constructor(order) {
         this.#order = structuredClone(order);
+        console.log('order', order);
 
         this.template = Template;
         this.context = {
             product: this.#order,
-            image: this.#order.images[0].url,
+            image: this.#order.images[ 0 ].url,
         };
         this.root = stringToElement(this.template(this.context));
 
@@ -30,7 +31,7 @@ export class OrderCard {
             }
         });
 
-        this.deleteBtn.addEventListener('click', (e) => {
+        this.deleteBtn.addEventListener('click', () => {
             this.deleteOrder();
         });
 
@@ -56,7 +57,7 @@ export class OrderCard {
             dispatcher.dispatch({ type: 'UPDATE_COUNT_CART', payload: {
                 orderId: Number(this.#order.id),
                 count: count
-            }});
+            } });
         } catch(err) {
             console.log(err);
         }

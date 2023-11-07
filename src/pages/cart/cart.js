@@ -20,7 +20,7 @@ class Cart {
         root.querySelector('#header').replaceWith(header.render());
         root.querySelector('#cartContent').replaceWith(feed.render());
                     
-        return root;
+        return [ root ];
     }
 }
 

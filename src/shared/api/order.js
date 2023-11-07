@@ -5,7 +5,7 @@ export const Order = {
     create: async (product) => {
         return await ajax.post({
             url: API.ORDER.ADD,
-            body: JSON.stringify(product),
+            body: product,
             credentials: 'include',
         });
     },
@@ -30,20 +30,20 @@ export const Order = {
     updateCount: async({ id, count }) => {
         return await ajax.patch({
             url: API.ORDER.UPDATE_COUNT,
-            body: JSON.stringify({
+            body: {
                 id: id,
                 count: count
-            }),
+            },
             credentials: 'include'
         });
     },
     updateStatus: async({ id, status }) => {
         return await ajax.patch({
             url: API.ORDER.UPDATE_STATUS,
-            body: JSON.stringify({
+            body: {
                 id: id,
                 status: status
-            }),
+            },
             credentials: 'include'
         });
     }

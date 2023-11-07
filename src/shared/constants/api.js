@@ -1,10 +1,9 @@
 export const API = {
     SIGNUP: 'signup',
     SIGNIN: 'signin',
-    POST: {
-        BASE: 'post',
-        LIST: 'post/get_list',
-        GET: 'post',
+    PRODUCT: {
+        LIST: 'product/get_list',
+        GET: 'product',
     },
     USER: {
         PRODUCTS: 'user/products',
@@ -24,8 +23,4 @@ export const API = {
     PROFILE: {
         GET: 'profile/get/',
     },
-    PRODUCT: {
-        LIST: 'product/get_list',
-        GET: 'product/get/'
-    }
 };

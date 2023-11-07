@@ -25,7 +25,7 @@ export class Header {
      */
 
     constructor() {
-        this.template = Template;
+        this.template = template;
         this.profileBtn = new ProfileBtn();
         this.context = {
             signin: {

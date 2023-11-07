@@ -24,14 +24,14 @@ async function getOrders() {
     try {
         const resp = await Order.getCart();
         const body = await resp.json();
-        console.log(resp, body);
+        // console.log(resp, body);
         if (resp.status != 200) {
             throw body.error;
         }
         store.cart.fullCart([ ...body ]);
-        console.log(store.cart.state);
+        // console.log(store.cart.state);
     } catch(err) {
-        console.log(err);
+        // console.log(err);
     }
 }
 

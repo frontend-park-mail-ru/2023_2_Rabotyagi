@@ -31,11 +31,11 @@ export const UserApi = {
         });
     },
 
-    getSaler: async (salerId) => {
+    getSaler: async (saler_id) => {
         return await ajax.get({
             url: API.PROFILE.GET,
             params: {
-                id: salerId
+                id: saler_id
             },
             credentials: 'include'
         })

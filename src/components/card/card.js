@@ -18,9 +18,10 @@ export class Card {
         });
 
         Handlebars.registerHelper('haveBadges', function () {
-            return (this.safeDeal || this.delivery);
+            return (this.safe_deal || this.delivery);
         });
-
+        
+        this.context.image = this.context.images[ 0 ].url;
         const root = stringToElement(template(this.context));
 
         root.addEventListener('click', (e) => {

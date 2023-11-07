@@ -29,8 +29,8 @@ const createMockServer = function () {
                 })
             }
             const model = res.attrs;
-            model.saler = schema.users.find(model.salerId).attrs;
-            delete model.salerId;
+            model.saler = schema.users.find(model.saler_id).attrs;
+            delete model.saler_id;
             return new Response(200, {}, model);
         });
     
@@ -91,7 +91,6 @@ const createMockServer = function () {
 
             if (product !== null && order === null) {
                 const orderData = {
-                    "id": ordersCount,
                     "owner_id": user.id,
                     "count": body.count,
                     "status": 0,
@@ -105,7 +104,6 @@ const createMockServer = function () {
                     "title": product.title,
                     "images": product.images,
                 };        
-                ordersCount += 1;
                 schema.orders.create(orderData);
                 return new Response(200, {}, orderData);
             }
@@ -116,7 +114,7 @@ const createMockServer = function () {
             }
         });
 
-        this.patch('/order/buy_full_basket', (schema, request) => {
+        this.patch('/order/buy_full_basket', (schema) => {
             const token = cookieParser(document.cookie).access_token;
             if (token == undefined) {
                 return new Response(401);
@@ -142,7 +140,7 @@ const createMockServer = function () {
             }
         });
 
-        this.get('/order/get_basket', (schema, request) => {
+        this.get('/order/get_basket', (schema) => {
             const token = cookieParser(document.cookie).access_token;
             if (token == undefined) {
                 return new Response(401);
@@ -202,6 +200,11 @@ const createMockServer = function () {
         });
 
         this.patch('/user', (schema, request) => {
+            const body = JSON.parse(request.requestBody);
+            const token = cookieParser(document.cookie).access_token;
+            if (token == undefined) {
+                return new Response(401);
+            }
             const curUser = jwtDecode(token);
             const dbUser = schema.users.find(curUser.id);
 
@@ -243,7 +246,7 @@ const createMockServer = function () {
                 return new Response(401);
             }
             const user = jwtDecode(token);
-            const res = schema.products.all().models.filter(({ attrs }) => attrs.salerId === user.id);
+            const res = schema.products.all().models.filter(({ attrs }) => attrs.saler_id === user.id);
             let data = [];
             res.forEach(({ attrs }) => data = [ ...data, attrs ]);
 
@@ -273,11 +276,10 @@ const createMockServer = function () {
 
             if (fav == null) {
                 const user = jwtDecode(cookieParser(document.cookie).access_token);
-                const fav = schema.create('favourite', {
+                schema.create('favourite', {
                     productId: product.id,
                     userId: user.id
                 })
-                console.log(fav);
                 return new Response(200);
             }
 

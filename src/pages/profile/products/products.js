@@ -63,7 +63,7 @@ class Products {
             container.innerHTML = placeholder();
         }
         else {
-            products = products.filter((value) => !value.isActive);
+            products = products.filter((value) => !value.is_active);
             products.forEach((elem) => {
                 elem.variant = 'profile';
                 container.appendChild(new Card(elem).render());
@@ -83,7 +83,7 @@ class Products {
             container.innerHTML = placeholder();
         }
         else {
-            products = products.filter((value) => value.isActive);
+            products = products.filter((value) => value.is_active);
             products.forEach((elem) => {
                 elem.variant = 'profile';
                 container.appendChild(new Card(elem).render());
@@ -103,7 +103,7 @@ class Products {
             container.innerHTML = placeholder();
         }
         else {
-            products = products.filter((value) => value.isActive);
+            products = products.filter((value) => value.is_active);
             products.forEach((elem) => {
                 elem.variant = 'profile';
                 container.appendChild(new Card(elem).render());

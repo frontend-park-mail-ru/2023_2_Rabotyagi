@@ -4,8 +4,8 @@
         <img class="image" src="https://via.placeholder.com/90x90" />
         <div class="info">
             <div class="creds">
-                <span class="text-regular">{{this.name}}</span>
-                <span class="text-regular">{{this.email}}</span>
+                <span class="text-regular">{{this.saler.name}}</span>
+                <span class="text-regular">{{this.saler.email}}</span>
             </div>
             <div class="add-info">
                 <span class="text-regular">на Юле с 09 окт 2021</span>
@@ -42,7 +42,7 @@
     <div id="button-ad"></div>
     <div id="send-message"></div>
     <div class="badges">
-        {{#if this.safeDeal}}
+        {{#if this.safe_deal}}
             <div class="badge">
                 <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
                     <path
@@ -67,4 +67,5 @@
             </div>
         {{/if}}
     </div>
+    <div id="errorBox"></div>
 </div>
