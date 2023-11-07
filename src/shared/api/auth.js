@@ -31,7 +31,7 @@ export const Auth = {
     signup: async (email, password) => {
         return await ajax.post({
             url: API.SIGNUP,
-            body: JSON.stringify({ email: email, password: password }),
+            body: { email: email, password: password },
             credentials: 'include',
         });
     },

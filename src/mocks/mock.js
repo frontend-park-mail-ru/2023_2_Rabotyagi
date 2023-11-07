@@ -56,7 +56,6 @@ const createMockServer = function () {
     
             if (res == null) {
                 const userData = {
-                    id: usersCount,
                     email: body.email
                 }
                 
@@ -68,7 +67,6 @@ const createMockServer = function () {
     
                 document.cookie = `access_token=${access_token}; path=/; expires=${cookieExpiration.toUTCString()};`;
     
-                usersCount += 1;
                 return new Response(200);
             }
             else {
@@ -80,19 +78,25 @@ const createMockServer = function () {
 
         this.patch('/user', (schema, request) => {
             const body = JSON.parse(request.requestBody);
-            const user = schema.users.find(body.id);
 
-            if (user == null) {
+            const token = cookieParser(document.cookie).access_token;
+            if (token == undefined) {
+                return new Response(401);
+            }
+            const curUser = jwtDecode(token);
+            const dbUser = schema.users.find(curUser.id);
+
+            if (dbUser == null) {
                 return new Response(222, {}, {
                     error: 'Пользователь не найден'
                 });
             }
-            delete body.id;
-            user.update(body);
+
+            dbUser.update(body);
 
             const now = new Date();
             const cookieExpiration = new Date(now.getTime() + 24 * 3600 * 1000);
-            const access_token = sign(user.attrs, 'xxx');
+            const access_token = sign(dbUser.attrs, 'xxx');
 
             document.cookie = `access_token=${access_token}; path=/; expires=${cookieExpiration.toUTCString()};`;
 

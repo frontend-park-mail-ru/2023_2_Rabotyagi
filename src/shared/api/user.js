@@ -2,9 +2,10 @@ import { API } from '../constants/api.js';
 import ajax from '../services/ajax.js';
 
 export const UserApi = {
-    patchProfile: async () => {
+    patchProfile: async (body) => {
         return await ajax.patch({
             url: API.USER.PROFILE,
+            body: body,
             credentials: 'include',
         });
     },
