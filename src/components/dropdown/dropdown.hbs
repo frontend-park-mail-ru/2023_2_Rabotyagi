@@ -1,13 +1,13 @@
 <div id="{{this.id}}" class="dropdown-container hidden">
     {{#if this.search}}
-    <div class="dropdown-search">
-        {{{this.search.icon}}}
-        <input class='search-input' placeholder='Поиск'>
-    </div>
+        <div class="dropdown-search">
+            {{{this.searchIcon}}}
+            <input class='search-input' placeholder='Поиск'>
+        </div>
     {{/if}}
     <div class="dropdown-content">
-        {{#each this.items.content}}
-            <button id="{{this.[0]}}" class="dropdown-btn">{{this.[1]}}</button>
+        {{#each this.items}}
+            <button id="{{this.[0]}}" class="dropdown-btn"><span class="text-regular">{{this.[1]}}</span></button>
         {{/each}}
     </div>
 </div>

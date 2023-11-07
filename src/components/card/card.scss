@@ -1,0 +1,123 @@
+@use '../../assets/css/vars.scss';
+
+$card-width: 218px;
+
+.card {
+    display: flex;
+    width: 218px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    font-family: 'Nunito Sans';
+    font-size: 15px;
+
+    >.body {
+        display: flex;
+        width: $card-width;
+        flex-direction: column;
+        align-items: flex-start;
+        flex-shrink: 0;
+        border-radius: 12px;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+
+        >.img {
+            width: -webkit-fill-available;
+            height: 218px;
+            border-radius: 12px 12px 0 0;
+            flex-shrink: 0;
+            background-color: vars.$background-tertiary;
+        }
+
+        >.info {
+            display: flex;
+            margin: 22px 12px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 10px;
+            flex: 1 0 0;
+            align-self: stretch;
+
+            >.title {
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                align-self: stretch;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-align: left;
+            }
+        }
+    }
+
+    >.badges {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        align-self: stretch;
+        max-width: $card-width;
+        overflow: hidden;
+
+        >.badge {
+            border-radius: 12px 12px 0 0;
+            background-color: vars.$background-secondary;
+            padding: 8px 9px;
+        }
+    }
+}
+
+
+.card-profile {
+    display: flex;
+    width: 300px;
+    align-items: flex-start;
+    border-radius: 12px;
+    background: vars.$background-primary;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+
+    >.image {
+        width: 120px;
+        flex-shrink: 0;
+        align-self: stretch;
+    }
+
+    >.content {
+        display: flex;
+        width: -webkit-fill-available;
+        padding: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        align-self: stretch;
+
+        >.title {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            align-self: stretch;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: left;
+        }
+        
+        >.badges {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            align-self: stretch;
+    
+            >.badge {
+                display: flex;
+                padding: 4px;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+    
+                border-radius: 12px;
+                background: vars.$background-secondary;
+            }
+        }
+    }
+
+}

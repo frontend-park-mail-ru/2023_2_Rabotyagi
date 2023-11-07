@@ -13,7 +13,10 @@ import { Auth } from '../../shared/api/auth.js';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './signup.hbs'
-import css from './signup.css'
+import styles from './signup.scss' // eslint-disable-line no-unused-vars
+import button from '../../components/button/button.js';
+import svg from '../../components/svg/svg.js';
+import logo from '../../assets/icons/logo.svg'
 
 export class SignupPage {
     /**
@@ -48,16 +51,55 @@ export class SignupPage {
     async signup(email, pass, errorBox) {
         try {
             const resp = await Auth.signup(email, pass);
+            const body = await resp.json();
             if (resp.status != 200) {
-                throw resp.body.error;
+                throw new Error(body.error);
             }
             const cookies = cookieParser(document.cookie);
             store.user.login(cookies);
-            Router.navigateTo('/');
+            store.cart.clear();
+            window.Router.navigateTo('/');
+            return true;
         } catch (err) {
             errorBox.innerHTML = '';
             errorBox.appendChild(ErrorMessageBox(err));
+            return false;
         }
+    }
+
+    signupEvent(container) {
+        var handler = async (e) => {
+            if ((e.type === 'click') || (e.type === 'keydown' && e.code === 'Enter')) {
+                const inputEmail = container.querySelector('#inputEmail');
+                const inputPass = container.querySelector('#inputPass');
+                const inputPassRepeat = container.querySelector('#inputPassRepeat');
+                const errorBox = container.querySelector('#errorBox');
+    
+                if (!inputEmail || !inputPass || !inputPassRepeat) {
+                    console.log('signup | не найдены инпуты, что-то пошло не так');
+                    return;
+                }
+    
+                const error = this.#check(
+                    inputEmail.value,
+                    inputPass.value,
+                    inputPassRepeat.value
+                );
+    
+                if (error) {
+                    errorBox.innerHTML = '';
+                    errorBox.appendChild(ErrorMessageBox(error));
+                    return;
+                }
+    
+                const res = await this.signup(inputEmail.value, inputPass.value, errorBox);
+                if (res) {
+                    document.body.removeEventListener('keydown', handler);
+                }
+            }
+        }
+
+        return handler;
     }
 
     /**
@@ -77,42 +119,37 @@ export class SignupPage {
         document.title = 'Регистрация';
 
         const container = root.querySelector('#content');
-        const errorBox = container.querySelector('#errorBox');
+
+        const btnSubmit = button({
+            variant: 'primary',
+            style: 'width: 100%',
+            text: {
+                content: 'Продолжить',
+                class: 'text-regular'
+            }
+        });
+
+        btnSubmit.addEventListener('click', this.signupEvent(container));
+        document.body.addEventListener('keydown', this.signupEvent(container));
+
+        container.querySelector('#btnSubmit').replaceWith(btnSubmit);
+
+        container.querySelector('#logo-btn').replaceWith(button({
+            leftIcon: svg({ content: logo }),
+            link: '/',
+            variant: 'neutral',
+            subVariant: 'outlined',
+            style: 'height: auto; padding: 0;'
+        }));
 
         container.querySelectorAll('button[data-link]').forEach(item => 
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
-                Router.navigateTo(item.dataset.link);
+                window.Router.navigateTo(item.dataset.link);
             }, { capture: false })
         )
 
-        container.querySelector('#btnSubmit').addEventListener('click', (e) => {
-            e.stopPropagation();
-            const inputEmail = container.querySelector('#inputEmail');
-            const inputPass = container.querySelector('#inputPass');
-            const inputPassRepeat = container.querySelector('#inputPassRepeat');
 
-            if (!inputEmail || !inputPass || !inputPassRepeat) {
-                console.log('signup | не найдены инпуты, что-то пошло не так');
-                return;
-            }
-
-            const error = this.#check(
-                inputEmail.value,
-                inputPass.value,
-                inputPassRepeat.value
-            );
-
-            if (error) {
-                errorBox.innerHTML = '';
-                errorBox.appendChild(ErrorMessageBox(error));
-                return;
-            }
-
-            this.signup(inputEmail.value, inputPass.value, errorBox);
-        });
-
-        root.style = css;
-        return root;
+        return [ root ];
     }
 }

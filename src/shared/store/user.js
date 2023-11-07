@@ -1,13 +1,11 @@
 import { cookieParser } from '../utils/cookie.js';
-import jwtDecode from 'jwt-decode';
+import jwtDecode from '../utils/jwt-decode.js';
 
-export const user = {
+const user = {
     clear: () => {
-        user.state.username = null;
-        user.state.email = null;
+        user.state.fields = null;
         user.state.accessToken = null;
         user.state.refreshToken = null;
-        user.state.id = null;
     },
     /**
      * @summary Редьюсер для инициализирования стейта пользователя
@@ -36,15 +34,13 @@ export const user = {
     login: ({ access_token }) => {
         user.state.accessToken = access_token;
         const decoded = jwtDecode(access_token);
-        user.state.email = decoded.email;
-        user.state.username = decoded.username;
-        user.state.id = decoded.userID;
+        user.state.fields = structuredClone(decoded); 
     },
     state: {
-        username: null,
-        email: null,
-        id: null,
+        fields: null,
         accessToken: null,
-        refreshToken: null,
+        // refreshToken:    null,
     },
 };
+
+export default user;

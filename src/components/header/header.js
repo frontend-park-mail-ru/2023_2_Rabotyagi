@@ -5,11 +5,14 @@
 
 'use strict';
 import { store } from '../../shared/store/store.js';
-import { deleteCookie } from '../../shared/utils/cookie.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
-import { ProfileBtn } from '../profileBtn/profileBtn.js';
-import Template from './header.hbs'
-import css from './header.css'
+import ProfileBtn from '../profileBtn/profileBtn.js';
+import template from './header.hbs'
+import './header.scss';
+import button from '../button/button.js';
+import svg from '../svg/svg.js';
+import logo from '../../assets/icons/logo.svg';
+import cart from '../../assets/icons/cart.svg';
 
 /**
  * @class
@@ -20,11 +23,11 @@ export class Header {
      * @method
      * @summary Метод рендера хедера
      */
-    render() {
-        const template = Template;
-        const profileBtn = new ProfileBtn();
 
-        const context = {
+    constructor() {
+        this.template = template;
+        this.profileBtn = new ProfileBtn();
+        this.context = {
             signin: {
                 caption: 'Войти',
             },
@@ -32,40 +35,106 @@ export class Header {
                 caption: 'Зарегистрироваться',
             },
             authorized: store.user.isAuth(),
-            profile: profileBtn.render(),
+            profile: store.user.isAuth() ? this.profileBtn.render() : null,
         };
+        this.root = stringToElement(this.template(this.context));
+        store.cart.addListener(this.updateCartButton.bind(this));
+    }
 
-        const root = stringToElement(template(context));
+    updateCartButton() {
+        this.root.querySelector('#cart-btn').replaceWith(button({
+            id: 'cart-btn',
+            variant: 'neutral',
+            link: '/cart',
+            leftIcon: svg({ 
+                content: cart,
+                width: 28,
+                height: 28
+            }),
+            text: {
+                class: 'text-regular',
+                content: store.cart.getCount(),
+            }
+        }));
 
-        root.querySelectorAll('button[data-link]').forEach(item => 
+        this.root.querySelector('#cart-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            window.Router.navigateTo('/cart');
+        }, { capture: false });
+    }
+
+    render() {
+        this.root.querySelector('#logo-btn').replaceWith(button({
+            id: 'logo-btn',
+            variant: 'neutral',
+            link: '/',
+            leftIcon: svg({ content: logo }),
+            text: {
+                class: 'text-subheader',
+                content: 'Супер Юла',
+            }
+        }));
+
+        this.root.querySelector('#category').replaceWith(button({
+            variant: 'primary',
+            text: {
+                class: 'text-regular',
+                content: 'Категории'
+            }
+        }));
+
+        this.root.querySelector('#product-create').replaceWith(button({
+            variant: 'neutral',
+            subVariant: 'primary',
+            text: {
+                class: 'text-regular',
+                content: 'Разместить объявление'
+            }
+        }));
+
+        this.root.querySelector('#signin')?.replaceWith(button({
+            variant: 'primary',
+            link: '/signin',
+            text: {
+                class: 'text-regular',
+                content: 'Войти'
+            }
+        }));
+
+        this.root.querySelector('#signup')?.replaceWith(button({
+            variant: 'neutral',
+            subVariant: 'primary',
+            link: '/signup',
+            text: {
+                class: 'text-regular',
+                content: 'Зарегистрироваться'
+            }
+        }));
+
+        this.root.querySelector('#cart-btn')?.replaceWith(button({
+            id: 'cart-btn',
+            variant: 'neutral',
+            link: '/cart',
+            leftIcon: svg({ 
+                content: cart,
+                width: 28,
+                height: 28
+            }),
+            text: {
+                class: 'text-regular',
+                content: store.cart.getCount(),
+            }
+        }));
+
+        this.root.querySelector('#profileBtn')?.replaceWith(this.profileBtn.render());
+
+        this.root.querySelectorAll('button[data-link]').forEach(item => 
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
-                Router.navigateTo(item.dataset.link);
+                window.Router.navigateTo(item.dataset.link);
             }, { capture: false })
         )
-
-        root.querySelector('.profile-container')?.addEventListener(
-            'click',
-            (e) => {
-                e.stopPropagation();
-                root.querySelector('#profile-dropdown').classList.toggle(
-                    'hidden'
-                );
-            }
-        );
-
-        root.querySelector('#dropdown-btn-logout')?.addEventListener(
-            'click',
-            (e) => {
-                e.stopPropagation();
-                store.user.clear();
-                deleteCookie('access_token');
-                Router.navigateTo('/signin');
-            }
-        );
         
-        root.style = css;
-
-        return root;
+        return this.root;
     }
 }

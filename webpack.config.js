@@ -1,16 +1,27 @@
 const path = require('path');
+const webpack = require('webpack');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+require('dotenv').config( {
+  path: path.join(__dirname, '.env')
+} );
+
 module.exports = {
   mode: 'development',
   entry: path.join(__dirname, 'src', 'index'),
   watch: true,
   output: {
-    path: path.join(__dirname, 'public/js'),
-    publicPath: '/public/js/',
+    path: path.join(__dirname, 'public/build'),
+    publicPath: '/build/',
     filename: "bundle.js",
     chunkFilename: '[name].js'
   },
   module: {
-    rules: [ 
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      }, 
       {
         test: /.jsx?$/,
         include: [
@@ -39,20 +50,65 @@ module.exports = {
         loader: 'handlebars-loader',
       },
       { 
-        test: /\.css$/i, 
-        use: [ 'style-loader', 'css-loader' ] 
+        test: /\.(css|sass|scss)$/, 
+        use: [ 
+          MiniCssExtractPlugin.loader,
+            {
+                loader: 'css-loader',
+                options: {
+                    importLoaders: 2,
+                    sourceMap: true
+                }
+            },
+            // {
+            //     loader: 'postcss-loader',
+            //     options: {
+            //         plugins: () => [
+            //             require('autoprefixer')
+            //         ],
+            //         sourceMap: true
+            //     }
+            // },
+            {
+                loader: 'sass-loader',
+                options: {
+                    sourceMap: true
+                }
+            },
+          ]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
+      },
+      // {
+      //   test: /\.ttf$/i,
+      //   loader: "file-loader",
+      //   options: {
+      //     name(file) {
+      //       return "[hash].[ext]";
+      //     },
+      //   },
+      // },
+      // {
+      //   test: /\.css$/i,
+      //   use: [MiniCssExtractPlugin.loader, "css-loader"],
+      // },
+      {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader'
       }
   ],
   },
+  plugins: [
+    new webpack.DefinePlugin( {
+      "process.env": JSON.stringify(process.env)
+    } ),
+    new MiniCssExtractPlugin(),
+  ],
   resolve: {
-    extensions: [ '.json', '.js', '.jsx', '.hbs' ],
+    extensions: [ '.json', '.js', '.jsx', '.hbs', '.scss' ],
     modules: [ 'node_modules' ]
   },
   devtool: 'source-map',
-  devServer: {
-    contentBase: path.join(__dirname, '/public/'),
-    inline: true,
-    host: 'localhost',
-    port: 8080,
-  },
 };

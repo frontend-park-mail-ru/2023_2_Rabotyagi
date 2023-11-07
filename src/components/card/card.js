@@ -1,40 +1,34 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
-import Template from './card.hbs'
-import css from './card.css'
+import './card.scss'
+import Handlebars from 'handlebars/runtime';
+import template from './card.hbs'
 
 export class Card {
-    #title;
-    #desc;
-    #city;
-    #price;
-    constructor({ title, city, price }) {
-        this.#title = title;
-        // this.#desc = desc
-        this.#city = city;
-        this.#price = price;
+    constructor(context) {
+        this.context = context;
     }
 
     render() {
-        const template = Template;
+        Handlebars.registerHelper('isdefault', function () {
+            return this.variant !== undefined;
+        });
 
-        const context = {
-            badges: {
-                safeDeal: false,
-                delivery: false,
-                city: this.#city,
-            },
-            // img: {
-            //     src: null,
-            //     alt: 'картинка'
-            // },
-            cardInfo: {
-                price: this.#price,
-                title: this.#title,
-            },
-        };
+        Handlebars.registerHelper('isprofile', function (value) {
+            return value === 'profile';
+        });
 
-        const root = stringToElement(template(context));
-        root.style = css;
+        Handlebars.registerHelper('haveBadges', function () {
+            return (this.safe_deal || this.delivery);
+        });
+        
+        this.context.image = this.context.images[ 0 ].url;
+        const root = stringToElement(template(this.context));
+
+        root.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            window.Router.navigateTo('/product', { productId: this.context.id })
+        })
 
         return root;
     }

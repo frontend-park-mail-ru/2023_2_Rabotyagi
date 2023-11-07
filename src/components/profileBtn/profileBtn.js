@@ -1,24 +1,64 @@
-import Template from './profileBtn.hbs'
+import template from './profileBtn.hbs';
+import './profileBtn.scss';
+import { stringToElement } from '../../shared/utils/parsing';
+import Dropdown from '../dropdown/dropdown';
+import { store } from '../../shared/store/store';
+import { deleteCookie } from '../../shared/utils/cookie';
 
-export class ProfileBtn {
+class ProfileBtn {
     render() {
-        const template = Template;
-        
-        const context = {
-            dropdown: {
-                id: 'profile-dropdown',
-                search: false,
-                items: {
-                    ref: 'profileBtn',
-                    content: [
-                        [ 'dropdown-btn-fav', 'Избранное' ],
-                        [ 'dropdown-btn-profile', 'Профиль' ],
-                        [ 'dropdown-btn-logout', 'Выйти' ],
-                    ],
-                },
-            },
+        const dropdownContext = {
+            id: 'profileBtn-dropdown',
+            search: false,
+            items: [
+                [ 'dropdown-btn-fav', 'Избранное' ],
+                [ 'dropdown-btn-profile', 'Профиль' ],
+                [ 'dropdown-btn-logout', 'Выйти' ],
+            ],
         };
 
-        return template(context);
+        const root = stringToElement(template());
+        let dropdown = new Dropdown(dropdownContext);
+        root.querySelector('#profileBtn-dropdown').replaceWith(dropdown.render());
+        dropdown = root.querySelector('#profileBtn-dropdown');
+
+        function openDropdown() {
+            dropdown.classList.toggle(
+                'hidden'
+            );
+            document.body.removeEventListener('click', openDropdown);
+        }
+        
+        root.addEventListener(
+            'click',
+            (e) => {
+                e.stopPropagation();
+                dropdown.classList.toggle(
+                    'hidden'
+                );
+
+                document.body.addEventListener('click', openDropdown);
+            }
+        );
+
+        root.querySelector('#dropdown-btn-logout').addEventListener(
+            'click',
+            (e) => {
+                e.stopPropagation();
+                store.user.clear();
+                store.cart.clear();
+                deleteCookie('access_token');
+                window.Router.navigateTo('/signin');
+            }
+        );
+
+        root.querySelector('#dropdown-btn-profile').addEventListener('click', (e) => {
+            e.stopPropagation();
+            window.Router.navigateTo('/profile');
+        });
+
+        return root;
     }
-}
+};
+
+export default ProfileBtn;

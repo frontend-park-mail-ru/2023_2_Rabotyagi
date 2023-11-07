@@ -7,8 +7,8 @@ import { ErrorMessageBox } from '../error/errorMessageBox.js';
 import { Post } from '../../shared/api/post.js';
 import { loaderRegular } from '../loader/loader.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
-import Template from './feed.hbs'
-import css from './feed.css'
+import template from './feed.hbs'
+import './feed.scss'
 
 /**
  * @class Блок с объявлениями
@@ -18,11 +18,19 @@ export class Feed {
     async getPosts(container) {
         try {
             const resp = await Post.feed();
-            if (resp.status != 200) {
-                throw resp.body.error;
+            const body = await resp.json();
+
+            switch (resp.status) {
+                case 222:
+                    throw resp.body.error;
+                case 405:
+                    throw "Method Not Allowed"
+                case 500:
+                    throw "Internal Server Error"
+                default:
             }
             container.innerHTML = '';
-            resp.body.forEach((elem) => {
+            body.forEach((elem) => {
                 container.appendChild(new Card(elem).render());
             });
         } catch (err) {
@@ -32,8 +40,6 @@ export class Feed {
     }
 
     render() {
-        const template = Template;
-
         const context = {
             feedName: 'Все объявления',
         };
@@ -44,8 +50,6 @@ export class Feed {
         container.appendChild(loaderRegular());
 
         this.getPosts(container);
-
-        root.style = css;
 
         return root;
     }

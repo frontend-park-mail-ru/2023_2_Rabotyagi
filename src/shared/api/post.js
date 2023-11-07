@@ -4,10 +4,20 @@ import ajax from '../services/ajax.js';
 export const Post = {
     feed: async () => {
         return await ajax.get({
-            url: API.POST_LIST,
+            url: API.PRODUCT.LIST,
+            // params: {
+            //     count: 20,
+            // },
+        });
+    },
+
+    get: async (id) => {
+        return await ajax.get({
+            url: API.PRODUCT.GET,
             params: {
-                count: 20,
+                id: id
             },
         });
     },
+
 };

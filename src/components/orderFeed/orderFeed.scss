@@ -1,0 +1,27 @@
+.order-feed {
+    display: flex;
+    padding: 0px 1px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    align-self: stretch;
+    width: 1000px;
+    padding-top: 42px;
+}
+
+.order-feed-header {
+    width: 100%;
+}
+
+.order-full-price {
+    display: flex;
+    align-items: center;
+}
+
+.order-feed-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px 0;
+}

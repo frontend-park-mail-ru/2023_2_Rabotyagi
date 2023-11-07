@@ -4,6 +4,7 @@
  */
 
 import { store } from '../../shared/store/store.js';
+import dispatcher from '../../shared/dispatcher/dispatcher.js';
 import { cookieParser } from '../../shared/utils/cookie.js';
 import {
     validateEmail,
@@ -13,7 +14,11 @@ import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
 import { Auth } from '../../shared/api/auth.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './signin.hbs';
-import css from './signin.css'
+import css from './signin.scss' // eslint-disable-line no-unused-vars
+import button from '../../components/button/button.js';
+import svg from '../../components/svg/svg.js';
+import logo from '../../assets/icons/logo.svg'
+import { Order } from '../../shared/api/order.js';
 
 /**
  * @class signinPage
@@ -46,17 +51,59 @@ export class SigninPage {
     async signin(email, pass, errorBox) {
         try {
             const resp = await Auth.signin(email, pass);
+            const body = await resp.json();
             if (resp.status != 200) {
-                throw resp.body.error;
+                throw new Error(body.error);
             }
             const cookies = cookieParser(document.cookie);
             store.user.login(cookies);
-            Router.navigateTo('/');
+            store.cart.clear();
+            const respCart = await Order.getCart();
+            const bodyCart = await respCart.json();
+            console.log(respCart);
+            if (respCart.status != 200) {
+                throw bodyCart.error;
+            }
+            dispatcher.dispatch({ type: 'FULL_CART', payload: bodyCart });
+            window.Router.navigateTo('/');
+            return true;
         } catch (err) {
             errorBox.innerHTML = '';
             errorBox.appendChild(ErrorMessageBox(err));
+            return false;
         }
     }
+
+    signinEvent(container){
+        var handler = async (e) => {
+            if ((e.type === 'click') || (e.type === 'keydown' && e.code === 'Enter')) {
+                const inputEmail = container.querySelector('#inputEmail');
+                const inputPass = container.querySelector('#inputPass');
+                const errorBox = container.querySelector('#errorBox');
+        
+                if (!inputEmail || !inputPass) {
+                    console.log('signin | не найдены инпуты, что-то пошло не так');
+                    return;
+                }
+        
+                const error = this.#check(inputEmail.value, inputPass.value);
+        
+                if (error) {
+                    errorBox.innerHTML = '';
+                    errorBox.appendChild(ErrorMessageBox(error));
+                    return;
+                }
+        
+                const res = await this.signin(inputEmail.value, inputPass.value, errorBox);
+
+                if (res){
+                    document.body.removeEventListener('keydown', handler);
+                }
+            }
+        }
+
+        return handler;
+    };
 
     /**
      * @method
@@ -80,35 +127,48 @@ export class SigninPage {
 
         const container = root.querySelector('div.right-block-content');
 
+        container.querySelector('#logo-btn').replaceWith(button({
+            leftIcon: svg({ content: logo }),
+            link: '/',
+            variant: 'neutral',
+            subVariant: 'outlined',
+            style: 'height: auto; padding: 0;'
+        }));
+
+        const btnSubmit = button({
+            variant: 'primary',
+            style: 'width: 100%',
+            text: {
+                content: 'Продолжить',
+                class: 'text-regular'
+            }
+        });
+
+        const btnReg = button({
+            link: '/signup',
+            variant: 'neutral',
+            style: 'width: 100%',
+            subVariant: 'primary',
+            text: {
+                content: 'Регистрация',
+                class: 'text-regular'
+            }
+        })
+
+        container.querySelector('#btnSubmit').replaceWith(btnSubmit);
+        container.querySelector('#signup').replaceWith(btnReg);
+
+
         container.querySelectorAll('button[data-link]').forEach(item => 
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
-                Router.navigateTo(item.dataset.link);
+                window.Router.navigateTo(item.dataset.link);
             }, { capture: false })
-        )
+        );
 
-        container.querySelector('#btnSubmit').addEventListener('click', () => {
-            const inputEmail = container.querySelector('#inputEmail');
-            const inputPass = container.querySelector('#inputPass');
-            const errorBox = container.querySelector('#errorBox');
+        btnSubmit.addEventListener('click', this.signinEvent(container));
+        document.body.addEventListener('keydown', this.signinEvent(container));
 
-            if (!inputEmail || !inputPass) {
-                console.log('signin | не найдены инпуты, что-то пошло не так');
-                return;
-            }
-
-            const error = this.#check(inputEmail.value, inputPass.value);
-
-            if (error) {
-                errorBox.innerHTML = '';
-                errorBox.appendChild(ErrorMessageBox(error));
-                return;
-            }
-
-            this.signin(inputEmail.value, inputPass.value, errorBox);
-        });
-
-        root.style = css;
-        return root;
+        return [ root ];
     }
 }

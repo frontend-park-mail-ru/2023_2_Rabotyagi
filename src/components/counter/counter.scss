@@ -1,0 +1,28 @@
+@use '../../assets/css/vars.scss';
+
+.counter {
+    .counter-count {
+        color: vars.$palette-primary;
+        width: 55px;
+        height: 55px;
+        background-color: vars.$background-primary;
+        border-radius: 50%;
+        text-align: center;
+        vertical-align: center;
+    }
+
+    .counter-result {
+        color: vars.$background-primary;
+        text-align: center;
+    }   
+
+    .full-price {
+        color: vars.$background-primary;
+    }
+
+    .counter-manager {
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+    }
+}

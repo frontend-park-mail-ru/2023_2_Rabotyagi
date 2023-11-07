@@ -6,7 +6,8 @@
 /**
  * @constant {string} EMAIL_REGEXP
  */
-const EMAIL_REGEXP = /^[^\s()<>@,;:\/]+@\w[\w.-]+\.[a-z]{2,}$/i;
+//eslint-disable-next-line no-useless-escape
+const EMAIL_REGEXP = /^[^\s()<>@,;:\/]+@\w[\w.-]+\.[a-z]{2,}$/i; 
 /**
  * @constant {string} minLenPassword
  */

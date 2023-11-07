@@ -2,14 +2,8 @@
  * @file ajax.mjs
  * @module Ajax
  */
-const env = process.env.NODE_ENV;
-let addres;
-    if (env === 'production') {
-        addres = 'http://84.23.53.28'
-    }
-    else {
-        addres = 'http://localhost'
-    }
+
+const { API_URL } = process.env;
 
 /**
  * @constant
@@ -18,6 +12,9 @@ let addres;
 const AJAX_METHODS = {
     GET: 'GET',
     POST: 'POST',
+    DELETE: 'DELETE',
+    PATCH: 'PATCH',
+    PUT: 'PUT',
 };
 
 /**
@@ -28,7 +25,7 @@ const AJAX_METHODS = {
 class Ajax {
     port = '8080';
 
-    ADRESS_BACKEND = addres + `:${this.port}/api/v1/`;
+    ADRESS_BACKEND = API_URL + `:${this.port}/api/v1/`;
 
     /**
      * @async
@@ -59,26 +56,27 @@ class Ajax {
         if (params) {
             url += `?${new URLSearchParams(params)}`;
         }
-
+        
         headers.Accept = 'application/json';
         headers[ 'Content-Type' ] = 'application/json';
 
         const config = {
             method,
+            // mode: NODE_ENV === 'development' ? 'no-cors' : 'cors',
             mode: 'cors',
             headers,
         };
 
         if (body != null) {
-            config.body = body;
+            config.body = JSON.stringify(body);
         }
 
         if (credentials != null) {
+        // if (credentials != null && NODE_ENV !== 'development') {
             config.credentials = credentials;
         }
 
-        const response = await fetch(url, config);
-        return await response.json();
+        return await fetch(url, config);
     }
 
     /**
@@ -106,6 +104,35 @@ class Ajax {
     post({ url, body, headers, credentials }) {
         return this.#ajax({
             method: AJAX_METHODS.POST,
+            url,
+            body,
+            headers,
+            credentials,
+        });
+    }
+
+    delete({ url, headers, credentials }) {
+        return this.#ajax({
+            method: AJAX_METHODS.DELETE,
+            url,
+            headers,
+            credentials,            
+        });
+    }
+
+    patch({ url, body, headers, credentials }) {
+        return this.#ajax({
+            method: AJAX_METHODS.PATCH,
+            url,
+            body,
+            headers,
+            credentials,
+        });
+    }
+
+    put({ url, body, headers, credentials }) {
+        return this.#ajax({
+            method: AJAX_METHODS.PUT,
             url,
             body,
             headers,

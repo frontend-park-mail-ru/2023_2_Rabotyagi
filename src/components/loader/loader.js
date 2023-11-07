@@ -1,4 +1,4 @@
-import css from './loader.css'
+import './loader.scss'
 
 export const loaderRegular = () => {
     const root = document.createElement('div');
@@ -9,8 +9,6 @@ export const loaderRegular = () => {
 
     root.classList.toggle('loader-regular');
     root.classList.toggle('rotating');
-
-    root.style = css;
 
     return root;
 }
