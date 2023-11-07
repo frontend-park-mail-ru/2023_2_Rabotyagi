@@ -47,19 +47,15 @@
     &.tertiary {
         &:hover {
             color: vars.$primary-active;
-            >svg {
-                >* {
-                    fill: vars.$primary-active;
-                }
-            }
+            // >svg {
+            //     >* {
+            //         fill: vars.$primary-active;
+            //     }
+            // }
         }
 
         &.active {
-            >svg {
-                    >* {
-                        fill: vars.$primary-active;
-                    }
-                }
+            color: #9D8DF1;
         }
 
     }

@@ -1,12 +1,11 @@
 <div class="settings-container">
-    <div class="content">
+    <form class="content">
         <span class="text-regular">Имя</span>
-        <input type="text" placeholder="{{this.name}}">
-        {{!-- <span class="text-regular">Фамилия</span> --}}
-        {{!-- <input type="text" placeholder="{{this.}}"> --}}
+        <input name="name" class="text-regular searchField" type="text" placeholder="{{this.name}}">
         <span class="text-regular">Почта</span>
-        <input type="email" name="" id="" placeholder="{{this.email}}">
+        <input name="email" class="text-regular searchField" type="email" placeholder="{{this.email}}">
         <div id="btn-submit"></div>
         <div id="btn-cancel"></div>
-    </div>
+    </form>
+    <div id="errorBox"></div>
 </div>

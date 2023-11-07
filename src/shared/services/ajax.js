@@ -12,6 +12,7 @@ const { API_URL } = process.env;
 const AJAX_METHODS = {
     GET: 'GET',
     POST: 'POST',
+    PATCH: 'PATCH',
 };
 
 /**
@@ -65,7 +66,7 @@ class Ajax {
         };
 
         if (body != null) {
-            config.body = body;
+            config.body = JSON.stringify(body);
         }
 
         if (credentials != null) {
@@ -101,6 +102,16 @@ class Ajax {
     post({ url, body, headers, credentials }) {
         return this.#ajax({
             method: AJAX_METHODS.POST,
+            url,
+            body,
+            headers,
+            credentials,
+        });
+    }
+
+    patch({ url, body, headers, credentials }) {
+        return this.#ajax({
+            method: AJAX_METHODS.PATCH,
             url,
             body,
             headers,
