@@ -13,6 +13,7 @@ import button from '../../components/button/button.js';
 import { store } from '../../shared/store/store.js';
 import dispatcher from '../../shared/dispatcher/dispatcher.js';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
+import { UserCard } from '../../components/userCard/userCard.js';
 
 class Product {
     #attrs
@@ -95,6 +96,9 @@ class Product {
                 this.addInCart(container);
             });
             container.querySelector('#addProduct').replaceWith(buyButton);
+            const userCard = new UserCard(this.#attrs.saler)
+            container.querySelector('#userCard').replaceWith(userCard.render());
+            container.querySelector('div.product-price').innerHTML = '<span class="text-header">' + this.#attrs.price + ' ₽</span>';
             container.querySelector('#errorBox').innerHTML = '';
         } catch(err) {
             container.querySelector('#errorBox').innerHTML = '';
