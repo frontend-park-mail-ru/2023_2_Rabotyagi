@@ -10,10 +10,14 @@ export const Post = {
             // },
         });
     },
-    getPost: async (postId) => {
+
+    get: async (id) => {
         return await ajax.get({
-            url: API.PRODUCT.GET + postId,
-            credentials: 'include',
+            url: API.POST.GET,
+            params: {
+                id: id
+            },
         });
     },
+
 };

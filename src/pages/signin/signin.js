@@ -53,7 +53,7 @@ export class SigninPage {
             const resp = await Auth.signin(email, pass);
             const body = await resp.json();
             if (resp.status != 200) {
-                throw body.error;
+                throw new Error(body.error);
             }
             const cookies = cookieParser(document.cookie);
             store.user.login(cookies);
@@ -66,11 +66,44 @@ export class SigninPage {
             }
             dispatcher.dispatch({ type: 'FULL_CART', payload: bodyCart});
             window.Router.navigateTo('/');
+            return true;
         } catch (err) {
             errorBox.innerHTML = '';
             errorBox.appendChild(ErrorMessageBox(err));
+            return false;
         }
     }
+
+    signinEvent(container){
+        var handler = async (e) => {
+            if ((e.type === 'click') || (e.type === 'keydown' && e.code === 'Enter')) {
+                const inputEmail = container.querySelector('#inputEmail');
+                const inputPass = container.querySelector('#inputPass');
+                const errorBox = container.querySelector('#errorBox');
+        
+                if (!inputEmail || !inputPass) {
+                    console.log('signin | не найдены инпуты, что-то пошло не так');
+                    return;
+                }
+        
+                const error = this.#check(inputEmail.value, inputPass.value);
+        
+                if (error) {
+                    errorBox.innerHTML = '';
+                    errorBox.appendChild(ErrorMessageBox(error));
+                    return;
+                }
+        
+                const res = await this.signin(inputEmail.value, inputPass.value, errorBox);
+
+                if (res){
+                    document.body.removeEventListener('keydown', handler);
+                }
+            }
+        }
+
+        return handler;
+    };
 
     /**
      * @method
@@ -131,29 +164,11 @@ export class SigninPage {
                 e.stopPropagation();
                 window.Router.navigateTo(item.dataset.link);
             }, { capture: false })
-        )
+        );
 
-        btnSubmit.addEventListener('click', () => {
-            const inputEmail = container.querySelector('#inputEmail');
-            const inputPass = container.querySelector('#inputPass');
-            const errorBox = container.querySelector('#errorBox');
+        btnSubmit.addEventListener('click', this.signinEvent(container));
+        document.body.addEventListener('keydown', this.signinEvent(container));
 
-            if (!inputEmail || !inputPass) {
-                console.log('signin | не найдены инпуты, что-то пошло не так');
-                return;
-            }
-
-            const error = this.#check(inputEmail.value, inputPass.value);
-
-            if (error) {
-                errorBox.innerHTML = '';
-                errorBox.appendChild(ErrorMessageBox(error));
-                return;
-            }
-
-            this.signin(inputEmail.value, inputPass.value, errorBox);
-        });
-
-        return root;
+        return [ root ];
     }
 }

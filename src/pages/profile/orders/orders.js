@@ -8,7 +8,8 @@ class Orders {
 
 
     render() {
-        return stringToElement(template());
+        const root = stringToElement(template());
+        return [ root ];
     }
 }
 

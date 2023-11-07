@@ -14,9 +14,10 @@ const config = {
     text: {
         class: null,
         content: null,
-    }
+    },
+    type: null
 }
-
+// Добавить в избранное
 const button = (context) => {
     switch (context.variant) {
         case 'primary':
@@ -30,6 +31,9 @@ const button = (context) => {
             break;
         case 'accent':
             context.variant = 'btn-accent';
+            break;
+        case 'outlined':
+            context.variant = 'btn-outlined';
             break;
     }
     const root = stringToElement(template(context));

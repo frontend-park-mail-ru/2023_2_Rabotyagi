@@ -8,35 +8,23 @@ import { ErrorMessageBox } from '../../../components/error/errorMessageBox';
 import { Card } from '../../../components/card/card';
 
 class Products {
-    constructor() {
 
+    constructor(parent) {
+        this.parent = parent;
     }
 
     async getProducts(container) {
         try {
             const resp = await UserApi.getProducts();
-            const products = (await resp.json()).products;
+            const body = (await resp.json());
 
             switch (resp.status) {
                 case 222:
-                    throw resp.body.error;
-                case 405:
-                    throw "Method Not Allowed"
-                case 500:
-                    throw "Internal Server Error"
+                    throw body.error;
                 default:
             }
-            console.log(products);
-            container.innerHTML = '';
-
-            if (products.length == 0) {
-                container.innerHTML = placeholder();
-            }
-            else {
-                products.forEach((elem) => {
-                    container.appendChild(new Card(elem).render());
-                });
-            }
+            
+            return body;
 
         } catch (err) {
             container.innerHTML = '';
@@ -44,25 +32,128 @@ class Products {
         }
     }
 
-    render() {
-        const root = stringToElement(template());
-        const container = root.querySelector('#products-container');
+    async renderAll(container) {
+        container.innerHTML = '';
         container.appendChild(loaderRegular());
 
-        this.getProducts(container);
+        const products = await this.getProducts(container);
 
+        container.innerHTML = '';
+
+        if (products.length == 0) {
+            container.innerHTML = placeholder();
+        }
+        else {
+            products.forEach((elem) => {
+                elem.variant = 'profile';
+                container.appendChild(new Card(elem).render());
+            });
+        }
+    }
+
+    async renderNotActive(container) {
+        container.innerHTML = '';
+        container.appendChild(loaderRegular());
+
+        let products = await this.getProducts(container);
+
+        container.innerHTML = '';
+
+        if (products.length == 0) {
+            container.innerHTML = placeholder();
+        }
+        else {
+            products = products.filter((value) => !value.isActive);
+            products.forEach((elem) => {
+                elem.variant = 'profile';
+                container.appendChild(new Card(elem).render());
+            });
+        }
+    }
+
+    async renderActive(container) {
+        container.innerHTML = '';
+        container.appendChild(loaderRegular());
+
+        let products = await this.getProducts(container);
+
+        container.innerHTML = '';
+
+        if (products.length == 0) {
+            container.innerHTML = placeholder();
+        }
+        else {
+            products = products.filter((value) => value.isActive);
+            products.forEach((elem) => {
+                elem.variant = 'profile';
+                container.appendChild(new Card(elem).render());
+            });
+        }
+    }
+
+    async renderSoled(container) {
+        container.innerHTML = '';
+        container.appendChild(loaderRegular());
+
+        let products = [];
+
+        container.innerHTML = '';
+
+        if (products.length == 0) {
+            container.innerHTML = placeholder();
+        }
+        else {
+            products = products.filter((value) => value.isActive);
+            products.forEach((elem) => {
+                elem.variant = 'profile';
+                container.appendChild(new Card(elem).render());
+            });
+        }
+    }
+
+    render() {
+        this.parent.activePage = this;
+        const root = stringToElement(template());
+        const container = root.querySelector('#products-container');
+
+        root.querySelector('#tab-all').addEventListener('click', (e) => {
+            if (this.selected != e.currentTarget) {
+                this.renderAll(container);
+            }
+        });
+
+        root.querySelector('#tab-notActive').addEventListener('click', (e) => {
+            if (this.selected != e.currentTarget) {
+                this.renderNotActive(container);
+            }
+        });
+
+        root.querySelector('#tab-active').addEventListener('click', (e) => {
+            if (this.selected != e.currentTarget) {
+                this.renderActive(container);
+            }
+        });
+
+        root.querySelector('#tab-soled').addEventListener('click', (e) => {
+            if (this.selected != e.currentTarget) {
+                this.renderSoled(container);
+            }
+        });
+        
         root.querySelectorAll('.tab').forEach((value) => {
             value.addEventListener('click', (e) => {
                 if (this.selected != null) {
-                        this.selected.classList.toggle('selected');
+                    this.selected.classList.toggle('selected');
                 }
 
                 e.currentTarget.classList.toggle('selected');
                 this.selected = e.currentTarget;
             });
         });
+        
+        root.querySelector('#tab-all').click();
 
-        return root;
+        return [ root ];
     }
 }
 

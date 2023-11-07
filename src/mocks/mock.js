@@ -1,19 +1,17 @@
 import { createServer, Model, Response } from "miragejs";
-import { generatePosts } from "./generators/posts";
+import { generatePost } from "./generators/posts";
 import sign from "jwt-encode";
 import jwtDecode from "../shared/utils/jwt-decode";
 import { cookieParser } from "../shared/utils/cookie";
-import { fakerRU } from "@faker-js/faker";
+import { generateUser } from "./generators/users";
 
 const createMockServer = function () {
-    var usersCount = 1;
-    var ordersCount = 1;
-
     const server = createServer({
         models: {
             users: Model,
             product: Model,
             orders: Model,
+            favourite: Model,
         },
 
     routes() {
@@ -22,16 +20,18 @@ const createMockServer = function () {
     
         this.get("product/get_list", (schema) => schema.products.all().models);
 
-        this.get("product/get/:id", (schema, request) => {
-            const postId = request.params.id;
-            const res = schema.products.findBy({ id: postId });
-            if (res != null) {
-                return new Response(200, {}, {...res.attrs});
-            } else {
+        this.get('product', (schema, request) => {
+            const res = schema.products.findBy({ id: request.queryParams.id });
+
+            if (res == null) {
                 return new Response(222, {}, {
-                    'error': 'Post with this id does not exist'
-                });
+                    'error': 'Такого объявления не существует'
+                })
             }
+            const model = res.attrs;
+            model.saler = schema.users.find(model.salerId).attrs;
+            delete model.salerId;
+            return new Response(200, {}, model);
         });
     
         this.get("/signin", (schema, request) => {
@@ -58,7 +58,6 @@ const createMockServer = function () {
     
             if (res == null) {
                 const userData = {
-                    id: usersCount,
                     email: body.email,
                     password: body.password
                 }
@@ -71,7 +70,6 @@ const createMockServer = function () {
     
                 document.cookie = `access_token=${access_token}; path=/; expires=${cookieExpiration.toUTCString()};`;
     
-                usersCount += 1;
                 return new Response(200);
             }
             else {
@@ -186,6 +184,7 @@ const createMockServer = function () {
             if (token == undefined) {
                 return new Response(401);
             }
+            
             const body = JSON.parse(request.requestBody);
 
             try {
@@ -200,6 +199,27 @@ const createMockServer = function () {
                     'error': 'Something went wrong when updating status'
                 });
             }   
+        });
+
+        this.patch('/user', (schema, request) => {
+            const curUser = jwtDecode(token);
+            const dbUser = schema.users.find(curUser.id);
+
+            if (dbUser == null) {
+                return new Response(222, {}, {
+                    error: 'Пользователь не найден'
+                });
+            }
+
+            dbUser.update(body);
+
+            const now = new Date();
+            const cookieExpiration = new Date(now.getTime() + 24 * 3600 * 1000);
+            const access_token = sign(dbUser.attrs, 'xxx');
+
+            document.cookie = `access_token=${access_token}; path=/; expires=${cookieExpiration.toUTCString()};`;
+
+            return new Response(200);
         });
 
         this.delete('/order/delete/:id', (schema, request) => {
@@ -217,19 +237,53 @@ const createMockServer = function () {
             }   
         });
 
-        this.get('/user/products', (schema, request) => {
+        this.get('/user/products', (schema) => {
             const token = cookieParser(document.cookie).access_token;
             if (token == undefined) {
                 return new Response(401);
             }
             const user = jwtDecode(token);
-            const res = schema.products.all().models.filter(({ attrs }) => attrs.saler.email === user.email);
+            const res = schema.products.all().models.filter(({ attrs }) => attrs.salerId === user.id);
             let data = [];
             res.forEach(({ attrs }) => data = [ ...data, attrs ]);
 
-            return new Response(200, {}, {
-                products: data
-            })
+            return new Response(200, {}, data);
+        });
+
+        this.get('/user/orders', () => {
+            return new Response(200);
+        });
+
+        this.get('/user/favourites', (schema) => {
+            const user = jwtDecode(cookieParser(document.cookie).access_token);
+
+            const favs = schema.favourites.where({ userId: user.id }).models;
+            let data = [];
+
+            favs.forEach(({ attrs }) => {
+                const product = schema.products.find(attrs.productId);
+                data = [ ...data, product.attrs ];
+            });
+            return new Response(200, {}, data);
+        })
+
+        this.get('/user/add-to-fav', (schema, request) => {
+            const product = schema.products.find(request.queryParams.id);
+            const fav = schema.favourites.findBy({ productId: product.id });
+
+            if (fav == null) {
+                const user = jwtDecode(cookieParser(document.cookie).access_token);
+                const fav = schema.create('favourite', {
+                    productId: product.id,
+                    userId: user.id
+                })
+                console.log(fav);
+                return new Response(200);
+            }
+
+            fav.destroy();
+            return new Response(200);
+
         });
 
         this.get('/profile/get/:id', (schema, request) => {
@@ -251,91 +305,28 @@ const createMockServer = function () {
         });
     },
 
+    // Проинициализировал модельки с постами, чтобы в in-memory db хранились, а не генерились постоянно
     seeds(server) {
-        const user = {
-            id: usersCount,
-            email: "NikDem@gmail.com",
-            phone: "+7 999 999 66 66",
-            name: "Никита",
-            password: '363Nikita',
-            birthday: Date.now()
-        }
-        server.create("user", user);
-        usersCount += 1;
-
-        const superUser = {
-            id: usersCount,
-            email: "owner@gmail.com",
-            phone: "+7 999 999 99 99",
-            name: "Супер продавец",
-            password: '363Super',
-            birthday: Date.now()
-        }
-        server.create("user", superUser);
-        usersCount += 1;
-
-        // Проинициализировал модельки с постами, чтобы в in-memory db хранились, а не генерились постоянно
-        //generatePosts().forEach((product) => server.create("product", product));
-
-        /*const saler = {
-            email: "NikDem@gmail.com",
-            phone: "+7 999 999 66 66",
-            name: "Никита",
-            image: '/images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg',
-        };*/
-
-        for (let index = 0; index < 20; index++) {
-            server.create('product', {
-                "id": index,
-                "saler_id": superUser.id,
-                "category": [
-                    "Категория 1",
-                    "Категория 2",
-                    "Категория 3",
-                ],
-                "title": fakerRU.lorem.lines(1),
-                "description": fakerRU.lorem.paragraph(),
-                "price": fakerRU.finance.amount(500, 5000, 0),
-                "created_at": Date.now(),
-                "views": 0,
-                "available_count": Math.floor(Math.random() * (100 - 1) + 1),
-                "city": fakerRU.location.city(),
-                "delivery": fakerRU.datatype.boolean(),
-                "safe_deal": fakerRU.datatype.boolean(),
-                "images": [
-                    {
-                        "url": '/images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg'
-                    }
-                ],
-                "is_active": true
-            })
-        }
-
+        let user;
+        
         for (let index = 0; index < 10; index++) {
-            server.create('product', {
-                "id": index,
-                "saler_id": user.id,
-                "category": [
-                    "Категория 1",
-                    "Категория 2",
-                    "Категория 3",
-                ],
-                "title": fakerRU.lorem.lines(1),
-                "description": fakerRU.lorem.paragraph(),
-                "price": fakerRU.finance.amount(500, 5000, 0),
-                "created_at": Date.now(),
-                "views": 0,
-                "available_count": Math.floor(Math.random() * (100 - 1) + 1),
-                "city": fakerRU.location.city(),
-                "delivery": fakerRU.datatype.boolean(),
-                "safe_deal": fakerRU.datatype.boolean(),
-                "images": [
-                    {
-                        "url": '/images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg'
-                    }
-                ],
-                "is_active": true
-            })
+            user = server.create('user', generateUser());
+            
+            for (let index = 0; index < 5; index++) {
+                server.create("product", generatePost(user.id));            
+            }
+        }
+
+        user = server.create("user", {
+            email: "owner@gmail.com",
+            phone: "+7 999 999 66 66",
+            name: "root",
+            password: 'root',
+            birthday: Date.now()
+        });
+
+        for (let index = 0; index < 5; index++) {
+            server.create("product", generatePost(user.id));            
         }
    },
  });

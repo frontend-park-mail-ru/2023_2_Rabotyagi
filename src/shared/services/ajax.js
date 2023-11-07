@@ -68,7 +68,7 @@ class Ajax {
         };
 
         if (body != null) {
-            config.body = body;
+            config.body = JSON.stringify(body);
         }
 
         if (credentials != null) {

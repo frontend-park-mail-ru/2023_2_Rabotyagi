@@ -9,54 +9,92 @@ import { Router, Route } from '../../shared/services/router.js';
 import Orders from './orders/orders.js';
 import Products from './products/products.js';
 import Favourite from './favourite/favourite.js';
+import button from '../../components/button/button.js';
+import svg from '../../components/svg/svg.js';
+import listIcon from '../../assets/icons/list-ad.svg';
+import cartIcon from '../../assets/icons/cart.svg';
+import heartIcon from '../../assets/icons/heart.svg';
+import settingsIcon from '../../assets/icons/settings.svg'
+import Settings from './settings/settings.js';
 
 class Profile {
+    activePage;
+
     constructor() {
-        this.selected = null;
+        this.activePage = null;
     }
 
     render() {
         const context = {
             user: store.user.state.fields
         };
-        const header = new Header();
-        // const breadcrumb = new Breadcrumb([
-        //     {
-        //         id: uid(),
-        //         text: "Главная",
-        //         isActive: true,
-        //         delegate: function(container) {
-        //             container.querySelector(`#i${this.id}`).addEventListener('click', (e) => {
-        //                 e.stopPropagation();
-        //                 window.Router.navigateTo('/');
-        //             })
-        //         }
-        //     },
-        //     {
-        //         text: "Мои объявления"
-        //     }
-        // ])
+        const header = new Header().render();
+
         const root = stringToElement(template(context));
-        root.querySelector('#header').replaceWith(header.render());
         const content = root.querySelector('.content');
 
         this.router = new Router([
-            new Route(new RegExp('^/profile/products$'), new Products()),
+            new Route(new RegExp('^/profile/products$'), new Products(this)),
             new Route(new RegExp('^/profile/orders$'), new Orders()),
             new Route(new RegExp('^/profile/favourites$'), new Favourite()),
+            new Route(new RegExp('^/profile/settings$'), new Settings()),
         ], content);
 
+        root.querySelector('#btn-products')?.replaceWith(button({
+            variant: 'neutral',
+            subVariant: 'tertiary',
+            text: {
+                class: 'text-regular',
+                content: 'Мои объявления'
+            },
+            link: '/profile/products',
+            leftIcon: svg({ content: listIcon , width: 20, height: 20 })
+        }));
+
+        root.querySelector('#btn-orders')?.replaceWith(button({
+            variant: 'neutral',
+            subVariant: 'tertiary',
+            text: {
+                class: 'text-regular',
+                content: 'Мои заказы'
+            },
+            link: '/profile/orders',
+            leftIcon: svg({ content: cartIcon, width: 20, height: 20 })
+        }));
+
+        root.querySelector('#btn-favorite')?.replaceWith(button({
+            variant: 'neutral',
+            subVariant: 'tertiary',
+            text: {
+                class: 'text-regular',
+                content: 'Закладки'
+            },
+            link: '/profile/favourites',
+            leftIcon: svg({ content: heartIcon, width: 20, height: 20 })
+        }));
+
+        root.querySelector('#btn-settings')?.replaceWith(button({
+            variant: 'neutral',
+            subVariant: 'tertiary',
+            text: {
+                class: 'text-regular',
+                content: 'Настройки'
+            },
+            link: '/profile/settings',
+            leftIcon: svg({ content: settingsIcon, width: 20, height: 20 })
+        }));
+
         root.querySelectorAll('button[data-link]').forEach(item => 
+            
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
-                this.router.navigateTo(item.dataset.link);
+                if (item.dataset.link !== location.pathname) {
+                    this.router.navigateTo(item.dataset.link);
+                }
             }, { capture: false })
-        )
-        // root.querySelector('.breadcrumb').replaceWith(breadcrumb.render());
-    
-        // router.navigateTo('/profile/products');
-                    
-        return root;
+        );
+
+        return [ header, root ];
     }
 }
 

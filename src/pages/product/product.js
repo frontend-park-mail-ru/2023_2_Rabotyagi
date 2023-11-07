@@ -15,6 +15,16 @@ import dispatcher from '../../shared/dispatcher/dispatcher.js';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
 import { UserCard } from '../../components/userCard/userCard.js';
 
+import { Header } from "../../components/header/header";
+import { stringToElement } from "../../shared/utils/parsing";
+import template from './product.hbs';
+import { Post } from "../../shared/api/post";
+import Menu from "./menu";
+import './product.scss';
+import Content from "./content";
+import { ErrorMessageBox } from "../../components/error/errorMessageBox";
+import { loaderRegular } from "../../components/loader/loader";
+
 class Product {
     #attrs
 
@@ -23,7 +33,7 @@ class Product {
     }
 
     getId() {
-        return window.location.pathname.split("/")[2];
+        return history.state.productId;
     }
 
     async addInCart(container) {
@@ -54,74 +64,53 @@ class Product {
         }
     }
 
-    async getPostInfo(id, container) {
+    async getProduct(id, container) {
+        container.appendChild(loaderRegular());
+
         try {
-            const resp = await Post.getPost(id);
+            const resp = await Post.get(id);
             const body = await resp.json();
-
             if (resp.status != 200) {
-                throw body.error;
+                throw new Error(body.error);
             }
 
-            const respUser = await UserApi.getSaler(body.saler_id);
-            const bodyUser = await respUser.json();
-
-            if (respUser.status != 200) {
-                throw bodyUser.error;
-            }
-
-            this.#attrs.saler = {
-                id: bodyUser.id,
-                name: bodyUser.name,
-                email: bodyUser.email,
+            container.innerHTML = '';
+            const menuContext = {
+                ...body.saler,
+                price: body.price,
+                safeDeal: body.safeDeal,
+                delivery: body.delivery,
             };
-            Object.keys(body).forEach((attrKey) => {
-                this.#attrs[attrKey] = body[attrKey];
-            }); 
-            console.log(this.#attrs);
+            container.append(
+                new Content().render(body), 
+                new Menu().render(menuContext) 
+            );
 
-            container.querySelector('div.product-loader').innerHTML = '';
-            const titleBox = container.querySelector('div.product-title');
-            titleBox.innerHTML = this.#attrs.title;
-            const buyButton = button({
-                variant: 'primary',
-                style: 'width: 100%',
-                text: {
-                    content: 'В корзину',
-                    class: 'text-regular'
-                }
-            });
-            buyButton.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.addInCart(container);
-            });
-            container.querySelector('#addProduct').replaceWith(buyButton);
-            const userCard = new UserCard(this.#attrs.saler)
-            container.querySelector('#userCard').replaceWith(userCard.render());
-            container.querySelector('div.product-price').innerHTML = '<span class="text-header">' + this.#attrs.price + ' ₽</span>';
-            container.querySelector('#errorBox').innerHTML = '';
-        } catch(err) {
-            container.querySelector('#errorBox').innerHTML = '';
-            container.querySelector('#errorBox').appendChild(ErrorMessageBox(err));
-            console.log(err);
+            return;
+        } catch (err) {
+            container.innerHTML = '';
+            container.appendChild(ErrorMessageBox(err));
+            return;
         }
     }
 
     render() {
+        const params = history.state;
         const context = {
-            product: "product",
-        };
-        const header = new Header();
-
+            
+        }
         const root = stringToElement(template(context));
-        root.querySelector('#header').replaceWith(header.render());
+        const header = new Header().render();
+        const container = root.querySelector('.product');
 
-        const container = root.querySelector('div.product-content');
-        container.querySelector('div.product-loader').appendChild(loaderRegular());
+        this.getProduct(params.productId, container);
 
-        this.getPostInfo(this.getId(), container);
-                    
-        return root;
+        buyButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.addInCart(container);
+        });
+
+        return [ header, root ];
     }
 }
 

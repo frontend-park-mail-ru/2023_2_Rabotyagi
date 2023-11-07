@@ -1,54 +1,89 @@
 @use '../../assets/css/vars.scss';
 
-.btn-primary, .btn-secondary, .btn-accent {
+.btn-base {
     display: inline-flex;
     height: 36px;
     padding: 6px 12px;
     justify-content: center;
     align-items: center;
-    gap: 2px;
+    gap: 8px;
     flex-shrink: 0;
     border-radius: 8px;
-    color: vars.$background-primary;
-}
-
-.btn-primary {
-    background: vars.$palette-primary;
-    color: vars.$background-primary;
 }
 
 .btn-secondary {
+    @extend .btn-base;
     background: vars.$palette-secondary;
     color: vars.$background-primary;
 }
 
 .btn-accent {
+    @extend .btn-base;
     background: vars.$background-primary;
     color: vars.$text-accent;
 }
 
-.btn-neutral{
-    display: inline-flex;
-    height: 36px;
-    padding: 6px 12px;
-    justify-content: center;
-    align-items: center;
-    gap: 2px;
-    flex-shrink: 0;
-    border-radius: 8px;
+.btn-primary {
+    @extend .btn-base;
+    background: vars.$palette-primary;
+    color: vars.$background-primary;
+
+    &:hover {
+        background: var(--primary-hover, rgba(157, 141, 241, 0.80));
+    }
+
+    &:active {
+        background: vars.$palette-primary;
+    }
+}
+
+.btn-neutral {
+    @extend .btn-base;
 
     &.primary {
         background: vars.$background-secondary;
         color: vars.$text-primary;
-    };
+
+        &:hover {
+            background: var(--vkui-color-states-background-secondary-hover, #E6E8EC);
+        }
+
+        &:active {
+            background: var(--vkui-color-states-background-secondary-active, #DDDFE4);
+        }
+
+        
+    }
 
     &.tertiary {
         &:hover {
             color: vars.$primary-active;
-        };
-    };
+        }
+
+        &.active {
+            color: #9D8DF1;
+        }
+
+    }
 
     &.outlined {
         border: 1px solid vars.$background-tertiary;
+    }
+}
+
+.btn-outlined {
+    @extend .btn-base;
+    border: 1px solid var(--palette-primary, #9D8DF1);
+
+    >span {
+        color: #9D8DF1;
+    }
+
+    &:hover {
+        background: var(--vkui-color-states-transparent-hover, rgba(0, 16, 61, 0.04));
+    }
+
+    &:active {
+        background: var(--vkui-color-states-transparent-active, rgba(0, 16, 61, 0.08));
     }
 }

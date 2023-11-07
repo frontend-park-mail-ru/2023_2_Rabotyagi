@@ -7,7 +7,7 @@
 import { store } from '../../shared/store/store.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import ProfileBtn from '../profileBtn/profileBtn.js';
-import Template from './header.hbs'
+import template from './header.hbs'
 import './header.scss';
 import button from '../button/button.js';
 import svg from '../svg/svg.js';
@@ -135,10 +135,6 @@ export class Header {
             }, { capture: false })
         )
         
-        const wrapper = document.createElement('div');
-        wrapper.classList.toggle('wrapper');
-        wrapper.appendChild(this.root);
-
-        return wrapper;
+        return this.root;
     }
 }

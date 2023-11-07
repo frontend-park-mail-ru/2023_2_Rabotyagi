@@ -28,7 +28,7 @@ async function getOrders() {
         if (resp.status != 200) {
             throw body.error;
         }
-        store.cart.fullCart([...body]);
+        store.cart.fullCart([ ...body ]);
         console.log(store.cart.state);
     } catch(err) {
         console.log(err);
@@ -51,6 +51,6 @@ window.Router = new Router([
     new Route(new RegExp('^/signin$'), new SigninPage()),
     new Route(new RegExp('^/signup$'), new SignupPage()),
     new Route(new RegExp('^/profile.*'), new Profile()),
-    new Route(new RegExp('^/cart'), new Cart()),
-    new Route(new RegExp('^/product'), new Product()),
+    new Route(new RegExp('^/cart$'), new Cart()),
+    new Route(new RegExp('^/product$'), new Product()),
 ], root);
