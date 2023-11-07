@@ -10,14 +10,18 @@
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
 
     .left-content {
+        flex: 0 0 200px;
+        height: 218px;
         img {
             width: -webkit-fill-available;
             height: 218px;
+            object-fit: cover;
         }
     }
 
     .center-content {
         padding: 16px;
+        flex-grow: 1;
 
         .product-title {
             display: -webkit-box;
@@ -29,6 +33,8 @@
     }
 
     .right-content {
+        margin: 0 auto;
+        flex: 0 0 200px;
         padding: 16px;
         background-color: vars.$palette-primary;
         display: flex;
