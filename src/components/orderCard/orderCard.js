@@ -13,6 +13,7 @@ export class OrderCard {
 
     constructor(order) {
         this.#order = structuredClone(order);
+        this.template = template;
 
         this.context = {
             product: this.#order,
