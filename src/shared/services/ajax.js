@@ -3,109 +3,140 @@
  * @module Ajax
  */
 
-(function () {
-    /**
-     * @constant
-     * @summary Методы, поддерживаемые беком на данный момент
-     */
-    const AJAX_METHODS = {
-        GET: 'GET',
-        POST: 'POST',
-    };
+const { API_URL } = process.env;
+
+/**
+ * @constant
+ * @summary Методы, поддерживаемые беком на данный момент
+ */
+const AJAX_METHODS = {
+    GET: 'GET',
+    POST: 'POST',
+    DELETE: 'DELETE',
+    PATCH: 'PATCH',
+    PUT: 'PUT',
+};
+
+/**
+ * @classdesc класс-обертка над fetch с нашими обработчиками
+ * @name Ajax
+ * @class
+ */
+class Ajax {
+    port = '8080';
+
+    ADRESS_BACKEND = API_URL + `:${this.port}/api/v1/`;
 
     /**
-     * @classdesc класс-обертка над fetch с нашими обработчиками
-     * @name Ajax
-     * @class
+     * @async
+     * @private
+     * @method
+     *
+     * @param {string} method  Метод запроса
+     * @param {string} url Адрес хоста
+     * @param {string} params Параметры для GET запроса
+     * @param {string} body Параметры для POST Запроса
+     *
+     * @default method 'GET'
+     * @default url '/'
+     * @default params null
+     * @default body null
+     *
+     * @returns {Promise}
      */
-    class Ajax {
-        port = '8080';
+    async #ajax({
+        method = AJAX_METHODS.GET,
+        url = '/',
+        params = null,
+        body = null,
+        headers = {},
+        credentials = null,
+    } = {}) {
+        url = this.ADRESS_BACKEND + url;
+        if (params) {
+            url += `?${new URLSearchParams(params)}`;
+        }
+        
+        headers.Accept = 'application/json';
+        headers[ 'Content-Type' ] = 'application/json';
 
-        ADRESS_BACKEND = `http://localhost` + `:${this.port}/api/v1/`;
+        const config = {
+            method,
+            mode: 'cors',
+            headers,
+        };
 
-        /**
-         * @async
-         * @private
-         * @method
-         *
-         * @param {string} method  Метод запроса
-         * @param {string} url Адрес хоста
-         * @param {string} params Параметры для GET запроса
-         * @param {string} body Параметры для POST Запроса
-         *
-         * @default method 'GET'
-         * @default url '/'
-         * @default params null
-         * @default body null
-         *
-         * @returns {Promise}
-         */
-        async #ajax({
-            method = AJAX_METHODS.GET,
-            url = '/',
-            params = null,
-            body = null,
-            headers = {},
-            credentials = null,
-        } = {}) {
-            url = this.ADRESS_BACKEND + url;
-            if (params) {
-                url += `?${new URLSearchParams(params)}`;
-            }
-
-            headers.Accept = 'application/json';
-            headers[ 'Content-Type' ] = 'application/json';
-
-            const config = {
-                method,
-                mode: 'cors',
-                headers,
-            };
-
-            if (body != null) {
-                config.body = body;
-            }
-
-            if (credentials != null) {
-                config.credentials = credentials;
-            }
-
-            const response = await fetch(url, config);
-            return await response.json();
+        if (body != null) {
+            config.body = JSON.stringify(body);
         }
 
-        /**
-         * @method
-         * @param {string} url Адрес хоста
-         * @param {string} params Параметры для GET запроса
-         * @returns {Promise}
-         */
-        get({ url, params, headers, credentials }) {
-            return this.#ajax({
-                method: AJAX_METHODS.GET,
-                url,
-                params,
-                headers,
-                credentials,
-            });
+        if (credentials != null) {
+            config.credentials = credentials;
         }
 
-        /**
-         * @method
-         * @param {string} url Адрес хоста
-         * @param {string} params Параметры для POST Запроса
-         * @returns {Promise}
-         */
-        post({ url, body, headers, credentials }) {
-            return this.#ajax({
-                method: AJAX_METHODS.POST,
-                url,
-                body,
-                headers,
-                credentials,
-            });
-        }
+        return await (await fetch(url, config)).json();
     }
 
-    window.Ajax = new Ajax();
-})();
+    /**
+     * @method
+     * @param {string} url Адрес хоста
+     * @param {string} params Параметры для GET запроса
+     * @returns {Promise}
+     */
+    get({ url, params, headers, credentials }) {
+        return this.#ajax({
+            method: AJAX_METHODS.GET,
+            url,
+            params,
+            headers,
+            credentials,
+        });
+    }
+
+    /**
+     * @method
+     * @param {string} url Адрес хоста
+     * @param {string} params Параметры для POST Запроса
+     * @returns {Promise}
+     */
+    post({ url, body, headers, credentials }) {
+        return this.#ajax({
+            method: AJAX_METHODS.POST,
+            url,
+            body,
+            headers,
+            credentials,
+        });
+    }
+
+    delete({ url, headers, credentials }) {
+        return this.#ajax({
+            method: AJAX_METHODS.DELETE,
+            url,
+            headers,
+            credentials,            
+        });
+    }
+
+    patch({ url, body, headers, credentials }) {
+        return this.#ajax({
+            method: AJAX_METHODS.PATCH,
+            url,
+            body,
+            headers,
+            credentials,
+        });
+    }
+
+    put({ url, body, headers, credentials }) {
+        return this.#ajax({
+            method: AJAX_METHODS.PUT,
+            url,
+            body,
+            headers,
+            credentials,
+        });
+    }
+}
+
+export default new Ajax();

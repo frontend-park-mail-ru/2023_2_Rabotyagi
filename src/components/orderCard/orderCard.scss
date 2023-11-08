@@ -1,0 +1,48 @@
+@use '../../assets/css/vars.scss';
+
+.order-card {
+    display: flex;
+    justify-content: start;
+    height: 218px;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+
+    .left-content {
+        flex: 0 0 200px;
+        height: 218px;
+        img {
+            width: -webkit-fill-available;
+            height: 218px;
+            object-fit: cover;
+        }
+    }
+
+    .center-content {
+        padding: 16px;
+        flex-grow: 1;
+
+        .product-title {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .right-content {
+        margin: 0 auto;
+        flex: 0 0 200px;
+        padding: 16px;
+        background-color: vars.$palette-primary;
+        display: flex;
+        align-content: space-between;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+        align-self: stretch;
+        justify-content: space-around;
+    }
+}

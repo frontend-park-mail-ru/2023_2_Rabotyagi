@@ -1,0 +1,18 @@
+@use 'vars';
+
+.hidden {
+    display: none;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.divider {
+    height: 1px;
+    align-self: stretch;
+    border-radius: 12px;
+    background: vars.$background-tertiary;
+}

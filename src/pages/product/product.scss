@@ -1,0 +1,148 @@
+@use '../../assets/css/vars.scss';
+@use '../../assets/css/utility.scss';
+
+.wrapper-product {
+    @extend .wrapper;
+    background-color: vars.$background-secondary;
+    height: 100%;
+    padding-top: 32px;
+
+    >.product {
+        width: 1280px;
+        display: flex;
+        padding: 8px 8px;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 10px;
+        background: var(--background-primary, #FFFAFF);
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        height: fit-content;
+
+        >.content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1 0 0;
+
+            >.header{
+                display: flex;
+                height: 60px;
+                padding: 12px 8px;
+                justify-content: space-between;
+                align-items: center;
+                align-self: stretch;
+
+                >.title {
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 1;
+                    align-self: stretch;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    text-align: left;
+                }
+            }
+
+            >.body {
+                >.info {
+                    display: grid;
+                    grid-template-columns: 200px 1fr;
+                    grid-row-gap: 24px;
+                    padding: 16px;
+                }
+
+                >.image {
+                    width: 100%;
+                    height: 400px;
+                    flex-shrink: 0;
+                    align-self: stretch;
+                }
+
+            }
+        }
+
+        >.content-add {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            width: 100%;
+
+            >.body {
+                display: grid;
+                grid-template-columns: 100px 1fr;
+                grid-row-gap: 24px;
+                padding: 32px;
+                width: 100%;
+            }
+
+            >.btn-group {
+                display: grid;
+                grid-template-columns: repeat(2, 0.2fr);
+                grid-row-gap: 24px;
+                padding: 32px;
+                width: 100%;
+            }
+        }
+        
+        >.menu {
+            position: sticky;
+            display: flex;
+            padding-top: 54px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+
+            >.saler {
+                display: flex;
+                padding: 8px 16px 8px 0px;
+                align-items: center;
+                gap: 10px;
+
+                >.image {
+                    width: 90px;
+                    height: 90px;
+                }
+
+                >.info {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 16px;
+
+                    >.creds {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 6px;
+                    }
+
+                    >.add-info {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 4px;
+                    }
+                }
+            }
+
+            >.badges {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                gap: 4px;
+                align-self: stretch;
+
+                >.badge {
+                    display: flex;
+                    padding: 4px;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 4px;
+                    align-self: stretch;
+                    border-radius: 10px;
+                }
+            }
+        }
+    }
+}
