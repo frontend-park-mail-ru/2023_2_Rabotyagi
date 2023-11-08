@@ -23,7 +23,7 @@ class Menu {
                 count: 1,
                 product_id: this.context.productId,
             });
-            const body = await resp.json();
+            const body = resp.body;
             if (resp.status != 200) {
                 throw body.error;
             }
@@ -35,33 +35,35 @@ class Menu {
         } catch(err) {
             container.querySelector('#errorBox').innerHTML = '';
             container.querySelector('#errorBox').appendChild(ErrorMessageBox(err));
-            // console.log(err);
         }
     }
 
     render() {
         const root = stringToElement(template(this.context));
 
-        root.querySelector('#button-ad').replaceWith(button({
-            id: 'btn-ad',
-            variant: 'primary',
-            text: {
-                class: 'text-regular',
-                content: 'Добавить в корзину'
-            },
-            style: 'width: 100%;'
-        }));
+        if (this.context.saler.id !== store.user.state.fields.userID) {
+            root.querySelector('#button-ad')?.replaceWith(button({
+                id: 'btn-ad',
+                variant: 'primary',
+                text: {
+                    class: 'text-regular',
+                    content: 'Добавить в корзину'
+                },
+                style: 'width: 100%;'
+            }));
+    
+            root.querySelector('#send-message')?.replaceWith(button({
+                variant: 'outlined',
+                text: {
+                    class: 'text-regular',
+                    content: 'Написать продавцу'
+                },
+                style: 'width: 100%;'
+            }));
+        }
 
-        root.querySelector('#send-message').replaceWith(button({
-            variant: 'outlined',
-            text: {
-                class: 'text-regular',
-                content: 'Написать продавцу'
-            },
-            style: 'width: 100%;'
-        }));
 
-        root.querySelector('#btn-ad').addEventListener('click', (e) => {
+        root.querySelector('#btn-ad')?.addEventListener('click', (e) => {
             e.stopPropagation();
             this.addInCart(root);
         });

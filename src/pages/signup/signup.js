@@ -5,15 +5,12 @@
 
 import { store } from '../../shared/store/store.js';
 import { cookieParser } from '../../shared/utils/cookie.js';
-import {
-    validateEmail,
-    validatePassword,
-} from '../../shared/utils/validation.js';
+import Validate from '../../shared/utils/validation.js';
 import { Auth } from '../../shared/api/auth.js';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
-import Template from './signup.hbs'
-import styles from './signup.scss' // eslint-disable-line no-unused-vars
+import template from './signup.hbs'
+import './signup.scss' // eslint-disable-line no-unused-vars
 import button from '../../components/button/button.js';
 import svg from '../../components/svg/svg.js';
 import logo from '../../assets/icons/logo.svg'
@@ -26,34 +23,48 @@ export class SignupPage {
      * @param {string} repeatPass - repeated password
      * @return {null|string} return null if validation ok and return string if not
      */
-    #check(email, pass, repeatPass) {
-        email = email.trim();
-        pass = pass.trim();
-        repeatPass = repeatPass.trim();
+    #check({ email, name, phone, password, passwordRepeat }) {
 
-        const errEmail = validateEmail(email);
+        const errEmail = Validate.email(email);
         if (errEmail) {
             return errEmail;
         }
 
-        const errPassword = validatePassword(pass);
+        const errName = Validate.name(name);
+        if (errName) {
+            return errName;
+        }
+
+        const errPhone = Validate.phone(phone);
+        if (errPhone) {
+            return errPhone;
+        }
+
+        const errPassword = Validate.password(password);
         if (errPassword) {
             return errPassword;
         }
 
-        if (pass !== repeatPass) {
+
+        password = password.trim();
+        passwordRepeat = passwordRepeat.trim();
+
+        if (password !== passwordRepeat) {
             return 'Пароли не совпадают';
         }
 
         return null;
     }
 
-    async signup(email, pass, errorBox) {
+    async signup({ email, name, phone, password }, errorBox) {
         try {
-            const resp = await Auth.signup(email, pass);
-            const body = await resp.json();
+            const resp = await Auth.signup(email, name, phone, password);
+            const body = resp.body;
+
             if (resp.status != 200) {
-                throw new Error(body.error);
+                errorBox.innerHTML = '';
+                errorBox.appendChild(ErrorMessageBox(body.error));
+                return false;
             }
             const cookies = cookieParser(document.cookie);
             store.user.login(cookies);
@@ -69,22 +80,23 @@ export class SignupPage {
 
     signupEvent(container) {
         var handler = async (e) => {
-            if ((e.type === 'click') || (e.type === 'keydown' && e.code === 'Enter')) {
-                const inputEmail = container.querySelector('#inputEmail');
-                const inputPass = container.querySelector('#inputPass');
-                const inputPassRepeat = container.querySelector('#inputPassRepeat');
+            if ((e.type === 'submit') || (e.type === 'keydown' && e.code === 'Enter')) {
+                e.preventDefault();
+
+                const { elements } = container;
+                const data = Array.from(elements)
+                .filter((item) => !!item.name && !!item.value)
+                .map((element) => {
+                    const { name, value } = element
+                    return { [ name ]: value }
+                })
+
+                let body = {};
+                data?.forEach((elem) => body = { ...body, ...elem });
+
+                const error = this.#check(body);
+
                 const errorBox = container.querySelector('#errorBox');
-    
-                if (!inputEmail || !inputPass || !inputPassRepeat) {
-                    console.log('signup | не найдены инпуты, что-то пошло не так');
-                    return;
-                }
-    
-                const error = this.#check(
-                    inputEmail.value,
-                    inputPass.value,
-                    inputPassRepeat.value
-                );
     
                 if (error) {
                     errorBox.innerHTML = '';
@@ -92,7 +104,7 @@ export class SignupPage {
                     return;
                 }
     
-                const res = await this.signup(inputEmail.value, inputPass.value, errorBox);
+                const res = await this.signup(body, errorBox);
                 if (res) {
                     document.body.removeEventListener('keydown', handler);
                 }
@@ -107,32 +119,26 @@ export class SignupPage {
      * @returns {HTMLElement}
      */
     render() {
-        const template = Template;
-
-        const context = {
-            buttons: {
-                submit: 'Продолжить',
-            },
-        };
-
-        const root = stringToElement(template(context));
         document.title = 'Регистрация';
 
-        const container = root.querySelector('#content');
+        const root = stringToElement(template());
 
-        const btnSubmit = button({
+        const container = root.querySelector('.content');
+
+        container.querySelector('#btnSubmit').replaceWith(button({
             variant: 'primary',
             style: 'width: 100%',
             text: {
                 content: 'Продолжить',
                 class: 'text-regular'
-            }
-        });
+            },
+            type: 'submit'
+        }));
 
-        btnSubmit.addEventListener('click', this.signupEvent(container));
+        container.addEventListener('submit', this.signupEvent(container));
         document.body.addEventListener('keydown', this.signupEvent(container));
 
-        container.querySelector('#btnSubmit').replaceWith(btnSubmit);
+
 
         container.querySelector('#logo-btn').replaceWith(button({
             leftIcon: svg({ content: logo }),
@@ -147,8 +153,37 @@ export class SignupPage {
                 e.stopPropagation();
                 window.Router.navigateTo(item.dataset.link);
             }, { capture: false })
-        )
-
+        );
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            for (const el of document.querySelectorAll("[placeholder][data-slots]")) {
+                const pattern = el.getAttribute("placeholder"),
+                    slots = new Set(el.dataset.slots || "_"),
+                    prev = (j => Array.from(pattern, (c,i) => slots.has(c)? j=i+1: j))(0),
+                    first = [ ...pattern ].findIndex(c => slots.has(c)),
+                    accept = new RegExp(el.dataset.accept || "\\d", "g"),
+                    clean = input => {
+                        input = input.match(accept) || [];
+                        return Array.from(pattern, c =>
+                            input[ 0 ] === c || slots.has(c) ? input.shift() || c : c
+                        );
+                    },
+                    format = () => {
+                        const [ i, j ] = [ el.selectionStart, el.selectionEnd ].map(i => {
+                            i = clean(el.value.slice(0, i)).findIndex(c => slots.has(c));
+                            return i<0? prev[ prev.length-1 ]: back? prev[ i-1 ] || first: i;
+                        });
+                        el.value = clean(el.value).join``;
+                        el.setSelectionRange(i, j);
+                        back = false;
+                    };
+                let back = false;
+                el.addEventListener("keydown", (e) => back = e.key === "Backspace");
+                el.addEventListener("input", format);
+                el.addEventListener("focus", format);
+                el.addEventListener("blur", () => el.value === pattern && (el.value=""));
+            }
+        });
 
         return [ root ];
     }

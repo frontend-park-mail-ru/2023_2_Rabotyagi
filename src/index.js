@@ -23,7 +23,7 @@ import { Order } from './shared/api/order';
 async function getOrders() {
     try {
         const resp = await Order.getCart();
-        const body = await resp.json();
+        const body = (await resp.json()).body;
         // console.log(resp, body);
         if (resp.status != 200) {
             throw body.error;
@@ -35,7 +35,7 @@ async function getOrders() {
     }
 }
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' && process.env.MOCK === true) {
     createMockServer();
     console.log('created mock server');
 }

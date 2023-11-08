@@ -47,7 +47,7 @@ export class OrderFeed {
     async buyAll() {
         try {
             const resp = await Order.buyAll();
-            const body = await resp.json();
+            const body = (await resp.json()).body;
             if (resp.status != 200) {
                 throw body.error;
             }

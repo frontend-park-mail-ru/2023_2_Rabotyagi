@@ -16,7 +16,7 @@ class Favourite {
     async getFavs(container) {
         try {
             const resp = await UserApi.getFavs();
-            const body = await resp.json();
+            const body = (await resp.json()).body;
 
             switch (resp.status) {
                 case 222:

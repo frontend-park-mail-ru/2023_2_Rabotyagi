@@ -62,7 +62,6 @@ class Ajax {
 
         const config = {
             method,
-            // mode: NODE_ENV === 'development' ? 'no-cors' : 'cors',
             mode: 'cors',
             headers,
         };
@@ -72,11 +71,10 @@ class Ajax {
         }
 
         if (credentials != null) {
-        // if (credentials != null && NODE_ENV !== 'development') {
             config.credentials = credentials;
         }
 
-        return await fetch(url, config);
+        return await (await fetch(url, config)).json();
     }
 
     /**

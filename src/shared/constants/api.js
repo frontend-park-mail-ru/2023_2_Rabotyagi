@@ -3,11 +3,17 @@ export const API = {
     SIGNIN: 'signin',
     PRODUCT: {
         LIST: 'product/get_list',
-        GET: 'product',
+        GET: (id) => `product/get/${id}`,
+        POST: 'product/add',
+        DELETE: (id) => `product/delete/${id}`,
     },
     USER: {
-        PRODUCTS: 'user/products',
-        PROFILE: 'user',
+        PRODUCTS: 'product/get_list_of_saler',
+        PROFILE: {
+            GET: (id) => `profile/get/${id}`,
+            PUT: 'profile/update',
+            PATCH: 'profile/update',
+        },
         ORDERS: 'user/orders',
         FAVS: 'user/favourites',
         ADD_TO_FAV: 'user/add-to-fav',

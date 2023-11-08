@@ -18,7 +18,7 @@ export class Feed {
     async getPosts(container) {
         try {
             const resp = await Post.feed();
-            const body = await resp.json();
+            const body = resp.body;
 
             switch (resp.status) {
                 case 222:
@@ -30,7 +30,8 @@ export class Feed {
                 default:
             }
             container.innerHTML = '';
-            body.forEach((elem) => {
+            
+            body?.forEach((elem) => {
                 container.appendChild(new Card(elem).render());
             });
         } catch (err) {

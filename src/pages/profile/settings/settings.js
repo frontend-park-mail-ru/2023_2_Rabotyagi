@@ -2,7 +2,6 @@ import template from './settings.hbs'
 import './settings.scss';
 import { stringToElement } from '../../../shared/utils/parsing';
 import { cookieParser } from '../../../shared/utils/cookie';
-import jwtDecode from '../../../shared/utils/jwt-decode';
 import button from '../../../components/button/button';
 import { UserApi } from '../../../shared/api/user';
 import { ErrorMessageBox } from '../../../components/error/errorMessageBox';
@@ -12,7 +11,7 @@ import { store } from '../../../shared/store/store';
 class Settings {
     async patchProfile(data, errorBox) {
         const res = await UserApi.patchProfile(data);
-        const body = await res.json();
+        const body = res.body;
 
         if (res.status !== 200) {
             errorBox.replaceWith(ErrorMessageBox(body.message, 'errorBox'));
@@ -26,11 +25,7 @@ class Settings {
 
     render() {
         
-        const root = stringToElement(template(
-            jwtDecode(
-                cookieParser(document.cookie).access_token
-            )
-        ));
+        const root = stringToElement(template(store.user.state.fields));
 
         const inputs = root.querySelectorAll('.content input');
 
@@ -47,22 +42,21 @@ class Settings {
             let body = {};
             data.forEach((elem) => body = { ...body, ...elem });
 
-            const res = await UserApi.patchProfile(body);
-            body = await res.json();
+            body.id = store.user.state.fields.userID;
 
-            // console.log(res);
+            const res = await UserApi.patchProfile(body);
+            body = res.body;
+
             const errorBox = root.querySelector('#errorBox');
 
             if (res.status !== 200) {
-                errorBox.replaceWith(ErrorMessageBox(body.message, 'errorBox'));
+                errorBox.replaceWith(ErrorMessageBox(body.error, 'errorBox'));
                 return;
             }
 
             store.user.login(
                 cookieParser(document.cookie)
             );
-
-            console.log(body)
         });
 
         root.querySelector('#btn-submit').replaceWith(button({

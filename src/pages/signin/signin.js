@@ -4,12 +4,9 @@
  */
 
 import { store } from '../../shared/store/store.js';
-import dispatcher from '../../shared/dispatcher/dispatcher.js';
+// import dispatcher from '../../shared/dispatcher/dispatcher.js';
 import { cookieParser } from '../../shared/utils/cookie.js';
-import {
-    validateEmail,
-    validatePassword,
-} from '../../shared/utils/validation.js';
+import Validate from '../../shared/utils/validation.js';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
 import { Auth } from '../../shared/api/auth.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
@@ -32,15 +29,12 @@ export class SigninPage {
      * @return {null|string} return null if validation ok and return string if not
      */
     #check(email, pass) {
-        email = email.trim();
-        pass = pass.trim();
-
-        const errEmail = validateEmail(email);
+        const errEmail = Validate.email(email);
         if (errEmail) {
             return errEmail;
         }
 
-        const errPassword = validatePassword(pass);
+        const errPassword = Validate.password(pass);
         if (errPassword) {
             return errPassword;
         }
@@ -51,7 +45,7 @@ export class SigninPage {
     async signin(email, pass, errorBox) {
         try {
             const resp = await Auth.signin(email, pass);
-            const body = await resp.json();
+            const body = resp.body;
             if (resp.status != 200) {
                 throw new Error(body.error);
             }
@@ -59,12 +53,12 @@ export class SigninPage {
             store.user.login(cookies);
             store.cart.clear();
             const respCart = await Order.getCart();
-            const bodyCart = await respCart.json();
-            console.log(respCart);
+            const bodyCart = respCart.body;
+            
             if (respCart.status != 200) {
                 throw bodyCart.error;
             }
-            dispatcher.dispatch({ type: 'FULL_CART', payload: bodyCart });
+            // dispatcher.dispatch({ type: 'FULL_CART', payload: bodyCart });
             window.Router.navigateTo('/');
             return true;
         } catch (err) {

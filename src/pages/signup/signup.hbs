@@ -1,24 +1,38 @@
 <div class="centred-page">
-    <div style='display: flex; width: 400px; padding: 16px; flex-direction: column; justify-content: center; align-items: center; gap: 16px; flex-shrink: 0; border-radius: 12px; border: 1px solid var(--text-tertiary, rgba(41, 44, 47, 0.25));'>
-        <div id='content' style='display: flex; flex-direction: column; align-items: center; gap: 16px; align-self: stretch;'>
+    <div class="signup">
+        <form class='content'>
             <div id="logo-btn"></div>
             <p class='text-subheader'>Регистрация в «Юла»</p>
             <input
-                id='inputEmail'
+                name="email"
                 class='text-regular'
                 placeholder='Электронная почта'
                 type='text'
                 class='inputField'
             />
             <input
-                id='inputPass'
+                name="name"
+                class='text-regular'
+                placeholder='Имя'
+                type='text'
+                class='inputField'
+            />
+            <input
+                name="phone"
+                class='text-regular'
+                placeholder="+7 ___ ___ __ __" data-slots="_"
+                type='text'
+                class='inputField'
+            />
+            <input
+                name="password"
                 class='text-regular'
                 placeholder='Пароль'
                 type='password'
                 class='inputField'
             />
             <input
-                id='inputPassRepeat'
+                name="passwordRepeat"
                 class='text-regular'
                 placeholder='Повтор пароля'
                 type='password'
@@ -26,7 +40,7 @@
             />
             <div id='errorBox'></div>
             <div id="btnSubmit"></div>
-        </div>
+        </form>
         <div
             id='info'
             style='display: flex; flex-direction: column; align-items: center; gap: 8px; align-self: stretch;'

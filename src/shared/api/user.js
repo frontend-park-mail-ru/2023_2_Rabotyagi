@@ -4,15 +4,18 @@ import ajax from '../services/ajax.js';
 export const UserApi = {
     patchProfile: async (body) => {
         return await ajax.patch({
-            url: API.USER.PROFILE,
+            url: API.USER.PROFILE.PATCH,
             body: body,
             credentials: 'include',
         });
     },
 
-    getProfile: async () => {
+    getProfile: async (id) => {
         return await ajax.get({
-            url: API.USER.PROFILE,
+            url: API.USER.PROFILE.GET(id),
+            // params: {
+            //     id: id
+            // },
             credentials: 'include'
         });
     },
@@ -20,6 +23,11 @@ export const UserApi = {
     getProducts: async () => {
         return await ajax.get({
             url: API.USER.PRODUCTS,
+            params: {
+                count: 20,
+                last_id: 0
+            },
+            // mode: 'no-cors'
             credentials: 'include'
         });
     },

@@ -61,16 +61,6 @@ export class Router {
      * @summary рендерит страницу согласно маршруту
      */
     async loadRoute() {
-        
-        // const nodes = location.pathname.split('/').filter((value) => value != '' || undefined);
-
-        // let node = this;
-        // nodes.forEach((path) => {
-        //     node = node.routes;
-        //     const res = node.find((r) => r.path === '/'+path);
-        //     console.log(res);
-        //     node = res;
-        // });
         const route = this.routes.find((r) => r.path.exec(location.pathname));
 
         this.container.innerHTML = '';
@@ -83,22 +73,3 @@ export class Router {
 
     }
 }
-
-// const routes = {
-//     '/': {
-//         parent: null,
-//     },
-//     '/profile': {
-//         parent: null,
-//         routes: {
-//             '/products': {},
-//             '/orders': {}
-//         }
-//     },
-//     '/signin': {
-//         parent: null,
-//     },
-//     '/signup' : {
-//         parent: null,
-//     },
-// }

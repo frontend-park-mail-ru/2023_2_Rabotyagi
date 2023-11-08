@@ -22,34 +22,76 @@ function regexpEmail(email) {
     return EMAIL_REGEXP.test(email);
 }
 
-/**
- * @summary Валидация почты с использованием регулярки {@link validation:EMAIL_REGEXP}
- * @param {string} email - email
- * @return {null|string} return null if validation ok and return string if not
- */
-export function validateEmail(email) {
-    if (email === '') {
-        return 'Поле почты не может быть пустым';
-    }
-    if (!regexpEmail(email)) {
-        return 'Некорректый email';
+export default class Validate {
+    /**
+     * @summary validatePassword() check not empty and min lengths
+     * @param {string} password - password
+     * @return {null|string} return null if validation ok and return string if not
+     */
+    static password(password) {
+        if (!password) {
+            return 'Поле пароля не может быть пустым';
+        }
+
+        password = password.trim();
+
+        if (password === '') {
+            return 'Поле пароля не может быть пустым';
+        }
+        if (password.length < minLenPassword) {
+            return `Пароль не должен быть короче ${minLenPassword} символов`;
+        }
+
+        return null;
     }
 
-    return null;
-}
+    /**
+     * @summary Валидация почты с использованием регулярки {@link validation:EMAIL_REGEXP}
+     * @param {string} email - email
+     * @return {null|string} return null if validation ok and return string if not
+     */
+    static email(email) {
+        if (!email) {
+            return 'Поле почты не может быть пустым';
+        }
 
-/**
- * @summary validatePassword() check not empty and min lengths
- * @param {string} password - password
- * @return {null|string} return null if validation ok and return string if not
- */
-export function validatePassword(password) {
-    if (password === '') {
-        return 'Поле пароля не может быть пустым';
-    }
-    if (password.length < minLenPassword) {
-        return `Пароль не должен быть короче ${minLenPassword} символов`;
+        email = email.trim();
+
+        if (email === '') {
+            return 'Поле почты не может быть пустым';
+        }
+        if (!regexpEmail(email)) {
+            return 'Некорректый email';
+        }
+
+        return null;
     }
 
-    return null;
+    static phone(phone) {
+        if (!phone) {
+            return 'Поле телефона не может быть пустым';
+        }
+
+        phone = phone.trim();
+
+        if (phone === '') {
+            return 'Поле телефона не может быть пустым';
+        }
+
+        return null;
+    }
+
+    static name(name) {
+        if (!name) {
+            return 'Поле имени не может быть пустым';
+        }
+
+        name = name.trim();
+
+        if (name === '') {
+            return 'Поле имени не может быть пустым';
+        }
+
+        return null;
+    }
 }

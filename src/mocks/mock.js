@@ -31,12 +31,12 @@ const createMockServer = function () {
             const model = res.attrs;
             model.saler = schema.users.find(model.saler_id).attrs;
             delete model.saler_id;
-            return new Response(200, {}, model);
+            return new Response(200, {}, { body: model });
         });
     
         this.get("/signin", (schema, request) => {
             const res = schema.users.findBy({ email: request.queryParams.email });
-            console.log(res);
+            
             if ((res == null) || (res.attrs.password != request.queryParams.password)) {
                 return new Response(222, {}, {
                     'error': 'Неверная почта или пароль'
@@ -105,7 +105,7 @@ const createMockServer = function () {
                     "images": product.images,
                 };        
                 schema.orders.create(orderData);
-                return new Response(200, {}, orderData);
+                return new Response(200, {}, { body: orderData });
             }
             else {
                 return new Response(222, {}, {
@@ -131,11 +131,16 @@ const createMockServer = function () {
                 });
 
                 return new Response(200, {}, {
-                    'message': 'OK'
+                    body: {
+                        'message': 'OK'
+                    }
                 });
             } catch(err) {
-                return new Response(222, {}, {
-                    'error': err
+                return new Response(200, {}, {
+                    body: {
+                        'error': err
+                    },
+                    status: 222
                 });
             }
         });

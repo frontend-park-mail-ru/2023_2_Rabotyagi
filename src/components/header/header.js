@@ -84,6 +84,7 @@ export class Header {
         }));
 
         this.root.querySelector('#product-create').replaceWith(button({
+            id: 'product-create',
             variant: 'neutral',
             subVariant: 'primary',
             text: {
@@ -91,6 +92,11 @@ export class Header {
                 content: 'Разместить объявление'
             }
         }));
+
+        this.root.querySelector('#product-create').addEventListener('click', (e) => {
+            e.stopPropagation();
+            window.Router.navigateTo('/product', { productId: this.context.id, mode: 'add' })
+        })
 
         this.root.querySelector('#signin')?.replaceWith(button({
             variant: 'primary',

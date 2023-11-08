@@ -16,7 +16,7 @@ class Products {
     async getProducts(container) {
         try {
             const resp = await UserApi.getProducts();
-            const body = (await resp.json());
+            const body = resp.body;
 
             switch (resp.status) {
                 case 222:
@@ -40,7 +40,7 @@ class Products {
 
         container.innerHTML = '';
 
-        if (products.length == 0) {
+        if (!products){
             container.innerHTML = placeholder();
         }
         else {
@@ -59,7 +59,7 @@ class Products {
 
         container.innerHTML = '';
 
-        if (products.length == 0) {
+        if (!products) {
             container.innerHTML = placeholder();
         }
         else {
@@ -79,7 +79,7 @@ class Products {
 
         container.innerHTML = '';
 
-        if (products.length == 0) {
+        if (!products) {
             container.innerHTML = placeholder();
         }
         else {
@@ -99,7 +99,7 @@ class Products {
 
         container.innerHTML = '';
 
-        if (products.length == 0) {
+        if (!products) {
             container.innerHTML = placeholder();
         }
         else {

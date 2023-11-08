@@ -1,5 +1,5 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
-import Template from './orderCard.hbs';
+import template from './orderCard.hbs';
 import './orderCard.scss';
 import { Order } from '../../shared/api/order.js';
 import button from '../button/button.js';
@@ -13,13 +13,14 @@ export class OrderCard {
 
     constructor(order) {
         this.#order = structuredClone(order);
-        console.log('order', order);
 
-        this.template = Template;
         this.context = {
             product: this.#order,
-            image: this.#order.images[ 0 ].url,
         };
+
+        if (this.#order.images) {
+            this.context.image = this.#order.images[ 0 ].url;
+        }
         this.root = stringToElement(this.template(this.context));
 
         this.deleteBtn = button({
@@ -50,7 +51,7 @@ export class OrderCard {
                 id: this.#order.id,
                 count: count
             });
-            const body = await resp.json();
+            const body = (await resp.json()).body;
             if (resp.status != 200) {
                 throw body.error;
             }
@@ -66,7 +67,7 @@ export class OrderCard {
     async deleteOrder() {
         try {
             const resp = await Order.deleteOrder(this.#order.id);
-            const body = await resp.json();
+            const body = (await resp.json()).body;
             if (resp.status != 200) {
                 throw body.error;
             }
