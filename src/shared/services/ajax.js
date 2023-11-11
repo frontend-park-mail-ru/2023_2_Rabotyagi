@@ -109,29 +109,32 @@ class Ajax {
         });
     }
 
-    delete({ url, headers, credentials }) {
+    delete({ url, params, headers, credentials }) {
         return this.#ajax({
             method: AJAX_METHODS.DELETE,
             url,
+            params,
             headers,
             credentials,            
         });
     }
 
-    patch({ url, body, headers, credentials }) {
+    patch({ url, params, body, headers, credentials }) {
         return this.#ajax({
             method: AJAX_METHODS.PATCH,
             url,
+            params,
             body,
             headers,
             credentials,
         });
     }
 
-    put({ url, body, headers, credentials }) {
+    put({ url, params, body, headers, credentials }) {
         return this.#ajax({
             method: AJAX_METHODS.PUT,
             url,
+            params,
             body,
             headers,
             credentials,

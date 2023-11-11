@@ -12,10 +12,10 @@ export const UserApi = {
 
     getProfile: async (id) => {
         return await ajax.get({
-            url: API.USER.PROFILE.GET(id),
-            // params: {
-            //     id: id
-            // },
+            url: API.USER.PROFILE.GET,
+            params: {
+                id: id
+            },
             credentials: 'include'
         });
     },
@@ -27,7 +27,6 @@ export const UserApi = {
                 count: 20,
                 last_id: 0
             },
-            // mode: 'no-cors'
             credentials: 'include'
         });
     },
@@ -41,7 +40,7 @@ export const UserApi = {
 
     getSaler: async (saler_id) => {
         return await ajax.get({
-            url: API.PROFILE.GET,
+            url: API.USER.PROFILE.GET,
             params: {
                 id: saler_id
             },

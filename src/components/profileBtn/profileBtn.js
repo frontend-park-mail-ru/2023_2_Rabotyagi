@@ -11,7 +11,7 @@ class ProfileBtn {
             id: 'profileBtn-dropdown',
             search: false,
             items: [
-                [ 'dropdown-btn-fav', 'Избранное' ],
+                // [ 'dropdown-btn-fav', 'Избранное' ],
                 [ 'dropdown-btn-profile', 'Профиль' ],
                 [ 'dropdown-btn-logout', 'Выйти' ],
             ],
@@ -56,6 +56,11 @@ class ProfileBtn {
             e.stopPropagation();
             window.Router.navigateTo('/profile');
         });
+
+        // root.querySelector('#dropdown-btn-fav').addEventListener('click', (e) => {
+        //     e.stopPropagation();
+        //     window.Router.navigateTo('/profile/favourites');
+        // });
 
         return root;
     }

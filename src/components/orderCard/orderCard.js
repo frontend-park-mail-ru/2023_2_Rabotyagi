@@ -21,7 +21,7 @@ export class OrderCard {
         if (this.#order.images) {
             this.context.image = this.#order.images[ 0 ].url;
         }
-        this.root = stringToElement(this.template(this.context));
+        this.root = stringToElement(template(this.context));
 
         this.deleteBtn = button({
             variant: 'accent',
@@ -51,7 +51,7 @@ export class OrderCard {
                 id: this.#order.id,
                 count: count
             });
-            const body = (await resp.json()).body;
+            const body = resp.body;
             if (resp.status != 200) {
                 throw body.error;
             }
@@ -67,7 +67,7 @@ export class OrderCard {
     async deleteOrder() {
         try {
             const resp = await Order.deleteOrder(this.#order.id);
-            const body = (await resp.json()).body;
+            const body = resp.body;
             if (resp.status != 200) {
                 throw body.error;
             }

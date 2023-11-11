@@ -18,22 +18,32 @@ import createMockServer from './mocks/mock.js';
 import Profile from './pages/profile/profile.js';
 import Cart from './pages/cart/cart';
 import Product from './pages/product/product';
-import { Order } from './shared/api/order';
+// import { Order } from './shared/api/order';
+// import { UserApi } from './shared/api/user.js';
 
-async function getOrders() {
-    try {
-        const resp = await Order.getCart();
-        const body = (await resp.json()).body;
-        // console.log(resp, body);
-        if (resp.status != 200) {
-            throw body.error;
-        }
-        store.cart.fullCart([ ...body ]);
-        // console.log(store.cart.state);
-    } catch(err) {
-        // console.log(err);
-    }
-}
+
+// class FullCart {
+//     async getOrders() {
+//         try {
+//             const resp = await Order.getCart();
+//             const body = resp.body;
+//             if (resp.status != 200) {
+//                 throw body.error;
+//             }
+//             store.cart.fullCart([ ...body ]);
+//             if (body.length !== 0) {
+//                 const respUser = await UserApi.getProfile(salerID);
+//                 const bodyUser = respUser.body;
+//                 if (respUser.status != 200) {
+//                     throw bodyUser.error;
+//                 }
+//                 store.cart.updateUser(bodyUser);
+//             }
+//         } catch(err) {
+//             console.log(err);
+//         }
+//     }
+// };
 
 if (process.env.NODE_ENV === 'development' && process.env.MOCK === true) {
     createMockServer();
@@ -42,9 +52,7 @@ if (process.env.NODE_ENV === 'development' && process.env.MOCK === true) {
 
 const root = document.querySelector('#root');
 
-store.user.init();
-store.cart.init();
-getOrders();
+await store.init();
 
 window.Router = new Router([
     new Route(new RegExp('^/$'), new MainPage()),

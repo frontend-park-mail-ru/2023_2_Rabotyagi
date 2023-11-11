@@ -14,7 +14,11 @@ export const Post = {
 
     get: async (id) => {
         return await ajax.get({
-            url: API.PRODUCT.GET(id),
+            url: API.PRODUCT.GET,
+            params: {
+                id: id
+            },
+            // credentials: 'include'
         });
     },
 
@@ -27,7 +31,32 @@ export const Post = {
 
     delete: async (id) => {
         return await ajax.delete({
-            url: API.PRODUCT.DELETE(id),
+            url: API.PRODUCT.DELETE,
+            params: {
+                id: id
+            },
+            credentials: 'include'
+        })
+    },
+
+    patch: async (id, data) => {
+        return await ajax.patch({
+            url: API.PRODUCT.PATCH,
+            params: {
+                id: id
+            },
+            body: data,
+            // credentials: 'include'
+        })
+    },
+
+    put: async (id, data) => {
+        return await ajax.put({
+            url: API.PRODUCT.PUT,
+            params: {
+                id: id
+            },
+            body: data,
             credentials: 'include'
         })
     },

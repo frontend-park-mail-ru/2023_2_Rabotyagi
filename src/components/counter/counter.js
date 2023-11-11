@@ -1,5 +1,5 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
-import Template from './counter.hbs';
+import template from './counter.hbs';
 import './counter.scss';
 
 import inc from '../../assets/icons/inc.svg';
@@ -23,11 +23,10 @@ export class Counter {
         this.#price = this.#unitPrice * this.#currentCount;
         this.#counterFunc = counterFunc;
 
-        this.template = Template;
         this.context = {
             name: ''
         };
-        this.root = stringToElement(this.template(this.context));
+        this.root = stringToElement(template(this.context));
         this.counterResult = this.root.querySelector('div.counter-result');
         this.counterManager = this.root.querySelector('div.counter-manager');
     }
@@ -82,15 +81,15 @@ export class Counter {
             }),
         });
 
-        decButton.addEventListener('click', (e) => {
+        decButton.addEventListener('click', () => {
             this.decCount();
         });
-        incButton.addEventListener('click', (e) => {
+        incButton.addEventListener('click', () => {
             this.incCount();
         });
 
-        this.counterManager.querySelector('#decBtn').replaceWith(decButton);
-        this.counterManager.querySelector('#incBtn').replaceWith(incButton);
+        this.counterManager.querySelector('#decBtn')?.replaceWith(decButton);
+        this.counterManager.querySelector('#incBtn')?.replaceWith(incButton);
         this.counterManager.querySelector('div.counter-count').innerHTML = this.#currentCount;
 
         return this.root;

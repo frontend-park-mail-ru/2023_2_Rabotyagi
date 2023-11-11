@@ -1,5 +1,7 @@
 import { BaseStore } from "./baseStore";
 import dispathcer from "../dispatcher/dispatcher";
+import { Order } from "../api/order";
+import { UserApi } from "../api/user";
 
 class Cart {
     constructor() {
@@ -43,6 +45,34 @@ class Cart {
                     break;
             }
         });
+
+        this.getOrders();
+    }
+
+    async getOrders() {
+        try {
+            const resp = await Order.getCart();
+            const body = resp.body;
+            if (resp.status != 200) {
+                throw body.error;
+            }
+
+            if (Array.isArray(body)) {
+                this.fullCart([ ...body ]);
+                if (body.length !== 0) {
+                    const respUser = await UserApi.getProfile(body[ 0 ].saler_id);
+                    const bodyUser = respUser.body;
+                    if (respUser.status != 200) {
+                        throw bodyUser.error;
+                    }
+                    this.updateUser(bodyUser);
+                }
+                this.emitChange();
+            }
+
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     emptySaler() {

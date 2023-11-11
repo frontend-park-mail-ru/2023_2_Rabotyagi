@@ -1,4 +1,4 @@
-FROM node:20-alpine3.17
+FROM node:20-alpine3.17 as build
 
 WORKDIR /var/frontend/app
 COPY public public
