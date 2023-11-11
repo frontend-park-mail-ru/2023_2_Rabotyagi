@@ -57,6 +57,7 @@ class Settings {
             store.user.login(
                 cookieParser(document.cookie)
             );
+            window.Router.navigateTo('/profile/settings');
         });
 
         root.querySelector('#btn-submit').replaceWith(button({
@@ -80,7 +81,9 @@ class Settings {
             // style: 'width: 100%;'
         }));
 
-        root.querySelector('#btn-cancel').addEventListener('click', () => {
+        root.querySelector('#btn-cancel').addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             inputs?.forEach((elem) => {
                 elem.value = '';
             });

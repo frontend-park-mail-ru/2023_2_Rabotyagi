@@ -3,14 +3,16 @@ export const API = {
     SIGNIN: 'signin',
     PRODUCT: {
         LIST: 'product/get_list',
-        GET: (id) => `product/get/${id}`,
+        GET: 'product/get',
         POST: 'product/add',
-        DELETE: (id) => `product/delete/${id}`,
+        DELETE: 'product/delete',
+        PATCH: 'product/update',
+        PUT: 'product/update',
     },
     USER: {
         PRODUCTS: 'product/get_list_of_saler',
         PROFILE: {
-            GET: (id) => `profile/get/${id}`,
+            GET: 'profile/get',
             PUT: 'profile/update',
             PATCH: 'profile/update',
         },
@@ -24,9 +26,9 @@ export const API = {
         GET_BASKET: 'order/get_basket',
         UPDATE_COUNT: 'order/update_count',
         UPDATE_STATUS: 'order/update_status',
-        DELETE: 'order/delete/'
+        DELETE: 'order/delete'
     },
-    PROFILE: {
-        GET: 'profile/get/',
+    CATEGORY: {
+        GET: 'category/get_full'
     },
 };

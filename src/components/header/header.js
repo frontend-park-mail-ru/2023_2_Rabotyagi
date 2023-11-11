@@ -13,6 +13,7 @@ import button from '../button/button.js';
 import svg from '../svg/svg.js';
 import logo from '../../assets/icons/logo.svg';
 import cart from '../../assets/icons/cart.svg';
+import { CategoryApi } from '../../shared/api/category.js';
 
 /**
  * @class
@@ -25,7 +26,6 @@ export class Header {
      */
 
     constructor() {
-        this.template = template;
         this.profileBtn = new ProfileBtn();
         this.context = {
             signin: {
@@ -37,12 +37,14 @@ export class Header {
             authorized: store.user.isAuth(),
             profile: store.user.isAuth() ? this.profileBtn.render() : null,
         };
-        this.root = stringToElement(this.template(this.context));
+        this.root = stringToElement(template(this.context));
         store.cart.addListener(this.updateCartButton.bind(this));
+
+        this.getCategories();
     }
 
     updateCartButton() {
-        this.root.querySelector('#cart-btn').replaceWith(button({
+        this.root.querySelector('#cart-btn')?.replaceWith(button({
             id: 'cart-btn',
             variant: 'neutral',
             link: '/cart',
@@ -57,14 +59,19 @@ export class Header {
             }
         }));
 
-        this.root.querySelector('#cart-btn').addEventListener('click', (e) => {
+        this.root.querySelector('#cart-btn')?.addEventListener('click', (e) => {
             e.stopPropagation();
             window.Router.navigateTo('/cart');
         }, { capture: false });
     }
 
+    async getCategories() {
+        const res = await CategoryApi.getAll();
+        store.categories.init(res.body);
+    }
+
     render() {
-        this.root.querySelector('#logo-btn').replaceWith(button({
+        this.root.querySelector('#logo-btn')?.replaceWith(button({
             id: 'logo-btn',
             variant: 'neutral',
             link: '/',
@@ -75,7 +82,8 @@ export class Header {
             }
         }));
 
-        this.root.querySelector('#category').replaceWith(button({
+        this.root.querySelector('#category')?.replaceWith(button({
+            id: 'category',
             variant: 'primary',
             text: {
                 class: 'text-regular',
@@ -83,7 +91,11 @@ export class Header {
             }
         }));
 
-        this.root.querySelector('#product-create').replaceWith(button({
+        this.root.querySelector('#category')?.addEventListener('click', () => {
+            
+        });
+
+        this.root.querySelector('#product-create')?.replaceWith(button({
             id: 'product-create',
             variant: 'neutral',
             subVariant: 'primary',
@@ -93,7 +105,7 @@ export class Header {
             }
         }));
 
-        this.root.querySelector('#product-create').addEventListener('click', (e) => {
+        this.root.querySelector('#product-create')?.addEventListener('click', (e) => {
             e.stopPropagation();
             window.Router.navigateTo('/product', { productId: this.context.id, mode: 'add' })
         })

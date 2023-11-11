@@ -1,16 +1,25 @@
 <div class="wrapper-product">
     <div class="product">
-        <form class="content-add">
+        {{#if isAuth}}
+            <form class="content-add">
             <div class="body">
                 {{!-- <img class="image" src="{{this.image}}" alt="" srcset=""> --}}
                 <span class="text-regular">Название</span>
                 <input name="title" class="text-regular searchField" type="text">
+                {{!-- <span class="text-regular">Изображения</span>
+                <input name="images" type="file" multiple accept=".png, .jpg, .jpeg"> --}}
                 <span class="text-regular">Город</span>
                 <input name="city" class="text-regular searchField" type="text">
                 <span class="text-regular">Описание</span>
                 <textarea name="description" class="text-regular" style="height: 300px"  type="text"></textarea>
                 <span class="text-regular">Категория</span>
-                <input name="category_id" class="text-regular searchField" type="number">
+                <select name="category_id">
+                    {{#each categories}}
+                    <option value="{{this.id}}">
+                        <span class="text-regular">{{this.name}}</span>
+                    </option>
+                    {{/each}}
+                </select>
                 <span class="text-regular">Цена</span>
                 <input name="price" class="text-regular searchField" type="number">
                 <span class="text-regular">Доступное кол-во товара</span>
@@ -31,5 +40,9 @@
             </div> --}}
         
         </form>
+        {{else}}
+        <span class="text-regular">Вы не авторизированы</span>
+        {{/if}}
+        
     </div>
 </div>

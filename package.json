@@ -22,12 +22,15 @@
   },
   "homepage": "https://github.com/frontend-park-mail-ru/2023_2_Rabotyagi/tree/main#readme",
   "dependencies": {
+    "build": "^0.1.4",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "file-loader": "^6.2.0",
     "handlebars": "^4.7.8",
     "handlebars-loader": "^1.7.3",
     "mini-css-extract-plugin": "^2.7.6",
+    "npm": "^10.2.3",
+    "run": "^1.4.0",
     "svg-inline-loader": "^0.8.2",
     "url-loader": "^4.1.1",
     "webpack-cli": "^4.10.0"

@@ -45,8 +45,7 @@ class Products {
         }
         else {
             products.forEach((elem) => {
-                elem.variant = 'profile';
-                container.appendChild(new Card(elem).render());
+                container.appendChild(new Card(elem, 'profile').render());
             });
         }
     }
@@ -65,8 +64,7 @@ class Products {
         else {
             products = products.filter((value) => !value.is_active);
             products.forEach((elem) => {
-                elem.variant = 'profile';
-                container.appendChild(new Card(elem).render());
+                container.appendChild(new Card(elem, 'profile').render());
             });
         }
     }
@@ -86,7 +84,7 @@ class Products {
             products = products.filter((value) => value.is_active);
             products.forEach((elem) => {
                 elem.variant = 'profile';
-                container.appendChild(new Card(elem).render());
+                container.appendChild(new Card(elem, 'profile').render());
             });
         }
     }
@@ -95,7 +93,7 @@ class Products {
         container.innerHTML = '';
         container.appendChild(loaderRegular());
 
-        let products = [];
+        let products = await this.getProducts(container);
 
         container.innerHTML = '';
 
@@ -103,10 +101,11 @@ class Products {
             container.innerHTML = placeholder();
         }
         else {
-            products = products.filter((value) => value.is_active);
+            console.log(products)
+            products = products.filter((value) => value.available_count < 1);
             products.forEach((elem) => {
                 elem.variant = 'profile';
-                container.appendChild(new Card(elem).render());
+                container.appendChild(new Card(elem, 'profile').render());
             });
         }
     }

@@ -10,7 +10,7 @@ import { Order } from '../../shared/api/order.js';
 import { loaderRegular } from '../loader/loader.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import button from '../button/button.js';
-import Template from './orderFeed.hbs';
+import template from './orderFeed.hbs';
 import './orderFeed.scss';
 import dispatcher from '../../shared/dispatcher/dispatcher.js';
 
@@ -20,7 +20,6 @@ import dispatcher from '../../shared/dispatcher/dispatcher.js';
  */
 export class OrderFeed {
     constructor() {
-        this.template = Template;
         this.context = {
             name: '',
             fullPrice: store.cart.getPrice(),
@@ -38,7 +37,7 @@ export class OrderFeed {
         this.buyBtn.addEventListener('click', (e) => {
             this.buyAll();
         });
-        this.root = stringToElement(this.template(this.context));
+        this.root = stringToElement(template(this.context));
         this.feedHeader = this.root.querySelector('div.order-feed-header');
         this.feedContent = this.root.querySelector('div.order-feed-content');
         store.cart.addListener(this.getOrders.bind(this));
@@ -47,7 +46,7 @@ export class OrderFeed {
     async buyAll() {
         try {
             const resp = await Order.buyAll();
-            const body = (await resp.json()).body;
+            const body = resp.body;
             if (resp.status != 200) {
                 throw body.error;
             }
@@ -64,6 +63,11 @@ export class OrderFeed {
                 this.feedContent.appendChild(new OrderCard(elem).render());
             });
             this.feedHeader.querySelector('#order-full-price').innerHTML = store.cart.getPrice();
+            if (store.cart.hasUser()) {
+                const saler = new UserCard(store.cart.state.saler);
+                this.feedHeader.querySelector('#userCard').replaceWith(saler.render());
+            }
+            this.feedHeader.querySelector('#buyBtn').replaceWith(this.buyBtn);
         } else {
             const deletingBuyBtn = this.feedHeader.querySelector('#buyBtn');
             const parentElement = deletingBuyBtn.parentNode;
