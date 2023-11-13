@@ -11,6 +11,10 @@ export const UserApi = {
     },
 
     getProfile: async (id) => {
+        if (id === undefined) {
+            // throw new Error('getProfile, id=undefined');
+            return undefined;
+        }
         return await ajax.get({
             url: API.USER.PROFILE.GET,
             params: {

@@ -21,24 +21,26 @@ import { UserApi } from '../../shared/api/user.js';
 class Profile {
     activePage;
 
-    constructor() {
+    constructor(variant='default') {
         this.activePage = null;
+        this.variant = variant;
+        const params = history.state;
+        if (params) {
+            if (params[ 'salerId' ] != undefined) {
+                this.variant = 'saler';
+            }
+        };
     }
 
     async getProfile(id) {
         return await UserApi.getProfile(id);
     }
 
-    async renderRoot(root) {
+    async renderOwnProfile(root) {
         const res = await this.getProfile(store.user.state.fields.userID);
-        const { name, phone } = res.body;
+        store.user.update(res.body);
 
-        store.user.state.fields = {
-            ...store.user.state.fields,
-            name: name,
-            phone: phone
-        };
-        const container = stringToElement(template(store.user.state.fields));
+        const container = stringToElement(template(res.body));
         root.replaceWith(container);
         const content = container.querySelector('.content');
 
@@ -104,11 +106,57 @@ class Profile {
         );
     }
 
+    async renderSaler(root, params) {
+        const res = await this.getProfile(params.salerId);
+
+        const container = stringToElement(template(res.body));
+        root.replaceWith(container);
+        const content = container.querySelector('.content');
+
+        this.router = new Router([
+            new Route(new RegExp('^/saler/products$'), new Products(this)),
+        ], content);
+
+        const btnProducts = button({
+            variant: 'neutral',
+            subVariant: 'tertiary',
+            text: {
+                class: 'text-regular',
+                content: 'Объявления'
+            },
+            link: '/saler/products',
+            leftIcon: svg({ content: listIcon , width: 20, height: 20 })
+        });
+
+        btnProducts.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (btnProducts.dataset.link !== location.pathname) {
+                this.router.navigateTo(btnProducts.dataset.link, { salerId: params.salerId });
+            }
+        }, { capture: false });
+
+        container.querySelector('#btn-products')?.replaceWith(btnProducts);
+    }
+
     render() {
         const header = new Header().render();
         const root = document.createElement('div');
+        const params = history.state;
+        
+        if (params) {
+            if (params[ 'salerId' ] != undefined) {
+                this.variant = 'saler';
+            }
+        };
 
-        this.renderRoot(root);     
+        switch(this.variant) {
+            case 'saler':
+                this.renderSaler(root, params);
+                break;
+            default:
+                this.renderOwnProfile(root);
+                break;
+        }
 
         return [ header, root ];
     }

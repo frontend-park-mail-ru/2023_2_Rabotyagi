@@ -3,6 +3,8 @@
  * @module Ajax
  */
 
+import { applicationJson, multipartFormData } from "../constants/contentType";
+
 const { API_URL } = process.env;
 
 /**
@@ -51,14 +53,15 @@ class Ajax {
         body = null,
         headers = {},
         credentials = null,
+        contentType = applicationJson,
     } = {}) {
         url = this.ADRESS_BACKEND + url;
         if (params) {
             url += `?${new URLSearchParams(params)}`;
         }
         
-        headers.Accept = 'application/json';
-        headers[ 'Content-Type' ] = 'application/json';
+        headers.Accept = applicationJson;
+        headers[ 'Content-Type' ] = contentType;
 
         const config = {
             method,
@@ -67,7 +70,30 @@ class Ajax {
         };
 
         if (body != null) {
-            config.body = JSON.stringify(body);
+            switch (contentType){
+                case applicationJson:
+                    config.body = JSON.stringify(body);
+                    break;
+                
+                case multipartFormData: {
+                    // debugger
+                    const formData = new FormData();
+                    if (Object.keys(body).length !== 0) {
+                        Object.keys(body).forEach((key) => {
+                            if (Array.isArray(body[ key ])){
+                                body[ key ].forEach((file) => {
+                                    formData.append(`${key}`, file);
+                                });
+                            }
+                            else {
+                                formData.append(key, body[ key ]);
+                            }
+                        });
+                        config.body = formData;
+                        delete config.headers[ 'Content-Type' ];
+                    }
+                }
+            }
         }
 
         if (credentials != null) {
@@ -99,12 +125,13 @@ class Ajax {
      * @param {string} params Параметры для POST Запроса
      * @returns {Promise}
      */
-    post({ url, body, headers, credentials }) {
+    post({ url, body, headers, credentials, contentType }) {
         return this.#ajax({
             method: AJAX_METHODS.POST,
             url,
             body,
             headers,
+            contentType,
             credentials,
         });
     }

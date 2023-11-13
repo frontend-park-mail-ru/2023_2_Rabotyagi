@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 require('dotenv').config( {
   path: path.join(__dirname, '.env')
 } );
@@ -18,28 +19,15 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
+        test: /\.(?:js|mjs|cjs)$/,
         exclude: /node_modules/,
-      }, 
-      {
-        test: /.jsx?$/,
-        include: [
-          path.resolve(__dirname, 'src')
-        ],
-        exclude: [
-          path.resolve(__dirname, 'node_modules')
-        ],
-        loader: 'babel-loader',
-        options: {
-          presets: [
-            [ "@babel/env", {
-              "targets": {
-                  "browsers": "last 2 chrome versions"
-                }
-              } 
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ['@babel/preset-env', { targets: "defaults" }]
             ]
-          ]
+          }
         }
       },
       { 
@@ -60,15 +48,6 @@ module.exports = {
                     sourceMap: true
                 }
             },
-            // {
-            //     loader: 'postcss-loader',
-            //     options: {
-            //         plugins: () => [
-            //             require('autoprefixer')
-            //         ],
-            //         sourceMap: true
-            //     }
-            // },
             {
                 loader: 'sass-loader',
                 options: {
@@ -81,19 +60,6 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
       },
-      // {
-      //   test: /\.ttf$/i,
-      //   loader: "file-loader",
-      //   options: {
-      //     name(file) {
-      //       return "[hash].[ext]";
-      //     },
-      //   },
-      // },
-      // {
-      //   test: /\.css$/i,
-      //   use: [MiniCssExtractPlugin.loader, "css-loader"],
-      // },
       {
         test: /\.svg$/,
         loader: 'svg-inline-loader'

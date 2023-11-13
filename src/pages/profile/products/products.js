@@ -9,8 +9,16 @@ import { Card } from '../../../components/card/card';
 
 class Products {
 
-    constructor(parent) {
+    constructor(parent, variant='default') {
         this.parent = parent;
+        this.variant = variant;
+        const params = history.state;
+
+        if (params) {
+            if (params[ 'salerId' ]) {
+                this.variant = 'saler';
+            }
+        };
     }
 
     async getProducts(container) {
@@ -101,7 +109,6 @@ class Products {
             container.innerHTML = placeholder();
         }
         else {
-            console.log(products)
             products = products.filter((value) => value.available_count < 1);
             products.forEach((elem) => {
                 elem.variant = 'profile';
@@ -110,9 +117,7 @@ class Products {
         }
     }
 
-    render() {
-        this.parent.activePage = this;
-        const root = stringToElement(template());
+    renderOwnProducts(root) {
         const container = root.querySelector('#products-container');
 
         root.querySelector('#tab-all').addEventListener('click', (e) => {
@@ -151,6 +156,58 @@ class Products {
         });
         
         root.querySelector('#tab-all').click();
+    }
+
+    renderSalerProducts(root) {
+        const container = root.querySelector('#products-container');
+
+        root.querySelector('#tab-active').addEventListener('click', (e) => {
+            if (this.selected != e.currentTarget) {
+                this.renderActive(container);
+            }
+        });
+
+        root.querySelector('#tab-soled').addEventListener('click', (e) => {
+            if (this.selected != e.currentTarget) {
+                this.renderSoled(container);
+            }
+        });
+        
+        root.querySelectorAll('.tab').forEach((value) => {
+            value.addEventListener('click', (e) => {
+                if (this.selected != null) {
+                    this.selected.classList.toggle('selected');
+                }
+
+                e.currentTarget.classList.toggle('selected');
+                this.selected = e.currentTarget;
+            });
+        });
+        root.querySelector('#tab-all')?.remove();
+        root.querySelector('#tab-notActive')?.remove();
+        root.querySelector('#tab-active').click();
+    }
+
+    render() {
+        this.parent.activePage = this;
+        const root = stringToElement(template());
+        const params = history.state;
+        if (params) {
+            if (params[ 'salerId' ] != undefined) {
+                this.variant = 'saler';
+            }
+        };
+
+        switch(this.variant) {
+            case 'saler':
+                // console.log('SALER');
+                this.renderSalerProducts(root, params);
+                break;
+            default:
+                // console.log('OWN');
+                this.renderOwnProducts(root);
+                break;
+        }
 
         return [ root ];
     }
