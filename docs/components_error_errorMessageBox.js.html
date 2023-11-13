@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: shared/api/auth.js</title>
+    <title>JSDoc: Source: components/error/errorMessageBox.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: shared/api/auth.js</h1>
+    <h1 class="page-title">Source: components/error/errorMessageBox.js</h1>
 
     
 
@@ -26,48 +26,22 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @file auth.js
- * @module Api.Auth
- */
+            <pre class="prettyprint source linenums"><code>import { stringToElement } from '../../shared/utils/parsing.js';
+import Template from './errorMessageBox.hbs'
+import './errorMessageBox.scss';
 
-import ajax from '../services/ajax.js';
-import { AUTH_API } from '../constants/auth_api.js';
 
-export const Auth = {
-    /**
-     * @summary Функция авторизации
-     * @description Посылает запрос на бек и получает данные пользователя после чего записывает их в хранилище
-     * @borrows store, Router
-     * @param {string} email Почта юзера
-     * @param {string} password Пароль юзера
-     */
-    signin: async (email, pass) => {
-        return await ajax.get({
-            url: AUTH_API.SIGNIN,
-            params: { 'email': email, 'password': pass },
-            credentials: 'include',
-        });
-    },
-    /**
-     * @summary Функция регистрации
-     * @description Посылает запрос на бек и получает данные пользователя после чего записывает их в хранилище
-     * @borrows store, Router
-     * @param {string} email Почта юзера
-     * @param {string} password Пароль юзера
-     */
-    signup: async (email, name, phone, pass) => {
-        return await ajax.post({
-            url: AUTH_API.SIGNUP,
-            body: { 
-                email: email,
-                name: name,
-                phone: phone, 
-                password: pass
-            },
-            credentials: 'include',
-        });
-    },
+
+/**
+ * Функция рендера 
+ * @date 11/13/2023 - 11:17:50 PM
+ * @param {string} error Текст ошибки
+ * @param {string} [id=null] Айдишник элемента
+ **/
+export const ErrorMessageBox = (error, id=null) => {
+    const template = Template;
+
+    return stringToElement(template({ text: error, id: id }));
 };
 </code></pre>
         </article>
