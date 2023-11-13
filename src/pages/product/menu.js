@@ -1,5 +1,5 @@
 import { stringToElement } from '../../shared/utils/parsing';
-import template from './menu.hbs';
+import template from './templates/menu.hbs';
 import button from '../../components/button/button';
 import { Order } from '../../shared/api/order.js';
 import { store } from '../../shared/store/store.js';
@@ -40,7 +40,7 @@ class Menu {
 
     render() {
         const root = stringToElement(template(this.context));
-        const container = root.querySelector('div.creds');
+        // const container = root.querySelector('div.creds');
 
         if (store.user.isAuth() && (this.context.saler.id !== store.user.state.fields.userID)) {
             root.querySelector('#button-ad')?.replaceWith(button({

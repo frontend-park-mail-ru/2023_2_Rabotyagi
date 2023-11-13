@@ -1,6 +1,6 @@
 import { stringToElement } from '../../shared/utils/parsing';
-import template from './content.hbs';
-import templateChange from './contentChange.hbs';
+import template from './templates/content.hbs';
+import templateChange from './templates/contentChange.hbs';
 import button from '../../components/button/button';
 // import svg from '../../components/svg/svg';
 // import favIcon from '../../assets/icons/fav.svg';

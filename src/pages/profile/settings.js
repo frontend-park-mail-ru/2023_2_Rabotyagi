@@ -1,11 +1,11 @@
-import template from './settings.hbs'
-import './settings.scss';
-import { stringToElement } from '../../../shared/utils/parsing';
-import { cookieParser } from '../../../shared/utils/cookie';
-import button from '../../../components/button/button';
-import { User } from '../../../shared/api/user';
-import { ErrorMessageBox } from '../../../components/error/errorMessageBox';
-import { store } from '../../../shared/store/store';
+import template from './templates/settings.hbs'
+import './styles/settings.scss';
+import { stringToElement } from '../../shared/utils/parsing';
+import { cookieParser } from '../../shared/utils/cookie';
+import button from '../../components/button/button';
+import { User } from '../../shared/api/user';
+import { ErrorMessageBox } from '../../components/error/errorMessageBox';
+import { store } from '../../shared/store/store';
 
 
 class Settings {

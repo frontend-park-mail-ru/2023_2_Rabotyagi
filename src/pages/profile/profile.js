@@ -1,21 +1,17 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
-import template from './profile.hbs';
-import './profile.scss';
+import template from './templates/profile.hbs';
+import './styles/profile.scss';
 import { Header } from '../../components/header/header.js';
-// import Breadcrumb from '../../components/breadcrumb/breadcrumb.js';
 import { store } from '../../shared/store/store.js';
-// import uid from '../../shared/utils/uid.js';
 import { Router, Route } from '../../shared/services/router.js';
-import Orders from './orders/orders.js';
-import Products from './products/products.js';
-// import Favourite from './favourite/favourite.js';
+import Orders from './orders.js';
+import Products from './products.js';
 import button from '../../components/button/button.js';
 import svg from '../../components/svg/svg.js';
 import listIcon from '../../assets/icons/list-ad.svg';
 import cartIcon from '../../assets/icons/cart.svg';
-// import heartIcon from '../../assets/icons/heart.svg';
 import settingsIcon from '../../assets/icons/settings.svg'
-import Settings from './settings/settings.js';
+import Settings from './settings.js';
 import { User } from '../../shared/api/user.js';
 
 class Profile {

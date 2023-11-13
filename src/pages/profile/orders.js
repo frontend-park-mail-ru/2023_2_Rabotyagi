@@ -1,5 +1,5 @@
-import { stringToElement } from '../../../shared/utils/parsing';
-import template from './orders.hbs';
+import { stringToElement } from '../../shared/utils/parsing';
+import template from './templates/orders.hbs';
 
 class Orders {
     constructor() {

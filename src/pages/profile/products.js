@@ -1,11 +1,11 @@
-import './products.scss';
-import { stringToElement } from '../../../shared/utils/parsing';
-import template from './products.hbs';
-import placeholder from './placeholder.hbs';
-import { User } from '../../../shared/api/user.js';
-import { loaderRegular } from '../../../components/loader/loader';
-import { ErrorMessageBox } from '../../../components/error/errorMessageBox';
-import { Card } from '../../../components/card/card';
+import { stringToElement } from '../../shared/utils/parsing.js';
+import template from './templates/products.hbs';
+import placeholder from './templates/placeholder.hbs';
+import { User } from '../../shared/api/user.js';
+import { loaderRegular } from '../../components/loader/loader.js';
+import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
+import { Card } from '../../components/card/card.js';
+import './styles/products.scss';
 
 class Products {
 
