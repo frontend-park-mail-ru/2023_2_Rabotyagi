@@ -26,13 +26,25 @@ export const UserApi = {
 
     getProducts: async () => {
         return await ajax.get({
-            url: API.USER.PRODUCTS,
+            url: API.USER.PRODUCTS.SAME,
             params: {
                 count: 20,
                 last_id: 0
             },
             credentials: 'include'
         });
+    },
+
+    getProductsOfAnotherSaler: async (salerID) => {
+        return await ajax.get({
+            url: API.USER.PRODUCTS.ANOTHER,
+            params: {
+                count: 20,
+                last_id: 0,
+                saler_id: salerID,
+            },
+            credentials: 'include'
+        })
     },
 
     getOrders: async () => {

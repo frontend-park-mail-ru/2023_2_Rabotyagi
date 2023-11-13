@@ -23,7 +23,13 @@ class Products {
 
     async getProducts(container) {
         try {
-            const resp = await UserApi.getProducts();
+            let resp;
+            if (this.variant === 'saler') {
+                resp = await UserApi.getProductsOfAnotherSaler(history.state.salerId);
+            }
+            else {
+                resp = await UserApi.getProducts();
+            }
             const body = resp.body;
 
             switch (resp.status) {

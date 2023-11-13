@@ -10,7 +10,10 @@ export const API = {
         PUT: 'product/update',
     },
     USER: {
-        PRODUCTS: 'product/get_list_of_saler',
+        PRODUCTS: {
+            SAME: 'product/get_list_of_saler',
+            ANOTHER: 'product/get_list_of_another_saler'
+        },
         PROFILE: {
             GET: 'profile/get',
             PUT: 'profile/update',
