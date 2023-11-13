@@ -16,7 +16,7 @@ import cartIcon from '../../assets/icons/cart.svg';
 // import heartIcon from '../../assets/icons/heart.svg';
 import settingsIcon from '../../assets/icons/settings.svg'
 import Settings from './settings/settings.js';
-import { UserApi } from '../../shared/api/user.js';
+import { User } from '../../shared/api/user.js';
 
 class Profile {
     activePage;
@@ -33,7 +33,7 @@ class Profile {
     }
 
     async getProfile(id) {
-        return await UserApi.getProfile(id);
+        return await User.getProfile(id);
     }
 
     async renderOwnProfile(root) {

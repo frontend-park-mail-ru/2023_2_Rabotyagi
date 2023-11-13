@@ -4,9 +4,9 @@ import templateChange from './contentChange.hbs';
 import button from '../../components/button/button';
 // import svg from '../../components/svg/svg';
 // import favIcon from '../../assets/icons/fav.svg';
-import { UserApi } from '../../shared/api/user';
+import { User } from '../../shared/api/user';
 import { store } from '../../shared/store/store';
-import { Post } from '../../shared/api/post';
+import { Product } from '../../shared/api/product';
 import ajax from '../../shared/services/ajax';
 import Handlebars from 'handlebars/runtime';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox';
@@ -64,7 +64,7 @@ class Content {
             body.category_id = Number(body.category_id);
             body.saler_id = store.user.state.fields.userID;
 
-            const res = await Post.put(this.context.id, body);
+            const res = await Product.put(this.context.id, body);
             body = res.body;
 
             const errorBox = root.querySelector('#errorBox');
@@ -131,7 +131,7 @@ class Content {
         // }
 
         root.querySelector('.content>.header>button')?.addEventListener('click', async function() {
-            await UserApi.addToFav(this.context.id);
+            await User.addToFav(this.context.id);
             this.classList.toggle('active');
         });
 

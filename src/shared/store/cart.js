@@ -1,7 +1,7 @@
 import { BaseStore } from "./baseStore";
 import dispathcer from "../dispatcher/dispatcher";
 import { Order } from "../api/order";
-import { UserApi } from "../api/user";
+import { User } from "../api/user";
 
 class Cart {
     constructor() {
@@ -55,7 +55,7 @@ class Cart {
             if (Array.isArray(body)) {
                 this.fullCart([ ...body ]);
                 if (body.length !== 0) {
-                    const respUser = await UserApi.getProfile(body[ 0 ].saler_id);
+                    const respUser = await User.getProfile(body[ 0 ].saler_id);
                     const bodyUser = respUser.body;
                     if (respUser.status != 200) {
                         throw bodyUser.error;

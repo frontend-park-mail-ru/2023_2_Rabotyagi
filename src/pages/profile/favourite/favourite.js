@@ -1,6 +1,6 @@
 import { stringToElement } from '../../../shared/utils/parsing';
 import template from './favourite.hbs';
-import { UserApi } from '../../../shared/api/user';
+import { User } from '../../../shared/api/user';
 import { loaderRegular } from '../../../components/loader/loader';
 import { ErrorMessageBox } from '../../../components/error/errorMessageBox';
 import placeholder from './placeholder.hbs';
@@ -15,7 +15,7 @@ class Favourite {
 
     async getFavs(container) {
         try {
-            const resp = await UserApi.getFavs();
+            const resp = await User.getFavs();
             const body = (await resp.json()).body;
 
             switch (resp.status) {

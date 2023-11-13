@@ -1,11 +1,11 @@
-import { API } from '../constants/api.js';
 import { multipartFormData } from '../constants/contentType.js';
 import ajax from '../services/ajax.js';
+import { FILES_API } from '../constants/file_api.js';
 
 export const Files = {
     images: async (files) => {
         return await ajax.post({
-            url: API.FILES.IMAGES,
+            url: FILES_API.IMAGES,
             body: {
                 images: files
             },

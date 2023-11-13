@@ -4,12 +4,12 @@ import templateAdd from './productAdd.hbs';
 // import templateChange from './productChange.hbs';
 import './product.scss';
 import { Header } from '../../components/header/header.js';
-import { Post } from '../../shared/api/post.js';
+import { Product } from '../../shared/api/product.js';
 import { loaderRegular } from '../../components/loader/loader.js';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
 import Menu from "./menu";
 import Content from "./content";
-import { UserApi } from '../../shared/api/user.js';
+import { User } from '../../shared/api/user.js';
 import button from '../../components/button/button.js';
 import { store } from '../../shared/store/store.js';
 import { Files } from '../../shared/api/file.js';
@@ -17,16 +17,16 @@ import { extname } from '../../shared/utils/extname.js';
 
 const allowedFormats = [ 'jpg, png, jpeg' ];
 
-class Product {
+class ProductPage {
     async getSaler(salerID) {
-        return await UserApi.getProfile(salerID);
+        return await User.getProfile(salerID);
     }    
 
     async getProduct(id, container) {
         container.appendChild(loaderRegular());
 
         try {
-            const respPost = await Post.get(id);
+            const respPost = await Product.get(id);
             const bodyPost = respPost.body;
 
             if (respPost.status != 200) {
@@ -134,7 +134,7 @@ class Product {
                 return;
             }
 
-            const res = await Post.create(body);
+            const res = await Product.create(body);
             body = res.body;
 
 
@@ -192,7 +192,7 @@ class Product {
 
     //     //     body.saler_id = store.user.state.fields.userID;
 
-    //     //     const res = await Post.create(body);
+    //     //     const res = await Product.create(body);
     //     //     body = res.body;
 
     //     //     const errorBox = content.querySelector('#errorBox');
@@ -254,4 +254,4 @@ class Product {
     }
 }
 
-export default Product;
+export default ProductPage;

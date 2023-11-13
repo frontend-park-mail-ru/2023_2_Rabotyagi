@@ -62,13 +62,15 @@
         <div class='right-block'>
             <div class='right-block-content'>
                 <div id="logo-btn"></div>
-                <span class='text-subheader'>Вход в «Юла»</span>
+                <span class='text-subheader'>Вход в «GoodsGalaxy»</span>
                 <input
                     id='inputEmail'
                     class='text-regular'
                     placeholder='Электронная почта'
                     type='text'
                     style='width: 100%;'
+                    required
+                    autocomplete="email"
                 />
                 <input
                     id='inputPass'
@@ -76,6 +78,8 @@
                     placeholder='Пароль'
                     type='password'
                     style='width: 100%;'
+                    required
+                    autocomplete="current-password"
                 />
                 <div id='errorBox'></div>
                 <div id="btnSubmit"></div>

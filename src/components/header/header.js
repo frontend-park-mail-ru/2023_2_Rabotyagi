@@ -78,7 +78,7 @@ export class Header {
             leftIcon: svg({ content: logo }),
             text: {
                 class: 'text-subheader',
-                content: 'Супер Юла',
+                content: 'GoodsGalaxy',
             }
         }));
 

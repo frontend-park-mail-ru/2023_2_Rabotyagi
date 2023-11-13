@@ -3,14 +3,14 @@ import './settings.scss';
 import { stringToElement } from '../../../shared/utils/parsing';
 import { cookieParser } from '../../../shared/utils/cookie';
 import button from '../../../components/button/button';
-import { UserApi } from '../../../shared/api/user';
+import { User } from '../../../shared/api/user';
 import { ErrorMessageBox } from '../../../components/error/errorMessageBox';
 import { store } from '../../../shared/store/store';
 
 
 class Settings {
     async patchProfile(data, errorBox) {
-        const res = await UserApi.patchProfile(data);
+        const res = await User.patchProfile(data);
         const body = res.body;
 
         if (res.status !== 200) {
@@ -44,7 +44,7 @@ class Settings {
 
             body.id = store.user.state.fields.userID;
 
-            const res = await UserApi.patchProfile(body);
+            const res = await User.patchProfile(body);
             body = res.body;
 
             const errorBox = root.querySelector('#errorBox');

@@ -3,8 +3,8 @@
  * @module Api.Auth
  */
 
-import { API } from '../constants/api.js';
 import ajax from '../services/ajax.js';
+import { AUTH_API } from '../constants/auth_api.js';
 
 export const Auth = {
     /**
@@ -16,7 +16,7 @@ export const Auth = {
      */
     signin: async (email, pass) => {
         return await ajax.get({
-            url: API.SIGNIN,
+            url: AUTH_API.SIGNIN,
             params: { 'email': email, 'password': pass },
             credentials: 'include',
         });
@@ -30,7 +30,7 @@ export const Auth = {
      */
     signup: async (email, name, phone, pass) => {
         return await ajax.post({
-            url: API.SIGNUP,
+            url: AUTH_API.SIGNUP,
             body: { 
                 email: email,
                 name: name,

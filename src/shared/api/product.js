@@ -1,10 +1,10 @@
-import { API } from '../constants/api.js';
 import ajax from '../services/ajax.js';
+import { PRODUCT_API } from '../constants/product_api.js';
 
-export const Post = {
+export const Product = {
     feed: async () => {
         return await ajax.get({
-            url: API.PRODUCT.LIST,
+            url: PRODUCT_API.LIST,
             params: {
                 count: 20,
                 last_id: 0
@@ -14,7 +14,7 @@ export const Post = {
 
     get: async (id) => {
         return await ajax.get({
-            url: API.PRODUCT.GET,
+            url: PRODUCT_API.GET,
             params: {
                 id: id
             },
@@ -24,14 +24,14 @@ export const Post = {
 
     create: async (data) => {
         return await ajax.post({
-            url: API.PRODUCT.POST,
+            url: PRODUCT_API.POST,
             body: data
         });
     },
 
     delete: async (id) => {
         return await ajax.delete({
-            url: API.PRODUCT.DELETE,
+            url: PRODUCT_API.DELETE,
             params: {
                 id: id
             },
@@ -41,7 +41,7 @@ export const Post = {
 
     patch: async (id, data) => {
         return await ajax.patch({
-            url: API.PRODUCT.PATCH,
+            url: PRODUCT_API.PATCH,
             params: {
                 id: id
             },
@@ -52,7 +52,7 @@ export const Post = {
 
     put: async (id, data) => {
         return await ajax.put({
-            url: API.PRODUCT.PUT,
+            url: PRODUCT_API.PUT,
             params: {
                 id: id
             },

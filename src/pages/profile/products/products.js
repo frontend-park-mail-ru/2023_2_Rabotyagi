@@ -2,7 +2,7 @@ import './products.scss';
 import { stringToElement } from '../../../shared/utils/parsing';
 import template from './products.hbs';
 import placeholder from './placeholder.hbs';
-import { UserApi } from '../../../shared/api/user.js';
+import { User } from '../../../shared/api/user.js';
 import { loaderRegular } from '../../../components/loader/loader';
 import { ErrorMessageBox } from '../../../components/error/errorMessageBox';
 import { Card } from '../../../components/card/card';
@@ -25,10 +25,10 @@ class Products {
         try {
             let resp;
             if (this.variant === 'saler') {
-                resp = await UserApi.getProductsOfAnotherSaler(history.state.salerId);
+                resp = await User.getProductsOfAnotherSaler(history.state.salerId);
             }
             else {
-                resp = await UserApi.getProducts();
+                resp = await User.getProducts();
             }
             const body = resp.body;
 

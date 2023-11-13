@@ -4,7 +4,7 @@
 
 import { Card } from '../card/card.js';
 import { ErrorMessageBox } from '../error/errorMessageBox.js';
-import { Post } from '../../shared/api/post.js';
+import { Product } from '../../shared/api/product.js';
 import { loaderRegular } from '../loader/loader.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import template from './feed.hbs'
@@ -17,7 +17,7 @@ import './feed.scss'
 export class Feed {
     async getPosts(container) {
         try {
-            const resp = await Post.feed();
+            const resp = await Product.feed();
             const body = resp.body;
 
             switch (resp.status) {

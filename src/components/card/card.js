@@ -4,7 +4,7 @@ import Handlebars from 'handlebars/runtime';
 import template from './card.hbs'
 import templateProfile from './card-profile.hbs'
 import button from '../button/button.js';
-import { Post } from '../../shared/api/post.js';
+import { Product } from '../../shared/api/product.js';
 import ajax from '../../shared/services/ajax.js';
 
 export class Card {
@@ -16,7 +16,7 @@ export class Card {
     async changeActive(isActive, card) {
         let body = {};
         body.is_active = isActive;
-        const res = await Post.patch(this.context.id, body);
+        const res = await Product.patch(this.context.id, body);
         body = res.body;
 
         card.remove();
@@ -75,7 +75,7 @@ export class Card {
     
             root.querySelector('#btn-delete')?.addEventListener('click', async (e) => {
                 e.stopPropagation();
-                const res = await Post.delete(Number(this.context.id));
+                const res = await Product.delete(Number(this.context.id));
     
                 if (res.status === 200) {
                     root.remove();
