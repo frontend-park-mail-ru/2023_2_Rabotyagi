@@ -46,12 +46,14 @@ export class SigninPage {
         try {
             const resp = await Auth.signin(email, pass);
             const body = resp.body;
+
             if (resp.status != 200) {
                 throw new Error(body.error);
             }
             const cookies = cookieParser(document.cookie);
             store.user.login(cookies);
             store.cart.clear();
+
             const respCart = await Order.getCart();
             const bodyCart = respCart.body;
             
@@ -76,7 +78,7 @@ export class SigninPage {
                 const errorBox = container.querySelector('#errorBox');
         
                 if (!inputEmail || !inputPass) {
-                    console.log('signin | не найдены инпуты, что-то пошло не так');
+                    // console.log('signin | не найдены инпуты, что-то пошло не так');
                     return;
                 }
         

@@ -2,10 +2,9 @@ import { cookieParser } from '../utils/cookie.js';
 import jwtDecode from '../utils/jwt-decode.js';
 
 const user = {
-    clear: () => {
-        user.state.fields = null;
-        user.state.accessToken = null;
-        user.state.refreshToken = null;
+    clear: function() {
+        this.state.fields = {};
+        this.state.accessToken = null;
     },
     /**
      * @summary Редьюсер для инициализирования стейта пользователя
@@ -15,13 +14,15 @@ const user = {
      * @function
      * @returns None
      */
-    init: () => {
+    init: function() {
         const cookie = cookieParser(document.cookie);
         if (cookie) {
-            user.login(cookie);
+            this.login(cookie);
         }
     },
-    isAuth: () => Boolean(user.state.accessToken),
+    isAuth: function() {
+        return Boolean(this.state.accessToken)
+    },
     /**
      * @summary Редьюсер для изменения стейта пользователя на авторизированного
      * @description Сетит в localStorage ключ email \
@@ -31,13 +32,29 @@ const user = {
      * @function
      * @returns None
      */
-    login: ({ access_token }) => {
-        user.state.accessToken = access_token;
+    login: function({ access_token }) {
+        this.clear();
+        if (access_token === undefined) {
+            return;
+        }
+        
+        this.state.accessToken = access_token;
         const decoded = jwtDecode(access_token);
-        user.state.fields = structuredClone(decoded); 
+        this.state.fields = { 
+            ...this.state.fields, 
+            ...decoded 
+        }; 
+    },
+    update: function(data) {
+        if (data) {
+            this.state.fields = {
+                ...this.state.fields,
+                ...data
+            }
+        }
     },
     state: {
-        fields: null,
+        fields: {},
         accessToken: null,
         // refreshToken:    null,
     },

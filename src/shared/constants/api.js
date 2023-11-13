@@ -31,4 +31,7 @@ export const API = {
     CATEGORY: {
         GET: 'category/get_full'
     },
+    FILES: {
+        IMAGES: 'img/upload'
+    }
 };

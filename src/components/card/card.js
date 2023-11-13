@@ -2,6 +2,7 @@ import { stringToElement } from '../../shared/utils/parsing.js';
 import './card.scss'
 import Handlebars from 'handlebars/runtime';
 import template from './card.hbs'
+import templateProfile from './card-profile.hbs'
 import button from '../button/button.js';
 import { Post } from '../../shared/api/post.js';
 import ajax from '../../shared/services/ajax.js';
@@ -34,11 +35,23 @@ export class Card {
             return (this.safe_deal || this.delivery);
         });
 
+        let root;
+
         if (this.context.images) {
-            this.context.image = ajax.ADRESS_BACKEND + this.context.images[ 0 ].url;
+            this.context.image = process.env.MOCK === 'true' ? 
+                this.context.images[ 0 ].url 
+                : 
+                ajax.ADRESS_BACKEND + this.context.images[ 0 ].url;
         }
 
-        const root = stringToElement(template(this.context));
+        switch(this.variant) {
+            case 'profile':
+                root = stringToElement(templateProfile(this.context));
+                break;
+            default:
+                root = stringToElement(template(this.context));
+                break;
+        }
 
         root.addEventListener('click', (e) => {
             e.stopPropagation();

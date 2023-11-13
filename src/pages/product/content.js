@@ -9,16 +9,15 @@ import { store } from '../../shared/store/store';
 import { Post } from '../../shared/api/post';
 import ajax from '../../shared/services/ajax';
 import Handlebars from 'handlebars/runtime';
+import { ErrorMessageBox } from '../../components/error/errorMessageBox';
+
+const { MOCK } = process.env;
 
 class Content {
     constructor(context) {
         this.context = context;
         this.context.category = store.categories.getById(this.context.category_id);
         this.context.categories = store.categories.list;
-    }
-
-    async changeProduct() {
-
     }
 
     renderChange() {
@@ -31,7 +30,10 @@ class Content {
         });
 
         if (this.context.images) {
-            this.context.image = ajax.ADRESS_BACKEND + this.context.images[ 0 ].url;
+            this.context.image = MOCK === 'true' ? 
+                this.context.images[ 0 ].url
+                :
+                ajax.ADRESS_BACKEND + this.context.images[ 0 ].url;
         }
 
         const root = stringToElement(templateChange(this.context));
@@ -68,6 +70,7 @@ class Content {
             const errorBox = root.querySelector('#errorBox');
 
             if (res.status === 303){
+                window.Router.navigateTo('/product', { productId: this.context.id })
                 return;
             }
 
@@ -94,7 +97,10 @@ class Content {
 
     renderView() {
         if (this.context.images) {
-            this.context.image = ajax.ADRESS_BACKEND + this.context.images[ 0 ].url;
+            this.context.image = MOCK === 'true' ? 
+                this.context.images[ 0 ].url
+                :
+                ajax.ADRESS_BACKEND + this.context.images[ 0 ].url;
         }
 
         const root = stringToElement(template(this.context));

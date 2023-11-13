@@ -21,29 +21,24 @@ class Cart {
             switch(action.type) {
                 case 'ADD_GOOD':
                     this.addInCart(action.payload.order, action.payload.saler);
-                    this.emitChange();
                     break;
                 case 'DELETE_GOOD':
                     this.deleteFromCart(action.payload);
-                    this.emitChange();
                     break;
                 case 'ADD_SALER':
                     this.updateUser(action.payload);
-                    this.emitChange();
                     break;
                 case 'FULL_CART':
                     this.fullCart(action.payload);
-                    this.emitChange();
                     break;
                 case 'UPDATE_COUNT_CART':
                     this.updateOrderCount(action.payload);
-                    this.emitChange();
                     break;
                 case 'BUY_ALL':
                     this.clear();
-                    this.emitChange();
                     break;
             }
+            this.emitChange();
         });
 
         this.getOrders();
@@ -71,7 +66,7 @@ class Cart {
             }
 
         } catch(err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 
@@ -105,10 +100,14 @@ class Cart {
     }
 
     updateUser(saler) {
-        this.state.saler.id = saler.id;
-        this.state.saler.name = saler.name;
-        this.state.saler.email = saler.email;
-        this.state.saler.image = saler.image;
+        this.state.saler = {
+            ...this.state.saler,
+            ...saler
+        }
+        // this.state.saler.id = saler.id;
+        // this.state.saler.name = saler.name;
+        // this.state.saler.email = saler.email;
+        // this.state.saler.image = saler.image;
     }
 
     hasProduct(productId) {
@@ -159,7 +158,7 @@ class Cart {
                 this.emptySaler();
             }
         } else {
-            console.log('Error when deleting from cart');
+            // console.log('Error when deleting from cart');
         }
     }
 

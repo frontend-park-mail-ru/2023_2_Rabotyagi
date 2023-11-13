@@ -52,7 +52,7 @@ export class OrderFeed {
             }
             dispatcher.dispatch({ type: 'BUY_ALL' });
         } catch(err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 

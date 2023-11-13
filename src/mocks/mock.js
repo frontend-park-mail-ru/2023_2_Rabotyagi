@@ -1,9 +1,14 @@
-import { createServer, Model, Response } from "miragejs";
-import { generatePost } from "./generators/posts";
-import sign from "jwt-encode";
-import jwtDecode from "../shared/utils/jwt-decode";
-import { cookieParser } from "../shared/utils/cookie";
-import { generateUser } from "./generators/users";
+import { createServer, Model, Response } from 'miragejs';
+import { generatePost } from './generators/posts';
+import jwtDecode from '../shared/utils/jwt-decode';
+import { cookieParser } from '../shared/utils/cookie';
+import { generateUser } from './generators/users';
+import { fakerRU } from '@faker-js/faker';
+import { AUTH } from './handlers/auth';
+import { PRODUCT } from './handlers/product';
+import { PROFILE } from './handlers/profile';
+import { CATEGORY } from './handlers/category';
+import { ORDER } from './handlers/order';
 
 const createMockServer = function () {
     const server = createServer({
@@ -12,251 +17,50 @@ const createMockServer = function () {
             product: Model,
             orders: Model,
             favourite: Model,
+            category: Model,
         },
 
     routes() {
         this.urlPrefix = 'http://localhost:8080';
-        this.namespace = "api/v1";
+        this.namespace = 'api/v1';
+
+        //#region Category
+        this.get('category/get_full', CATEGORY.getFull);
+        //#endregion
     
-        this.get("product/get_list", (schema) => schema.products.all().models);
-
-        this.get('product', (schema, request) => {
-            const res = schema.products.findBy({ id: request.queryParams.id });
-
-            if (res == null) {
-                return new Response(222, {}, {
-                    'error': 'Такого объявления не существует'
-                })
-            }
-            const model = res.attrs;
-            model.saler = schema.users.find(model.saler_id).attrs;
-            delete model.saler_id;
-            return new Response(200, {}, { body: model });
-        });
+        //#region Product
+        this.get('product/get_list', PRODUCT.getList);
+        this.get('product/get', PRODUCT.get);
+        this.get('product/get_list_of_saler', PRODUCT.getListOfSaler);
+        this.post('product/add', PRODUCT.add);
+        this.put('product/update', PRODUCT.update.put);
+        this.patch('product/update', PRODUCT.update.patch);
+        this.delete('product/delete', PRODUCT.delete);
+        //#endregion
     
-        this.get("/signin", (schema, request) => {
-            const res = schema.users.findBy({ email: request.queryParams.email });
-            
-            if ((res == null) || (res.attrs.password != request.queryParams.password)) {
-                return new Response(222, {}, {
-                    'error': 'Неверная почта или пароль'
-                })
-            }
-            else {
-                const now = new Date();
-                const cookieExpiration = new Date(now.getTime() + 24 * 3600 * 1000);
-                const access_token = sign(res.attrs, 'xxx');
-    
-                document.cookie = `access_token=${access_token}; path=/; expires=${cookieExpiration.toUTCString()};`;
-                return new Response(200);
-            }
-        });
-    
-        this.post('/signup', (schema, request) => {
-            const body = JSON.parse(request.requestBody);
-            const res = schema.users.findBy({ email: body.email });
-    
-            if (res == null) {
-                const userData = {
-                    email: body.email,
-                    password: body.password
-                }
-                
-                schema.users.create(userData);
-    
-                const now = new Date();
-                const cookieExpiration = new Date(now.getTime() + 24 * 3600 * 1000);
-                const access_token = sign(userData, 'xxx');
-    
-                document.cookie = `access_token=${access_token}; path=/; expires=${cookieExpiration.toUTCString()};`;
-    
-                return new Response(200);
-            }
-            else {
-                return new Response(222, {}, {
-                    'error': 'User already exists'
-                })
-            }
-        });
+        //#region Auth
+        this.get('signin', AUTH.signin);
+        this.post('signup', AUTH.signup);
+        //#endregion
 
-        this.post('/order/add', (schema, request) => {
-            const token = cookieParser(document.cookie).access_token;
-            if (token == undefined) {
-                return new Response(401);
-            }
-            const user = jwtDecode(token);
-            const body = JSON.parse(request.requestBody);
-            const product = schema.products.findBy({ id: body.product_id });
-            const order = schema.orders.findBy({ product_id: body.product_id, owner_id: user.id, status: 0 });
+        //#region Order
+        this.get('order/get_basket', ORDER.getBasket);
+        this.post('order/add', ORDER.add);
+        this.delete('order/delete', ORDER.delete);
+        this.patch('order/buy_full_basket', ORDER.buyFullBasket);
+        this.patch('order/update_count', ORDER.updateCount);
+        this.patch('order/update_status', ORDER.updateStatus);
+        //#endregion
 
-            if (product !== null && order === null) {
-                const orderData = {
-                    "owner_id": user.id,
-                    "count": body.count,
-                    "status": 0,
-                    "product_id": body.product_id,
-                    "city": product.city,
-                    "delivery": product.delivery,
-                    "in_favourites": product.in_favourites,
-                    "available_count": product.available_count,
-                    "price": product.price,
-                    "safe_deal": product.safe_deal,
-                    "title": product.title,
-                    "images": product.images,
-                };        
-                schema.orders.create(orderData);
-                return new Response(200, {}, { body: orderData });
-            }
-            else {
-                return new Response(222, {}, {
-                    'error': 'Order already exists'
-                })
-            }
-        });
+        //#region Profile
+        this.get('profile/get', PROFILE.get);
+        this.put('profile/update', PROFILE.update.put);
+        this.patch('profile/update', PROFILE.update.patch);
+        //#endregion
 
-        this.patch('/order/buy_full_basket', (schema) => {
-            const token = cookieParser(document.cookie).access_token;
-            if (token == undefined) {
-                return new Response(401);
-            }
-            const user = jwtDecode(token);
 
-            try {
-                const res = schema.orders.all().models.filter(({ attrs }) => {
-                    return attrs.owner_id === Number(user.id) && attrs.status === 0;
-                });            
-
-                res.forEach(({ attrs }) => {
-                    schema.orders.findBy({ id: attrs.id }).update({ status: 1 });
-                });
-
-                return new Response(200, {}, {
-                    body: {
-                        'message': 'OK'
-                    }
-                });
-            } catch(err) {
-                return new Response(200, {}, {
-                    body: {
-                        'error': err
-                    },
-                    status: 222
-                });
-            }
-        });
-
-        this.get('/order/get_basket', (schema) => {
-            const token = cookieParser(document.cookie).access_token;
-            if (token == undefined) {
-                return new Response(401);
-            }
-            const user = jwtDecode(token);
-            
-            const res = schema.orders.all().models.filter(({ attrs }) => {
-                return attrs.owner_id === Number(user.id) && attrs.status === 0;
-            });
-            let data = [];
-            res.forEach(({ attrs }) => data = [ ...data, attrs ]);
-
-            return new Response(200, {}, data);
-        });
-
-        this.patch('/order/update_count', (schema, request) => {
-            const token = cookieParser(document.cookie).access_token;
-            if (token == undefined) {
-                return new Response(401);
-            }
-            const body = JSON.parse(request.requestBody);
-
-            try {
-                schema.orders.findBy({ id: body.id }).update({
-                    count: body.count,
-                });
-                return new Response(200, {}, {
-                    'message': 'Successful update count',
-                });
-            } catch (err) {
-                return new Response(222, {}, {
-                    'error': 'Something went wrong when updating status'
-                });
-            }   
-        });
-
-        this.patch('/order/update_status', (schema, request) => {
-            const token = cookieParser(document.cookie).access_token;
-            if (token == undefined) {
-                return new Response(401);
-            }
-            
-            const body = JSON.parse(request.requestBody);
-
-            try {
-                schema.orders.findBy({ id: body.id }).update({
-                    status: body.status,
-                });
-                return new Response(200, {}, {
-                    'message': 'Successful update status',
-                });
-            } catch (err) {
-                return new Response(222, {}, {
-                    'error': 'Something went wrong when updating status'
-                });
-            }   
-        });
-
-        this.patch('/user', (schema, request) => {
-            const body = JSON.parse(request.requestBody);
-            const token = cookieParser(document.cookie).access_token;
-            if (token == undefined) {
-                return new Response(401);
-            }
-            const curUser = jwtDecode(token);
-            const dbUser = schema.users.find(curUser.id);
-
-            if (dbUser == null) {
-                return new Response(222, {}, {
-                    error: 'Пользователь не найден'
-                });
-            }
-
-            dbUser.update(body);
-
-            const now = new Date();
-            const cookieExpiration = new Date(now.getTime() + 24 * 3600 * 1000);
-            const access_token = sign(dbUser.attrs, 'xxx');
-
-            document.cookie = `access_token=${access_token}; path=/; expires=${cookieExpiration.toUTCString()};`;
-
-            return new Response(200);
-        });
-
-        this.delete('/order/delete/:id', (schema, request) => {
-            const id = request.params.id;
-
-            try {
-                schema.orders.find(id).destroy();
-                return new Response(200, {}, {
-                    'message': 'Successful deletion',
-                });
-            } catch (err) {
-                return new Response(222, {}, {
-                    'error': 'Something went wrong when deleting'
-                });
-            }   
-        });
-
-        this.get('/user/products', (schema) => {
-            const token = cookieParser(document.cookie).access_token;
-            if (token == undefined) {
-                return new Response(401);
-            }
-            const user = jwtDecode(token);
-            const res = schema.products.all().models.filter(({ attrs }) => attrs.saler_id === user.id);
-            let data = [];
-            res.forEach(({ attrs }) => data = [ ...data, attrs ]);
-
-            return new Response(200, {}, data);
-        });
+        //#region Legacy
+        // this.get('/user/products', (schema) => );
 
         this.get('/user/orders', () => {
             return new Response(200);
@@ -292,49 +96,41 @@ const createMockServer = function () {
             return new Response(200);
 
         });
-
-        this.get('/profile/get/:id', (schema, request) => {
-            const profileId = request.params.id;
-            const res = schema.users.findBy({ id: profileId });
-            if (res != null) {
-                return new Response(200, {}, {
-                    "birthday": res.birthday,
-                    "email": res.email,
-                    "id": res.id,
-                    "name": res.name,
-                    "phone": res.phone
-                });
-            } else {
-                return new Response(222, {}, {
-                    'error': 'Profile with this id does not exist'
-                });
-            } 
-        });
+        //#endregion
     },
 
     // Проинициализировал модельки с постами, чтобы в in-memory db хранились, а не генерились постоянно
     seeds(server) {
         let user;
-        
-        for (let index = 0; index < 10; index++) {
-            user = server.create('user', generateUser());
-            
-            for (let index = 0; index < 5; index++) {
-                server.create("product", generatePost(user.id));            
-            }
-        }
 
-        user = server.create("user", {
-            email: "owner@gmail.com",
-            phone: "+7 999 999 66 66",
-            name: "root",
+        user = server.create('user', {
+            email: 'owner@gmail.com',
+            phone: '+7 999 999 66 66',
+            name: 'root',
             password: 'root',
             birthday: Date.now()
         });
 
         for (let index = 0; index < 5; index++) {
-            server.create("product", generatePost(user.id));            
+            server.create('product', generatePost(user.id));            
         }
+        
+        for (let index = 0; index < 10; index++) {
+            user = server.create('user', generateUser());
+            
+            for (let index = 0; index < 5; index++) {
+                server.create('product', generatePost(user.id));            
+            }
+        }
+
+        server.create('category', {
+            name: fakerRU.hacker.noun(),
+            parent_id: {
+                Int64: 1,
+                Valid: false,
+            }
+        });
+
    },
  });
 

@@ -40,6 +40,7 @@ class Menu {
 
     render() {
         const root = stringToElement(template(this.context));
+        const container = root.querySelector('div.creds');
 
         if (store.user.isAuth() && (this.context.saler.id !== store.user.state.fields.userID)) {
             root.querySelector('#button-ad')?.replaceWith(button({
@@ -53,6 +54,7 @@ class Menu {
             }));
     
             root.querySelector('#send-message')?.replaceWith(button({
+                id: 'btn-msg',
                 variant: 'outlined',
                 text: {
                     class: 'text-regular',
@@ -60,6 +62,11 @@ class Menu {
                 },
                 style: 'width: 100%;'
             }));
+
+            root.querySelector('#btn-msg')?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                window.Router.navigateTo('/saler', { salerId: this.context.saler.id });
+            });
         }
 
 

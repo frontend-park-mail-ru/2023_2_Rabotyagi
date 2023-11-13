@@ -12,6 +12,10 @@ import Content from "./content";
 import { UserApi } from '../../shared/api/user.js';
 import button from '../../components/button/button.js';
 import { store } from '../../shared/store/store.js';
+import { Files } from '../../shared/api/file.js';
+import { extname } from '../../shared/utils/extname.js';
+
+const allowedFormats = [ 'jpg, png, jpeg' ];
 
 class Product {
     async getSaler(salerID) {
@@ -61,11 +65,39 @@ class Product {
 
         const root = stringToElement(templateAdd(context));
         const content = root.querySelector('.product>.content-add');
+        const images = content?.querySelector('#input-images');
 
-        content?.addEventListener('submit', async function(e)  {
+        images?.addEventListener('change', async (e) => {
+            e.stopPropagation();
+
+            const errorBox = content.querySelector('#errorBox');
+
+            errorBox.innerHTML = '';
+            const files = Array.from(images.files);
+
+            files.forEach((file) => {
+                const format = extname(file.name);
+                if (!(format in allowedFormats)) {
+                    errorBox.appendChild(ErrorMessageBox(`Формат ${format} недопустим`));
+                }
+            });
+
+            const res = await Files.images(files);
+
+            if (res.status !== 200) {
+                errorBox.innerHTML = '';
+                errorBox.append(ErrorMessageBox(res.body.error));
+            }
+
+            this.uploadedImages = res.body.urls;
+        });
+
+        content?.addEventListener('submit', async (e) =>  {
             e.preventDefault();
 
-            const { elements } = this;
+            const errorBox = content.querySelector('#errorBox');
+
+            const { elements } = content;
             const data = Array.from(elements)
             .filter((item) => !!item.name && !!item.value)
             .map((element) => {
@@ -88,28 +120,23 @@ class Product {
             let body = {};
             data.forEach((elem) => body = { ...body, ...elem });
 
-            // console.log(body)
-            // const buf = new FormData();
-            
-            // Object.keys(body).forEach((key) => buf.append(key, body[ key ]));
-            // console.log(buf)
-
-            // fetch('http://localhost:3001', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data',
-            //     },
-            //     // body: JSON.stringify(body)
-            //     body: buf
-            // })
-
             body.category_id = Number(body.category_id);
             body.saler_id = store.user.state.fields.userID;
+
+            if (this.uploadedImages) {
+                this.uploadedImages.forEach((url) => body.images = [ ...body.images, {
+                    url: url
+                } ])
+            }
+            else {
+                errorBox.innerHTML = '';
+                errorBox.appendChild(ErrorMessageBox('Должно быть хотя бы одно изображение'));
+                return;
+            }
 
             const res = await Post.create(body);
             body = res.body;
 
-            const errorBox = content.querySelector('#errorBox');
 
             if (res.status === 303){
                 window.Router.navigateTo('/product', { productId: body.id });

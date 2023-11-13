@@ -1,6 +1,16 @@
-<button class="card">
-    <div class='badges'>
-        {{#if this.safe_deal}}
+<button class="card-profile">
+    {{#if this.image}}
+    <img class='image' src='{{this.image}}' />
+    {{else}}
+    <div class="img"></div>
+    {{/if}}
+    <div class="content">
+        <span class='text-regular'>{{this.price}} ₽</span>
+        <span class='text-regular title'>{{this.title}}</span>
+        <div class="divider"></div>
+        {{#if (haveBadges)}}
+        <div class="badges">
+            {{#if this.safe_deal}}
             <div class="badge">
                 <svg width="20" height="20" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -11,9 +21,8 @@
                         fill="#292C2F" />
                 </svg>
             </div>
-        {{/if}}
-
-        {{#if this.delivery}}
+            {{/if}}
+            {{#if this.delivery}}
             <div class='badge'>
                 <svg width="20" height="20" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M8 32H32V36H8V32ZM4 22H24V26H4V22Z" fill="#292C2F" />
@@ -22,23 +31,18 @@
                         fill="#292C2F" />
                 </svg>
             </div>
+            {{/if}}
+        </div>
         {{/if}}
 
         {{#if this.city}}
+        <div class="badges">
             <div class='badge'>
                 <span class="text-regular">{{this.city}}</span>
             </div>
-        {{/if}}
-    </div>
-    <div class='body'>
-        {{#if this.image}}
-            <img class='img' src='{{this.image}}' />
-        {{else}}
-            <div class="img"></div>
-        {{/if}}
-        <div class='info'>
-            <span class='text-regular'>{{this.price}} ₽</span>
-            <span class='text-regular title'>{{this.title}}</span>
         </div>
+        {{/if}}
+
+        <div id="btn-delete"></div>
     </div>
 </button>

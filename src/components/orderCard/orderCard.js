@@ -60,7 +60,7 @@ export class OrderCard {
                 count: count
             } });
         } catch(err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 
@@ -73,7 +73,7 @@ export class OrderCard {
             }
             dispatcher.dispatch({ type: 'DELETE_GOOD', payload: this.#order.id });
         } catch(err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 
