@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: index.js</title>
+    <title>JSDoc: Source: components/feed/feed.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: index.js</h1>
+    <h1 class="page-title">Source: components/feed/feed.js</h1>
 
     
 
@@ -27,42 +27,62 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file main.js
- * @module Main
+ * @module Feed
  */
 
-import './assets/css/reset.scss';
-import './assets/css/styles.scss';
-import { MainPage } from './pages/main/main.js';
-import { SigninPage } from './pages/signin/signin.js';
-import { SignupPage } from './pages/signup/signup.js';
-import { store } from './shared/store/store.js';
-import { Router, Route } from './shared/services/router.js';
-import createMockServer from './mocks/mock.js';
-import Profile from './pages/profile/profile.js';
-import Cart from './pages/cart/cart';
-import ProductPage from './pages/product/product';
+import { Card } from '../card/card.js';
+import { ErrorMessageBox } from '../error/errorMessageBox.js';
+import { Product } from '../../shared/api/product.js';
+import { loaderRegular } from '../loader/loader.js';
+import { stringToElement } from '../../shared/utils/parsing.js';
+import template from './feed.hbs'
+import './feed.scss'
 
-const { NODE_ENV, MOCK } = process.env;
+/**
+ * @class Блок с объявлениями
+ * @description Получает посты с бекенда и формирует коллекцию для представления
+ */
+export class Feed {
+    async getPosts(container) {
+        try {
+            const resp = await Product.feed();
+            const body = resp.body;
 
-if (NODE_ENV === 'development' &amp;&amp; MOCK === 'true') {
-    createMockServer();
-    console.log('created mock server');
+            switch (resp.status) {
+                case 222:
+                    throw resp.body.error;
+                case 405:
+                    throw "Method Not Allowed"
+                case 500:
+                    throw "Internal Server Error"
+                default:
+            }
+            container.innerHTML = '';
+            
+            body?.forEach((elem) => {
+                container.appendChild(new Card(elem).render());
+            });
+        } catch (err) {
+            container.innerHTML = '';
+            container.appendChild(ErrorMessageBox(err));
+        }
+    }
+
+    render() {
+        const context = {
+            feedName: 'Все объявления',
+        };
+
+        const root = stringToElement(template(context));
+
+        const container = root.querySelector('div.feed-content');
+        container.appendChild(loaderRegular());
+
+        this.getPosts(container);
+
+        return root;
+    }
 }
-
-const root = document.querySelector('#root');
-
-await store.init();
-
-window.Router = new Router([
-    new Route(new RegExp('^/$'), new MainPage()),
-    new Route(new RegExp('^/signin$'), new SigninPage()),
-    new Route(new RegExp('^/signup$'), new SignupPage()),
-    new Route(new RegExp('^/profile.*'), new Profile()),
-    new Route(new RegExp('^/saler.*'), new Profile()),
-    new Route(new RegExp('^/cart$'), new Cart()),
-    new Route(new RegExp('^/product$'), new ProductPage()),
-], root);
 </code></pre>
         </article>
     </section>

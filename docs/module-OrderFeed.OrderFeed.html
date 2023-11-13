@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: index.js</title>
+    <title>JSDoc: Class: OrderFeed</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,55 +17,142 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: index.js</h1>
+    <h1 class="page-title">Class: OrderFeed</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @file main.js
- * @module Main
- */
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="module-OrderFeed.html">OrderFeed</a>.</span>OrderFeed<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description">Блок с объявлениями</div>
+        
+    
+</header>
 
-import './assets/css/reset.scss';
-import './assets/css/styles.scss';
-import { MainPage } from './pages/main/main.js';
-import { SigninPage } from './pages/signin/signin.js';
-import { SignupPage } from './pages/signup/signup.js';
-import { store } from './shared/store/store.js';
-import { Router, Route } from './shared/services/router.js';
-import createMockServer from './mocks/mock.js';
-import Profile from './pages/profile/profile.js';
-import Cart from './pages/cart/cart';
-import ProductPage from './pages/product/product';
+<article>
+    <div class="container-overview">
+    
+        
 
-const { NODE_ENV, MOCK } = process.env;
+    
+    <h2>Constructor</h2>
+    
 
-if (NODE_ENV === 'development' &amp;&amp; MOCK === 'true') {
-    createMockServer();
-    console.log('created mock server');
-}
+    
+    <h4 class="name" id="OrderFeed"><span class="type-signature"></span>new OrderFeed<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
-const root = document.querySelector('#root');
+    
 
-await store.init();
 
-window.Router = new Router([
-    new Route(new RegExp('^/$'), new MainPage()),
-    new Route(new RegExp('^/signin$'), new SigninPage()),
-    new Route(new RegExp('^/signup$'), new SignupPage()),
-    new Route(new RegExp('^/profile.*'), new Profile()),
-    new Route(new RegExp('^/saler.*'), new Profile()),
-    new Route(new RegExp('^/cart$'), new Cart()),
-    new Route(new RegExp('^/product$'), new ProductPage()),
-], root);
-</code></pre>
-        </article>
-    </section>
+
+<div class="description">
+    Получает товары из корзины с бекенда и формирует коллекцию для представления
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_orderFeed_orderFeed.js.html">components/orderFeed/orderFeed.js</a>, <a href="components_orderFeed_orderFeed.js.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

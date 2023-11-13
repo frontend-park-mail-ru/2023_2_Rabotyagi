@@ -1,5 +1,6 @@
 # 2023_2_Rabotyagi
-Frontend репозиторий команды Работяги
+Frontend репозиторий команды Работяги  
+[Документация](http://frontend.tech-mail.ru/2023_2_Rabotyagi/)
 
 ### Наши контакты:
 

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: shared/store/cart.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: shared/store/cart.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { BaseStore } from "./baseStore";
+import dispathcer from "../dispatcher/dispatcher";
+import { Order } from "../api/order";
+import { User } from "../api/user";
+
+class Cart {
+    constructor() {
+        this.state = {
+            goods: [],
+            saler: {
+                id: 0,
+                name: '',
+                email: '',
+                image: '',
+            }
+        }
+
+        this.listeners = [];
+
+        dispathcer.register((action) => {
+            switch(action.type) {
+                case 'ADD_GOOD':
+                    this.addInCart(action.payload.order, action.payload.saler);
+                    break;
+                case 'DELETE_GOOD':
+                    this.deleteFromCart(action.payload);
+                    break;
+                case 'ADD_SALER':
+                    this.updateUser(action.payload);
+                    break;
+                case 'FULL_CART':
+                    this.fullCart(action.payload);
+                    break;
+                case 'UPDATE_COUNT_CART':
+                    this.updateOrderCount(action.payload);
+                    break;
+                case 'BUY_ALL':
+                    this.clear();
+                    break;
+            }
+            this.emitChange();
+        });
+
+        this.getOrders();
+    }
+
+    async getOrders() {
+        try {
+            const resp = await Order.getCart();
+            const body = resp.body;
+            if (resp.status != 200) {
+                throw body.error;
+            }
+
+            if (Array.isArray(body)) {
+                this.fullCart([ ...body ]);
+                if (body.length !== 0) {
+                    const respUser = await User.getProfile(body[ 0 ].saler_id);
+                    const bodyUser = respUser.body;
+                    if (respUser.status != 200) {
+                        throw bodyUser.error;
+                    }
+                    this.updateUser(bodyUser);
+                }
+                this.emitChange();
+            }
+
+        } catch(err) {
+            // console.log(err);
+        }
+    }
+
+    emptySaler() {
+        this.state.saler.id = 0;
+        this.state.saler.name = '';
+        this.state.saler.email = '';
+        this.state.saler.image = '';
+    }
+
+    clear() {
+        this.emptySaler();
+        this.state.goods = [];
+    }
+    /**
+     * @summary Редьюсер для инициализирования стейта корзины
+     * @function
+     * @returns None
+     */
+    init() {
+        this.emptySaler();
+        this.state.goods = [];
+    }
+
+    hasUser() {
+        return this.state.saler.id !== 0;
+    }
+
+    sameUser(userId) {
+        return !this.hasUser() || userId === this.state.saler.id;
+    }
+
+    updateUser(saler) {
+        this.state.saler = {
+            ...this.state.saler,
+            ...saler
+        }
+        // this.state.saler.id = saler.id;
+        // this.state.saler.name = saler.name;
+        // this.state.saler.email = saler.email;
+        // this.state.saler.image = saler.image;
+    }
+
+    hasProduct(productId) {
+        const index = this.state.goods?.map(elem => elem.product_id).indexOf(productId);
+        return index !== -1;
+    }
+
+    fullCart(goods) {
+        goods?.forEach(element => {
+            if (!this.sameUser(element.saler_id)) {
+                return false;
+            }
+            if (!this.hasUser()) {
+                this.updateUser({
+                    id: element.saler_id,
+                    email: '...',
+                    name: '...'
+                });
+            }
+        });
+        this.state.goods = [ ...goods ];
+        return true;
+    }
+
+    addInCart(good, saler) {
+        if (this.sameUser(saler.id)) {
+            this.state.goods?.push(good);
+            if (!this.hasUser()) {
+                this.updateUser(saler);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    updateOrderCount({ orderId, count }) {
+        const index = this.state.goods?.map(elem => elem.id).indexOf(orderId);
+        if (index != -1) {
+            this.state.goods[ index ].count = count;
+        }
+    }
+
+    deleteFromCart(orderId) {
+        const index = this.state.goods?.map(elem => elem.id).indexOf(orderId);
+        if (index != -1) {
+            this.state.goods.splice(index, 1);
+            if (this.getCount() === 0) {
+                this.emptySaler();
+            }
+        } else {
+            // console.log('Error when deleting from cart');
+        }
+    }
+
+    getCount() {
+        let result = 0;
+        this.state.goods?.forEach((elem) => {
+            result += Number(elem.count);
+        });
+        return result;
+    }
+
+    getPrice() {
+        let result = 0;
+        this.state.goods?.forEach((elem) => {
+            result += Number(elem.price) * Number(elem.count);
+        });
+        return result;
+    }
+};
+
+Object.assign(Cart.prototype, BaseStore);
+
+export default new Cart();</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Api.module_Auth.html">Api.Auth</a></li><li><a href="module-Ajax.html">Ajax</a></li><li><a href="module-Components.html">Components</a></li><li><a href="module-Feed.html">Feed</a></li><li><a href="module-Header.html">Header</a></li><li><a href="module-Main.html">Main</a></li><li><a href="module-OrderFeed.html">OrderFeed</a></li><li><a href="module-Router.html">Router</a></li><li><a href="module-Store.html">Store</a></li><li><a href="module-validation.html">validation</a></li></ul><h3>Classes</h3><ul><li><a href="mainPage.html">mainPage</a></li><li><a href="module-Ajax-Ajax.html">Ajax</a></li><li><a href="module-Components.Card.html">Card</a></li><li><a href="module-Feed.Feed.html">Feed</a></li><li><a href="module-Header.Header.html">Header</a></li><li><a href="module-OrderFeed.OrderFeed.html">OrderFeed</a></li><li><a href="module-Router.Router.html">Router</a></li><li><a href="signinPage_.html">signinPage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#stringToElement">stringToElement</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Nov 13 2023 23:08:07 GMT+0300 (Москва, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: index.js</title>
+    <title>JSDoc: Global</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,55 +17,247 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: index.js</h1>
+    <h1 class="page-title">Global</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @file main.js
- * @module Main
- */
+        <h2></h2>
+        
+    
+</header>
 
-import './assets/css/reset.scss';
-import './assets/css/styles.scss';
-import { MainPage } from './pages/main/main.js';
-import { SigninPage } from './pages/signin/signin.js';
-import { SignupPage } from './pages/signup/signup.js';
-import { store } from './shared/store/store.js';
-import { Router, Route } from './shared/services/router.js';
-import createMockServer from './mocks/mock.js';
-import Profile from './pages/profile/profile.js';
-import Cart from './pages/cart/cart';
-import ProductPage from './pages/product/product';
+<article>
+    <div class="container-overview">
+    
+        
 
-const { NODE_ENV, MOCK } = process.env;
+        
 
-if (NODE_ENV === 'development' &amp;&amp; MOCK === 'true') {
-    createMockServer();
-    console.log('created mock server');
-}
 
-const root = document.querySelector('#root');
+<dl class="details">
 
-await store.init();
+    
 
-window.Router = new Router([
-    new Route(new RegExp('^/$'), new MainPage()),
-    new Route(new RegExp('^/signin$'), new SigninPage()),
-    new Route(new RegExp('^/signup$'), new SignupPage()),
-    new Route(new RegExp('^/profile.*'), new Profile()),
-    new Route(new RegExp('^/saler.*'), new Profile()),
-    new Route(new RegExp('^/cart$'), new Cart()),
-    new Route(new RegExp('^/product$'), new ProductPage()),
-], root);
-</code></pre>
-        </article>
-    </section>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="stringToElement"><span class="type-signature"></span>stringToElement<span class="signature">(string)</span><span class="type-signature"> &rarr; {Element}</span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>string</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">HTML элемент в виде строки</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="shared_utils_parsing.js.html">shared/utils/parsing.js</a>, <a href="shared_utils_parsing.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Element</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

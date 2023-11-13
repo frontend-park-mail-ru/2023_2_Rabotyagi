@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: index.js</title>
+    <title>JSDoc: Source: shared/store/store.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: index.js</h1>
+    <h1 class="page-title">Source: shared/store/store.js</h1>
 
     
 
@@ -27,42 +27,25 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file main.js
- * @module Main
+ * @file store.mjs
+ * @module Store
  */
-
-import './assets/css/reset.scss';
-import './assets/css/styles.scss';
-import { MainPage } from './pages/main/main.js';
-import { SigninPage } from './pages/signin/signin.js';
-import { SignupPage } from './pages/signup/signup.js';
-import { store } from './shared/store/store.js';
-import { Router, Route } from './shared/services/router.js';
-import createMockServer from './mocks/mock.js';
-import Profile from './pages/profile/profile.js';
-import Cart from './pages/cart/cart';
-import ProductPage from './pages/product/product';
-
-const { NODE_ENV, MOCK } = process.env;
-
-if (NODE_ENV === 'development' &amp;&amp; MOCK === 'true') {
-    createMockServer();
-    console.log('created mock server');
-}
-
-const root = document.querySelector('#root');
-
-await store.init();
-
-window.Router = new Router([
-    new Route(new RegExp('^/$'), new MainPage()),
-    new Route(new RegExp('^/signin$'), new SigninPage()),
-    new Route(new RegExp('^/signup$'), new SignupPage()),
-    new Route(new RegExp('^/profile.*'), new Profile()),
-    new Route(new RegExp('^/saler.*'), new Profile()),
-    new Route(new RegExp('^/cart$'), new Cart()),
-    new Route(new RegExp('^/product$'), new ProductPage()),
-], root);
+import user from './user.js';
+import cart from './cart.js';
+import { categories } from './categories.js';
+/**
+ * @constant {Dict} store Хранилище стейта всего приложения
+ */
+export const store = {
+    init: async () => {
+        store.user.init();
+        store.cart.init();
+        await store.categories.init();
+    },
+    user: user,
+    cart: cart,
+    categories: categories,
+};
 </code></pre>
         </article>
     </section>

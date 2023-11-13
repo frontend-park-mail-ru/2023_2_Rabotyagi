@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: index.js</title>
+    <title>JSDoc: Source: shared/utils/jwt-decode.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: index.js</h1>
+    <h1 class="page-title">Source: shared/utils/jwt-decode.js</h1>
 
     
 
@@ -27,42 +27,20 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file main.js
- * @module Main
+ * @summary раскодирует с помощью base64 payload токена
+ * @param {String} token сырой jwt токен
+ * @throws {SyntaxError} если payload токена не получилось распарсить в json
+ * @return {Object} объект который распарсился с jwt payload токена
  */
+export default function jwtDecode(token) {
+    const idxStart = token.indexOf('.');
+    const idxEnd = token.lastIndexOf('.');
+    let payload = token.slice(idxStart + 1, idxEnd);
+    payload = decodeURIComponent(escape(window.atob(payload)));
+    payload = JSON.parse(payload);
 
-import './assets/css/reset.scss';
-import './assets/css/styles.scss';
-import { MainPage } from './pages/main/main.js';
-import { SigninPage } from './pages/signin/signin.js';
-import { SignupPage } from './pages/signup/signup.js';
-import { store } from './shared/store/store.js';
-import { Router, Route } from './shared/services/router.js';
-import createMockServer from './mocks/mock.js';
-import Profile from './pages/profile/profile.js';
-import Cart from './pages/cart/cart';
-import ProductPage from './pages/product/product';
-
-const { NODE_ENV, MOCK } = process.env;
-
-if (NODE_ENV === 'development' &amp;&amp; MOCK === 'true') {
-    createMockServer();
-    console.log('created mock server');
+    return payload;
 }
-
-const root = document.querySelector('#root');
-
-await store.init();
-
-window.Router = new Router([
-    new Route(new RegExp('^/$'), new MainPage()),
-    new Route(new RegExp('^/signin$'), new SigninPage()),
-    new Route(new RegExp('^/signup$'), new SignupPage()),
-    new Route(new RegExp('^/profile.*'), new Profile()),
-    new Route(new RegExp('^/saler.*'), new Profile()),
-    new Route(new RegExp('^/cart$'), new Cart()),
-    new Route(new RegExp('^/product$'), new ProductPage()),
-], root);
 </code></pre>
         </article>
     </section>
