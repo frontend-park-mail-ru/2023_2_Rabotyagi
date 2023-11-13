@@ -59,7 +59,7 @@ class Products {
         }
         else {
             products.forEach((elem) => {
-                container.appendChild(new Card(elem, 'profile').render());
+                container.appendChild(new Card(elem, this.variant === 'saler' ? 'profile-saler' : 'profile').render());
             });
         }
     }
@@ -98,7 +98,7 @@ class Products {
             products = products.filter((value) => value.is_active);
             products.forEach((elem) => {
                 elem.variant = 'profile';
-                container.appendChild(new Card(elem, 'profile').render());
+                container.appendChild(new Card(elem, this.variant === 'saler' ? 'profile-saler' : 'profile').render());
             });
         }
     }
@@ -118,7 +118,7 @@ class Products {
             products = products.filter((value) => value.available_count < 1);
             products.forEach((elem) => {
                 elem.variant = 'profile';
-                container.appendChild(new Card(elem, 'profile').render());
+                container.appendChild(new Card(elem, this.variant === 'saler' ? 'profile-saler' : 'profile').render());
             });
         }
     }

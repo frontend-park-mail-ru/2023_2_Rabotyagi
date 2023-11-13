@@ -28,7 +28,7 @@ export class Card {
         });
 
         Handlebars.registerHelper('isprofile', () => {
-            return this.variant === 'profile';
+            return this.variant === ('profile' || 'profile-saler');
         });
 
         Handlebars.registerHelper('haveBadges', function () {
@@ -48,6 +48,9 @@ export class Card {
             case 'profile':
                 root = stringToElement(templateProfile(this.context));
                 break;
+            case 'profile-saler':
+                root = stringToElement(templateProfile(this.context));
+                break;
             default:
                 root = stringToElement(template(this.context));
                 break;
@@ -59,24 +62,27 @@ export class Card {
             window.Router.navigateTo('/product', { productId: this.context.id })
         })
 
-        root.querySelector('#btn-delete')?.replaceWith(button({
-            id: 'btn-delete',
-            variant: 'outlined',
-            text: {
-                class: 'text-regular',
-                content: 'Удалить'
-            },
-            style: 'width: 100%;'
-        }));
+        if (this.variant !== 'profile-saler') {
+            root.querySelector('#btn-delete')?.replaceWith(button({
+                id: 'btn-delete',
+                variant: 'outlined',
+                text: {
+                    class: 'text-regular',
+                    content: 'Удалить'
+                },
+                style: 'width: 100%;'
+            }));
+    
+            root.querySelector('#btn-delete')?.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const res = await Post.delete(Number(this.context.id));
+    
+                if (res.status === 200) {
+                    root.remove();
+                }
+            });
+        }
 
-        root.querySelector('#btn-delete')?.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            const res = await Post.delete(Number(this.context.id));
-
-            if (res.status === 200) {
-                root.remove();
-            }
-        });
 
         if (this.variant === 'profile') {
             if (!this.context.is_active) {
