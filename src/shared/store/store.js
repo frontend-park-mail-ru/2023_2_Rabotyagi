@@ -10,7 +10,7 @@ import { categories } from './categories.js';
  */
 export const store = {
     init: async () => {
-        store.user.init();
+        await store.user.init();
         store.cart.init();
         await store.categories.init();
     },

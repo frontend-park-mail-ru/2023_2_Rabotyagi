@@ -1,5 +1,5 @@
 import { User } from '../api/user.js';
-import { cookieParser } from '../utils/cookie.js';
+import { cookieParser, deleteCookie } from '../utils/cookie.js';
 import jwtDecode from '../utils/jwt-decode.js';
 
 const user = {
@@ -16,19 +16,16 @@ const user = {
      * @returns None
      */
     init: async function() {
-        const userID = jwtDecode(
-            cookieParser(document.cookie).access_token
-        ).userID;
-        
-        if (userID) {
-            const res = await User.getProfile(userID);
-            if (res.status === 200) {
-                this.update(res.body);
-            }
+        const access_token = cookieParser(document.cookie)?.access_token;
+        if (!access_token){
+            return;
         }
+        
+        this.fill(access_token);
     },
+
     isAuth: function() {
-        return Boolean(this.state.fields)
+        return this.state.fields !== null ? true : false;
     },
     /**
      * @summary Редьюсер для изменения стейта пользователя на авторизированного
@@ -41,19 +38,40 @@ const user = {
      */
     login: function({ access_token }) {
         this.clear();
+
         if (access_token === undefined) {
             return;
         }
-        
-        this.state.accessToken = access_token;
-        const decoded = jwtDecode(access_token);
-        this.state.fields = { 
-            ...this.state.fields, 
-            ...decoded 
-        }; 
+
+        this.fill(access_token);
     },
+    
+    fill: async function(access_token) {
+        const id = jwtDecode(access_token).userID;
+
+        if (id) {
+            const res = await User.getProfile(id);
+            switch (res.status){
+                case 200:
+                    this.update(res.body);
+                    break;
+                case 222:
+                    deleteCookie('access_token');
+                    break;
+            }
+        }
+    },
+
     update: function(data) {
         if (data) {
+            if (data.avatar && typeof data.avatar !== 'string'){
+            if (data.avatar.Valid) {
+                data.avatar = data.avatar.String;
+            }
+            else {
+                delete data.avatar;
+            }
+        }
             this.state.fields = {
                 ...this.state.fields,
                 ...data

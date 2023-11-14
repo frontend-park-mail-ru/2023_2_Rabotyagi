@@ -1,7 +1,11 @@
 <div class="menu">
     <span class="text-subheader">{{this.price}} ₽</span>
     <div class="saler">
-        <img class="image" src="https://via.placeholder.com/90x90" />
+        {{#if this.saler.avatar}}
+            <img class="image" src="{{this.saler.avatar}}" />
+        {{else}}
+            <img class="image" src="https://via.placeholder.com/90x90" />
+        {{/if}}
         <div class="info">
             <div class="creds">
                 <span class="text-regular">{{this.saler.name}}</span>

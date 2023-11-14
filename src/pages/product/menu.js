@@ -39,7 +39,6 @@ class Menu {
     }
 
     render() {
-        debugger
         const root = stringToElement(template(this.context));
         // const container = root.querySelector('div.creds');
 

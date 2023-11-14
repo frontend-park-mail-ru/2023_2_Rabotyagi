@@ -100,7 +100,34 @@ class Ajax {
             config.credentials = credentials;
         }
 
-        return await (await fetch(url, config)).json();
+        return await (await fetch(url, config)).json()
+
+        // const resp = await (await fetch(url, config)).json();
+
+        // if (resp.status === 200) {
+        //     let respBody = resp.body;
+        //     respBody = Object.entries(respBody).map(([ key, item ]) => {
+        //         if (typeof item === 'object') {
+        //             const value = Object.values(item)[ 0 ];
+        //             if (item.Valid) {
+        //                 return { [ key ]: value };
+        //             }
+        //             else {
+        //                 return;
+        //             }
+        //         }
+    
+        //         return { [ key ]: item };
+        //     })
+        //     let newBody = {};
+        //     respBody.forEach((elem) => newBody = { ...newBody, ...elem });
+        //     return {
+        //         status: resp.status,
+        //         body: newBody
+        //     }
+        // }
+
+        // return resp;
     }
 
     /**

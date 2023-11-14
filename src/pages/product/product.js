@@ -31,9 +31,17 @@ class ProductPage {
                 throw new Error(bodyPost.error);
             }
             
-            debugger
             const respSaler = await this.getSaler(bodyPost.saler_id);
             const bodySaler = respSaler.body;
+
+            if (bodySaler.avatar && typeof bodySaler.avatar !== 'string'){
+                if (bodySaler.avatar.Valid) {
+                    bodySaler.avatar = bodySaler.avatar.String;
+                }
+                else {
+                    delete bodySaler.avatar;
+                }
+            }
 
             container.innerHTML = '';
             const menuContext = {
