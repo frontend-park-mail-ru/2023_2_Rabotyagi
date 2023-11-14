@@ -39,10 +39,11 @@ class Menu {
     }
 
     render() {
+        debugger
         const root = stringToElement(template(this.context));
         // const container = root.querySelector('div.creds');
 
-        if (store.user.isAuth() && (this.context.saler.id !== store.user.state.fields.userID)) {
+        if (store.user.isAuth() && (this.context.saler.id !== store.user.state.fields.id)) {
             root.querySelector('#button-ad')?.replaceWith(button({
                 id: 'btn-ad',
                 variant: 'primary',

@@ -1,3 +1,4 @@
+import { User } from '../api/user.js';
 import { cookieParser } from '../utils/cookie.js';
 import jwtDecode from '../utils/jwt-decode.js';
 
@@ -14,14 +15,20 @@ const user = {
      * @function
      * @returns None
      */
-    init: function() {
-        const cookie = cookieParser(document.cookie);
-        if (cookie) {
-            this.login(cookie);
+    init: async function() {
+        const userID = jwtDecode(
+            cookieParser(document.cookie).access_token
+        ).userID;
+        
+        if (userID) {
+            const res = await User.getProfile(userID);
+            if (res.status === 200) {
+                this.update(res.body);
+            }
         }
     },
     isAuth: function() {
-        return Boolean(this.state.accessToken)
+        return Boolean(this.state.fields)
     },
     /**
      * @summary Редьюсер для изменения стейта пользователя на авторизированного
@@ -54,9 +61,7 @@ const user = {
         }
     },
     state: {
-        fields: {},
-        accessToken: null,
-        // refreshToken:    null,
+        fields: null,
     },
 };
 

@@ -23,22 +23,22 @@ export class SignupPage {
      * @param {string} repeatPass - repeated password
      * @return {null|string} return null if validation ok and return string if not
      */
-    #check({ email, name, phone, password, passwordRepeat }) {
+    #check({ email, password, passwordRepeat }) {
 
         const errEmail = Validate.email(email);
         if (errEmail) {
             return errEmail;
         }
 
-        const errName = Validate.name(name);
-        if (errName) {
-            return errName;
-        }
+        // const errName = Validate.name(name);
+        // if (errName) {
+        //     return errName;
+        // }
 
-        const errPhone = Validate.phone(phone);
-        if (errPhone) {
-            return errPhone;
-        }
+        // const errPhone = Validate.phone(phone);
+        // if (errPhone) {
+        //     return errPhone;
+        // }
 
         const errPassword = Validate.password(password);
         if (errPassword) {
@@ -56,9 +56,9 @@ export class SignupPage {
         return null;
     }
 
-    async signup({ email, name, phone, password }, errorBox) {
+    async signup({ email, password }, errorBox) {
         try {
-            const resp = await Auth.signup(email, name, phone, password);
+            const resp = await Auth.signup(email, password);
             const body = resp.body;
 
             if (resp.status != 200) {

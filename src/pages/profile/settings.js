@@ -6,6 +6,8 @@ import button from '../../components/button/button';
 import { User } from '../../shared/api/user';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox';
 import { store } from '../../shared/store/store';
+import { extname } from '../../shared/utils/extname';
+import { Files } from '../../shared/api/file';
 
 
 class Settings {
@@ -23,31 +25,75 @@ class Settings {
         );
     }
 
-    render() {
-        
-        const root = stringToElement(template(store.user.state.fields));
+    async uploadAvatar() {
+        if (this.avatarForUpload) {
+            const res = await Files.images(this.avatarForUpload);
 
-        const inputs = root.querySelectorAll('.content input');
+            if (res.status !== 200) {
+                this.errorBox.innerHTML = '';
+                this.errorBox.append(ErrorMessageBox(res.body.error));
+            }
+            this.uploadedAvatar = res.body.urls[ 0 ];
+        }
+    }
 
-        root.querySelector('.content').addEventListener('submit', async function(e) {
+    async preRender() {
+        this.root = stringToElement(template(store.user.state.fields));
+
+        const inputs = this.root.querySelectorAll('.content input');
+        const inputAvatar = this.root.querySelector('.content input[name="avatar"]');
+        const form = this.root.querySelector('.content');
+        this.errorBox = this.root.querySelector('#errorBox');
+
+        inputAvatar.addEventListener('change', async (e) => {
+            e.stopPropagation();
+
+            const allowedFormats = inputAvatar.accept
+                .replaceAll('.', '')
+                .replaceAll(' ', '')
+                .split(',');
+
+            this.errorBox.innerHTML = '';
+            const files = Array.from(inputAvatar.files);
+
+            files.forEach((file) => {
+                const format = extname(file.name);
+                if (!(
+                    allowedFormats.find((value) => value === format)
+                )) {
+                    this.errorBox.appendChild(ErrorMessageBox(`Формат ${format} недопустим`));
+                    return;
+                }
+            });
+
+            this.avatarForUpload = files[ 0 ];  
+        })
+
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const { elements } = this;
+            const { elements } = form;
             const data = Array.from(elements)
-            .filter((item) => !!item.name && !!item.value)
-            .map((element) => {
-                const { name, value } = element
-                return { [ name ]: value }
-            })
+                .filter((item) => !!item.name && !!item.value)
+                .map((element) => {
+                    const { name, value } = element
+                    return { [ name ]: value }
+                })
 
             let body = {};
             data.forEach((elem) => body = { ...body, ...elem });
 
-            body.id = store.user.state.fields.userID;
+            body.id = store.user.state.fields.id;
+
+            await this.uploadAvatar();
+
+            if (this.uploadedAvatar) {
+                body.avatar = this.uploadedAvatar;
+            }
 
             const res = await User.patchProfile(body);
             body = res.body;
 
-            const errorBox = root.querySelector('#errorBox');
+            const errorBox = this.root.querySelector('#errorBox');
 
             if (res.status !== 200) {
                 errorBox.replaceWith(ErrorMessageBox(body.error, 'errorBox'));
@@ -60,7 +106,7 @@ class Settings {
             window.Router.navigateTo('/profile/settings');
         });
 
-        root.querySelector('#btn-submit').replaceWith(button({
+        this.root.querySelector('#btn-submit').replaceWith(button({
             id: 'btn-submit',
             variant: 'primary',
             text: {
@@ -68,29 +114,30 @@ class Settings {
                 content: 'Сохранить'
             },
             type: 'submit',
-            // style: 'width: 100%;'
         }));
 
-        root.querySelector('#btn-cancel').replaceWith(button({
+        this.root.querySelector('#btn-cancel').replaceWith(button({
             id: 'btn-cancel',
             variant: 'outlined',
             text: {
                 class: 'text-regular',
                 content: 'Отменить'
             },
-            // style: 'width: 100%;'
         }));
 
-        root.querySelector('#btn-cancel').addEventListener('click', (e) => {
+        this.root.querySelector('#btn-cancel').addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
             inputs?.forEach((elem) => {
                 elem.value = '';
             });
         });
-        
-        return [ root ];
     }
+
+    render() {
+        this.preRender();
+        return [ this.root ];
+    };
 }
 
 export default Settings;

@@ -13,6 +13,7 @@ import cartIcon from '../../assets/icons/cart.svg';
 import settingsIcon from '../../assets/icons/settings.svg'
 import Settings from './settings.js';
 import { User } from '../../shared/api/user.js';
+import { getResourceUrl } from '../../shared/utils/getResource.js';
 
 class Profile {
     activePage;
@@ -33,10 +34,14 @@ class Profile {
     }
 
     async renderOwnProfile(root) {
-        const res = await this.getProfile(store.user.state.fields.userID);
+        const res = await this.getProfile(store.user.state.fields.id);
         store.user.update(res.body);
 
-        const container = stringToElement(template(res.body));
+        const context = structuredClone(store.user.state.fields);
+
+        context.avatar = getResourceUrl(context.avatar);
+
+        const container = stringToElement(template(context));
         root.replaceWith(container);
         const content = container.querySelector('.content');
 
@@ -139,11 +144,11 @@ class Profile {
         const root = document.createElement('div');
         const params = history.state;
         
-        if (params) {
-            if (params[ 'salerId' ] != undefined) {
-                this.variant = 'saler';
-            }
-        };
+        // if (params) {
+        //     if (params[ 'salerId' ] != undefined) {
+        //         this.variant = 'saler';
+        //     }
+        // };
 
         switch(this.variant) {
             case 'saler':

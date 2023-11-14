@@ -28,13 +28,13 @@ export const Auth = {
      * @param {string} email Почта юзера
      * @param {string} password Пароль юзера
      */
-    signup: async (email, name, phone, pass) => {
+    signup: async (email, pass) => {
         return await ajax.post({
             url: AUTH_API.SIGNUP,
             body: { 
                 email: email,
-                name: name,
-                phone: phone, 
+                // name: name,
+                // phone: phone, 
                 password: pass
             },
             credentials: 'include',

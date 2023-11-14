@@ -62,7 +62,7 @@ class Content {
             data.forEach((elem) => body = { ...body, ...elem });
             
             body.category_id = Number(body.category_id);
-            body.saler_id = store.user.state.fields.userID;
+            body.saler_id = store.user.state.fields.id;
 
             const res = await Product.put(this.context.id, body);
             body = res.body;
@@ -111,14 +111,14 @@ class Content {
     render() {
         let root;
 
-        if (store.user.isAuth() && (this.context.saler_id === store.user.state.fields.userID)) {
+        if (store.user.isAuth() && (this.context.saler_id === store.user.state.fields.id)) {
             root = this.renderChange();
         }
         else {
             root = this.renderView();
         }
 
-        // if (store.user.isAuth() && (context.saler_id !== store.user.state.fields.userID)) {
+        // if (store.user.isAuth() && (context.saler_id !== store.user.state.fields.id)) {
         //     root.querySelector('.content>.header').appendChild(button({
         //         variant: 'neutral',
         //         subVariant: 'tertiary',
