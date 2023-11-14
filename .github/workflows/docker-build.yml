@@ -6,6 +6,11 @@ on:
     pull_request:
         branches: [dev]
 
+env:
+    # Use docker.io for Docker Hub if empty
+    REGISTRY: ghcr.io
+    # github.repository as <account>/<repo>
+    IMAGE_NAME: ${{ github.repository }}
 # env:
 #   USERNAME: nikdemi
 #   PASSWORD: dckr_pat_pVslQN-X89RgYJP337ArPknrOaU
@@ -27,9 +32,16 @@ jobs:
                   registry: ghcr.io
                   username: ${{ github.actor }}
                   password: ${{ secrets.GITHUB_TOKEN }}
+            - name: Extract Docker metadata
+              id: meta
+              uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+              with:
+                  images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
             - name: Build and push
               uses: docker/build-push-action@v5
               with:
                   context: .
                   push: true
-                  tags: user/app:latest-dev
+                  # tags: user/app:latest-dev
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
