@@ -1,3 +1,5 @@
+name: build-push-dev
+
 on:
   push:
     branches: [ dev ]
@@ -12,6 +14,16 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag nikdemi/rabotyagi-frontend:latest-dev
-  
-  publish:
-    runs-on: ubuntu-latest
+      
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}} 
+      with: 
+        tag_name: latest-dev
+    # - name: 'Upload Artifact'
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: my-artifact
+    #     path: my_file.txt
+    #     retention-days: 5
