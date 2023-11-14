@@ -15,8 +15,7 @@
     "\n============Build Docker Image============\n": "",
     "build": "docker build . -t nikdemi/rabotyagi-frontend:latest",
     "\n============Build Docs====================\n": "",
-    "predocs-win": "rmdir -r -f docs",
-    "predocs-linux": "rm -r -f docs",
+    "predocs": "rmdir -r -f ./docs",
     "docs": "jsdoc .\\src\\ --recurse -d .\\docs -c .\\jsdoc.json",
     "\n============Linting=======================\n": "",
     "lint": "npx eslint src"
