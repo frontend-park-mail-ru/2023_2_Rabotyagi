@@ -5,12 +5,9 @@ on:
         branches: [dev]
     pull_request:
         branches: [dev]
-
 env:
     REGISTRY: ghcr.io
-    IMAGE_NAME: rabotyagi-frontend
-    TAG_NAME: latest-dev
-
+    IMAGE_NAME: ${{github.repository}}
 jobs:
     build:
         runs-on: ubuntu-latest
