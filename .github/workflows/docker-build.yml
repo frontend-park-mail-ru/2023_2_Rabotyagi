@@ -6,25 +6,37 @@ on:
   pull_request:
     branches: [ dev ]
 
+env:
+  USERNAME: nikdemi
+  PASSWORD: dckr_pat_pVslQN-X89RgYJP337ArPknrOaU
+  APP_NAME: rabotyagi-frontend
+  TAG_NAME: latest-dev
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    -
-      name: Checkout
-      uses: actions/checkout@v3
-    -
-      name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-    - 
-      name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        file: ./Dockerfile
-        tags: frontend:latest-dev
-        push: true
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: $USERNAME
+          password: $PASSWORD
+          # password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: $USERNAME/$APP_NAME:$TAG_NAME
     # - uses: actions/checkout@v3
     # - name: Build the Docker image
     #   run: docker build . --file Dockerfile --tag nikdemi/rabotyagi-frontend:latest-dev
@@ -37,3 +49,4 @@ jobs:
     #     name: my-artifact
     #     path: my_file.txt
     #     retention-days: 5
+    
