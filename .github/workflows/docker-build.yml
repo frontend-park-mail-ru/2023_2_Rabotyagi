@@ -16,9 +16,8 @@ jobs:
       with:
         context: .
         file: ./Dockerfile
+        tags: frontend:latest-dev
         push: true
-        tag: latest-dev
-        name: frontend
     # - uses: actions/checkout@v3
     # - name: Build the Docker image
     #   run: docker build . --file Dockerfile --tag nikdemi/rabotyagi-frontend:latest-dev
