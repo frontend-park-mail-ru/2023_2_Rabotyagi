@@ -11,16 +11,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag nikdemi/rabotyagi-frontend:latest-dev
+    - name: Build and push Docker image
+      uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+    # - uses: actions/checkout@v3
+    # - name: Build the Docker image
+    #   run: docker build . --file Dockerfile --tag nikdemi/rabotyagi-frontend:latest-dev
       
-    - name: Create GitHub Release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}} 
-      with: 
-        tag_name: latest-dev
+    # - uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+
     # - name: 'Upload Artifact'
     #   uses: actions/upload-artifact@v3
     #   with:
