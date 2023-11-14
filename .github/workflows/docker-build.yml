@@ -7,21 +7,13 @@ on:
         branches: [dev]
 
 env:
-    # Use docker.io for Docker Hub if empty
     REGISTRY: ghcr.io
-    # github.repository as <account>/<repo>
     IMAGE_NAME: rabotyagi-frontend
     TAG_NAME: latest-dev
-# env:
-#   USERNAME: nikdemi
-#   PASSWORD: dckr_pat_pVslQN-X89RgYJP337ArPknrOaU
-#   APP_NAME: rabotyagi-frontend
-#   TAG_NAME: latest-dev
 
 jobs:
     build:
         runs-on: ubuntu-latest
-
         steps:
             - name: Checkout
               uses: actions/checkout@v3
@@ -37,12 +29,11 @@ jobs:
               id: meta
               uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
               with:
-                  images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{env.TAG_NAME}}
+                  images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
             - name: Build and push
               uses: docker/build-push-action@v5
               with:
                   context: .
                   push: true
-                  # tags: user/app:latest-dev
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
