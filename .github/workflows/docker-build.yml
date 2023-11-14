@@ -26,7 +26,7 @@ jobs:
               with:
                   context: .
                   push: true
-                  tags: latest-dev
+                  tags: user/app:latest-dev
 
         # - uses: actions/checkout@v3
         # - name: Build the Docker image
