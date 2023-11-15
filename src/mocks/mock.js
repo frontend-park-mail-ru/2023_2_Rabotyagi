@@ -108,7 +108,11 @@ const createMockServer = function () {
             phone: '+7 999 999 66 66',
             name: 'root',
             password: 'root',
-            birthday: Date.now()
+            birthday: Date.now(),
+            avatar: {
+                String: '',
+                Valid: false
+            }
         });
 
         for (let index = 0; index < 5; index++) {

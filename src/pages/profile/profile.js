@@ -36,14 +36,14 @@ class Profile {
     async renderOwnProfile(root) {
         const res = await this.getProfile(store.user.state.fields.id);
 
-        if (res.body.avatar && typeof res.body.avatar !== 'string'){
-            if (res.body.avatar.Valid) {
-                res.body.avatar = res.body.avatar.String;
-            }
-            else {
-                delete res.body.avatar;
-            }
-        }
+        // if (res.body.avatar && typeof res.body.avatar !== 'string'){
+        //     if (res.body.avatar.Valid) {
+        //         res.body.avatar = res.body.avatar.String;
+        //     }
+        //     else {
+        //         delete res.body.avatar;
+        //     }
+        // }
         store.user.update(res.body);
 
         const context = structuredClone(store.user.state.fields);
