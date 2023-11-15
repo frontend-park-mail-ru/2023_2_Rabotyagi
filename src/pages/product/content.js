@@ -10,6 +10,7 @@ import { Product } from '../../shared/api/product';
 import ajax from '../../shared/services/ajax';
 import Handlebars from 'handlebars/runtime';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox';
+import { Carousel } from '../../components/carousel/carousel';
 
 const { MOCK } = process.env;
 
@@ -129,6 +130,8 @@ class Content {
         //         leftIcon: svg({ content: favIcon, width: 20, height: 20 })
         //     }));
         // }
+        const carousel = new Carousel(this.context.images);
+        root.querySelector('#carousel')?.replaceWith(carousel.render());
 
         root.querySelector('.content>.header>button')?.addEventListener('click', async function() {
             await User.addToFav(this.context.id);

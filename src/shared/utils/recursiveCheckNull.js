@@ -1,10 +1,15 @@
 export const recursiveCheck = (data) => {
+    if (!data) {
+        return data;
+    }
+
     if (data.Valid !== undefined) {
         if (data.Valid) {
             return Object.values(data)[ 0 ];
         }
         return null;
     }
+    
     if (Array.isArray(data)){
         const result = data.map((item) => {
             if (typeof item === 'object') {

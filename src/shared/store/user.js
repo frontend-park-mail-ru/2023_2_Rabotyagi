@@ -4,7 +4,7 @@ import jwtDecode from '../utils/jwt-decode.js';
 
 const user = {
     clear: function() {
-        this.state.fields = {};
+        this.state.fields = null;
         this.state.accessToken = null;
     },
     /**
@@ -64,14 +64,6 @@ const user = {
 
     update: function(data) {
         if (data) {
-            if (data.avatar && typeof data.avatar !== 'string'){
-            if (data.avatar.Valid) {
-                data.avatar = data.avatar.String;
-            }
-            else {
-                delete data.avatar;
-            }
-        }
             this.state.fields = {
                 ...this.state.fields,
                 ...data

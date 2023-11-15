@@ -163,12 +163,12 @@ class ProductPage {
 
         this.root = stringToElement(templateAdd(context));
         this.content = this.root.querySelector('.product>.content-add');
-        this.images = this.content.querySelector('#input-images');
-        this.errorBox = this.content.querySelector('#errorBox');
+        this.images = this.content?.querySelector('#input-images');
+        this.errorBox = this.content?.querySelector('#errorBox');
 
-        this.images.addEventListener('change', this.imagesChange);
-        this.content.addEventListener('submit', this.formSubmit);
-        this.content.querySelector('.btn-group>#btn-submit').replaceWith(button({
+        this.images?.addEventListener('change', this.imagesChange);
+        this.content?.addEventListener('submit', this.formSubmit);
+        this.content?.querySelector('.btn-group>#btn-submit').replaceWith(button({
             id: 'btn-submit',
             variant: 'primary',
             text: {

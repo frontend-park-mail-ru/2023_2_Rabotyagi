@@ -1,0 +1,9 @@
+<div class="carousel">
+    <button class="btn-outlined" name="selectPrev"><</button>
+    {{#each this}}
+        <div class="carousel__item">
+            <img src="{{this.url}}" data-id="{{this.id}}" />
+        </div>
+    {{/each}}
+    <button class="btn-outlined" name="selectNext">></button>
+</div>
