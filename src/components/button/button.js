@@ -15,6 +15,7 @@ const config = {
         class: null,
         content: null,
     },
+    name: null,
     type: null
 }
 // Добавить в избранное
