@@ -21,7 +21,7 @@ const user = {
             return;
         }
         
-        this.fill(access_token);
+        await this.fill(access_token);
     },
 
     isAuth: function() {
@@ -36,14 +36,14 @@ const user = {
      * @function
      * @returns None
      */
-    login: function({ access_token }) {
+    login: async function({ access_token }) {
         this.clear();
 
         if (access_token === undefined) {
             return;
         }
 
-        this.fill(access_token);
+        await this.fill(access_token);
     },
     
     fill: async function(access_token) {

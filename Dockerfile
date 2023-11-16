@@ -12,4 +12,4 @@ ENV NODE_ENV=development
 ENV API_URL=http://localhost
 
 EXPOSE 3000
-ENTRYPOINT [ "npm", "run", "server" ]
+ENTRYPOINT [ "npm", "run", "prod" ]

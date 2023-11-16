@@ -20,14 +20,8 @@ export class Feed {
             const resp = await Product.feed();
             const body = resp.body;
 
-            switch (resp.status) {
-                case 222:
-                    throw resp.body.error;
-                case 405:
-                    throw "Method Not Allowed"
-                case 500:
-                    throw "Internal Server Error"
-                default:
+            if (resp.status !== 200) {
+                throw resp.body.error;
             }
             container.innerHTML = '';
             

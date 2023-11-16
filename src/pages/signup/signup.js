@@ -67,9 +67,8 @@ export class SignupPage {
                 return false;
             }
             const cookies = cookieParser(document.cookie);
-            store.user.login(cookies);
+            await store.user.login(cookies);
             store.cart.clear();
-            window.Router.navigateTo('/');
             return true;
         } catch (err) {
             errorBox.innerHTML = '';
@@ -107,6 +106,7 @@ export class SignupPage {
                 const res = await this.signup(body, errorBox);
                 if (res) {
                     document.body.removeEventListener('keydown', handler);
+                    window.Router.navigateTo('/');
                 }
             }
         }
@@ -137,8 +137,6 @@ export class SignupPage {
 
         container.addEventListener('submit', this.signupEvent(container));
         document.body.addEventListener('keydown', this.signupEvent(container));
-
-
 
         container.querySelector('#logo-btn').replaceWith(button({
             leftIcon: svg({ content: logo }),
