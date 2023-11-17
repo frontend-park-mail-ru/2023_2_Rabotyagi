@@ -1,10 +1,13 @@
 @use '../../assets/css/vars.scss';
 
 $card-width: 218px;
+$profile-card-width: 300px;
+$card-radius: 12px;
+$badge-radius: 12px;
 
 .card {
     display: flex;
-    width: 218px;
+    width: $card-width;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -18,13 +21,13 @@ $card-width: 218px;
         flex-direction: column;
         align-items: flex-start;
         flex-shrink: 0;
-        border-radius: 12px;
+        border-radius: $card-radius;
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
 
         >.img {
             width: -webkit-fill-available;
             height: 218px;
-            border-radius: 12px 12px 0 0;
+            border-radius: $card-radius $card-radius 0 0;
             flex-shrink: 0;
             background-color: vars.$background-tertiary;
         }
@@ -60,7 +63,7 @@ $card-width: 218px;
         overflow: hidden;
 
         >.badge {
-            border-radius: 12px 12px 0 0;
+            border-radius: $badge-radius $badge-radius 0 0;
             background-color: vars.$background-secondary;
             padding: 8px 9px;
         }
@@ -70,9 +73,9 @@ $card-width: 218px;
 
 .card-profile {
     display: flex;
-    width: 300px;
+    width: $profile-card-width;
     align-items: flex-start;
-    border-radius: 12px;
+    border-radius: $card-radius;
     background: vars.$background-primary;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
 
@@ -114,7 +117,7 @@ $card-width: 218px;
                 justify-content: center;
                 align-items: center;
     
-                border-radius: 12px;
+                border-radius: $badge-radius;
                 background: vars.$background-secondary;
             }
         }
