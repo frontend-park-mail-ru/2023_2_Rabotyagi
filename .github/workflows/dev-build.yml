@@ -52,7 +52,7 @@ jobs:
                   message: |
                       Билд образа [${{ github.repository }}:${{github.ref_name}}](${{steps.meta.outputs.tags}})
                       Закончился с ✅
-                      [Ссылка на изменения](https://github.com/frontend-park-mail-ru/2023_2_Rabotyagi/commit/${{github.sha}})
+                      [Ссылка на изменения](https://github.com/frontend-park-mail-ru/2023\_2\_Rabotyagi/commit/${{github.sha}})
 
             - name: Send Bad Notification
               uses: appleboy/telegram-action@master
