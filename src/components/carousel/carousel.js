@@ -9,7 +9,7 @@ export class Carousel {
 
     constructor(images) {
         let index = 0;
-        images = images.map((value) => {
+        images = images?.map((value) => {
             value.id = index;
             index++;
             return value;
@@ -43,7 +43,8 @@ export class Carousel {
             this.root.querySelector('#selectPrev').replaceWith(btnPrev);
             this.root.querySelector('#selectNext').replaceWith(btnNext);
     
-            btnPrev.addEventListener('click', () => {
+            btnPrev.addEventListener('click', (e) => {
+                e.preventDefault();
                 images[ this.currentImageIndex ].style.display = 'none';
                 if (this.currentImageIndex - 1 < 0){
                     this.currentImageIndex = images.length - 1;
@@ -54,7 +55,8 @@ export class Carousel {
                 images[ this.currentImageIndex ].style.display = 'flex';
             });
     
-            btnNext.addEventListener('click', () => {
+            btnNext.addEventListener('click', (e) => {
+                e.preventDefault();
                 images[ this.currentImageIndex ].style.display = 'none';
                 if (this.currentImageIndex + 1 >= images.length){
                     this.currentImageIndex = 0;

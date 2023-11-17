@@ -123,7 +123,7 @@ export class SignupPage {
 
         const root = stringToElement(template());
 
-        const container = root.querySelector('.content');
+        const container = root.querySelector('.signup__content');
 
         container.querySelector('#btnSubmit').replaceWith(button({
             variant: 'primary',

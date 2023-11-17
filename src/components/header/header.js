@@ -13,7 +13,68 @@ import button from '../button/button.js';
 import svg from '../svg/svg.js';
 import logo from '../../assets/icons/logo.svg';
 import cart from '../../assets/icons/cart.svg';
-import { CategoryApi } from '../../shared/api/category.js';
+
+const buttons = {
+    cart: {
+        id: 'cart-btn',
+        variant: 'neutral',
+        link: '/cart',
+        leftIcon: svg({ 
+            content: cart,
+            width: 28,
+            height: 28
+        }),
+        text: {
+            class: 'text-regular',
+            content: store.cart.getCount(),
+        }
+    },
+    logo: {
+        id: 'logo-btn',
+        variant: 'neutral',
+        link: '/',
+        leftIcon: svg({ content: logo }),
+        text: {
+            class: 'text-subheader',
+            content: 'GoodsGalaxy',
+        }
+    },
+    categories: {
+        id: 'category',
+        variant: 'primary',
+        text: {
+            class: 'text-regular',
+            content: 'Категории'
+        }
+    },
+    productCreate: {
+        id: 'product-create',
+        variant: 'neutral',
+        subVariant: 'primary',
+        text: {
+            class: 'text-regular',
+            content: 'Разместить объявление'
+        }
+    },
+    signin: {
+        variant: 'primary',
+        link: '/signin',
+        text: {
+            class: 'text-regular',
+            content: 'Войти'
+        }
+    },
+    signup: {
+        variant: 'neutral',
+        subVariant: 'primary',
+        link: '/signup',
+        text: {
+            class: 'text-regular',
+            content: 'Зарегистрироваться'
+        }
+    }
+
+}
 
 /**
  * @class
@@ -25,134 +86,70 @@ export class Header {
      * @summary Метод рендера хедера
      */
 
-    constructor() {
-        this.profileBtn = new ProfileBtn();
-        this.context = {
-            signin: {
-                caption: 'Войти',
-            },
-            signup: {
-                caption: 'Зарегистрироваться',
-            },
-            authorized: store.user.isAuth(),
-            profile: store.user.isAuth() ? this.profileBtn.render() : null,
-        };
-        this.root = stringToElement(template(this.context));
-        store.cart.addListener(this.updateCartButton.bind(this));
-
-        this.getCategories();
-    }
+    constructor() {}
 
     updateCartButton() {
-        this.root.querySelector('#cart-btn')?.replaceWith(button({
-            id: 'cart-btn',
-            variant: 'neutral',
-            link: '/cart',
-            leftIcon: svg({ 
-                content: cart,
-                width: 28,
-                height: 28
-            }),
-            text: {
-                class: 'text-regular',
-                content: store.cart.getCount(),
-            }
-        }));
-
-        this.root.querySelector('#cart-btn')?.addEventListener('click', (e) => {
+        const cartBtn = this.root.querySelector('#cart-btn');
+        cartBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             window.Router.navigateTo('/cart');
         }, { capture: false });
     }
 
-    async getCategories() {
-        const res = await CategoryApi.getAll();
-        store.categories.init(res.body);
-    }
-
-    render() {
-        this.root.querySelector('#logo-btn')?.replaceWith(button({
-            id: 'logo-btn',
-            variant: 'neutral',
-            link: '/',
-            leftIcon: svg({ content: logo }),
-            text: {
-                class: 'text-subheader',
-                content: 'GoodsGalaxy',
-            }
-        }));
-
-        this.root.querySelector('#category')?.replaceWith(button({
-            id: 'category',
-            variant: 'primary',
-            text: {
-                class: 'text-regular',
-                content: 'Категории'
-            }
-        }));
-
-        this.root.querySelector('#category')?.addEventListener('click', () => {
-            
-        });
-
-        this.root.querySelector('#product-create')?.replaceWith(button({
-            id: 'product-create',
-            variant: 'neutral',
-            subVariant: 'primary',
-            text: {
-                class: 'text-regular',
-                content: 'Разместить объявление'
-            }
-        }));
-
-        this.root.querySelector('#product-create')?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            window.Router.navigateTo('/product', { productId: this.context.id, mode: 'add' })
-        })
-
-        this.root.querySelector('#signin')?.replaceWith(button({
-            variant: 'primary',
-            link: '/signin',
-            text: {
-                class: 'text-regular',
-                content: 'Войти'
-            }
-        }));
-
-        this.root.querySelector('#signup')?.replaceWith(button({
-            variant: 'neutral',
-            subVariant: 'primary',
-            link: '/signup',
-            text: {
-                class: 'text-regular',
-                content: 'Зарегистрироваться'
-            }
-        }));
-
-        this.root.querySelector('#cart-btn')?.replaceWith(button({
-            id: 'cart-btn',
-            variant: 'neutral',
-            link: '/cart',
-            leftIcon: svg({ 
-                content: cart,
-                width: 28,
-                height: 28
-            }),
-            text: {
-                class: 'text-regular',
-                content: store.cart.getCount(),
-            }
-        }));
-
-        this.root.querySelector('#profileBtn')?.replaceWith(this.profileBtn.render());
-
+    addEventListeners() {
         this.root.querySelectorAll('button[data-link]').forEach(item => 
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
                 window.Router.navigateTo(item.dataset.link);
             }, { capture: false })
         )
-        
+    }
+
+    renderProfile(nav) {
+        const cartBtn = button(buttons.cart);
+        const profileBtn = new ProfileBtn().render();
+
+        store.cart.addListener(this.updateCartButton.bind(this));
+
+        nav.append(cartBtn, profileBtn);
+    }
+
+    renderAuthBox(nav) {
+        const authBox = document.createElement('div');
+        authBox.classList.toggle('auth-box');
+
+        const signinBtn = button(buttons.signin);
+        const signupBtn = button(buttons.signup);
+
+        authBox.append(signinBtn, signupBtn);
+        nav.append(authBox);
+    }
+
+    async preRender() {
+        store.categories.refresh();
+        const authorized = store.user.isAuth();
+
+        this.root = stringToElement(template());
+        const nav = this.root.querySelector('nav');
+
+        const logoBtn = button(buttons.logo);
+        const productCreateBtn = button(buttons.productCreate);
+
+        nav.appendChild(logoBtn);
+        nav.appendChild(productCreateBtn);
+
+        productCreateBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            window.Router.navigateTo('/product', { mode: 'add' })
+        })
+
+        authorized ? this.renderProfile(nav) : this.renderAuthBox(nav);
+
+        this.addEventListeners();
+    }
+
+    render() {
+        this.preRender();
         return this.root;
     }
 }

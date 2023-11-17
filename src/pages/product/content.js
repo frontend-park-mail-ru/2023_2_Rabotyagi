@@ -7,18 +7,17 @@ import button from '../../components/button/button';
 import { User } from '../../shared/api/user';
 import { store } from '../../shared/store/store';
 import { Product } from '../../shared/api/product';
-import ajax from '../../shared/services/ajax';
 import Handlebars from 'handlebars/runtime';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox';
 import { Carousel } from '../../components/carousel/carousel';
-
-const { MOCK } = process.env;
+import { getResourceUrl } from '../../shared/utils/getResource';
 
 class Content {
     constructor(context) {
         this.context = context;
         this.context.category = store.categories.getById(this.context.category_id);
         this.context.categories = store.categories.list;
+        this.context.images = getResourceUrl(this.context.images);
     }
 
     renderChange() {
@@ -29,13 +28,6 @@ class Content {
 
             return '';
         });
-
-        if (this.context.images) {
-            this.context.image = MOCK === 'true' ? 
-                this.context.images[ 0 ].url
-                :
-                ajax.ADRESS_BACKEND + this.context.images[ 0 ].url;
-        }
 
         const root = stringToElement(templateChange(this.context));
 
@@ -97,13 +89,6 @@ class Content {
     }
 
     renderView() {
-        if (this.context.images) {
-            this.context.image = MOCK === 'true' ? 
-                this.context.images[ 0 ].url
-                :
-                ajax.ADRESS_BACKEND + this.context.images[ 0 ].url;
-        }
-
         const root = stringToElement(template(this.context));
 
         return root;

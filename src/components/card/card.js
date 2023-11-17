@@ -8,7 +8,7 @@ import template from './card.hbs'
 import templateProfile from './card-profile.hbs'
 import button from '../button/button.js';
 import { Product } from '../../shared/api/product.js';
-import ajax from '../../shared/services/ajax.js';
+import { getResourceUrl } from '../../shared/utils/getResource.js';
 
 
 const buttons = {
@@ -64,12 +64,9 @@ export class Card {
     constructor(context, variant='default') {
         this.context = context;
         this.variant = variant;
-
+        this.context.images = getResourceUrl(this.context.images);
         if (this.context.images) {
-            this.context.image = process.env.MOCK === 'true' ? 
-            this.context.images[ 0 ].url 
-            : 
-            ajax.ADRESS_BACKEND + this.context.images[ 0 ].url;
+            this.context.image = this.context.images[ 0 ];
         }
     }
     

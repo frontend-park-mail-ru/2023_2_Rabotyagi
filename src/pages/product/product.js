@@ -132,6 +132,7 @@ class ProductPage {
 
         await this.uploadImages();
 
+        body.images = [];
         if (this.uploadedImages) {
             this.uploadedImages.forEach((url) => body.images = [ ...body.images, {
                 url: url

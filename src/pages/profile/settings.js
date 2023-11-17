@@ -122,7 +122,6 @@ class Settings {
             body = res.body;
 
             const errorBox = this.root.querySelector('#errorBox');
-
             if (res.status !== 200) {
                 errorBox.replaceWith(ErrorMessageBox(body.error, 'errorBox'));
                 return;

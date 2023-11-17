@@ -51,7 +51,7 @@ export class SigninPage {
                 throw new Error(body.error);
             }
             const cookies = cookieParser(document.cookie);
-            store.user.login(cookies);
+            await store.user.login(cookies);
             store.cart.clear();
 
             const respCart = await Order.getCart();

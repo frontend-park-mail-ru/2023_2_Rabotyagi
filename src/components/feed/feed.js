@@ -25,7 +25,7 @@ export class Feed {
             }
             container.innerHTML = '';
             
-            body?.forEach((elem) => {
+            body.forEach((elem) => {
                 container.appendChild(new Card(elem).render());
             });
         } catch (err) {
@@ -34,18 +34,22 @@ export class Feed {
         }
     }
 
-    render() {
+    async preRender() {
         const context = {
             feedName: 'Все объявления',
         };
 
-        const root = stringToElement(template(context));
+        this.root = stringToElement(template(context));
 
-        const container = root.querySelector('div.feed-content');
+        const container = this.root.querySelector('div.feed-content');
         container.appendChild(loaderRegular());
 
-        this.getPosts(container);
+        await this.getPosts(container);
+    }
 
-        return root;
+    render() {
+        this.preRender();
+
+        return this.root;
     }
 }

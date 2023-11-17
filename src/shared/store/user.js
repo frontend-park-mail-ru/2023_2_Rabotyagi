@@ -55,7 +55,7 @@ const user = {
                 case 200:
                     this.update(res.body);
                     break;
-                case 222:
+                case 500:
                     deleteCookie('access_token');
                     break;
             }
