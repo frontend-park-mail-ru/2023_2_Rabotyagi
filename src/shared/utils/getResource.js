@@ -12,6 +12,10 @@ export const getResourceUrl = (resource) => {
                 return res;
             })
         }
+
+        if (typeof resource === 'string'){
+            return ajax.ADRESS_BACKEND + resource;
+        }
         
         resource.url = ajax.ADRESS_BACKEND + resource.url;
         return resource;

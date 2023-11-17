@@ -5,10 +5,12 @@ import { Order } from '../../shared/api/order.js';
 import { store } from '../../shared/store/store.js';
 import dispatcher from '../../shared/dispatcher/dispatcher.js';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
+import { getResourceUrl } from '../../shared/utils/getResource.js';
 
 class Menu {
     constructor(context) {
         this.context = context;
+        this.context.saler.avatar = getResourceUrl(this.context.saler.avatar);
     }
 
     async addInCart(container) {

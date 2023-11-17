@@ -115,7 +115,10 @@ class Settings {
             await this.uploadAvatar();
 
             if (this.uploadedAvatar) {
-                body.avatar = this.uploadedAvatar;
+                body.avatar = {
+                    String: this.uploadedAvatar,
+                    Valid: true
+                };
             }
 
             const res = await User.patchProfile(body);
@@ -126,8 +129,8 @@ class Settings {
                 errorBox.replaceWith(ErrorMessageBox(body.error, 'errorBox'));
                 return;
             }
-
-            store.user.login(
+            
+            await store.user.login(
                 cookieParser(document.cookie)
             );
             window.Router.navigateTo('/profile/settings');

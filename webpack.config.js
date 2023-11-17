@@ -19,13 +19,18 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
         test: /\.(?:js|mjs|cjs)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
             presets: [
-              ['@babel/preset-env', { targets: "defaults" }]
+              [ '@babel/preset-env', { targets: "defaults" } ]
             ]
           }
         }
@@ -73,7 +78,7 @@ module.exports = {
     new MiniCssExtractPlugin(),
   ],
   resolve: {
-    extensions: [ '.json', '.js', '.jsx', '.hbs', '.scss' ],
+    extensions: [ '.json', '.js', '.jsx', '.hbs', '.scss', '.tsx' ],
     modules: [ 'node_modules' ]
   },
   devtool: 'source-map',

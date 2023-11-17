@@ -11,6 +11,8 @@ import Handlebars from 'handlebars/runtime';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox';
 import { Carousel } from '../../components/carousel/carousel';
 import { getResourceUrl } from '../../shared/utils/getResource';
+import { extname } from '../../shared/utils/extname';
+import { Files } from '../../shared/api/file';
 
 class Content {
     constructor(context) {
@@ -67,6 +69,8 @@ class Content {
         });
 
         const root = stringToElement(templateChange(this.context));
+        this.images = root.querySelector('#input-images');
+        this.images?.addEventListener('change', this.imagesChange);
         this.errorBox = root.querySelector('#errorBox');
 
         root?.addEventListener('submit', async (e) => {
@@ -76,7 +80,7 @@ class Content {
             const data = Array.from(elements)
             .filter((item) => !!item.name && !!item.value)
             .map((element) => {
-                const { name, value, checked, type } = element;
+                const { name, value, checked, type, files } = element;
 
                 if (type === 'checkbox'){
                     return { [ name ]: Boolean(checked) };
@@ -101,16 +105,11 @@ class Content {
 
             await this.uploadImages();
 
-            body.images = [];
             if (this.uploadedImages) {
+                body.images = [];
                 this.uploadedImages.forEach((url) => body.images = [ ...body.images, {
                     url: url
                 } ])
-            }
-            else {
-                this.errorBox.innerHTML = '';
-                this.errorBox.appendChild(ErrorMessageBox('Должно быть хотя бы одно изображение'));
-                return;
             }
 
             const res = await Product.put(this.context.id, body);

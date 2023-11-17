@@ -34,6 +34,7 @@ class Profile {
     }
 
     async renderOwnProfile(root) {
+        // debugger
         const res = await this.getProfile(store.user.state.fields.id);
         store.user.update(res.body);
         const context = structuredClone(store.user.state.fields);
