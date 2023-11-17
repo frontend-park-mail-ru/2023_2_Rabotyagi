@@ -60,7 +60,7 @@ jobs:
 
             - name: Send Bad Notification
               uses: appleboy/telegram-action@master
-              if: steps.build.outcome == 'failure'
+              if: failure() && steps.build.outcome == 'failure'
               with:
                   to: ${{ secrets.TELEGRAM_CHAT }}
                   token: ${{ secrets.TELEGRAM_TOKEN }}
