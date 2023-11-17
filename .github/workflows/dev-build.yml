@@ -31,8 +31,21 @@ jobs:
                   images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
             - name: Build and push
               uses: docker/build-push-action@v5
+              id: build-image
               with:
                   context: .
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
+            - name: Send Notification
+              uses: appleboy/telegram-action@master
+              with:
+                  to: ${{ secrets.TELEGRAM_CHAT }}
+                  token: ${{ secrets.TELEGRAM_TOKEN }}
+                  message: |
+                      ${{ github.actor }} created commit:
+                      Commit message: ${{ github.event.commits[0].message }}
+
+                      Repository: ${{ github.repository }}
+
+                      See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
