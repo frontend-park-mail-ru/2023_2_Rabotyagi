@@ -64,6 +64,7 @@ jobs:
               with:
                   to: ${{ secrets.TELEGRAM_CHAT }}
                   token: ${{ secrets.TELEGRAM_TOKEN }}
+                  format: markdown
                   message: |
                       Билд образа ${{ github.repository }}:${{steps.meta.outputs.tags}}
                       Закончился с ❌
