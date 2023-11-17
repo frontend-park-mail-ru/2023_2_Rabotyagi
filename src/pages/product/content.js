@@ -20,6 +20,43 @@ class Content {
         this.context.images = getResourceUrl(this.context.images);
     }
 
+    async uploadImages() {
+        if (this.imagesForUpload) {
+            const res = await Files.images(this.imagesForUpload);
+    
+            if (res.status !== 200) {
+                this.errorBox.innerHTML = '';
+                this.errorBox.append(ErrorMessageBox(res.body.error));
+                return;
+            }
+            this.uploadedImages = res.body.urls;
+        }
+    }
+
+    imagesChange = (e) => {
+        e.stopPropagation();
+
+        const allowedFormats = this.images.accept
+            .replaceAll('.', '')
+            .replaceAll(' ', '')
+            .split(',');
+
+        this.errorBox.innerHTML = '';
+        const files = Array.from(this.images.files);
+
+        files.forEach((file) => {
+            const format = extname(file.name);
+            if (!(
+                allowedFormats.find((value) => value === format)
+            )) {
+                this.errorBox.appendChild(ErrorMessageBox(`Формат ${format} недопустим`));
+                return;
+            }
+        });
+
+        this.imagesForUpload = files; 
+    }
+
     renderChange() {
         Handlebars.registerHelper('selected', (id) => {
             if (id === this.context.category_id) {
@@ -30,6 +67,7 @@ class Content {
         });
 
         const root = stringToElement(templateChange(this.context));
+        this.errorBox = root.querySelector('#errorBox');
 
         root?.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -48,6 +86,10 @@ class Content {
                     return { [ name ]: Number(value) };
                 }
 
+                if (type === 'file') {
+                    return { [ name ]: files }
+                }
+
                 return { [ name ]: value };
             })
 
@@ -57,18 +99,30 @@ class Content {
             body.category_id = Number(body.category_id);
             body.saler_id = store.user.state.fields.id;
 
+            await this.uploadImages();
+
+            body.images = [];
+            if (this.uploadedImages) {
+                this.uploadedImages.forEach((url) => body.images = [ ...body.images, {
+                    url: url
+                } ])
+            }
+            else {
+                this.errorBox.innerHTML = '';
+                this.errorBox.appendChild(ErrorMessageBox('Должно быть хотя бы одно изображение'));
+                return;
+            }
+
             const res = await Product.put(this.context.id, body);
             body = res.body;
-
-            const errorBox = root.querySelector('#errorBox');
 
             if (res.status === 303){
                 window.Router.navigateTo('/product', { productId: this.context.id })
                 return;
             }
 
-            errorBox.innerHTML = '';
-            errorBox.appendChild(ErrorMessageBox(body.error));
+            this.errorBox.innerHTML = '';
+            this.errorBox.appendChild(ErrorMessageBox(body.error));
 
             return;
 
