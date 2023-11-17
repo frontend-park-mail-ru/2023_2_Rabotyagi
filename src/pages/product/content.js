@@ -19,7 +19,8 @@ class Content {
         this.context = context;
         this.context.category = store.categories.getById(this.context.category_id);
         this.context.categories = store.categories.list;
-        this.context.images = getResourceUrl(this.context.images);
+        this.imagesBackup = structuredClone(this.context.images);
+        this.context.images = getResourceUrl(this.context.images)
     }
 
     async uploadImages() {
@@ -110,8 +111,11 @@ class Content {
                 this.uploadedImages.forEach((url) => body.images = [ ...body.images, {
                     url: url
                 } ])
+            } else {
+                body.images = this.imagesBackup;
             }
 
+            debugger
             const res = await Product.put(this.context.id, body);
             body = res.body;
 
