@@ -48,11 +48,11 @@ jobs:
               with:
                   to: ${{ secrets.TELEGRAM_CHAT }}
                   token: ${{ secrets.TELEGRAM_TOKEN }}
-                  format: markdown
+                  # format: markdown
                   message: |
-                      Билд образа [${{ github.repository }}:${{github.ref_name}}](${{steps.meta.outputs.tags}})
+                      Билд образа <a href="${{steps.meta.outputs.tags}}">${{ github.repository }}:${{github.ref_name}}</a>
                       Закончился с ✅
-                      [Ссылка на изменения](https://github.com/frontend-park-mail-ru/2023\_2\_Rabotyagi/commit/${{github.sha}})
+                      <a href="https://github.com/frontend-park-mail-ru/2023_2_Rabotyagi/commit/${{github.sha}}">Ссылка на изменения</a>
 
             - name: Send Bad Notification
               uses: appleboy/telegram-action@master
@@ -60,8 +60,8 @@ jobs:
               with:
                   to: ${{ secrets.TELEGRAM_CHAT }}
                   token: ${{ secrets.TELEGRAM_TOKEN }}
-                  format: markdown
+                  # format: markdown
                   message: |
                       Билд образа [${{ github.repository }}:${{github.ref_name}}](${{steps.meta.outputs.tags}})
                       Закончился с ❌
-                      [Ссылка на джобу](https://github.com/frontend-park-mail-ru/2023_2_Rabotyagi/actions/runs/${{}})
+                      [Ссылка на джобу](${{format('https://github.com/frontend-park-mail-ru/2023_2_Rabotyagi/actions/runs/', )}}${{github.run_id}})
