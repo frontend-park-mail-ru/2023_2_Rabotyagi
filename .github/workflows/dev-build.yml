@@ -51,7 +51,7 @@ jobs:
                   # format: markdown
                   message: |
                       Билд образа
-                        - ${{steps.meta.outputs.tags}}">${{ github.repository }}:${{github.ref_name}}
+                        - ${{ github.repository }}:${{github.ref_name}}
                       Закончился с ✅
                       https://github.com/frontend-park-mail-ru/2023_2_Rabotyagi/commit/${{github.sha}}
 
@@ -64,6 +64,6 @@ jobs:
                   # format: markdown
                   message: |
                       Билд образа
-                        - ${{steps.meta.outputs.tags}}">${{ github.repository }}:${{github.ref_name}}
+                        - ${{ github.repository }}:${{github.ref_name}}
                       Закончился с ❌
                       https://github.com/frontend-park-mail-ru/2023_2_Rabotyagi/actions/runs/${{github.run_id}}
