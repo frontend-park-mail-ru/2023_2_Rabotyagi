@@ -12,10 +12,12 @@
     .left-content {
         flex: 0 0 200px;
         height: 218px;
-        img {
+        >.img {
             width: -webkit-fill-available;
             height: 218px;
             object-fit: cover;
+            background-color: vars.$background-tertiary;
+            flex-shrink: 0;
         }
     }
 

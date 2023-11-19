@@ -30,6 +30,7 @@ export const ORDER = {
                 "images": product.images,
             };        
             const orderBody = schema.orders.create(orderData);
+            orderBody.id = Number(orderBody.id);
             return {
                 body: orderBody,
                 status: 200
@@ -115,7 +116,7 @@ export const ORDER = {
         });
         let data = [];
         res.forEach(({ attrs }) => data = [ ...data, attrs ]);
-
+    
         return {
             body: data,
             status: 200

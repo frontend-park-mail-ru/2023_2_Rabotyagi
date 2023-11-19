@@ -1,6 +1,10 @@
 <div class="order-card">
     <div class="left-content">
-        <img class='img' src='{{this.image}}' />
+        {{#if this.image}}
+            <img class='img' src='{{this.image.url}}' />
+        {{else}}
+            <div class="img"></div>
+        {{/if}}
     </div>
     <div class="center-content">
         <div class="product-price">

@@ -1,6 +1,10 @@
 <div id="userCard" class="user-card">
     <div class="user-avatar">
-        <img class='img' src='{{this.img}}' />
+        {{#if this.image}}
+            <img class='img' src='{{this.image.url}}' />
+        {{else}}
+            <div class="img"></div>
+        {{/if}}
     </div>
     <div class="user-info">
         <div class="top-user-info">

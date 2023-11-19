@@ -69,7 +69,7 @@ class Cart {
             }
 
         } catch(err) {
-            // console.log(err);
+            //console.log(err);
         }
     }
 
@@ -107,10 +107,6 @@ class Cart {
             ...this.state.saler,
             ...saler
         }
-        // this.state.saler.id = saler.id;
-        // this.state.saler.name = saler.name;
-        // this.state.saler.email = saler.email;
-        // this.state.saler.image = saler.image;
     }
 
     hasProduct(productId) {
@@ -150,7 +146,6 @@ class Cart {
         const index = this.state.goods?.map(elem => elem.id).indexOf(orderId);
         if (index != -1) {
             this.state.goods[ index ].count = count;
-            console.log(this.state.goods[ index ].count);
         }
     }
 

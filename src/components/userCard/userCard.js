@@ -18,10 +18,13 @@ export class UserCard {
         const template = Template;
 
         const context = {
-            img: this.#image,
             name: this.#name,
             email: this.#email
         };
+
+        if (this.#image) {
+            this.context.image.url = this.#image;
+        }
 
         const goToSaler = button({
             variant: 'secondary',
