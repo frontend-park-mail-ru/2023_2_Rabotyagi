@@ -1,13 +1,25 @@
 'use strict';
-import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url'
 
-const filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(filename);
+var express = require('express');
+var fs = require('fs');
+var path = require('path');
+
+const { NODE_ENV } = process.env;
+var app;
+
+if (NODE_ENV === 'production') {
+    var privateKey = fs.readFileSync('sslcert/server.key');
+    var certificate = fs.readFileSync('sslcert/server.crt');
+    
+    var credentials = { key: privateKey, cert: certificate };
+    
+    app = express.createServer(credentials);
+}
+else {
+    app = express();
+}
 
 const PORT = process.env.PORT || 3000;
-const app = express();
 
 app.use(express.static(path.resolve(__dirname, '..', 'node_modules')));
 app.use(express.static(path.resolve(__dirname, '..', 'src')));

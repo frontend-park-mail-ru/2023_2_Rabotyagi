@@ -67,7 +67,7 @@ class Menu {
 
             root.querySelector('#btn-msg')?.addEventListener('click', (e) => {
                 e.stopPropagation();
-                window.Router.navigateTo('/saler', { salerId: this.context.saler.id });
+                window.Router.navigateTo('/saler', { salerId: this.context.saler.id, variant: 'saler' });
             });
         }
 
