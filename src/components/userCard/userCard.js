@@ -8,10 +8,10 @@ export class UserCard {
     #email;
     #image;
 
-    constructor({ name, email, image }) {
+    constructor({ name, email, avatar }) {
         this.#name = name;
         this.#email = email;
-        this.#image = image
+        this.#image = avatar;
     }
 
     render() {

@@ -2,6 +2,7 @@ import { BaseStore } from "./baseStore";
 import dispathcer from "../dispatcher/dispatcher";
 import { Order } from "../api/order";
 import { User } from "../api/user";
+import { getResourceUrl } from "../utils/getResource";
 
 class Cart {
     constructor() {
@@ -63,6 +64,7 @@ class Cart {
                     if (respUser.status != 200) {
                         throw bodyUser.error;
                     }
+                    bodyUser.avatar = getResourceUrl(bodyUser.avatar);
                     this.updateUser(bodyUser);
                 }
                 this.emitChange();
