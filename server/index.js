@@ -25,9 +25,6 @@ app.get('*', function (req, res) {
 // });
 
 var httpServer, httpsServer
-httpServer = http.createServer(app);
-httpServer.listen(PORT);
-console.log(`HTTP listening port ${PORT}`);
 
 if (NODE_ENV === 'production') {
     try {
@@ -42,4 +39,9 @@ if (NODE_ENV === 'production') {
     catch (err) {
         console.log(err);
     }
+}
+else {
+    httpServer = http.createServer(app);
+    httpServer.listen(PORT);
+    console.log(`HTTP listening port ${PORT}`);
 }
