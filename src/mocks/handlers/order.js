@@ -29,9 +29,9 @@ export const ORDER = {
                 "title": product.title,
                 "images": product.images,
             };        
-            schema.orders.create(orderData);
+            const orderBody = schema.orders.create(orderData);
             return {
-                body: orderData,
+                body: orderBody,
                 status: 200
             };
         }

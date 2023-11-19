@@ -5,6 +5,7 @@ import { User } from "../api/user";
 
 class Cart {
     constructor() {
+
         this.state = {
             goods: [],
             saler: {
@@ -36,6 +37,8 @@ class Cart {
                     break;
                 case 'BUY_ALL':
                     this.clear();
+                    break;
+                default:
                     break;
             }
             this.emitChange();
@@ -147,6 +150,7 @@ class Cart {
         const index = this.state.goods?.map(elem => elem.id).indexOf(orderId);
         if (index != -1) {
             this.state.goods[ index ].count = count;
+            console.log(this.state.goods[ index ].count);
         }
     }
 

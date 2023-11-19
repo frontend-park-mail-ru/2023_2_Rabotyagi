@@ -76,10 +76,6 @@ export class OrderCard {
             // console.log(err);
         }
     }
-
-    async patchOrder() {
-
-    }
  
     render() {
         const container = this.root.querySelector('div.right-content');

@@ -89,11 +89,14 @@ export class Header {
     constructor() {}
 
     updateCartButton() {
-        const cartBtn = this.root.querySelector('#cart-btn');
+        buttons.cart.text.content = store.cart.getCount();
+        const buttonBox = this.root.querySelector('#cart-btn');
+        const cartBtn = button(buttons.cart);
         cartBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             window.Router.navigateTo('/cart');
         }, { capture: false });
+        buttonBox.replaceWith(cartBtn);
     }
 
     addEventListeners() {
