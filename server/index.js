@@ -3,21 +3,11 @@
 var express = require('express');
 var fs = require('fs');
 var path = require('path');
+var http = require('http');
+var https = require('https');
 
 const { NODE_ENV } = process.env;
-var app;
-
-if (NODE_ENV === 'production') {
-    var privateKey = fs.readFileSync('/etc/ssl/goods-galaxy.ru.key');
-    var certificate = fs.readFileSync('/etc/ssl/goods-galaxy.ru.crt');
-    
-    var credentials = { key: privateKey, cert: certificate };
-    
-    app = express.createServer(credentials);
-}
-else {
-    app = express();
-}
+const app = express();
 
 const PORT = process.env.PORT || 3000;
 
@@ -30,6 +20,26 @@ app.get('*', function (req, res) {
     res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
 });
 
-app.listen(PORT, function () {
-    console.log(`Server listening port ${PORT}`);
-});
+// app.listen(PORT, function () {
+//     console.log(`Server listening port ${PORT}`);
+// });
+
+var httpServer, httpsServer
+httpServer = http.createServer(app);
+httpServer.listen(PORT);
+console.log(`HTTP listening port ${PORT}`);
+
+if (NODE_ENV === 'production') {
+    try {
+        var privateKey = fs.readFileSync('/etc/ssl/goods-galaxy.ru.key');
+        var certificate = fs.readFileSync('/etc/ssl/goods-galaxy.ru.crt');
+        var credentials = { key: privateKey, cert: certificate };
+
+        httpsServer = https.createServer(credentials, app);
+        httpsServer.listen(PORT+443);
+        console.log(`HTTPS listening port ${PORT+443}`);
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
