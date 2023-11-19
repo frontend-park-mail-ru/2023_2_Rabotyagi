@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 require('dotenv').config( {
-  path: path.join(__dirname, '.env')
+  path: path.join(__dirname, '.env/.env.frontend')
 } );
 
 module.exports = {

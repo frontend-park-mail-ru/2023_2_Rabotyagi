@@ -8,7 +8,14 @@
             <span class="text-regular">Название</span>
             <input name="title" class="text-regular searchField" type="text" value="{{this.title}}">
             <span class="text-regular">Город</span>
-            <input name="city" class="text-regular searchField" type="text" value="{{this.city}}">
+            <select name="city_id">
+                {{#each cities}}
+                <option value="{{this.id}}" {{selected this.id}}>
+                    <span class="text-regular">{{this.name}}</span>
+                </option>
+                {{/each}}
+            </select>
+            {{!-- <input name="city" class="text-regular searchField" type="text" value="{{this.city}}"> --}}
             <span class="text-regular">Описание</span>
             <textarea name="description" class="text-regular" style="height: 300px"
                 type="text">{{this.description}}</textarea>

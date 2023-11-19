@@ -9,7 +9,14 @@
                 <span class="text-regular">Изображения</span>
                 <input name="images" type="file" id="input-images" multiple accept=".png, .jpg, .jpeg">
                 <span class="text-regular">Город</span>
-                <input name="city" class="text-regular searchField" type="text">
+                <select name="city_id">
+                    {{#each cities}}
+                    <option value="{{this.id}}">
+                        <span class="text-regular">{{this.name}}</span>
+                    </option>
+                    {{/each}}
+                </select>
+                {{!-- <input name="city" class="text-regular searchField" type="text"> --}}
                 <span class="text-regular">Описание</span>
                 <textarea name="description" class="text-regular" style="height: 300px"  type="text"></textarea>
                 <span class="text-regular">Категория</span>
