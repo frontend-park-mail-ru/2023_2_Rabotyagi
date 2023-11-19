@@ -17,6 +17,8 @@ import { Files } from '../../shared/api/file';
 class Content {
     constructor(context) {
         this.context = context;
+        this.context.city = store.cities.getById(this.context.city_id);
+        this.context.cities = store.cities.list;
         this.context.category = store.categories.getById(this.context.category_id);
         this.context.categories = store.categories.list;
         this.imagesBackup = structuredClone(this.context.images);
@@ -101,6 +103,7 @@ class Content {
             let body = {};
             data.forEach((elem) => body = { ...body, ...elem });
             
+            body.city_id = Number(body.city_id);
             body.category_id = Number(body.category_id);
             body.saler_id = store.user.state.fields.id;
 
@@ -115,7 +118,6 @@ class Content {
                 body.images = this.imagesBackup;
             }
 
-            debugger
             const res = await Product.put(this.context.id, body);
             body = res.body;
 

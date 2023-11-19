@@ -126,7 +126,8 @@ class ProductPage {
 
         let body = {};
         data.forEach((elem) => body = { ...body, ...elem });
-
+        
+        body.city_id = Number(body.city_id);
         body.category_id = Number(body.category_id);
         body.saler_id = store.user.state.fields.id;
 
@@ -160,6 +161,7 @@ class ProductPage {
         const context = {
             isAuth: store.user.isAuth(),
             categories: store.categories.list,
+            cities: store.cities.list,
         }
 
         this.root = stringToElement(templateAdd(context));

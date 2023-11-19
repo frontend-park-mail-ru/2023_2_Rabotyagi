@@ -44,7 +44,7 @@ class Cart {
             this.emitChange();
         });
 
-        this.getOrders();
+        // this.getOrders();
     }
 
     async getOrders() {
