@@ -8,8 +8,8 @@ const { NODE_ENV } = process.env;
 var app;
 
 if (NODE_ENV === 'production') {
-    var privateKey = fs.readFileSync('sslcert/server.key');
-    var certificate = fs.readFileSync('sslcert/server.crt');
+    var privateKey = fs.readFileSync('/etc/ssl/goods-galaxy.ru.key');
+    var certificate = fs.readFileSync('/etc/ssl/goods-galaxy.ru.crt');
     
     var credentials = { key: privateKey, cert: certificate };
     
