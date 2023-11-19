@@ -9,6 +9,7 @@ import templateProfile from './card-profile.hbs'
 import button from '../button/button.js';
 import { Product } from '../../shared/api/product.js';
 import { getResourceUrl } from '../../shared/utils/getResource.js';
+import { store } from '../../shared/store/store.js';
 
 
 const buttons = {
@@ -64,6 +65,7 @@ export class Card {
     constructor(context, variant='default') {
         this.context = context;
         this.variant = variant;
+        this.context.city = store.cities.getById(this.context.city_id);
         this.context.images = getResourceUrl(this.context.images);
         if (this.context.images) {
             this.context.image = this.context.images[ 0 ];

@@ -115,10 +115,7 @@ class Settings {
             await this.uploadAvatar();
 
             if (this.uploadedAvatar) {
-                body.avatar = {
-                    String: this.uploadedAvatar,
-                    Valid: true
-                };
+                body.avatar = this.uploadedAvatar;
             }
 
             const res = await User.patchProfile(body);

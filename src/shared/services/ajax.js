@@ -4,7 +4,6 @@
  */
 
 import { applicationJson, multipartFormData } from "../constants/contentType";
-import { recursiveCheck } from "../utils/recursiveCheckNull";
 
 const { API_URL } = process.env;
 
@@ -101,11 +100,11 @@ class Ajax {
             config.credentials = credentials;
         }
 
-        const resp = await (await fetch(url, config)).json();
-        const newBody = recursiveCheck(resp.body);
-        resp.body = newBody;
+        return await (await fetch(url, config)).json();
+        // const newBody = recursiveCheck(resp.body);
+        // resp.body = newBody;
 
-        return resp;
+        // return resp;
     }
 
     /**
