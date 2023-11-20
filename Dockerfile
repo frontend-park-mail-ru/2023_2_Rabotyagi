@@ -9,7 +9,8 @@ COPY webpack.config.js .
 RUN npm install
 
 ENV NODE_ENV=development
-ENV API_URL=http://localhost
+ENV API_URL=localhost
+ENV SCHEMA=http://
 
 EXPOSE 3000
 ENTRYPOINT [ "npm", "run", "prod" ]
