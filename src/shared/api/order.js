@@ -35,7 +35,7 @@ export const Order = {
             url: ORDER_API.UPDATE_COUNT,
             body: {
                 id: id,
-                count: count
+                count: count,
             },
             credentials: 'include'
         });

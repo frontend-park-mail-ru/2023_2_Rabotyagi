@@ -63,7 +63,7 @@ export class OrderCard {
                 count: count
             } });
         } catch(err) {
-            // console.log(err);
+            console.log(err);
         }
     }
 

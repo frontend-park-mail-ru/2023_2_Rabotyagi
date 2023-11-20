@@ -7,6 +7,10 @@ import dec from '../../assets/icons/dec.svg';
 import svg from '../svg/svg.js';
 import button from '../button/button.js';
 
+/**
+ * @class
+ * @classdesc Класс счётчика
+ */
 export class Counter {
     #unitPrice;
     #maxCount;
@@ -14,6 +18,8 @@ export class Counter {
     #currentCount;
     #price;
     #counterFunc;
+    #incVisible;
+    #decVisible;
 
     constructor({ unitPrice, minCount, maxCount, currentCount, counterFunc }) {
         this.#unitPrice = unitPrice;
@@ -29,16 +35,63 @@ export class Counter {
         this.root = stringToElement(template(this.context));
         this.counterResult = this.root.querySelector('div.counter-result');
         this.counterManager = this.root.querySelector('div.counter-manager');
+
+        this.updateVisible();
+
+        this.decButton = button({
+            id: 'decBtn',
+            variant: 'neutral',
+            leftIcon: svg({ 
+                content: dec,
+                width: 25,
+                height: 25
+            }),
+        });
+        this.incButton = button({
+            id: 'incBtn',
+            variant: 'neutral',
+            leftIcon: svg({ 
+                content: inc,
+                width: 25,
+                height: 25
+            }),
+        });
+
+        this.decButton.addEventListener('click', () => {
+            this.decCount();
+        });
+        this.incButton.addEventListener('click', () => {
+            this.incCount();
+        });
+    }
+
+    renderButton(visible, idName) {
+        // debugger
+        if (visible) {
+            this.counterManager.querySelector(idName).style.display = 'block';
+            this.counterManager.querySelector(idName).style.pointerEvents = 'auto';
+        } else {
+            this.counterManager.querySelector(idName).style.display = 'none';
+            this.counterManager.querySelector(idName).style.pointerEvents = 'none';
+        }
     }
 
     reRenderResult() {
         this.counterResult.querySelector('span.full-price').innerHTML = this.#price;
         this.counterManager.querySelector('div.counter-count').innerHTML = this.#currentCount;
+        this.renderButton(this.#incVisible, '#incBtn');
+        this.renderButton(this.#decVisible, '#decBtn');
+    }
+
+    updateVisible() {
+        this.#incVisible = (this.#currentCount === this.#maxCount) ? false : true;
+        this.#decVisible = (this.#currentCount === this.#minCount) ? false : true;
     }
 
     incCount() {
         if (this.#currentCount < this.#maxCount) {
             this.#currentCount += 1;
+            this.updateVisible();
             this.#price += this.#unitPrice;
             this.reRenderResult();
             this.#counterFunc(this.#currentCount);
@@ -48,6 +101,7 @@ export class Counter {
     decCount() {
         if (this.#currentCount > this.#minCount) {
             this.#currentCount -= 1;
+            this.updateVisible();
             this.#price -= this.#unitPrice;
             this.reRenderResult();
             this.#counterFunc(this.#currentCount);
@@ -61,35 +115,10 @@ export class Counter {
     render() {
         this.counterResult.querySelector('span.full-price').innerHTML = this.#price;
 
-        const decButton = button({
-            id: 'decBtn',
-            variant: 'neutral',
-            leftIcon: svg({ 
-                content: dec,
-                width: 25,
-                height: 25
-            }),
-        });
-
-        const incButton = button({
-            id: 'decBtn',
-            variant: 'neutral',
-            leftIcon: svg({ 
-                content: inc,
-                width: 25,
-                height: 25
-            }),
-        });
-
-        decButton.addEventListener('click', () => {
-            this.decCount();
-        });
-        incButton.addEventListener('click', () => {
-            this.incCount();
-        });
-
-        this.counterManager.querySelector('#decBtn')?.replaceWith(decButton);
-        this.counterManager.querySelector('#incBtn')?.replaceWith(incButton);
+        this.counterManager.querySelector('#incBtn').replaceWith(this.incButton);
+        this.counterManager.querySelector('#decBtn').replaceWith(this.decButton);
+        this.renderButton(this.#incVisible, '#incBtn');
+        this.renderButton(this.#decVisible, '#decBtn');
         this.counterManager.querySelector('div.counter-count').innerHTML = this.#currentCount;
 
         return this.root;

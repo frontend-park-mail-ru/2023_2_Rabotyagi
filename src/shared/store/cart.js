@@ -44,8 +44,6 @@ class Cart {
             }
             this.emitChange();
         });
-
-        // this.getOrders();
     }
 
     async getOrders() {
@@ -71,7 +69,7 @@ class Cart {
             }
 
         } catch(err) {
-            //console.log(err);
+            // console.log(err);
         }
     }
 
@@ -79,7 +77,7 @@ class Cart {
         this.state.saler.id = 0;
         this.state.saler.name = '';
         this.state.saler.email = '';
-        this.state.saler.image = '';
+        this.state.saler.avatar = '';
     }
 
     clear() {
@@ -94,6 +92,7 @@ class Cart {
     init() {
         this.emptySaler();
         this.state.goods = [];
+        this.getOrders();
     }
 
     hasUser() {

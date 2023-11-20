@@ -129,6 +129,8 @@ export class Header {
     }
 
     async preRender() {
+        buttons.cart.text.content = store.cart.getCount();
+
         store.categories.refresh();
         const authorized = store.user.isAuth();
 
