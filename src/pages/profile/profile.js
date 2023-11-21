@@ -30,6 +30,7 @@ class Profile {
         store.user.update(res.body);
 
         const context = structuredClone(store.user.state.fields);
+        context.avatar = getResourceUrl(context.avatar);
         const root = stringToElement(template(context));
         replaced.replaceWith(root);
 

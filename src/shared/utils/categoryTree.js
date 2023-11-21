@@ -32,7 +32,7 @@ export const searchNode = (node, id) => {
         return;
     })
 
-    res.filter((value) => value !== undefined);
+    res = res.filter((value) => value !== undefined);
 
     if (res.length === 0) {
         return undefined;
@@ -43,9 +43,12 @@ export const searchNode = (node, id) => {
 
 export const tree = (childs) => {
     let root;
+    
     childs.forEach((value) => {
+        value = new Node(value);
+
         if (value.parent_id == null) {
-            root = new Node(value);
+            root = value;
             return;
         }
 
