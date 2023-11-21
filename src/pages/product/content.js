@@ -22,7 +22,6 @@ class Content {
         this.context.cities = store.cities.list;
         this.context.category = store.categories.getById(this.context.category_id);
         this.context.categories = store.categories.list;
-        this.created_at = this.created_at.split("T")[0] + " " + this.created_at.split("T")[1].split("+")[0];
         this.imagesBackup = structuredClone(this.context.images);
         this.context.images = getResourceUrl(this.context.images)
     }
