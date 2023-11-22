@@ -60,14 +60,14 @@ class Menu {
                 variant: 'outlined',
                 text: {
                     class: 'text-regular',
-                    content: 'Написать продавцу'
+                    content: 'Посмотреть профиль'
                 },
                 style: 'width: 100%;'
             }));
 
             root.querySelector('#btn-msg')?.addEventListener('click', (e) => {
                 e.stopPropagation();
-                window.Router.navigateTo('/saler', { salerId: this.context.saler.id, variant: 'saler' });
+                window.Router.navigateTo('/saler/products', { salerId: this.context.saler.id, variant: 'saler' });
             });
         }
 

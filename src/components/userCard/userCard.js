@@ -4,11 +4,13 @@ import './userCard.scss';
 import button from '../button/button.js';
 
 export class UserCard {
+    #id;
     #name;
     #email;
     #image;
 
-    constructor({ name, email, avatar }) {
+    constructor({ id, name, email, avatar }) {
+        this.#id = id;
         this.#name = name;
         this.#email = email;
         this.#image = avatar;
@@ -30,8 +32,12 @@ export class UserCard {
             variant: 'secondary',
             text: {
                 class: 'text-regular',
-                content: 'Написать продавцу'
+                content: 'Посмотреть профиль'
             }
+        });
+        goToSaler.addEventListener('click', (e) => {
+            e.stopPropagation();
+            window.Router.navigateTo('/saler/products', { salerId: this.#id, variant: 'saler' });
         });
 
         const root = stringToElement(template(context));
