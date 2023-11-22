@@ -1,11 +1,19 @@
 @use '../../assets/css/vars.scss';
+@use '../../assets/css/utility';
 
-.cart {
-    width: 100%;
+.wrapper-cart {
+    @extend .wrapper !optional;
+    background-color: vars.$background-secondary;
+    height: -webkit-fill-availabl;
+    padding-bottom: 10vh;
 
-    .cart-header {
-        width: 1000px;
-        margin: 0 auto;
-        margin-top: 32px;
+    .cart {
+        width: 100%;
+    
+        .cart-header {
+            width: 1000px;
+            margin: 0 auto;
+            margin-top: 32px;
+        }
     }
 }

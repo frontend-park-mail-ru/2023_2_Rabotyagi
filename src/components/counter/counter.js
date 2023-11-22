@@ -68,10 +68,10 @@ export class Counter {
     renderButton(visible, idName) {
         // debugger
         if (visible) {
-            this.counterManager.querySelector(idName).style.display = 'block';
+            this.counterManager.querySelector(idName).style.opacity = '1';
             this.counterManager.querySelector(idName).style.pointerEvents = 'auto';
         } else {
-            this.counterManager.querySelector(idName).style.display = 'none';
+            this.counterManager.querySelector(idName).style.opacity = '0.5';
             this.counterManager.querySelector(idName).style.pointerEvents = 'none';
         }
     }
