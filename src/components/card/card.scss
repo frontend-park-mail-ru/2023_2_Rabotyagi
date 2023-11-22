@@ -84,6 +84,7 @@ $badge-radius: 12px;
         width: 120px;
         flex-shrink: 0;
         align-self: stretch;
+        object-fit: cover;
     }
 
     >.content {
