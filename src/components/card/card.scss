@@ -30,6 +30,7 @@ $badge-radius: 12px;
             border-radius: $card-radius $card-radius 0 0;
             flex-shrink: 0;
             background-color: vars.$background-tertiary;
+            object-fit: cover;
         }
 
         >.info {
