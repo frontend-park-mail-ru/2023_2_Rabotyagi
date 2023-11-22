@@ -1,7 +1,7 @@
 # 2023_2_Rabotyagi
 Frontend репозиторий команды Работяги  
 ### Приложение
-http://84.23.53.28/
+https://goods-galaxy.ru/
 ### Наши контакты:
 
 Владислав Ильинский: https://github.com/Vilinvil и тг https://t.me/Vilin0
