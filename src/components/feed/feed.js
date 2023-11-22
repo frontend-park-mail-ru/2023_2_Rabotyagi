@@ -4,7 +4,7 @@
 
 import { Card } from '../card/card.js';
 import { ErrorMessageBox } from '../error/errorMessageBox.js';
-import { Post } from '../../shared/api/post.js';
+import { Product } from '../../shared/api/product.js';
 import { loaderRegular } from '../loader/loader.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import template from './feed.hbs'
@@ -17,21 +17,15 @@ import './feed.scss'
 export class Feed {
     async getPosts(container) {
         try {
-            const resp = await Post.feed();
+            const resp = await Product.feed();
             const body = resp.body;
 
-            switch (resp.status) {
-                case 222:
-                    throw resp.body.error;
-                case 405:
-                    throw "Method Not Allowed"
-                case 500:
-                    throw "Internal Server Error"
-                default:
+            if (resp.status !== 200) {
+                throw resp.body.error;
             }
             container.innerHTML = '';
             
-            body?.forEach((elem) => {
+            body.forEach((elem) => {
                 container.appendChild(new Card(elem).render());
             });
         } catch (err) {
@@ -40,18 +34,22 @@ export class Feed {
         }
     }
 
-    render() {
+    async preRender() {
         const context = {
             feedName: 'Все объявления',
         };
 
-        const root = stringToElement(template(context));
+        this.root = stringToElement(template(context));
 
-        const container = root.querySelector('div.feed-content');
+        const container = this.root.querySelector('div.feed-content');
         container.appendChild(loaderRegular());
 
-        this.getPosts(container);
+        await this.getPosts(container);
+    }
 
-        return root;
+    render() {
+        this.preRender();
+
+        return this.root;
     }
 }

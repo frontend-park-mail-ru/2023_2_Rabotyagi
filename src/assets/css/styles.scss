@@ -66,14 +66,19 @@ body {
     padding-left: 30px;
 }
 
+.textArea {
+    height: 150px;
+    resize: none;
+
+}
+
 // .search-box {
 //     /* width: 50%; */
 // }
 
-input {
+input, textarea {
     display: flex;
     width: 100%;
-    height: 36px;
     padding: 8px 12px;
     align-items: center;
     align-self: stretch;
@@ -83,7 +88,11 @@ input {
     outline: none;
 }
 
-input:focus-visible {
+input {
+    height: 36px;
+}
+
+input:focus-visible, textarea:focus-visible {
     border: 0.5px solid vars.$palette-primary;
 }
 

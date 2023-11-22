@@ -1,32 +1,30 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
-import templateView from './productView.hbs';
-import templateAdd from './productAdd.hbs';
+import templateView from './templates/productView.hbs';
+import templateAdd from './templates/productAdd.hbs';
 // import templateChange from './productChange.hbs';
-import './product.scss';
+import './styles/product.scss';
 import { Header } from '../../components/header/header.js';
-import { Post } from '../../shared/api/post.js';
+import { Product } from '../../shared/api/product.js';
 import { loaderRegular } from '../../components/loader/loader.js';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
-import Menu from "./menu";
-import Content from "./content";
-import { UserApi } from '../../shared/api/user.js';
+import Menu from "./menu.js";
+import Content from "./content.js";
+import { User } from '../../shared/api/user.js';
 import button from '../../components/button/button.js';
 import { store } from '../../shared/store/store.js';
 import { Files } from '../../shared/api/file.js';
 import { extname } from '../../shared/utils/extname.js';
 
-const allowedFormats = [ 'jpg, png, jpeg' ];
-
-class Product {
+class ProductPage {
     async getSaler(salerID) {
-        return await UserApi.getProfile(salerID);
+        return await User.getSaler(salerID);
     }    
 
     async getProduct(id, container) {
         container.appendChild(loaderRegular());
 
         try {
-            const respPost = await Post.get(id);
+            const respPost = await Product.get(id);
             const bodyPost = respPost.body;
 
             if (respPost.status != 200) {
@@ -35,6 +33,15 @@ class Product {
             
             const respSaler = await this.getSaler(bodyPost.saler_id);
             const bodySaler = respSaler.body;
+
+            if (bodySaler.avatar && typeof bodySaler.avatar !== 'string'){
+                if (bodySaler.avatar.Valid) {
+                    bodySaler.avatar = bodySaler.avatar.String;
+                }
+                else {
+                    delete bodySaler.avatar;
+                }
+            }
 
             container.innerHTML = '';
             const menuContext = {
@@ -57,52 +64,52 @@ class Product {
         }
     }
 
-    renderAdd() {
-        const context = {
-            isAuth: store.user.isAuth(),
-            categories: store.categories.list,
-        }
-
-        const root = stringToElement(templateAdd(context));
-        const content = root.querySelector('.product>.content-add');
-        const images = content?.querySelector('#input-images');
-
-        images?.addEventListener('change', async (e) => {
-            e.stopPropagation();
-
-            const errorBox = content.querySelector('#errorBox');
-
-            errorBox.innerHTML = '';
-            const files = Array.from(images.files);
-
-            files.forEach((file) => {
-                const format = extname(file.name);
-                if (!(format in allowedFormats)) {
-                    errorBox.appendChild(ErrorMessageBox(`Формат ${format} недопустим`));
-                }
-            });
-
-            const res = await Files.images(files);
-
+    async uploadImages() {
+        if (this.imagesForUpload) {
+            const res = await Files.images(this.imagesForUpload);
+    
             if (res.status !== 200) {
-                errorBox.innerHTML = '';
-                errorBox.append(ErrorMessageBox(res.body.error));
+                this.errorBox.innerHTML = '';
+                this.errorBox.append(ErrorMessageBox(res.body.error));
+                return;
             }
-
             this.uploadedImages = res.body.urls;
+        }
+    }
+
+    imagesChange = (e) => {
+        e.stopPropagation();
+
+        const allowedFormats = this.images.accept
+            .replaceAll('.', '')
+            .replaceAll(' ', '')
+            .split(',');
+
+        this.errorBox.innerHTML = '';
+        const files = Array.from(this.images.files);
+
+        files.forEach((file) => {
+            const format = extname(file.name);
+            if (!(
+                allowedFormats.find((value) => value === format)
+            )) {
+                this.errorBox.appendChild(ErrorMessageBox(`Формат ${format} недопустим`));
+                return;
+            }
         });
 
-        content?.addEventListener('submit', async (e) =>  {
-            e.preventDefault();
+        this.imagesForUpload = files; 
+    }
 
-            const errorBox = content.querySelector('#errorBox');
+    formSubmit = async (e) => {
+        e.preventDefault();
 
-            const { elements } = content;
-            const data = Array.from(elements)
+        const { elements } = this.content;
+        const data = Array.from(elements)
             .filter((item) => !!item.name && !!item.value)
             .map((element) => {
                 const { name, value, checked, type, files } = element;
-                if (type === 'checkbox'){
+                if (type === 'checkbox') {
                     return { [ name ]: Boolean(checked) };
                 }
 
@@ -117,39 +124,54 @@ class Product {
                 return { [ name ]: value };
             })
 
-            let body = {};
-            data.forEach((elem) => body = { ...body, ...elem });
+        let body = {};
+        data.forEach((elem) => body = { ...body, ...elem });
+        
+        body.city_id = Number(body.city_id);
+        body.category_id = Number(body.category_id);
+        body.saler_id = store.user.state.fields.id;
 
-            body.category_id = Number(body.category_id);
-            body.saler_id = store.user.state.fields.userID;
+        await this.uploadImages();
 
-            if (this.uploadedImages) {
-                this.uploadedImages.forEach((url) => body.images = [ ...body.images, {
-                    url: url
-                } ])
-            }
-            else {
-                errorBox.innerHTML = '';
-                errorBox.appendChild(ErrorMessageBox('Должно быть хотя бы одно изображение'));
-                return;
-            }
-
-            const res = await Post.create(body);
-            body = res.body;
-
-
-            if (res.status === 303){
-                window.Router.navigateTo('/product', { productId: body.id });
-                return;
-            }
-
-            errorBox.innerHTML = '';
-            errorBox.appendChild(ErrorMessageBox(body.error));
+        body.images = [];
+        if (this.uploadedImages) {
+            this.uploadedImages.forEach((url) => body.images = [ ...body.images, {
+                url: url
+            } ])
+        }
+        else {
+            this.errorBox.innerHTML = '';
+            this.errorBox.appendChild(ErrorMessageBox('Должно быть хотя бы одно изображение'));
             return;
+        }
 
-        });
+        const res = await Product.create(body);
+        body = res.body;
 
-        content?.querySelector('.btn-group>#btn-submit').replaceWith(button({
+        if (res.status === 303) {
+            window.Router.navigateTo('/product', { productId: body.id });
+            return;
+        }
+
+        this.errorBox.innerHTML = '';
+        this.errorBox.appendChild(ErrorMessageBox(body.error));
+    }
+
+    renderAdd() {
+        const context = {
+            isAuth: store.user.isAuth(),
+            categories: store.categories.list,
+            cities: store.cities.list,
+        }
+
+        this.root = stringToElement(templateAdd(context));
+        this.content = this.root.querySelector('.product>.content-add');
+        this.images = this.content?.querySelector('#input-images');
+        this.errorBox = this.content?.querySelector('#errorBox');
+
+        this.images?.addEventListener('change', this.imagesChange);
+        this.content?.addEventListener('submit', this.formSubmit);
+        this.content?.querySelector('.btn-group>#btn-submit').replaceWith(button({
             id: 'btn-submit',
             variant: 'primary',
             text: {
@@ -158,100 +180,31 @@ class Product {
             },
             type: 'submit'
         }))
-
-        return root;
     }
-
-    // renderChange(params) {
-    //     const root = stringToElement(templateChange());
-    //     const content = root.querySelector('.product');
-    //     content.append(new Content())
-
-    //     // content?.addEventListener('submit', async function(e)  {
-    //     //     e.preventDefault();
-
-    //     //     const { elements } = this;
-    //     //     const data = Array.from(elements)
-    //     //     .filter((item) => !!item.name && !!item.value)
-    //     //     .map((element) => {
-    //     //         const { name, value, checked, type } = element;
-
-    //     //         if (type === 'checkbox'){
-    //     //             return { [ name ]: Boolean(checked) };
-    //     //         }
-
-    //     //         if (type === 'number') {
-    //     //             return { [ name ]: Number(value) };
-    //     //         }
-
-    //     //         return { [ name ]: value };
-    //     //     })
-
-    //     //     let body = {};
-    //     //     data.forEach((elem) => body = { ...body, ...elem });
-
-    //     //     body.saler_id = store.user.state.fields.userID;
-
-    //     //     const res = await Post.create(body);
-    //     //     body = res.body;
-
-    //     //     const errorBox = content.querySelector('#errorBox');
-
-    //     //     if (res.status === 303){
-    //     //         window.Router.navigateTo('/product', { productId: body.id });
-    //     //         return;
-    //     //     }
-
-    //     //     errorBox.innerHTML = '';
-    //     //     errorBox.appendChild(ErrorMessageBox(body.error));
-    //     //     return;
-
-    //     // });
-
-    //     // content?.querySelector('.btn-group>#btn-submit').replaceWith(button({
-    //     //     id: 'btn-submit',
-    //     //     variant: 'primary',
-    //     //     text: {
-    //     //         class: 'text-regular',
-    //     //         content: 'Создать'
-    //     //     },
-    //     //     type: 'submit'
-    //     // }))
-
-    //     return root;
-    // }
 
     renderView(params) {
-        const root = stringToElement(templateView());
-        const container = root.querySelector('.product');
+        this.root = stringToElement(templateView());
+        const container = this.root.querySelector('.product');
 
         this.getProduct(params.productId, container);
-
-        return root;
     }
-
 
     render() {
         const params = history.state;
-
         const header = new Header().render();
-        let root;
 
         switch (history.state.mode) {
             case 'add':
-                root = this.renderAdd();
+                this.renderAdd();
                 break;
 
-            // case 'change':
-            //     root = this.renderChange(params);
-
             default:
-                root = this.renderView(params);
+                this.renderView(params);
                 break;
         }
 
-        return [ header, root ];
+        return [ header, this.root ];
     }
 }
 
-export default Product;
+export default ProductPage;

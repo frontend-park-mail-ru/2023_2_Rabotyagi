@@ -23,22 +23,22 @@ export class SignupPage {
      * @param {string} repeatPass - repeated password
      * @return {null|string} return null if validation ok and return string if not
      */
-    #check({ email, name, phone, password, passwordRepeat }) {
+    #check({ email, password, passwordRepeat }) {
 
         const errEmail = Validate.email(email);
         if (errEmail) {
             return errEmail;
         }
 
-        const errName = Validate.name(name);
-        if (errName) {
-            return errName;
-        }
+        // const errName = Validate.name(name);
+        // if (errName) {
+        //     return errName;
+        // }
 
-        const errPhone = Validate.phone(phone);
-        if (errPhone) {
-            return errPhone;
-        }
+        // const errPhone = Validate.phone(phone);
+        // if (errPhone) {
+        //     return errPhone;
+        // }
 
         const errPassword = Validate.password(password);
         if (errPassword) {
@@ -56,9 +56,9 @@ export class SignupPage {
         return null;
     }
 
-    async signup({ email, name, phone, password }, errorBox) {
+    async signup({ email, password }, errorBox) {
         try {
-            const resp = await Auth.signup(email, name, phone, password);
+            const resp = await Auth.signup(email, password);
             const body = resp.body;
 
             if (resp.status != 200) {
@@ -67,9 +67,8 @@ export class SignupPage {
                 return false;
             }
             const cookies = cookieParser(document.cookie);
-            store.user.login(cookies);
+            await store.user.login(cookies);
             store.cart.clear();
-            window.Router.navigateTo('/');
             return true;
         } catch (err) {
             errorBox.innerHTML = '';
@@ -107,6 +106,7 @@ export class SignupPage {
                 const res = await this.signup(body, errorBox);
                 if (res) {
                     document.body.removeEventListener('keydown', handler);
+                    window.Router.navigateTo('/');
                 }
             }
         }
@@ -123,7 +123,7 @@ export class SignupPage {
 
         const root = stringToElement(template());
 
-        const container = root.querySelector('.content');
+        const container = root.querySelector('.signup__content');
 
         container.querySelector('#btnSubmit').replaceWith(button({
             variant: 'primary',
@@ -138,8 +138,6 @@ export class SignupPage {
         container.addEventListener('submit', this.signupEvent(container));
         document.body.addEventListener('keydown', this.signupEvent(container));
 
-
-
         container.querySelector('#logo-btn').replaceWith(button({
             leftIcon: svg({ content: logo }),
             link: '/',
@@ -147,43 +145,66 @@ export class SignupPage {
             subVariant: 'outlined',
             style: 'height: auto; padding: 0;'
         }));
-
         container.querySelectorAll('button[data-link]').forEach(item => 
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
                 window.Router.navigateTo(item.dataset.link);
             }, { capture: false })
         );
+
+        // document.createElement('button').addEventListener('')
         
-        document.addEventListener('DOMContentLoaded', () => {
-            for (const el of document.querySelectorAll("[placeholder][data-slots]")) {
-                const pattern = el.getAttribute("placeholder"),
-                    slots = new Set(el.dataset.slots || "_"),
-                    prev = (j => Array.from(pattern, (c,i) => slots.has(c)? j=i+1: j))(0),
-                    first = [ ...pattern ].findIndex(c => slots.has(c)),
-                    accept = new RegExp(el.dataset.accept || "\\d", "g"),
-                    clean = input => {
-                        input = input.match(accept) || [];
-                        return Array.from(pattern, c =>
-                            input[ 0 ] === c || slots.has(c) ? input.shift() || c : c
-                        );
-                    },
-                    format = () => {
-                        const [ i, j ] = [ el.selectionStart, el.selectionEnd ].map(i => {
-                            i = clean(el.value.slice(0, i)).findIndex(c => slots.has(c));
-                            return i<0? prev[ prev.length-1 ]: back? prev[ i-1 ] || first: i;
-                        });
-                        el.value = clean(el.value).join``;
-                        el.setSelectionRange(i, j);
-                        back = false;
-                    };
-                let back = false;
-                el.addEventListener("keydown", (e) => back = e.key === "Backspace");
-                el.addEventListener("input", format);
-                el.addEventListener("focus", format);
-                el.addEventListener("blur", () => el.value === pattern && (el.value=""));
-            }
-        });
+        container.querySelectorAll('button[name="show"]').forEach((elem) =>
+            elem.addEventListener('mousedown', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                this.previousElementSibling.type = 'text';
+            })
+        );
+
+        container.querySelectorAll('button[name="show"]').forEach((elem) => 
+            elem.addEventListener('mouseup', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                this.previousElementSibling.type = 'password';
+            })
+        );
+        
+        container.querySelectorAll('button[name="show"]').forEach((elem) => 
+            elem.addEventListener('mouseout', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                this.previousElementSibling.type = 'password';
+            })
+        );
+        
+        // for (const el of container.querySelectorAll(".signup>.content>input[placeholder][data-slots]")) {
+        //     const pattern = el.getAttribute("placeholder"),
+        //         slots = new Set(el.dataset.slots || "_"),
+        //         prev = (j => Array.from(pattern, (c,i) => slots.has(c)? j=i+1: j))(0),
+        //         first = [ ...pattern ].findIndex(c => slots.has(c)),
+        //         accept = new RegExp(el.dataset.accept || "\\d", "g"),
+        //         clean = input => {
+        //             input = input.match(accept) || [];
+        //             return Array.from(pattern, c =>
+        //                 input[ 0 ] === c || slots.has(c) ? input.shift() || c : c
+        //             );
+        //         },
+        //         format = () => {
+        //             const [ i, j ] = [ el.selectionStart, el.selectionEnd ].map(i => {
+        //                 i = clean(el.value.slice(0, i)).findIndex(c => slots.has(c));
+        //                 return i<0? prev[ prev.length-1 ]: back? prev[ i-1 ] || first: i;
+        //             });
+        //             el.value = clean(el.value).join``;
+        //             el.setSelectionRange(i, j);
+        //             back = false;
+        //         };
+        //     let back = false;
+        //     el.addEventListener("keydown", (e) => back = e.key === "Backspace");
+        //     el.addEventListener("input", format);
+        //     el.addEventListener("focus", format);
+        //     el.addEventListener("blur", () => el.value === pattern && (el.value=""));
+        // }
 
         return [ root ];
     }

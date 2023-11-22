@@ -1,0 +1,46 @@
+<form class="content">
+    <div class="body">
+        {{!-- <img class="image" src="{{this.image.url}}" alt="" srcset=""> --}}
+        <div id="carousel"></div>
+        <div class="info">
+            <span class="text-regular">Изображения</span>
+            <input name="images" type="file" id="input-images" multiple accept=".png, .jpg, .jpeg">
+            <span class="text-regular">Название</span>
+            <input name="title" class="text-regular searchField" type="text" value="{{this.title}}">
+            <span class="text-regular">Город</span>
+            <select name="city_id">
+                {{#each cities}}
+                <option value="{{this.id}}" {{selected this.id}}>
+                    <span class="text-regular">{{this.name}}</span>
+                </option>
+                {{/each}}
+            </select>
+            {{!-- <input name="city" class="text-regular searchField" type="text" value="{{this.city}}"> --}}
+            <span class="text-regular">Описание</span>
+            <textarea name="description" class="text-regular" style="height: 300px"
+                type="text">{{this.description}}</textarea>
+            <span class="text-regular">Категория</span>
+            <select name="category_id">
+                {{#each categories}}
+                    <option value="{{this.id}}" {{selected this.id}}>
+                        <span class="text-regular">{{this.name}}</span>
+                    </option>
+                {{/each}}
+            </select>
+            <span class="text-regular">Цена</span>
+            <input name="price" class="text-regular searchField" type="number" value="{{this.price}}">
+            <span class="text-regular">Доступное кол-во товара</span>
+            <input name="available_count" class="text-regular searchField" type="number"
+                value="{{this.available_count}}">
+            <span class="text-regular">Безопасная сделка</span>
+            <input name="safe_deal" class="text-regular searchField" type="checkbox" {{#if
+                this.safe_deal}}checked{{/if}}>
+            <span class="text-regular">Доставка</span>
+            <input name="delivery" class="text-regular searchField" type="checkbox" {{#if this.delivery}}checked{{/if}}>
+        </div>
+    </div>
+    <div id="errorBox"></div>
+    <div class="btn-group">
+        <div id="btn-submit"></div>
+    </div>
+</form>

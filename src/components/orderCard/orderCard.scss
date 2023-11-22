@@ -4,7 +4,7 @@
     display: flex;
     justify-content: start;
     height: 218px;
-    width: 100%;
+    width: 70%;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
@@ -12,16 +12,19 @@
     .left-content {
         flex: 0 0 200px;
         height: 218px;
-        img {
+        >.img {
             width: -webkit-fill-available;
             height: 218px;
             object-fit: cover;
+            background-color: vars.$background-tertiary;
+            flex-shrink: 0;
         }
     }
 
     .center-content {
         padding: 16px;
         flex-grow: 1;
+        background-color: vars.$background-primary;
 
         .product-title {
             display: -webkit-box;
@@ -29,6 +32,10 @@
             -webkit-line-clamp: 1;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        .product-price {
+            color: vars.$text-secondary;
         }
     }
 

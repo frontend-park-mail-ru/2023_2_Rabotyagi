@@ -1,6 +1,19 @@
-<button {{#if id}} id="{{this.id}}" {{/if}} {{#if variant}}
-    class="{{this.variant}}{{#if subVariant}} {{subVariant}}{{/if}}" {{/if}} {{#if style}} style="{{this.style}}"
-    {{/if}} {{#if type}} type="{{this.type}}" {{/if}}>
+<button 
+{{#if id}}
+id="{{this.id}}" 
+{{/if}} 
+{{#if variant}}
+class="{{this.variant}}{{#if subVariant}} {{subVariant}}{{/if}}" 
+{{/if}} 
+{{#if style}} 
+style="{{this.style}}"
+{{/if}}
+{{#if type}} 
+type="{{this.type}}" 
+{{/if}}
+{{#if this.name}}
+name="{{this.name}}"
+{{/if}}>
     <div id="leftIcon"></div>
     <span style="text-align: center; text-wrap: nowrap;" {{#if text.class}}class="{{this.text.class}}"
         {{/if}}>{{this.text.content}}</span>

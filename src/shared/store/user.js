@@ -1,9 +1,10 @@
-import { cookieParser } from '../utils/cookie.js';
+import { User } from '../api/user.js';
+import { cookieParser, deleteCookie } from '../utils/cookie.js';
 import jwtDecode from '../utils/jwt-decode.js';
 
 const user = {
     clear: function() {
-        this.state.fields = {};
+        this.state.fields = null;
         this.state.accessToken = null;
     },
     /**
@@ -14,14 +15,17 @@ const user = {
      * @function
      * @returns None
      */
-    init: function() {
-        const cookie = cookieParser(document.cookie);
-        if (cookie) {
-            this.login(cookie);
+    init: async function() {
+        const access_token = cookieParser(document.cookie)?.access_token;
+        if (!access_token){
+            return;
         }
+        
+        await this.fill(access_token);
     },
+
     isAuth: function() {
-        return Boolean(this.state.accessToken)
+        return this.state.fields !== null ? true : false;
     },
     /**
      * @summary Редьюсер для изменения стейта пользователя на авторизированного
@@ -32,19 +36,32 @@ const user = {
      * @function
      * @returns None
      */
-    login: function({ access_token }) {
+    login: async function({ access_token }) {
         this.clear();
+
         if (access_token === undefined) {
             return;
         }
-        
-        this.state.accessToken = access_token;
-        const decoded = jwtDecode(access_token);
-        this.state.fields = { 
-            ...this.state.fields, 
-            ...decoded 
-        }; 
+
+        await this.fill(access_token);
     },
+    
+    fill: async function(access_token) {
+        const id = jwtDecode(access_token).userID;
+
+        if (id) {
+            const res = await User.getProfile(id);
+            switch (res.status){
+                case 200:
+                    this.update(res.body);
+                    break;
+                case 500:
+                    deleteCookie('access_token');
+                    break;
+            }
+        }
+    },
+
     update: function(data) {
         if (data) {
             this.state.fields = {
@@ -54,9 +71,7 @@ const user = {
         }
     },
     state: {
-        fields: {},
-        accessToken: null,
-        // refreshToken:    null,
+        fields: null,
     },
 };
 

@@ -1,14 +1,16 @@
 import { stringToElement } from '../../shared/utils/parsing';
-import template from './menu.hbs';
+import template from './templates/menu.hbs';
 import button from '../../components/button/button';
 import { Order } from '../../shared/api/order.js';
 import { store } from '../../shared/store/store.js';
 import dispatcher from '../../shared/dispatcher/dispatcher.js';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
+import { getResourceUrl } from '../../shared/utils/getResource.js';
 
 class Menu {
     constructor(context) {
         this.context = context;
+        this.context.saler.avatar = getResourceUrl(this.context.saler.avatar);
     }
 
     async addInCart(container) {
@@ -40,9 +42,9 @@ class Menu {
 
     render() {
         const root = stringToElement(template(this.context));
-        const container = root.querySelector('div.creds');
+        // const container = root.querySelector('div.creds');
 
-        if (store.user.isAuth() && (this.context.saler.id !== store.user.state.fields.userID)) {
+        if (!store.user.isAuth() || (store.user.isAuth() && this.context.saler.id !== store.user.state.fields.id)) {
             root.querySelector('#button-ad')?.replaceWith(button({
                 id: 'btn-ad',
                 variant: 'primary',
@@ -58,21 +60,25 @@ class Menu {
                 variant: 'outlined',
                 text: {
                     class: 'text-regular',
-                    content: 'Написать продавцу'
+                    content: 'Посмотреть профиль'
                 },
                 style: 'width: 100%;'
             }));
 
             root.querySelector('#btn-msg')?.addEventListener('click', (e) => {
                 e.stopPropagation();
-                window.Router.navigateTo('/saler', { salerId: this.context.saler.id });
+                window.Router.navigateTo('/saler/products', { salerId: this.context.saler.id, variant: 'saler' });
             });
         }
 
 
         root.querySelector('#btn-ad')?.addEventListener('click', (e) => {
             e.stopPropagation();
-            this.addInCart(root);
+            if (store.user.isAuth()) {
+                this.addInCart(root);
+            } else {
+                window.Router.navigateTo('/signin');
+            }
         });
 
         return root;

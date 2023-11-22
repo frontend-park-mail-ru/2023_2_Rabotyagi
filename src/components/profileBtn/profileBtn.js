@@ -4,6 +4,7 @@ import { stringToElement } from '../../shared/utils/parsing';
 import Dropdown from '../dropdown/dropdown';
 import { store } from '../../shared/store/store';
 import { deleteCookie } from '../../shared/utils/cookie';
+import { getResourceUrl } from '../../shared/utils/getResource';
 
 class ProfileBtn {
     render() {
@@ -17,7 +18,11 @@ class ProfileBtn {
             ],
         };
 
-        const root = stringToElement(template());
+        const avatar = getResourceUrl(store.user.state.fields.avatar);
+        const root = stringToElement(template({
+            avatar: avatar
+        }));
+
         let dropdown = new Dropdown(dropdownContext);
         root.querySelector('#profileBtn-dropdown').replaceWith(dropdown.render());
         dropdown = root.querySelector('#profileBtn-dropdown');

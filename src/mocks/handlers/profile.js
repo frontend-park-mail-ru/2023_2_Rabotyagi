@@ -5,6 +5,15 @@ export const PROFILE = {
     get: (schema, request) => {
         const profileId = request.queryParams.id;
         const res = schema.users.findBy({ id: profileId });
+
+        if (res == null) {
+            return {
+                status: 222,
+                body: {
+                    error: 'Такого пользователя нет'
+                }
+            }
+        }
         const data = structuredClone(res.attrs);
         delete data.birthday, data.password;
 

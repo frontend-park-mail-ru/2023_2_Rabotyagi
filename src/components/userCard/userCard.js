@@ -4,31 +4,40 @@ import './userCard.scss';
 import button from '../button/button.js';
 
 export class UserCard {
+    #id;
     #name;
     #email;
     #image;
 
-    constructor({ name, email, image }) {
+    constructor({ id, name, email, avatar }) {
+        this.#id = id;
         this.#name = name;
         this.#email = email;
-        this.#image = image
+        this.#image = avatar;
     }
 
     render() {
         const template = Template;
 
         const context = {
-            img: this.#image,
             name: this.#name,
             email: this.#email
         };
+
+        if (this.#image) {
+            this.context.image.url = this.#image;
+        }
 
         const goToSaler = button({
             variant: 'secondary',
             text: {
                 class: 'text-regular',
-                content: 'Написать продавцу'
+                content: 'Посмотреть профиль'
             }
+        });
+        goToSaler.addEventListener('click', (e) => {
+            e.stopPropagation();
+            window.Router.navigateTo('/saler/products', { salerId: this.#id, variant: 'saler' });
         });
 
         const root = stringToElement(template(context));

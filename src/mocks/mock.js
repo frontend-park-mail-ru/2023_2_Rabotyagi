@@ -62,11 +62,11 @@ const createMockServer = function () {
         //#region Legacy
         // this.get('/user/products', (schema) => );
 
-        this.get('/user/orders', () => {
+        this.get('profile/orders', () => {
             return new Response(200);
         });
 
-        this.get('/user/favourites', (schema) => {
+        this.get('profile/favourites', (schema) => {
             const user = jwtDecode(cookieParser(document.cookie).access_token);
 
             const favs = schema.favourites.where({ userId: user.id }).models;
@@ -79,7 +79,7 @@ const createMockServer = function () {
             return new Response(200, {}, data);
         })
 
-        this.get('/user/add-to-fav', (schema, request) => {
+        this.post('product/add-to-fav', (schema, request) => {
             const product = schema.products.find(request.queryParams.id);
             const fav = schema.favourites.findBy({ productId: product.id });
 
@@ -108,7 +108,11 @@ const createMockServer = function () {
             phone: '+7 999 999 66 66',
             name: 'root',
             password: 'root',
-            birthday: Date.now()
+            birthday: Date.now(),
+            avatar: {
+                String: '',
+                Valid: false
+            }
         });
 
         for (let index = 0; index < 5; index++) {

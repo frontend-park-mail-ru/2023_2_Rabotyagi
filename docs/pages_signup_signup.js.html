@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/signup/signup.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/signup/signup.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module signupPage
+ * @file signupPage.js
+ */
+
+import { store } from '../../shared/store/store.js';
+import { cookieParser } from '../../shared/utils/cookie.js';
+import Validate from '../../shared/utils/validation.js';
+import { Auth } from '../../shared/api/auth.js';
+import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
+import { stringToElement } from '../../shared/utils/parsing.js';
+import template from './signup.hbs'
+import './signup.scss' // eslint-disable-line no-unused-vars
+import button from '../../components/button/button.js';
+import svg from '../../components/svg/svg.js';
+import logo from '../../assets/icons/logo.svg'
+
+export class SignupPage {
+    /**
+     * #check() validate email, password and repeated password
+     * @param {string} email - email
+     * @param {string} pass - password
+     * @param {string} repeatPass - repeated password
+     * @return {null|string} return null if validation ok and return string if not
+     */
+    #check({ email, name, phone, password, passwordRepeat }) {
+
+        const errEmail = Validate.email(email);
+        if (errEmail) {
+            return errEmail;
+        }
+
+        const errName = Validate.name(name);
+        if (errName) {
+            return errName;
+        }
+
+        const errPhone = Validate.phone(phone);
+        if (errPhone) {
+            return errPhone;
+        }
+
+        const errPassword = Validate.password(password);
+        if (errPassword) {
+            return errPassword;
+        }
+
+
+        password = password.trim();
+        passwordRepeat = passwordRepeat.trim();
+
+        if (password !== passwordRepeat) {
+            return 'Пароли не совпадают';
+        }
+
+        return null;
+    }
+
+    async signup({ email, name, phone, password }, errorBox) {
+        try {
+            const resp = await Auth.signup(email, name, phone, password);
+            const body = resp.body;
+
+            if (resp.status != 200) {
+                errorBox.innerHTML = '';
+                errorBox.appendChild(ErrorMessageBox(body.error));
+                return false;
+            }
+            const cookies = cookieParser(document.cookie);
+            store.user.login(cookies);
+            store.cart.clear();
+            window.Router.navigateTo('/');
+            return true;
+        } catch (err) {
+            errorBox.innerHTML = '';
+            errorBox.appendChild(ErrorMessageBox(err));
+            return false;
+        }
+    }
+
+    signupEvent(container) {
+        var handler = async (e) => {
+            if ((e.type === 'submit') || (e.type === 'keydown' &amp;&amp; e.code === 'Enter')) {
+                e.preventDefault();
+
+                const { elements } = container;
+                const data = Array.from(elements)
+                .filter((item) => !!item.name &amp;&amp; !!item.value)
+                .map((element) => {
+                    const { name, value } = element
+                    return { [ name ]: value }
+                })
+
+                let body = {};
+                data?.forEach((elem) => body = { ...body, ...elem });
+
+                const error = this.#check(body);
+
+                const errorBox = container.querySelector('#errorBox');
+    
+                if (error) {
+                    errorBox.innerHTML = '';
+                    errorBox.appendChild(ErrorMessageBox(error));
+                    return;
+                }
+    
+                const res = await this.signup(body, errorBox);
+                if (res) {
+                    document.body.removeEventListener('keydown', handler);
+                }
+            }
+        }
+
+        return handler;
+    }
+
+    /**
+     * @summary Рендер функция
+     * @returns {HTMLElement}
+     */
+    render() {
+        document.title = 'Регистрация';
+
+        const root = stringToElement(template());
+
+        const container = root.querySelector('.content');
+
+        container.querySelector('#btnSubmit').replaceWith(button({
+            variant: 'primary',
+            style: 'width: 100%',
+            text: {
+                content: 'Продолжить',
+                class: 'text-regular'
+            },
+            type: 'submit'
+        }));
+
+        container.addEventListener('submit', this.signupEvent(container));
+        document.body.addEventListener('keydown', this.signupEvent(container));
+
+
+
+        container.querySelector('#logo-btn').replaceWith(button({
+            leftIcon: svg({ content: logo }),
+            link: '/',
+            variant: 'neutral',
+            subVariant: 'outlined',
+            style: 'height: auto; padding: 0;'
+        }));
+        container.querySelectorAll('button[data-link]').forEach(item => 
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                window.Router.navigateTo(item.dataset.link);
+            }, { capture: false })
+        );
+
+        // document.createElement('button').addEventListener('')
+        
+        container.querySelectorAll('button[name="show"]').forEach((elem) =>
+            elem.addEventListener('mousedown', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                this.previousElementSibling.type = 'text';
+            })
+        );
+
+        container.querySelectorAll('button[name="show"]').forEach((elem) => 
+            elem.addEventListener('mouseup', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                this.previousElementSibling.type = 'password';
+            })
+        );
+        
+        container.querySelectorAll('button[name="show"]').forEach((elem) => 
+            elem.addEventListener('mouseout', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                this.previousElementSibling.type = 'password';
+            })
+        );
+        
+        for (const el of container.querySelectorAll(".signup>.content>input[placeholder][data-slots]")) {
+            const pattern = el.getAttribute("placeholder"),
+                slots = new Set(el.dataset.slots || "_"),
+                prev = (j => Array.from(pattern, (c,i) => slots.has(c)? j=i+1: j))(0),
+                first = [ ...pattern ].findIndex(c => slots.has(c)),
+                accept = new RegExp(el.dataset.accept || "\\d", "g"),
+                clean = input => {
+                    input = input.match(accept) || [];
+                    return Array.from(pattern, c =>
+                        input[ 0 ] === c || slots.has(c) ? input.shift() || c : c
+                    );
+                },
+                format = () => {
+                    const [ i, j ] = [ el.selectionStart, el.selectionEnd ].map(i => {
+                        i = clean(el.value.slice(0, i)).findIndex(c => slots.has(c));
+                        return i&lt;0? prev[ prev.length-1 ]: back? prev[ i-1 ] || first: i;
+                    });
+                    el.value = clean(el.value).join``;
+                    el.setSelectionRange(i, j);
+                    back = false;
+                };
+            let back = false;
+            el.addEventListener("keydown", (e) => back = e.key === "Backspace");
+            el.addEventListener("input", format);
+            el.addEventListener("focus", format);
+            el.addEventListener("blur", () => el.value === pattern &amp;&amp; (el.value=""));
+        }
+
+        return [ root ];
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Api.module_Auth.html">Api.Auth</a></li><li><a href="module-Ajax.html">Ajax</a></li><li><a href="module-Components.html">Components</a></li><li><a href="module-Feed.html">Feed</a></li><li><a href="module-Header.html">Header</a></li><li><a href="module-Main.html">Main</a></li><li><a href="module-OrderFeed.html">OrderFeed</a></li><li><a href="module-Router.html">Router</a></li><li><a href="module-Store.html">Store</a></li><li><a href="module-validation.html">validation</a></li></ul><h3>Classes</h3><ul><li><a href="mainPage.html">mainPage</a></li><li><a href="module-Ajax-Ajax.html">Ajax</a></li><li><a href="module-Components.Card.html">Card</a></li><li><a href="module-Feed.Feed.html">Feed</a></li><li><a href="module-Header.Header.html">Header</a></li><li><a href="module-OrderFeed.OrderFeed.html">OrderFeed</a></li><li><a href="module-Router.Router.html">Router</a></li><li><a href="signinPage_.html">signinPage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ErrorMessageBox">ErrorMessageBox</a></li><li><a href="global.html#stringToElement">stringToElement</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Nov 13 2023 23:44:56 GMT+0300 (Москва, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

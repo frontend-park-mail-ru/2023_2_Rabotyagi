@@ -1,48 +1,42 @@
 import { stringToElement } from '../../shared/utils/parsing.js';
-import template from './profile.hbs';
-import './profile.scss';
+import template from './templates/profile.hbs';
+import './styles/profile.scss';
 import { Header } from '../../components/header/header.js';
-// import Breadcrumb from '../../components/breadcrumb/breadcrumb.js';
 import { store } from '../../shared/store/store.js';
-// import uid from '../../shared/utils/uid.js';
 import { Router, Route } from '../../shared/services/router.js';
-import Orders from './orders/orders.js';
-import Products from './products/products.js';
-// import Favourite from './favourite/favourite.js';
+import Orders from './orders.js';
+import Products from './products.js';
 import button from '../../components/button/button.js';
 import svg from '../../components/svg/svg.js';
 import listIcon from '../../assets/icons/list-ad.svg';
 import cartIcon from '../../assets/icons/cart.svg';
-// import heartIcon from '../../assets/icons/heart.svg';
 import settingsIcon from '../../assets/icons/settings.svg'
-import Settings from './settings/settings.js';
-import { UserApi } from '../../shared/api/user.js';
+import Settings from './settings.js';
+import { User } from '../../shared/api/user.js';
+import { getResourceUrl } from '../../shared/utils/getResource.js';
 
 class Profile {
-    activePage;
+    activePage = null;
 
-    constructor(variant='default') {
-        this.activePage = null;
-        this.variant = variant;
-        const params = history.state;
-        if (params) {
-            if (params[ 'salerId' ] != undefined) {
-                this.variant = 'saler';
-            }
-        };
-    }
+    constructor() {}
 
     async getProfile(id) {
-        return await UserApi.getProfile(id);
+        return await User.getProfile(id);
     }
 
-    async renderOwnProfile(root) {
-        const res = await this.getProfile(store.user.state.fields.userID);
+    async renderOwnProfile(replaced) {
+        // debugger
+        const res = await this.getProfile(store.user.state.fields.id);
         store.user.update(res.body);
 
-        const container = stringToElement(template(res.body));
-        root.replaceWith(container);
-        const content = container.querySelector('.content');
+        const context = structuredClone(store.user.state.fields);
+        context.avatar = getResourceUrl(context.avatar);
+        const root = stringToElement(template(context));
+        replaced.replaceWith(root);
+
+        context.avatar = getResourceUrl(context.avatar);
+
+        const content = root.querySelector('.content');
 
         this.router = new Router([
             new Route(new RegExp('^/profile/products$'), new Products(this)),
@@ -51,7 +45,7 @@ class Profile {
             new Route(new RegExp('^/profile/settings$'), new Settings()),
         ], content);
 
-        container.querySelector('#btn-products')?.replaceWith(button({
+        root.querySelector('#btn-products')?.replaceWith(button({
             variant: 'neutral',
             subVariant: 'tertiary',
             text: {
@@ -62,7 +56,7 @@ class Profile {
             leftIcon: svg({ content: listIcon , width: 20, height: 20 })
         }));
 
-        container.querySelector('#btn-orders')?.replaceWith(button({
+        root.querySelector('#btn-orders')?.replaceWith(button({
             variant: 'neutral',
             subVariant: 'tertiary',
             text: {
@@ -73,7 +67,7 @@ class Profile {
             leftIcon: svg({ content: cartIcon, width: 20, height: 20 })
         }));
 
-        // container.querySelector('#btn-favorite')?.replaceWith(button({
+        // this.root.querySelector('#btn-favorite')?.replaceWith(button({
         //     variant: 'neutral',
         //     subVariant: 'tertiary',
         //     text: {
@@ -84,7 +78,7 @@ class Profile {
         //     leftIcon: svg({ content: heartIcon, width: 20, height: 20 })
         // }));
 
-        container.querySelector('#btn-settings')?.replaceWith(button({
+        root.querySelector('#btn-settings')?.replaceWith(button({
             variant: 'neutral',
             subVariant: 'tertiary',
             text: {
@@ -95,7 +89,7 @@ class Profile {
             leftIcon: svg({ content: settingsIcon, width: 20, height: 20 })
         }));
 
-        container.querySelectorAll('button[data-link]').forEach(item => 
+        root.querySelectorAll('button[data-link]').forEach(item => 
             
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -106,12 +100,12 @@ class Profile {
         );
     }
 
-    async renderSaler(root, params) {
-        const res = await this.getProfile(params.salerId);
+    async renderSaler(replaced) {
+        const res = await this.getProfile(history.state.salerId);
+        const root = stringToElement(template(res.body));
+        replaced.replaceWith(root);
 
-        const container = stringToElement(template(res.body));
-        root.replaceWith(container);
-        const content = container.querySelector('.content');
+        const content = root.querySelector('.content');
 
         this.router = new Router([
             new Route(new RegExp('^/saler/products$'), new Products(this)),
@@ -131,31 +125,23 @@ class Profile {
         btnProducts.addEventListener('click', (e) => {
             e.stopPropagation();
             if (btnProducts.dataset.link !== location.pathname) {
-                this.router.navigateTo(btnProducts.dataset.link, { salerId: params.salerId });
+                this.router.navigateTo(btnProducts.dataset.link, { salerId: history.state.salerId });
             }
         }, { capture: false });
 
-        container.querySelector('#btn-products')?.replaceWith(btnProducts);
+        root.querySelector('#btn-products')?.replaceWith(btnProducts);
     }
 
     render() {
         const header = new Header().render();
-        const root = document.createElement('div');
         const params = history.state;
-        
-        if (params) {
-            if (params[ 'salerId' ] != undefined) {
-                this.variant = 'saler';
-            }
-        };
+        const root = document.createElement('div');
 
-        switch(this.variant) {
-            case 'saler':
-                this.renderSaler(root, params);
-                break;
-            default:
-                this.renderOwnProfile(root);
-                break;
+        if (params && params.salerId) {
+            this.renderSaler(root);
+        }
+        else {
+            this.renderOwnProfile(root);
         }
 
         return [ header, root ];

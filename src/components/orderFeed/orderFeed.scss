@@ -11,6 +11,13 @@
 
 .order-feed-header {
     width: 100%;
+
+    .order-feed-price {
+        display: flex;
+        align-content: center;
+        align-items: center;
+        margin-bottom: 2vh;
+    }
 }
 
 .order-full-price {

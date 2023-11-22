@@ -11,7 +11,7 @@ import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
 import { Auth } from '../../shared/api/auth.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './signin.hbs';
-import css from './signin.scss' // eslint-disable-line no-unused-vars
+import './signin.scss' // eslint-disable-line no-unused-vars
 import button from '../../components/button/button.js';
 import svg from '../../components/svg/svg.js';
 import logo from '../../assets/icons/logo.svg'
@@ -51,7 +51,7 @@ export class SigninPage {
                 throw new Error(body.error);
             }
             const cookies = cookieParser(document.cookie);
-            store.user.login(cookies);
+            await store.user.login(cookies);
             store.cart.clear();
 
             const respCart = await Order.getCart();
@@ -61,7 +61,6 @@ export class SigninPage {
                 throw bodyCart.error;
             }
             // dispatcher.dispatch({ type: 'FULL_CART', payload: bodyCart });
-            window.Router.navigateTo('/');
             return true;
         } catch (err) {
             errorBox.innerHTML = '';
@@ -94,6 +93,7 @@ export class SigninPage {
 
                 if (res){
                     document.body.removeEventListener('keydown', handler);
+                    window.Router.navigateTo('/');
                 }
             }
         }

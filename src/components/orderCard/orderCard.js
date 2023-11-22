@@ -5,6 +5,7 @@ import { Order } from '../../shared/api/order.js';
 import button from '../button/button.js';
 import { Counter } from '../counter/counter.js';
 import dispatcher from '../../shared/dispatcher/dispatcher.js';
+import { getResourceUrl } from '../../shared/utils/getResource.js';
 
 // import { store } from '../../shared/store/store.js';
 
@@ -18,8 +19,10 @@ export class OrderCard {
             product: this.#order,
         };
 
+        this.#order.images = getResourceUrl(this.#order.images);
+
         if (this.#order.images) {
-            this.context.image = this.#order.images[ 0 ].url;
+            this.context.image = this.#order.images[ 0 ];
         }
         this.root = stringToElement(template(this.context));
 
@@ -60,7 +63,7 @@ export class OrderCard {
                 count: count
             } });
         } catch(err) {
-            // console.log(err);
+            console.log(err);
         }
     }
 
@@ -75,10 +78,6 @@ export class OrderCard {
         } catch(err) {
             // console.log(err);
         }
-    }
-
-    async patchOrder() {
-
     }
  
     render() {

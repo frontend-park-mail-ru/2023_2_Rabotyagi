@@ -1,6 +1,7 @@
 # 2023_2_Rabotyagi
-Frontend репозиторий команды Работяги
-
+Frontend репозиторий команды Работяги  
+### Приложение
+https://goods-galaxy.ru/
 ### Наши контакты:
 
 Владислав Ильинский: https://github.com/Vilinvil и тг https://t.me/Vilin0
@@ -16,9 +17,6 @@ https://github.com/go-park-mail-ru/2023_2_Rabotyagi
 
 ### Фигма
 https://www.figma.com/file/YLSZ9uY9gVn6bMDJchrEzD?node-id=23:2127&mode=design#567544444
-
-### Приложение
-http://84.23.53.28/
 
 ### Запуск локально
 

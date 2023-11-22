@@ -1,23 +1,67 @@
 import { stringToElement } from '../../shared/utils/parsing';
-import template from './content.hbs';
-import templateChange from './contentChange.hbs';
+import template from './templates/content.hbs';
+import templateChange from './templates/contentChange.hbs';
 import button from '../../components/button/button';
 // import svg from '../../components/svg/svg';
 // import favIcon from '../../assets/icons/fav.svg';
-import { UserApi } from '../../shared/api/user';
+import { User } from '../../shared/api/user';
 import { store } from '../../shared/store/store';
-import { Post } from '../../shared/api/post';
-import ajax from '../../shared/services/ajax';
+import { Product } from '../../shared/api/product';
 import Handlebars from 'handlebars/runtime';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox';
-
-const { MOCK } = process.env;
+import { Carousel } from '../../components/carousel/carousel';
+import { getResourceUrl } from '../../shared/utils/getResource';
+import { extname } from '../../shared/utils/extname';
+import { Files } from '../../shared/api/file';
 
 class Content {
+
     constructor(context) {
         this.context = context;
+        this.context.city = store.cities.getById(this.context.city_id);
+        this.context.cities = store.cities.list;
         this.context.category = store.categories.getById(this.context.category_id);
         this.context.categories = store.categories.list;
+        this.context.created_at = this.context.created_at.split('T')[0] + " " + this.context.created_at.split('T')[1].split('Z')[0];
+        this.imagesBackup = structuredClone(this.context.images);
+        this.context.images = getResourceUrl(this.context.images)
+    }
+
+    async uploadImages() {
+        if (this.imagesForUpload) {
+            const res = await Files.images(this.imagesForUpload);
+    
+            if (res.status !== 200) {
+                this.errorBox.innerHTML = '';
+                this.errorBox.append(ErrorMessageBox(res.body.error));
+                return;
+            }
+            this.uploadedImages = res.body.urls;
+        }
+    }
+
+    imagesChange = (e) => {
+        e.stopPropagation();
+
+        const allowedFormats = this.images.accept
+            .replaceAll('.', '')
+            .replaceAll(' ', '')
+            .split(',');
+
+        this.errorBox.innerHTML = '';
+        const files = Array.from(this.images.files);
+
+        files.forEach((file) => {
+            const format = extname(file.name);
+            if (!(
+                allowedFormats.find((value) => value === format)
+            )) {
+                this.errorBox.appendChild(ErrorMessageBox(`Формат ${format} недопустим`));
+                return;
+            }
+        });
+
+        this.imagesForUpload = files; 
     }
 
     renderChange() {
@@ -29,14 +73,10 @@ class Content {
             return '';
         });
 
-        if (this.context.images) {
-            this.context.image = MOCK === 'true' ? 
-                this.context.images[ 0 ].url
-                :
-                ajax.ADRESS_BACKEND + this.context.images[ 0 ].url;
-        }
-
         const root = stringToElement(templateChange(this.context));
+        this.images = root.querySelector('#input-images');
+        this.images?.addEventListener('change', this.imagesChange);
+        this.errorBox = root.querySelector('#errorBox');
 
         root?.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -45,7 +85,7 @@ class Content {
             const data = Array.from(elements)
             .filter((item) => !!item.name && !!item.value)
             .map((element) => {
-                const { name, value, checked, type } = element;
+                const { name, value, checked, type, files } = element;
 
                 if (type === 'checkbox'){
                     return { [ name ]: Boolean(checked) };
@@ -55,27 +95,41 @@ class Content {
                     return { [ name ]: Number(value) };
                 }
 
+                if (type === 'file') {
+                    return { [ name ]: files }
+                }
+
                 return { [ name ]: value };
             })
 
             let body = {};
             data.forEach((elem) => body = { ...body, ...elem });
             
+            body.city_id = Number(body.city_id);
             body.category_id = Number(body.category_id);
-            body.saler_id = store.user.state.fields.userID;
+            body.saler_id = store.user.state.fields.id;
 
-            const res = await Post.put(this.context.id, body);
+            await this.uploadImages();
+
+            if (this.uploadedImages) {
+                body.images = [];
+                this.uploadedImages.forEach((url) => body.images = [ ...body.images, {
+                    url: url
+                } ])
+            } else {
+                body.images = this.imagesBackup;
+            }
+
+            const res = await Product.put(this.context.id, body);
             body = res.body;
-
-            const errorBox = root.querySelector('#errorBox');
 
             if (res.status === 303){
                 window.Router.navigateTo('/product', { productId: this.context.id })
                 return;
             }
 
-            errorBox.innerHTML = '';
-            errorBox.appendChild(ErrorMessageBox(body.error));
+            this.errorBox.innerHTML = '';
+            this.errorBox.appendChild(ErrorMessageBox(body.error));
 
             return;
 
@@ -96,13 +150,6 @@ class Content {
     }
 
     renderView() {
-        if (this.context.images) {
-            this.context.image = MOCK === 'true' ? 
-                this.context.images[ 0 ].url
-                :
-                ajax.ADRESS_BACKEND + this.context.images[ 0 ].url;
-        }
-
         const root = stringToElement(template(this.context));
 
         return root;
@@ -111,14 +158,14 @@ class Content {
     render() {
         let root;
 
-        if (store.user.isAuth() && (this.context.saler_id === store.user.state.fields.userID)) {
+        if (store.user.isAuth() && (this.context.saler_id === store.user.state.fields.id)) {
             root = this.renderChange();
         }
         else {
             root = this.renderView();
         }
 
-        // if (store.user.isAuth() && (context.saler_id !== store.user.state.fields.userID)) {
+        // if (store.user.isAuth() && (context.saler_id !== store.user.state.fields.id)) {
         //     root.querySelector('.content>.header').appendChild(button({
         //         variant: 'neutral',
         //         subVariant: 'tertiary',
@@ -129,9 +176,11 @@ class Content {
         //         leftIcon: svg({ content: favIcon, width: 20, height: 20 })
         //     }));
         // }
+        const carousel = new Carousel(this.context.images);
+        root.querySelector('#carousel')?.replaceWith(carousel.render());
 
         root.querySelector('.content>.header>button')?.addEventListener('click', async function() {
-            await UserApi.addToFav(this.context.id);
+            await User.addToFav(this.context.id);
             this.classList.toggle('active');
         });
 

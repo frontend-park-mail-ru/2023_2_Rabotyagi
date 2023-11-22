@@ -16,7 +16,7 @@ export class MainPage {
         const header = new Header();
         const feed = new Feed();
 
-        document.title = 'Супер Юла | Главная';
+        document.title = 'GoodsGalaxy | Главная';
 
         return [ header.render(), feed.render() ];
     }

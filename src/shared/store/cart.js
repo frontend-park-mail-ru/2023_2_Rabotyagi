@@ -1,10 +1,12 @@
 import { BaseStore } from "./baseStore";
 import dispathcer from "../dispatcher/dispatcher";
 import { Order } from "../api/order";
-import { UserApi } from "../api/user";
+import { User } from "../api/user";
+import { getResourceUrl } from "../utils/getResource";
 
 class Cart {
     constructor() {
+
         this.state = {
             goods: [],
             saler: {
@@ -37,11 +39,11 @@ class Cart {
                 case 'BUY_ALL':
                     this.clear();
                     break;
+                default:
+                    break;
             }
             this.emitChange();
         });
-
-        this.getOrders();
     }
 
     async getOrders() {
@@ -55,11 +57,12 @@ class Cart {
             if (Array.isArray(body)) {
                 this.fullCart([ ...body ]);
                 if (body.length !== 0) {
-                    const respUser = await UserApi.getProfile(body[ 0 ].saler_id);
+                    const respUser = await User.getProfile(body[ 0 ].saler_id);
                     const bodyUser = respUser.body;
                     if (respUser.status != 200) {
                         throw bodyUser.error;
                     }
+                    bodyUser.avatar = getResourceUrl(bodyUser.avatar);
                     this.updateUser(bodyUser);
                 }
                 this.emitChange();
@@ -74,7 +77,7 @@ class Cart {
         this.state.saler.id = 0;
         this.state.saler.name = '';
         this.state.saler.email = '';
-        this.state.saler.image = '';
+        this.state.saler.avatar = '';
     }
 
     clear() {
@@ -89,6 +92,7 @@ class Cart {
     init() {
         this.emptySaler();
         this.state.goods = [];
+        this.getOrders();
     }
 
     hasUser() {
@@ -104,10 +108,6 @@ class Cart {
             ...this.state.saler,
             ...saler
         }
-        // this.state.saler.id = saler.id;
-        // this.state.saler.name = saler.name;
-        // this.state.saler.email = saler.email;
-        // this.state.saler.image = saler.image;
     }
 
     hasProduct(productId) {

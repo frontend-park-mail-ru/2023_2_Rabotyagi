@@ -16,6 +16,9 @@ export const generatePost = (salerId) => {
         images: [
             {
                 url: 'images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg'
+            },
+            {
+                url: 'images/' + Math.floor(Math.random() * (10 - 1) + 1) + '.jpg'
             }
         ],
         is_active: fakerRU.datatype.boolean()

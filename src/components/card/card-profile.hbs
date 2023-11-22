@@ -1,6 +1,6 @@
 <button class="card-profile">
     {{#if this.image}}
-    <img class='image' src='{{this.image}}' />
+    <img class='image' src='{{this.image.url}}' />
     {{else}}
     <div class="img"></div>
     {{/if}}
@@ -38,7 +38,7 @@
         {{#if this.city}}
         <div class="badges">
             <div class='badge'>
-                <span class="text-regular">{{this.city}}</span>
+                <span class="text-regular">{{this.city.name}}</span>
             </div>
         </div>
         {{/if}}

@@ -1,23 +1,23 @@
-import { API } from '../constants/api.js';
 import ajax from '../services/ajax.js';
+import { ORDER_API } from '../constants/order_api.js';
 
 export const Order = {
     create: async (product) => {
         return await ajax.post({
-            url: API.ORDER.ADD,
+            url: ORDER_API.ADD,
             body: product,
             credentials: 'include',
         });
     },
     getCart: async () => {
         return await ajax.get({
-            url: API.ORDER.GET_BASKET,
+            url: ORDER_API.GET_BASKET,
             credentials: 'include',
         });
     },
     deleteOrder: async(orderId) => {
         return await ajax.delete({
-            url: API.ORDER.DELETE,
+            url: ORDER_API.DELETE,
             params: {
                 id: orderId
             },
@@ -26,23 +26,23 @@ export const Order = {
     },
     buyAll: async() => {
         return await ajax.patch({
-            url: API.ORDER.BUY_FULL_BASKET,
+            url: ORDER_API.BUY_FULL_BASKET,
             credentials: 'include',
         });
     },
     updateCount: async({ id, count }) => {
         return await ajax.patch({
-            url: API.ORDER.UPDATE_COUNT,
+            url: ORDER_API.UPDATE_COUNT,
             body: {
                 id: id,
-                count: count
+                count: count,
             },
             credentials: 'include'
         });
     },
     updateStatus: async({ id, status }) => {
         return await ajax.patch({
-            url: API.ORDER.UPDATE_STATUS,
+            url: ORDER_API.UPDATE_STATUS,
             body: {
                 id: id,
                 status: status

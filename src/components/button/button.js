@@ -1,6 +1,6 @@
 import { stringToElement } from '../../shared/utils/parsing';
 import template from './button.hbs';
-import styles from './button.scss'; //eslint-disable-line no-unused-vars
+import './button.scss'; //eslint-disable-line no-unused-vars
 
 //eslint-disable-next-line no-unused-vars
 const config = {
@@ -15,6 +15,7 @@ const config = {
         class: null,
         content: null,
     },
+    name: null,
     type: null
 }
 // Добавить в избранное
