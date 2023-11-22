@@ -145,7 +145,11 @@ export class Header {
 
         productCreateBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            window.Router.navigateTo('/product', { mode: 'add' })
+            if (store.user.isAuth()) {
+                window.Router.navigateTo('/product', { mode: 'add' });
+            } else {
+                window.Router.navigateTo('/signin');
+            }
         })
 
         authorized ? this.renderProfile(nav) : this.renderAuthBox(nav);

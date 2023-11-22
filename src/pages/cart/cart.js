@@ -13,14 +13,13 @@ class Cart {
             pageTitle: 'Корзина',
             authorized: store.user.isAuth(),
         };
-        const header = new Header();
+        const header = new Header().render();
         const feed = new OrderFeed();
 
         const root = stringToElement(template(context));
-        root.querySelector('#header').replaceWith(header.render());
         root.querySelector('#cartContent').replaceWith(feed.render());
-                    
-        return [ root ];
+
+        return [ header, root ];
     }
 }
 

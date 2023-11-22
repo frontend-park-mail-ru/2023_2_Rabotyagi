@@ -44,7 +44,7 @@ class Menu {
         const root = stringToElement(template(this.context));
         // const container = root.querySelector('div.creds');
 
-        if (store.user.isAuth() && (this.context.saler.id !== store.user.state.fields.id)) {
+        if (!store.user.isAuth() || (store.user.isAuth() && this.context.saler.id !== store.user.state.fields.id)) {
             root.querySelector('#button-ad')?.replaceWith(button({
                 id: 'btn-ad',
                 variant: 'primary',
@@ -74,7 +74,11 @@ class Menu {
 
         root.querySelector('#btn-ad')?.addEventListener('click', (e) => {
             e.stopPropagation();
-            this.addInCart(root);
+            if (store.user.isAuth()) {
+                this.addInCart(root);
+            } else {
+                window.Router.navigateTo('/signin');
+            }
         });
 
         return root;
