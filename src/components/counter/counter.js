@@ -30,7 +30,7 @@ export class Counter {
         this.#counterFunc = counterFunc;
 
         this.context = {
-            name: ''
+            name: '',
         };
         this.root = stringToElement(template(this.context));
         this.counterResult = this.root.querySelector('div.counter-result');
@@ -41,19 +41,19 @@ export class Counter {
         this.decButton = button({
             id: 'decBtn',
             variant: 'neutral',
-            leftIcon: svg({ 
+            leftIcon: svg({
                 content: dec,
                 width: 25,
-                height: 25
+                height: 25,
             }),
         });
         this.incButton = button({
             id: 'incBtn',
             variant: 'neutral',
-            leftIcon: svg({ 
+            leftIcon: svg({
                 content: inc,
                 width: 25,
-                height: 25
+                height: 25,
             }),
         });
 

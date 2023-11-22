@@ -16,8 +16,8 @@ const config = {
         content: null,
     },
     name: null,
-    type: null
-}
+    type: null,
+};
 // Добавить в избранное
 const button = (context) => {
     switch (context.variant) {
@@ -60,9 +60,8 @@ const button = (context) => {
     if (context.link){
         root.dataset.link = context.link;
     }
-    
-    return root;
-}
 
+    return root;
+};
 
 export default button;

@@ -1,5 +1,5 @@
-import styles from './breadcrumb.scss' // eslint-disable-line no-unused-vars
-import template from './breadcrumb.hbs'
+import styles from './breadcrumb.scss'; // eslint-disable-line no-unused-vars
+import template from './breadcrumb.hbs';
 import { stringToElement } from '../../shared/utils/parsing';
 
 class Breadcrumb {
@@ -9,7 +9,7 @@ class Breadcrumb {
 
     render() {
         for (let index = 1; index < this.items.length; index = index*2 + 1) {
-            this.items.splice(index, 0, { text: "·", isDelimiter: true });
+            this.items.splice(index, 0, { text: '·', isDelimiter: true });
         }
 
         const context = {

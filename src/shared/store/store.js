@@ -10,7 +10,7 @@ import { cities } from './cities.js';
  * @constant {Dict} store Хранилище стейта всего приложения
  */
 export const store = {
-    init: async () => {
+    init: async() => {
         await store.user.init();
         await store.cart.init();
         await store.categories.init();

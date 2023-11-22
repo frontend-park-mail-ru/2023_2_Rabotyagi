@@ -2,14 +2,14 @@ import ajax from '../services/ajax.js';
 import { ORDER_API } from '../constants/order_api.js';
 
 export const Order = {
-    create: async (product) => {
+    create: async(product) => {
         return await ajax.post({
             url: ORDER_API.ADD,
             body: product,
             credentials: 'include',
         });
     },
-    getCart: async () => {
+    getCart: async() => {
         return await ajax.get({
             url: ORDER_API.GET_BASKET,
             credentials: 'include',
@@ -19,7 +19,7 @@ export const Order = {
         return await ajax.delete({
             url: ORDER_API.DELETE,
             params: {
-                id: orderId
+                id: orderId,
             },
             credentials: 'include',
         });
@@ -37,7 +37,7 @@ export const Order = {
                 id: id,
                 count: count,
             },
-            credentials: 'include'
+            credentials: 'include',
         });
     },
     updateStatus: async({ id, status }) => {
@@ -45,9 +45,9 @@ export const Order = {
             url: ORDER_API.UPDATE_STATUS,
             body: {
                 id: id,
-                status: status
+                status: status,
             },
-            credentials: 'include'
+            credentials: 'include',
         });
-    }
+    },
 };

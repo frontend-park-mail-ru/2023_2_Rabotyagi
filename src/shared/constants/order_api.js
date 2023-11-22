@@ -4,5 +4,5 @@ export const ORDER_API = {
     GET_BASKET: 'order/get_basket',
     UPDATE_COUNT: 'order/update_count',
     UPDATE_STATUS: 'order/update_status',
-    DELETE: 'order/delete'
-}
+    DELETE: 'order/delete',
+};

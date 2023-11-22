@@ -7,8 +7,8 @@ import { Header } from '../../components/header/header.js';
 import { Product } from '../../shared/api/product.js';
 import { loaderRegular } from '../../components/loader/loader.js';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
-import Menu from "./menu.js";
-import Content from "./content.js";
+import Menu from './menu.js';
+import Content from './content.js';
 import { User } from '../../shared/api/user.js';
 import button from '../../components/button/button.js';
 import { store } from '../../shared/store/store.js';
@@ -18,7 +18,7 @@ import { extname } from '../../shared/utils/extname.js';
 class ProductPage {
     async getSaler(salerID) {
         return await User.getSaler(salerID);
-    }    
+    }
 
     async getProduct(id, container) {
         container.appendChild(loaderRegular());
@@ -30,7 +30,7 @@ class ProductPage {
             if (respPost.status != 200) {
                 throw new Error(bodyPost.error);
             }
-            
+
             const respSaler = await this.getSaler(bodyPost.saler_id);
             const bodySaler = respSaler.body;
 
@@ -48,18 +48,20 @@ class ProductPage {
                 productId: bodyPost.id,
                 saler: bodySaler,
                 price: bodyPost.price,
-                safe_deal: bodyPost.safe_deal,
+                safeDeal: bodyPost.safe_deal,
                 delivery: bodyPost.delivery,
             };
 
             container.append(
-                new Content(bodyPost).render(), 
-                new Menu(menuContext).render() 
+                new Content(bodyPost).render(),
+                new Menu(menuContext).render(),
             );
+
             return;
         } catch (err) {
             container.innerHTML = '';
             container.appendChild(ErrorMessageBox(err));
+
             return;
         }
     }
@@ -67,10 +69,11 @@ class ProductPage {
     async uploadImages() {
         if (this.imagesForUpload) {
             const res = await Files.images(this.imagesForUpload);
-    
+
             if (res.status !== 200) {
                 this.errorBox.innerHTML = '';
                 this.errorBox.append(ErrorMessageBox(res.body.error));
+
                 return;
             }
             this.uploadedImages = res.body.urls;
@@ -94,14 +97,15 @@ class ProductPage {
                 allowedFormats.find((value) => value === format)
             )) {
                 this.errorBox.appendChild(ErrorMessageBox(`Формат ${format} недопустим`));
+
                 return;
             }
         });
 
-        this.imagesForUpload = files; 
-    }
+        this.imagesForUpload = files;
+    };
 
-    formSubmit = async (e) => {
+    formSubmit = async(e) => {
         e.preventDefault();
 
         const { elements } = this.content;
@@ -118,31 +122,32 @@ class ProductPage {
                 }
 
                 if (type === 'file') {
-                    return { [ name ]: files }
+                    return { [ name ]: files };
                 }
 
                 return { [ name ]: value };
-            })
+            });
 
         let body = {};
         data.forEach((elem) => body = { ...body, ...elem });
-        
-        body.city_id = Number(body.city_id);
-        body.category_id = Number(body.category_id);
-        body.saler_id = store.user.state.fields.id;
+
+        body['city_id'] = Number(body.city_id);
+        body['category_id'] = Number(body.category_id);
+        body['saler_id'] = store.user.state.fields.id;
 
         await this.uploadImages();
 
         body.images = [];
         if (this.uploadedImages) {
             this.uploadedImages.forEach((url) => body.images = [ ...body.images, {
-                url: url
-            } ])
+                url: url,
+            } ]);
         }
         else {
             this.errorBox.innerHTML = '';
             this.errorBox.appendChild(ErrorMessageBox('Должно быть хотя бы одно изображение'));
-            return;
+
+return;
         }
 
         const res = await Product.create(body);
@@ -150,19 +155,20 @@ class ProductPage {
 
         if (res.status === 303) {
             window.Router.navigateTo('/product', { productId: body.id });
-            return;
+
+return;
         }
 
         this.errorBox.innerHTML = '';
         this.errorBox.appendChild(ErrorMessageBox(body.error));
-    }
+    };
 
     renderAdd() {
         const context = {
             isAuth: store.user.isAuth(),
             categories: store.categories.list,
             cities: store.cities.list,
-        }
+        };
 
         this.root = stringToElement(templateAdd(context));
         this.content = this.root.querySelector('.product>.content-add');
@@ -176,10 +182,10 @@ class ProductPage {
             variant: 'primary',
             text: {
                 class: 'text-regular',
-                content: 'Создать'
+                content: 'Создать',
             },
-            type: 'submit'
-        }))
+            type: 'submit',
+        }));
     }
 
     renderView(params) {

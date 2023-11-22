@@ -7,7 +7,7 @@
 import { store } from '../../shared/store/store.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
 import ProfileBtn from '../profileBtn/profileBtn.js';
-import template from './header.hbs'
+import template from './header.hbs';
 import './header.scss';
 import button from '../button/button.js';
 import svg from '../svg/svg.js';
@@ -19,15 +19,15 @@ const buttons = {
         id: 'cart-btn',
         variant: 'neutral',
         link: '/cart',
-        leftIcon: svg({ 
+        leftIcon: svg({
             content: cart,
             width: 28,
-            height: 28
+            height: 28,
         }),
         text: {
             class: 'text-regular',
             content: store.cart.getCount(),
-        }
+        },
     },
     logo: {
         id: 'logo-btn',
@@ -37,15 +37,15 @@ const buttons = {
         text: {
             class: 'text-subheader',
             content: 'GoodsGalaxy',
-        }
+        },
     },
     categories: {
         id: 'category',
         variant: 'primary',
         text: {
             class: 'text-regular',
-            content: 'Категории'
-        }
+            content: 'Категории',
+        },
     },
     productCreate: {
         id: 'product-create',
@@ -53,16 +53,16 @@ const buttons = {
         subVariant: 'primary',
         text: {
             class: 'text-regular',
-            content: 'Разместить объявление'
-        }
+            content: 'Разместить объявление',
+        },
     },
     signin: {
         variant: 'primary',
         link: '/signin',
         text: {
             class: 'text-regular',
-            content: 'Войти'
-        }
+            content: 'Войти',
+        },
     },
     signup: {
         variant: 'neutral',
@@ -70,11 +70,11 @@ const buttons = {
         link: '/signup',
         text: {
             class: 'text-regular',
-            content: 'Зарегистрироваться'
-        }
-    }
+            content: 'Зарегистрироваться',
+        },
+    },
 
-}
+};
 
 /**
  * @class
@@ -100,12 +100,12 @@ export class Header {
     }
 
     addEventListeners() {
-        this.root.querySelectorAll('button[data-link]').forEach(item => 
+        this.root.querySelectorAll('button[data-link]').forEach(item =>
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
                 window.Router.navigateTo(item.dataset.link);
-            }, { capture: false })
-        )
+            }, { capture: false }),
+        );
     }
 
     renderProfile(nav) {
@@ -150,7 +150,7 @@ export class Header {
             } else {
                 window.Router.navigateTo('/signin');
             }
-        })
+        });
 
         authorized ? this.renderProfile(nav) : this.renderAuthBox(nav);
 
@@ -159,6 +159,7 @@ export class Header {
 
     render() {
         this.preRender();
+
         return this.root;
     }
 }

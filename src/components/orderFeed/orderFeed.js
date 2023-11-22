@@ -5,7 +5,6 @@
 import { store } from '../../shared/store/store.js';
 import { OrderCard } from '../orderCard/orderCard.js';
 import { UserCard } from '../userCard/userCard.js';
-import { ErrorMessageBox } from '../error/errorMessageBox.js';
 import { Order } from '../../shared/api/order.js';
 import { loaderRegular } from '../loader/loader.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
@@ -31,10 +30,10 @@ export class OrderFeed {
             style: 'margin-left: 24px;',
             text: {
                 class: 'text-regular',
-                content: 'Оплатить'
-            }
+                content: 'Оплатить',
+            },
         });
-        this.buyBtn.addEventListener('click', (e) => {
+        this.buyBtn.addEventListener('click', () => {
             this.buyAll();
         });
         this.root = stringToElement(template(this.context));
@@ -72,10 +71,10 @@ export class OrderFeed {
             const deletingBuyBtn = this.feedHeader.querySelector('#buyBtn');
             const parentElement = deletingBuyBtn.parentNode;
             parentElement.removeChild(deletingBuyBtn);
-            const newBuyBtn = document.createElement("div");
+            const newBuyBtn = document.createElement('div');
             newBuyBtn.id = 'buyBtn';
             parentElement.appendChild(newBuyBtn);
-            newBuyBtn.addEventListener('click', (e) => {
+            newBuyBtn.addEventListener('click', () => {
                 this.buyAll();
             });
             this.feedHeader.querySelector('#userCard').classList.remove('user-card');

@@ -7,8 +7,8 @@ import { ErrorMessageBox } from '../error/errorMessageBox.js';
 import { Product } from '../../shared/api/product.js';
 import { loaderRegular } from '../loader/loader.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
-import template from './feed.hbs'
-import './feed.scss'
+import template from './feed.hbs';
+import './feed.scss';
 
 /**
  * @class Блок с объявлениями
@@ -24,7 +24,7 @@ export class Feed {
                 throw resp.body.error;
             }
             container.innerHTML = '';
-            
+
             body.forEach((elem) => {
                 container.appendChild(new Card(elem).render());
             });

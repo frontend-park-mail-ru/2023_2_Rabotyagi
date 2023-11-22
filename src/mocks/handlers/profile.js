@@ -1,5 +1,5 @@
-import { cookieParser } from "../../shared/utils/cookie";
-import { setNewToken } from "../generators/token";
+import { cookieParser } from '../../shared/utils/cookie';
+import { setNewToken } from '../generators/token';
 
 export const PROFILE = {
     get: (schema, request) => {
@@ -10,9 +10,9 @@ export const PROFILE = {
             return {
                 status: 222,
                 body: {
-                    error: 'Такого пользователя нет'
-                }
-            }
+                    error: 'Такого пользователя нет',
+                },
+            };
         }
         const data = structuredClone(res.attrs);
         delete data.birthday, data.password;
@@ -20,16 +20,16 @@ export const PROFILE = {
         if (res != null) {
             return {
                 body: data,
-                status: 200
+                status: 200,
             };
         } else {
             return {
                 body: {
-                    'error': 'Profile with this id does not exist'
+                    'error': 'Profile with this id does not exist',
                 },
-                status: 222
-            }
-        } 
+                status: 222,
+            };
+        }
     },
 
     update: {
@@ -39,10 +39,10 @@ export const PROFILE = {
             if (!token) {
                 return {
                     body: {
-                        error: 'Чел, ты не авторизован'
+                        error: 'Чел, ты не авторизован',
                     },
-                    status: 401
-                }
+                    status: 401,
+                };
             }
             const body = JSON.parse(request.requestBody);
             const user = schema.users.find(Number(body.id));
@@ -58,12 +58,12 @@ export const PROFILE = {
             setNewToken(data);
 
             return {
-                status: 200
-            }
+                status: 200,
+            };
         },
 
         put: (schema, request) => {
             return PROFILE.update.patch(schema, request);
         },
     },
-}
+};

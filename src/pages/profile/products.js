@@ -18,7 +18,7 @@ class Products {
             if (params[ 'salerId' ]) {
                 this.variant = 'saler';
             }
-        };
+        }
     }
 
     async getProducts(container) {
@@ -37,7 +37,7 @@ class Products {
                     throw body.error;
                 default:
             }
-            
+
             return body;
 
         } catch (err) {
@@ -149,7 +149,7 @@ class Products {
                 this.renderSoled(container);
             }
         });
-        
+
         root.querySelectorAll('.tab').forEach((value) => {
             value.addEventListener('click', (e) => {
                 if (this.selected != null) {
@@ -160,7 +160,7 @@ class Products {
                 this.selected = e.currentTarget;
             });
         });
-        
+
         root.querySelector('#tab-all').click();
     }
 
@@ -178,7 +178,7 @@ class Products {
                 this.renderSoled(container);
             }
         });
-        
+
         root.querySelectorAll('.tab').forEach((value) => {
             value.addEventListener('click', (e) => {
                 if (this.selected != null) {
@@ -202,15 +202,13 @@ class Products {
             if (params[ 'salerId' ] != undefined) {
                 this.variant = 'saler';
             }
-        };
+        }
 
         switch(this.variant) {
             case 'saler':
-                // console.log('SALER');
                 this.renderSalerProducts(root, params);
                 break;
             default:
-                // console.log('OWN');
                 this.renderOwnProducts(root);
                 break;
         }

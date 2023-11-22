@@ -1,5 +1,5 @@
-import { searchNode, tree } from "../utils/categoryTree"
-import { CategoryApi } from "../api/category";
+import { searchNode, tree } from '../utils/categoryTree';
+import { CategoryApi } from '../api/category';
 
 export const categories = {
     init: async function() {
@@ -19,4 +19,4 @@ export const categories = {
     },
     root: null,
     list: null,
-}
+};

@@ -3,7 +3,7 @@
  * @module Ajax
  */
 
-import { applicationJson, multipartFormData } from "../constants/contentType";
+import { applicationJson, multipartFormData } from '../constants/contentType';
 
 const { SCHEMA, API_URL } = process.env;
 
@@ -59,7 +59,7 @@ class Ajax {
         if (params) {
             url += `?${new URLSearchParams(params)}`;
         }
-        
+
         headers.Accept = applicationJson;
         headers[ 'Content-Type' ] = contentType;
 
@@ -74,7 +74,7 @@ class Ajax {
                 case applicationJson:
                     config.body = JSON.stringify(body);
                     break;
-                
+
                 case multipartFormData: {
                     // debugger
                     const formData = new FormData();
@@ -101,10 +101,6 @@ class Ajax {
         }
 
         return await (await fetch(url, config)).json();
-        // const newBody = recursiveCheck(resp.body);
-        // resp.body = newBody;
-
-        // return resp;
     }
 
     /**
@@ -146,7 +142,7 @@ class Ajax {
             url,
             params,
             headers,
-            credentials,            
+            credentials,
         });
     }
 

@@ -7,7 +7,6 @@ import { ErrorMessageBox } from '../../components/error/errorMessageBox';
 import { Card } from '../../components/card/card';
 import './styles/favourite.scss';
 
-
 class Favourite {
     constructor() {
 
@@ -36,7 +35,6 @@ class Favourite {
                 container.appendChild(stringToElement(placeholder()));
             }
 
-            
             return;
 
         } catch (err) {

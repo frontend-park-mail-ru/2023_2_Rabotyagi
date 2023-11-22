@@ -16,12 +16,12 @@ const user = {
      * @returns None
      */
     init: async function() {
-        const access_token = cookieParser(document.cookie)?.access_token;
-        if (!access_token){
+        const accessToken = cookieParser(document.cookie)?.access_token;
+        if (!accessToken){
             return;
         }
-        
-        await this.fill(access_token);
+
+        await this.fill(accessToken);
     },
 
     isAuth: function() {
@@ -36,18 +36,18 @@ const user = {
      * @function
      * @returns None
      */
-    login: async function({ access_token }) {
+    login: async function(accessToken) {
         this.clear();
 
-        if (access_token === undefined) {
+        if (accessToken === undefined) {
             return;
         }
 
-        await this.fill(access_token);
+        await this.fill(accessToken);
     },
-    
-    fill: async function(access_token) {
-        const id = jwtDecode(access_token).userID;
+
+    fill: async function(accessToken) {
+        const id = jwtDecode(accessToken).userID;
 
         if (id) {
             const res = await User.getProfile(id);
@@ -66,8 +66,8 @@ const user = {
         if (data) {
             this.state.fields = {
                 ...this.state.fields,
-                ...data
-            }
+                ...data,
+            };
         }
     },
     state: {

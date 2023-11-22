@@ -19,7 +19,7 @@ const { NODE_ENV, MOCK } = process.env;
 
 if (NODE_ENV === 'development' && MOCK === 'true') {
     createMockServer();
-    console.log('created mock server');
+    console.log('created mock server'); // eslint-disable-line no-console
 }
 
 const root = document.querySelector('#root');

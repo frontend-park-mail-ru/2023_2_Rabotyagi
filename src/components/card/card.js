@@ -2,15 +2,14 @@
  * @file card.js
  */
 import { stringToElement } from '../../shared/utils/parsing.js';
-import './card.scss'
+import './card.scss';
 import Handlebars from 'handlebars/runtime';
-import template from './card.hbs'
-import templateProfile from './card-profile.hbs'
+import template from './card.hbs';
+import templateProfile from './card-profile.hbs';
 import button from '../button/button.js';
 import { Product } from '../../shared/api/product.js';
 import { getResourceUrl } from '../../shared/utils/getResource.js';
 import { store } from '../../shared/store/store.js';
-
 
 const buttons = {
     delete: () => button({
@@ -18,9 +17,9 @@ const buttons = {
         variant: 'outlined',
         text: {
             class: 'text-regular',
-            content: 'Удалить'
+            content: 'Удалить',
         },
-        style: 'width: 100%;'
+        style: 'width: 100%;',
     }),
 
     activate: () => button({
@@ -28,9 +27,9 @@ const buttons = {
         variant: 'primary',
         text: {
             class: 'text-regular',
-            content: 'Активировать'
+            content: 'Активировать',
         },
-        style: 'width: 100%;'
+        style: 'width: 100%;',
     }),
 
     deactivate: () => button({
@@ -38,22 +37,22 @@ const buttons = {
         variant: 'primary',
         text: {
             class: 'text-regular',
-            content: 'Деактивировать'
+            content: 'Деактивировать',
         },
-        style: 'width: 100%;'
+        style: 'width: 100%;',
     }),
-}
+};
 
 /**
  * Description placeholder
  * @date 11/13/2023 - 10:04:14 PM
- * 
+ *
  * @class
  * @export
  * @module Components
  */
 export class Card {
-    
+
     /**
      * Creates an instance of Card.
      * @date 11/13/2023 - 10:04:29 PM
@@ -71,11 +70,10 @@ export class Card {
             this.context.image = this.context.images[ 0 ];
         }
     }
-    
-    
+
     /**
      * @date 11/13/2023 - 10:08:05 PM
-     * 
+     *
      * @summary Асинхронно формирует карточку варианта профиля пользователя
      * @async
      * @returns {void}
@@ -85,8 +83,8 @@ export class Card {
         const btnDelete = buttons.delete();
         const btnActive = buttons.activate();
         const btnDeactive = buttons.deactivate();
-        
-        btnDelete.addEventListener('click', async (e) => {
+
+        btnDelete.addEventListener('click', async(e) => {
             e.stopPropagation();
             const res = await Product.delete(Number(this.context.id));
 
@@ -104,21 +102,23 @@ export class Card {
             btnDelete.before(btnDeactive);
         }
 
-        btnDelete.previousElementSibling.addEventListener('click', async (e) => {
+        btnDelete.previousElementSibling.addEventListener('click', async(e) => {
             e.stopPropagation();
 
             const res = await Product.patch(this.context.id, {
-                is_active: !this.context.is_active,
+                'is_active': !this.context.is_active,
             });
-            body = res.body;
 
-            this.root.remove();
-        })
+            if (res.status === 200) {
+                this.root.remove();
+            }
+
+        });
     }
-    
+
     /**
      * @date 11/13/2023 - 10:07:47 PM
-     * 
+     *
      * @summary Асинхронно формирует карточку варианта чужого профиля
      * @method
      * @async
@@ -127,11 +127,10 @@ export class Card {
     async renderProfileSaler(){
         this.root = stringToElement(templateProfile(this.context));
     }
-    
-    
+
     /**
      * @date 11/13/2023 - 10:07:57 PM
-     * 
+     *
      * @summary Асинхронно формирует карточку дефолтного варианта
      * @method
      * @async
@@ -143,14 +142,14 @@ export class Card {
 
     /**
      * @date 11/13/2023 - 10:03:54 PM
-     * 
+     *
      * @summary Главный метод класса
      * @description Формирует в зависимости от параметра variant элемент и возвращает
      * @method
      * @returns {HTMLElement}
      */
     render() {
-        Handlebars.registerHelper('haveBadges', function () {
+        Handlebars.registerHelper('haveBadges', function() {
             return (this.safe_deal || this.delivery);
         });
 
@@ -168,8 +167,8 @@ export class Card {
 
         this.root.addEventListener('click', (e) => {
             e.stopPropagation();
-            
-            window.Router.navigateTo('/product', { productId: this.context.id })
+
+            window.Router.navigateTo('/product', { productId: this.context.id });
         });
 
         return this.root;

@@ -21,7 +21,7 @@ export class UserCard {
 
         const context = {
             name: this.#name,
-            email: this.#email
+            email: this.#email,
         };
 
         if (this.#image) {
@@ -32,8 +32,8 @@ export class UserCard {
             variant: 'secondary',
             text: {
                 class: 'text-regular',
-                content: 'Посмотреть профиль'
-            }
+                content: 'Посмотреть профиль',
+            },
         });
         goToSaler.addEventListener('click', (e) => {
             e.stopPropagation();

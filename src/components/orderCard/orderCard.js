@@ -10,7 +10,7 @@ import { getResourceUrl } from '../../shared/utils/getResource.js';
 // import { store } from '../../shared/store/store.js';
 
 export class OrderCard {
-    #order
+    #order;
 
     constructor(order) {
         this.#order = structuredClone(order);
@@ -31,8 +31,8 @@ export class OrderCard {
             subVariant: 'primary',
             text: {
                 class: 'text-regular',
-                content: 'Удалить'
-            }
+                content: 'Удалить',
+            },
         });
 
         this.deleteBtn.addEventListener('click', () => {
@@ -52,7 +52,7 @@ export class OrderCard {
         try {
             const resp = await Order.updateCount({
                 id: this.#order.id,
-                count: count
+                count: count,
             });
             const body = resp.body;
             if (resp.status != 200) {
@@ -60,10 +60,10 @@ export class OrderCard {
             }
             dispatcher.dispatch({ type: 'UPDATE_COUNT_CART', payload: {
                 orderId: Number(this.#order.id),
-                count: count
+                count: count,
             } });
         } catch(err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 
@@ -79,7 +79,7 @@ export class OrderCard {
             // console.log(err);
         }
     }
- 
+
     render() {
         const container = this.root.querySelector('div.right-content');
         container.querySelector('#deleteBtn').replaceWith(this.deleteBtn);
