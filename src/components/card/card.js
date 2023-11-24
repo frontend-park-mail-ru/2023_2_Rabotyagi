@@ -61,13 +61,23 @@ export class Card {
      * @param {Object} context контекст для рендера
      * @param {string} [variant='default'] вариант карточки
      */
-    constructor(context, variant='default') {
+    constructor(context, variant='default', updateVariant='remove') {
         this.context = context;
         this.variant = variant;
         this.context.city = store.cities.getById(this.context.city_id);
         this.context.images = getResourceUrl(this.context.images);
         if (this.context.images) {
             this.context.image = this.context.images[ 0 ];
+        }
+        this.updateVariant = updateVariant;
+    }
+
+    reRenderStateButton() {
+        if (!this.context.is_active) {
+            this.root.querySelector('#btn-active').replaceWith(buttons.deactivate());
+        }
+        else {
+            this.root.querySelector('#btn-deactive').replaceWith(buttons.activate());
         }
     }
 
@@ -105,12 +115,23 @@ export class Card {
         btnDelete.previousElementSibling.addEventListener('click', async(e) => {
             e.stopPropagation();
 
-            const res = await Product.patch(this.context.id, {
-                'is_active': !this.context.is_active,
-            });
+            let resStatus = 500;
 
-            if (res.status === 200) {
-                this.root.remove();
+            if (!this.context.is_active) {
+                const res = await Product.activate(this.context.id);    
+                resStatus = res.status;
+            } else {
+                const res = await Product.deactivate(this.context.id);
+                resStatus = res.status;
+            }
+
+            if (resStatus === 200) {
+                if (this.updateVariant === 'remove') {
+                    this.root.remove();
+                }
+                else if (this.updateVariant === 'reRender') {
+                    this.reRenderStateButton();
+                }
             }
 
         });

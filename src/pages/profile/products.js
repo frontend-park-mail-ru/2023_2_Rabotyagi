@@ -59,7 +59,7 @@ class Products {
         }
         else {
             products.forEach((elem) => {
-                container.appendChild(new Card(elem, this.variant === 'saler' ? 'profile-saler' : 'profile').render());
+                container.appendChild(new Card(elem, this.variant === 'saler' ? 'profile-saler' : 'profile', 'reRender').render());
             });
         }
     }

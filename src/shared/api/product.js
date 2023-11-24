@@ -51,6 +51,26 @@ export const Product = {
         });
     },
 
+    activate: async(id) => {
+        return await ajax.patch({
+            url: PRODUCT_API.ACTIVATE,
+            params: {
+                id: id,
+            },
+            credentials: 'include',
+        });
+    },
+
+    deactivate: async(id) => {
+        return await ajax.patch({
+            url: PRODUCT_API.DEACTIVATE,
+            params: {
+                id: id,
+            },
+            credentials: 'include',
+        });
+    },
+
     put: async(id, data) => {
         return await ajax.put({
             url: PRODUCT_API.PUT,
