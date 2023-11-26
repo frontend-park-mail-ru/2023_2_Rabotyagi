@@ -11,9 +11,11 @@ import svg from '../../components/svg/svg.js';
 import listIcon from '../../assets/icons/list-ad.svg';
 import cartIcon from '../../assets/icons/cart.svg';
 import settingsIcon from '../../assets/icons/settings.svg';
+import favIcon from '../../assets/icons/fav.svg';
 import Settings from './settings.js';
 import { User } from '../../shared/api/user.js';
 import { getResourceUrl } from '../../shared/utils/getResource.js';
+import Favourite from './favourite.js';
 
 class Profile {
     activePage = null;
@@ -40,6 +42,7 @@ class Profile {
         this.router = new Router([
             new Route(new RegExp('^/profile/products$'), new Products(this)),
             new Route(new RegExp('^/profile/orders$'), new Orders()),
+            new Route(new RegExp('^/profile/favourities$'), new Favourite()),
             new Route(new RegExp('^/profile/settings$'), new Settings()),
         ], content);
 
@@ -74,6 +77,17 @@ class Profile {
             },
             link: '/profile/settings',
             leftIcon: svg({ content: settingsIcon, width: 20, height: 20 }),
+        }));
+
+        root.querySelector('#btn-favorite')?.replaceWith(button({
+            variant: 'neutral',
+            subVariant: 'tertiary',
+            text: {
+                class: 'text-regular',
+                content: 'Избранное',
+            },
+            link: '/profile/favourities',
+            leftIcon: svg({ content: favIcon, width: 20, height: 20 }),
         }));
 
         root.querySelectorAll('button[data-link]').forEach(item =>

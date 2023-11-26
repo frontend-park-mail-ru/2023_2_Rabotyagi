@@ -10,6 +10,7 @@ import button from '../button/button.js';
 import { Product } from '../../shared/api/product.js';
 import { getResourceUrl } from '../../shared/utils/getResource.js';
 import { store } from '../../shared/store/store.js';
+import { User } from '../../shared/api/user.js';
 
 const buttons = {
     delete: () => button({
@@ -118,7 +119,7 @@ export class Card {
             let resStatus = 500;
 
             if (!this.context.is_active) {
-                const res = await Product.activate(this.context.id);    
+                const res = await Product.activate(this.context.id);
                 resStatus = res.status;
             } else {
                 const res = await Product.deactivate(this.context.id);
@@ -126,6 +127,38 @@ export class Card {
             }
 
             if (resStatus === 200) {
+                if (this.updateVariant === 'remove') {
+                    this.root.remove();
+                }
+                else if (this.updateVariant === 'reRender') {
+                    this.reRenderStateButton();
+                }
+            }
+
+        });
+    }
+
+    async renderFavourite(){
+        this.root = stringToElement(templateProfile(this.context));
+        const btnDelete = buttons.delete();
+
+        btnDelete.addEventListener('click', async(e) => {
+            e.stopPropagation();
+            const res = await Product.delete(Number(this.context.id));
+
+            if (res.status === 200) {
+                this.root.remove();
+            }
+        });
+
+        this.root.querySelector('#btn-delete')?.replaceWith(btnDelete);
+
+        btnDelete.previousElementSibling.addEventListener('click', async(e) => {
+            e.stopPropagation();
+
+            const res = await User.removeFromFav(this.context.id);
+
+            if (res.status === 200) {
                 if (this.updateVariant === 'remove') {
                     this.root.remove();
                 }

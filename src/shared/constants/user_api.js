@@ -7,8 +7,9 @@ export const USER_API = {
         GET: 'profile/get',
         PUT: 'profile/update',
         PATCH: 'profile/update',
+        FAVS: 'profile/favourites',
     },
-    ORDERS: 'user/orders',
-    FAVS: 'user/favourites',
-    ADD_TO_FAV: 'user/add-to-fav',
+    // ORDERS: 'user/orders',
+    ADD_TO_FAV: 'product/add-to-fav',
+    REMOVE_FROM_FAV: 'product/remove-from-fav',
 };

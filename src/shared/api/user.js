@@ -62,17 +62,27 @@ export const User = {
 
     getFavs: async() => {
         return await ajax.get({
-            url: USER_API.FAVS,
+            url: USER_API.PROFILE.FAVS,
             credentials: 'include',
         });
     },
 
     addToFav: async(id) => {
-        return await ajax.get({
+        return await ajax.post({
             url: USER_API.ADD_TO_FAV,
             credentials: 'include',
             params: {
-                'id': id,
+                'product_id': id,
+            },
+        });
+    },
+
+    removeFromFav: async(id) => {
+        return await ajax.delete({
+            url: USER_API.REMOVE_FROM_FAV,
+            credentials: 'include',
+            params: {
+                'product_id': id,
             },
         });
     },
