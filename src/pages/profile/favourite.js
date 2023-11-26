@@ -27,8 +27,7 @@ class Favourite {
 
             if (body && body.length > 0) {
                 body.forEach((elem) => {
-                    elem.variant = 'profile';
-                    container.appendChild(new Card(elem).render());
+                    container.appendChild(new Card(elem, 'favourite').render());
                 });
             }
             else {

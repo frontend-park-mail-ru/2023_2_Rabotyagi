@@ -214,6 +214,9 @@ export class Card {
             case 'profile-saler':
                 this.renderProfileSaler();
                 break;
+            case 'favourite':
+                this.renderFavourite();
+                break;
             default:
                 this.renderDefault();
                 break;

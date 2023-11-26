@@ -78,7 +78,7 @@ class Menu {
         debugger;
         const resp = await User.addToFav(this.context.productId);
 
-        if (resp.status !== 200) {
+        if (resp.status !== 303) {
             return false;
         }
 

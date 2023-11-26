@@ -71,7 +71,7 @@ export const User = {
         return await ajax.post({
             url: USER_API.ADD_TO_FAV,
             credentials: 'include',
-            params: {
+            body: {
                 'product_id': id,
             },
         });
