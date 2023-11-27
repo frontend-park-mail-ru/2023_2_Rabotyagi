@@ -144,9 +144,9 @@ export class Card {
 
         btnDelete.addEventListener('click', async(e) => {
             e.stopPropagation();
-            const res = await Product.delete(Number(this.context.id));
+            const res = await User.removeFromFav(Number(this.context.id));
 
-            if (res.status === 200) {
+            if (res.status === 303) {
                 this.root.remove();
             }
         });

@@ -75,14 +75,13 @@ class Menu {
     }
 
     async addToFav() {
-        debugger;
         const resp = await User.addToFav(this.context.productId);
 
         if (resp.status !== 303) {
-            return false;
+            throw new Error(resp.body.error);
         }
 
-        return true;
+        return;
     }
 
     render() {
@@ -99,8 +98,12 @@ class Menu {
 
             btnSendMessage.addEventListener('click', () => window.Router.navigateTo('/saler/products', { salerId: this.context.saler.id, variant: 'saler' }));
             btnAddToFav.addEventListener('click', () => {
-                this.addToFav().catch(err => {
-                    console.log(err);
+                this.addToFav()
+                .then(() => {
+                    btnAddToFav.querySelector('span').textContent = 'Уже в избранном!';
+                })
+                .catch(err => {
+                    console.error(err);
                 });
             });
         }
