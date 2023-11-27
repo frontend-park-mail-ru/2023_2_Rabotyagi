@@ -18,7 +18,7 @@ import Dropdown from '../dropdown/dropdown.js';
 
 const buttons = {
     cart: {
-        id: 'cart-btn',
+        id: 'header-cart-button',
         variant: 'neutral',
         link: '/cart',
         leftIcon: svg({
@@ -32,7 +32,7 @@ const buttons = {
         },
     },
     logo: {
-        id: 'logo-btn',
+        id: 'header-logo-button',
         variant: 'neutral',
         link: '/',
         leftIcon: svg({ content: logo }),
@@ -50,7 +50,7 @@ const buttons = {
         },
     },
     productCreate: {
-        id: 'product-create',
+        id: 'header-product-create',
         variant: 'neutral',
         subVariant: 'primary',
         text: {
@@ -92,7 +92,7 @@ export class Header {
 
     updateCartButton() {
         buttons.cart.text.content = store.cart.getCount();
-        const buttonBox = this.root.querySelector('#cart-btn');
+        const buttonBox = this.root.querySelector('#header-cart-button');
         const cartBtn = button(buttons.cart);
         cartBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -114,17 +114,17 @@ export class Header {
             }, { capture: false }),
         );
 
-        const form = this.root.querySelector('.search-box');
+        const form = this.root.querySelector('.header-search-box');
         const input = form.querySelector('input');
 
         input.addEventListener('input', async(e) => {
-            form.querySelector('#search-dropdown')?.remove();
+            form.querySelector('#header-search-dropdown')?.remove();
 
             if (input.value && (e.data || e.inputType === 'deleteContentBackward')) {
                 const res = await Product.search(input.value);
 
                 const dropdownContext = {
-                    id: 'search-dropdown',
+                    id: 'header-search-dropdown',
                     search: false,
                     items: () => {
                         let data = [];
@@ -181,22 +181,22 @@ export class Header {
         const profileBtn = new ProfileBtn().render();
 
         store.cart.addListener(this.updateCartButton.bind(this));
-        nav.querySelector('#cart-btn').replaceWith(cartBtn);
-        nav.querySelector('#profileBtn').replaceWith(profileBtn);
-        nav.querySelector('#auth-box').remove();
+        nav.querySelector('#header-cart-button').replaceWith(cartBtn);
+        nav.querySelector('#header-profile-button').replaceWith(profileBtn);
+        nav.querySelector('#header-auth-box').remove();
     }
 
     renderAuthBox(nav) {
         const authBox = document.createElement('div');
-        authBox.classList.toggle('auth-box');
+        authBox.classList.toggle('header-auth-box');
 
         const signinBtn = button(buttons.signin);
         const signupBtn = button(buttons.signup);
 
         authBox.append(signinBtn, signupBtn);
-        nav.querySelector('#auth-box').replaceWith(authBox);
-        nav.querySelector('#cart-btn').remove();
-        nav.querySelector('#profileBtn').remove();
+        nav.querySelector('#header-auth-box').replaceWith(authBox);
+        nav.querySelector('#header-cart-button').remove();
+        nav.querySelector('#header-profile-button').remove();
     }
 
     async preRender() {
@@ -219,8 +219,8 @@ export class Header {
             }
         });
 
-        nav.querySelector('#logo-btn').replaceWith(logoBtn);
-        nav.querySelector('#product-create').replaceWith(productCreateBtn);
+        nav.querySelector('#header-logo-button').replaceWith(logoBtn);
+        nav.querySelector('#header-product-create').replaceWith(productCreateBtn);
 
         authorized ? this.renderProfile(nav) : this.renderAuthBox(nav);
 

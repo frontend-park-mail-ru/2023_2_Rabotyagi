@@ -1,10 +1,13 @@
 @use '../../assets/css/vars.scss';
 
+$counter-width: 55px;
+$counter-height: 55px;
+
 .counter {
     .counter-count {
         color: vars.$palette-primary;
-        width: 55px;
-        height: 55px;
+        width: $counter-width;
+        height: $counter-height;
         background-color: vars.$background-primary;
         border-radius: 50%;
         text-align: center;
@@ -16,7 +19,7 @@
         text-align: center;
     }   
 
-    .full-price {
+    .counter-full-price {
         color: vars.$background-primary;
     }
 

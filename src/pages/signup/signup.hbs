@@ -4,34 +4,16 @@
         <p class='text-subheader'>Регистрация в «GoodsGalaxy»</p>
         <input name="email" class='text-regular' placeholder='Электронная почта' type='text' class='inputField'
             required autocomplete="email" />
-        {{!-- <input
-            name="name"
-            class='text-regular'
-            placeholder='Имя'
-            type='text'
-            class='inputField'
-            required
-            autocomplete="name"
-        /> --}}
-        {{!-- <input
-            name="phone"
-            class='text-regular'
-            placeholder="+7 ___ ___ __ __" data-slots="_"
-            type='text'
-            class='inputField'
-            required
-            autocomplete="tel"
-        /> --}}
         <div style="display: flex; flex-direction: row; gap: 16px; width: 100%;">
             <input name="password" class='text-regular' placeholder='Пароль' type='password' class='inputField'
                 required autocomplete="new-password" />
-            <button class="btn-outlined" name="show" type="button"><span
+            <button class="button-outlined" name="show" type="button"><span
                     class="text-regular">показать</span></button>
         </div>
         <div style="display: flex; flex-direction: row; gap: 16px; width: 100%;">
             <input name="passwordRepeat" class='text-regular' placeholder='Повтор пароля' type='password'
                 class='inputField' required autocomplete="off" />
-            <button class="btn-outlined" name="show" type="button"><span
+            <button class="button-outlined" name="show" type="button"><span
                     class="text-regular">показать</span></button>
         </div>
         <div id='errorBox'></div>

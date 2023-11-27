@@ -76,7 +76,7 @@ export class Counter {
     }
 
     reRenderResult() {
-        this.counterResult.querySelector('span.full-price').innerHTML = this.#price;
+        this.counterResult.querySelector('span.counter-full-price').innerHTML = this.#price;
         this.counterManager.querySelector('div.counter-count').innerHTML = this.#currentCount;
         this.renderButton(this.#incVisible, '#incBtn');
         this.renderButton(this.#decVisible, '#decBtn');
@@ -112,7 +112,7 @@ export class Counter {
     }
 
     render() {
-        this.counterResult.querySelector('span.full-price').innerHTML = this.#price;
+        this.counterResult.querySelector('span.counter-full-price').innerHTML = this.#price;
 
         this.counterManager.querySelector('#incBtn').replaceWith(this.incButton);
         this.counterManager.querySelector('#decBtn').replaceWith(this.decButton);

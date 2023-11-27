@@ -66,7 +66,7 @@
 
 .button-outlined {
     @extend .button-base;
-    border: 1px solid var(--palette-primary, vars.$palette-primary);
+    border: 1px solid var(--palette-primary, #9d8df1);
 
     >span {
         color: vars.$palette-primary;
