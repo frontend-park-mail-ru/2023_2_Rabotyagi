@@ -10,7 +10,6 @@ import { User } from '../../shared/api/user.js';
 
 const buttonTemplates = {
     btnAd: {
-        // id: 'btn-ad',
         variant: 'primary',
         text: {
             class: 'text-regular',
@@ -19,8 +18,7 @@ const buttonTemplates = {
         style: 'width: 100%;',
     },
 
-    sendMessage: {
-        // id: 'btn-msg',
+    openProfile: {
         variant: 'outlined',
         text: {
             class: 'text-regular',
@@ -30,7 +28,6 @@ const buttonTemplates = {
     },
 
     addToFav: {
-        // id: 'btn-msg',
         variant: 'outlined',
         text: {
             class: 'text-regular',
@@ -87,35 +84,31 @@ class Menu {
     render() {
         const root = stringToElement(template(this.context));
         const btnAd = button(buttonTemplates.btnAd);
+        const btnOpenProfile = button(buttonTemplates.openProfile);
+        const btnAddToFav = button(buttonTemplates.addToFav);
+        root.querySelector('.saler').after(btnAd);
+        btnAd.after(btnOpenProfile);
 
-        if (!store.user.isAuth() || (store.user.isAuth() && this.context.saler.id !== store.user.state.fields.id)) {
-            const btnSendMessage = button(buttonTemplates.sendMessage);
-            const btnAddToFav = button(buttonTemplates.addToFav);
-
-            root.querySelector('#button-ad')?.replaceWith(btnAd);
-            root.querySelector('#send-message')?.replaceWith(btnSendMessage);
-            root.querySelector('#add-to-fav')?.replaceWith(btnAddToFav);
-
-            btnSendMessage.addEventListener('click', () => window.Router.navigateTo('/saler/products', { salerId: this.context.saler.id, variant: 'saler' }));
-            btnAddToFav.addEventListener('click', () => {
-                this.addToFav()
-                .then(() => {
-                    btnAddToFav.querySelector('span').textContent = 'Уже в избранном!';
-                })
-                .catch(err => {
-                    console.error(err);
-                });
+        btnOpenProfile.addEventListener('click', () => window.Router.navigateTo('/saler/products', { salerId: this.context.saler.id, variant: 'saler' }));
+        btnAddToFav.addEventListener('click', () => {
+            this.addToFav()
+            .then(() => {
+                btnAddToFav.querySelector('span').textContent = 'Уже в избранном!';
+            })
+            .catch(err => {
+                console.error(err);
             });
-        }
-
-        btnAd.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (store.user.isAuth()) {
-                this.addInCart(root);
-            } else {
-                window.Router.navigateTo('/signin');
-            }
         });
+
+        if (store.user.isAuth()) {
+            btnAd.addEventListener('click', () => this.addInCart(root));
+
+            if (this.context.saler.id !== store.user.state.fields.id) {
+                btnOpenProfile.after(btnAddToFav);
+            }
+        } else {
+            btnAd.addEventListener('click', () => window.Router.navigateTo('/signin'));
+        }
 
         return root;
     }
