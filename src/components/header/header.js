@@ -155,7 +155,10 @@ export class Header {
                 input.after(dropdown);
             }
 
-            if (!e.data && input.value) {
+            if (!e.data
+                && e.inputType != 'deleteContentBackward'
+                && input.value)
+            {
                 setTimeout(() => form.dispatchEvent(new Event('submit')), 200);
             }
         });
