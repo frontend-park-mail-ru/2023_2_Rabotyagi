@@ -76,7 +76,6 @@ class Ajax {
                     break;
 
                 case multipartFormData: {
-                    // debugger
                     const formData = new FormData();
                     if (Object.keys(body).length !== 0) {
                         Object.keys(body).forEach((key) => {

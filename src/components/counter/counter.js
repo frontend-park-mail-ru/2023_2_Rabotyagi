@@ -66,7 +66,6 @@ export class Counter {
     }
 
     renderButton(visible, idName) {
-        // debugger
         if (visible) {
             this.counterManager.querySelector(idName).style.opacity = '1';
             this.counterManager.querySelector(idName).style.pointerEvents = 'auto';

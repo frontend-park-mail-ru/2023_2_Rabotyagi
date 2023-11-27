@@ -7,7 +7,13 @@
     {{/if}}
     <div class="dropdown-content">
         {{#each this.items}}
-            <button id="{{this.[0]}}" class="dropdown-btn"><span class="text-regular">{{this.[1]}}</span></button>
+            {{#if this.[2]}}
+                <span class="text-regular">{{this.[1]}}</span>
+            {{else}}
+                <button {{#if this.[0]}}
+                    id="{{this.[0]}}"  
+                {{/if}}  class="dropdown-btn"><span class="text-regular">{{this.[1]}}</span></button>
+            {{/if}}
         {{/each}}
     </div>
 </div>

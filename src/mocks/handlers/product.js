@@ -102,7 +102,6 @@ export const PRODUCT = {
                 Number(request.queryParams.id),
             );
 
-            // debugger
             product.update(body);
 
             return {

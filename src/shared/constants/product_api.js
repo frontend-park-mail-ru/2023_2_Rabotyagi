@@ -6,5 +6,7 @@ export const PRODUCT_API = {
     PATCH: 'product/update',
     PUT: 'product/update',
     ACTIVATE: 'product/activate',
-    DEACTIVATE: 'product/close'
+    DEACTIVATE: 'product/close',
+    SEARCH: 'product/search',
+    SEARCH_FEED: 'product/get_search_feed',
 };

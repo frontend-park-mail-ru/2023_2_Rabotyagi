@@ -44,7 +44,15 @@ export class Feed {
         const container = this.root.querySelector('div.feed-content');
         container.appendChild(loaderRegular());
 
-        await this.getPosts(container);
+        if (history.state && history.state.products) {
+            container.innerHTML = '';
+
+            history.state.products.forEach((elem) => container.appendChild(new Card(elem).render()));
+        }
+        else {
+            await this.getPosts(container);
+        }
+
     }
 
     render() {
