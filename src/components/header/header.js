@@ -118,8 +118,9 @@ export class Header {
         const input = form.querySelector('input');
 
         input.addEventListener('input', async(e) => {
+            form.querySelector('#search-dropdown')?.remove();
 
-            if (input.value && e.data) {
+            if (input.value && (e.data || e.inputType === 'deleteContentBackward')) {
                 const res = await Product.search(input.value);
 
                 const dropdownContext = {
@@ -135,7 +136,9 @@ export class Header {
                             });
                         }
                         else {
-                            data = ['', 'Результатов поиска нет'];
+                            data = [
+                                [null, 'Результатов поиска нет', true],
+                            ];
                         }
 
                         return data;
@@ -144,7 +147,6 @@ export class Header {
 
                 const dropdown = new Dropdown(dropdownContext).render();
                 dropdown.classList.toggle('hidden');
-                form.querySelector('#search-dropdown')?.remove();
 
                 dropdown.querySelectorAll('button').forEach((btn) => btn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -153,12 +155,11 @@ export class Header {
                     input.dispatchEvent(new Event('input'));
                 }));
                 input.after(dropdown);
+
+                return;
             }
 
-            if (!e.data
-                && e.inputType != 'deleteContentBackward'
-                && input.value)
-            {
+            if (!e.data && e.inputType != 'deleteContentBackward') {
                 setTimeout(() => form.dispatchEvent(new Event('submit')), 200);
             }
         });
