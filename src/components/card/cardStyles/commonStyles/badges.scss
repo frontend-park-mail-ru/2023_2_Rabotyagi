@@ -1,0 +1,17 @@
+@use '../cardConstants.scss';
+
+.badges-base {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    align-self: stretch;
+    max-width: cardConstants.$card-base-width;
+    overflow: hidden;
+}
+
+.badges-profile {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    align-self: stretch;
+}

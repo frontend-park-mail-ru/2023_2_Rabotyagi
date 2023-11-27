@@ -2,7 +2,7 @@
  * @file card.js
  */
 import { stringToElement } from '../../shared/utils/parsing.js';
-import './card.scss';
+import './cardStyles/card.scss';
 import Handlebars from 'handlebars/runtime';
 import template from './card.hbs';
 import templateProfile from './card-profile.hbs';

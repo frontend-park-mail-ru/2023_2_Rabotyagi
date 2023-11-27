@@ -19,7 +19,6 @@
 }
 
 @import 'text';
-// @import 'font.scss';
 
 body {
     background-color: vars.$background-primary;
@@ -34,7 +33,6 @@ body {
     width: 100%;
     align-items: center;
     height: -webkit-fill-available;
-    // gap: 24px;
 }
 
 .inputField {
@@ -62,7 +60,6 @@ body {
 }
 
 .searchField {
-    // background: url('../icons/search.svg') no-repeat scroll 7px 50%;
     padding-left: 30px;
 }
 
@@ -71,10 +68,6 @@ body {
     resize: none;
 
 }
-
-// .search-box {
-//     /* width: 50%; */
-// }
 
 input, textarea {
     display: flex;
@@ -96,9 +89,6 @@ input:focus-visible, textarea:focus-visible {
     border: 0.5px solid vars.$palette-primary;
 }
 
-/* input:focus-visible {
-} */
-
 .cell {
     display: flex;
     gap: 16px;
@@ -118,7 +108,6 @@ input:focus-visible, textarea:focus-visible {
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
-    /* 125% */
 }
 
 .svgIcon {

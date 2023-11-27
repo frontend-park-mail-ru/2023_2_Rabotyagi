@@ -1,0 +1,30 @@
+@use '../../../assets/css/vars.scss';
+@use './cardConstants.scss';
+
+@import './commonStyles/image.scss';
+@import './commonStyles/badges.scss';
+@import './commonStyles/badge.scss';
+@import './commonStyles/title.scss';
+
+@import './baseStyles.scss';
+@import './profileStyles.scss';
+
+.card-base {
+    display: flex;
+    width: cardConstants.$card-base-width;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    font-family: 'Nunito Sans';
+    font-size: 15px;
+}
+
+.card-profile {
+    display: flex;
+    width: cardConstants.$card-profile-width;
+    align-items: flex-start;
+    border-radius: cardConstants.$card-radius;
+    background: vars.$background-primary;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+}

@@ -22,19 +22,19 @@ const config = {
 const button = (context) => {
     switch (context.variant) {
         case 'primary':
-            context.variant = 'btn-primary';
+            context.variant = 'button-primary';
             break;
         case 'neutral':
-            context.variant = 'btn-neutral';
+            context.variant = 'button-neutral';
             break;
         case 'secondary':
-            context.variant = 'btn-secondary';
+            context.variant = 'button-secondary';
             break;
         case 'accent':
-            context.variant = 'btn-accent';
+            context.variant = 'button-accent';
             break;
         case 'outlined':
-            context.variant = 'btn-outlined';
+            context.variant = 'button-outlined';
             break;
     }
     const root = stringToElement(template(context));
