@@ -56,3 +56,23 @@ nav {
     border: 1px solid var(--background-tertiary, rgba(41, 44, 47, 0.12));
     background: var(--background-primary, #fffaff);
 }
+
+.search-field {
+    // background: url('../icons/search.svg') no-repeat scroll 7px 50%;
+    padding-left: 30px;
+}
+
+.search-field-input {
+    color: var(--vkui-color-text-secondary, #87898f);
+    font-feature-settings:
+        'clig' off,
+        'liga' off;
+    width: 100%;
+    /* Text */
+    font-family: Arial;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    /* 125% */
+}

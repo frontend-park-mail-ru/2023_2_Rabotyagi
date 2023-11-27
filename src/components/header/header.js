@@ -13,6 +13,8 @@ import button from '../button/button.js';
 import svg from '../svg/svg.js';
 import logo from '../../assets/icons/logo.svg';
 import cart from '../../assets/icons/cart.svg';
+import { Product } from '../../shared/api/product.js';
+import Dropdown from '../dropdown/dropdown.js';
 
 const buttons = {
     cart: {
@@ -99,6 +101,11 @@ export class Header {
         buttonBox.replaceWith(cartBtn);
     }
 
+    // renderSuggestionBox(body) {
+    //     const root = document.createElement('div');
+
+    // }
+
     addEventListeners() {
         this.root.querySelectorAll('button[data-link]').forEach(item =>
             item.addEventListener('click', (e) => {
@@ -106,6 +113,63 @@ export class Header {
                 window.Router.navigateTo(item.dataset.link);
             }, { capture: false }),
         );
+
+        const form = this.root.querySelector('.search-box');
+        const input = form.querySelector('input');
+
+        input.addEventListener('input', async(e) => {
+
+            if (input.value && e.data) {
+                const res = await Product.search(input.value);
+
+                const dropdownContext = {
+                    id: 'search-dropdown',
+                    search: false,
+                    items: () => {
+                        let data = [];
+                        if (res.status !== 222 && res.body) {
+                            res.body.forEach((item, index) => {
+                                data = [...data,
+                                    [`item${index}`, item],
+                                ];
+                            });
+                        }
+                        else {
+                            data = ['', 'Результатов поиска нет'];
+                        }
+
+                        return data;
+                    },
+                };
+
+                const dropdown = new Dropdown(dropdownContext).render();
+                dropdown.classList.toggle('hidden');
+                form.querySelector('#search-dropdown')?.remove();
+
+                dropdown.querySelectorAll('button').forEach((btn) => btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    input.value = btn.querySelector('span').textContent;
+                    input.dispatchEvent(new Event('input'));
+                }));
+                input.after(dropdown);
+            }
+
+            if (!e.data && input.value) {
+                setTimeout(() => form.dispatchEvent(new Event('submit')), 200);
+            }
+        });
+        form.addEventListener('submit', async(e) => {
+            e.preventDefault();
+
+            const search = form.elements[0];
+            const value = search.value;
+
+            const res = await Product.searchFeed(value);
+            window.Router.navigateTo('/', {
+                products: res.body,
+            });
+        });
     }
 
     renderProfile(nav) {
@@ -113,8 +177,9 @@ export class Header {
         const profileBtn = new ProfileBtn().render();
 
         store.cart.addListener(this.updateCartButton.bind(this));
-
-        nav.append(cartBtn, profileBtn);
+        nav.querySelector('#cart-btn').replaceWith(cartBtn);
+        nav.querySelector('#profileBtn').replaceWith(profileBtn);
+        nav.querySelector('#auth-box').remove();
     }
 
     renderAuthBox(nav) {
@@ -125,23 +190,21 @@ export class Header {
         const signupBtn = button(buttons.signup);
 
         authBox.append(signinBtn, signupBtn);
-        nav.append(authBox);
+        nav.querySelector('#auth-box').replaceWith(authBox);
+        nav.querySelector('#cart-btn').remove();
+        nav.querySelector('#profileBtn').remove();
     }
 
     async preRender() {
         buttons.cart.text.content = store.cart.getCount();
-
         store.categories.refresh();
-        const authorized = store.user.isAuth();
 
         this.root = stringToElement(template());
         const nav = this.root.querySelector('nav');
-
         const logoBtn = button(buttons.logo);
         const productCreateBtn = button(buttons.productCreate);
 
-        nav.appendChild(logoBtn);
-        nav.appendChild(productCreateBtn);
+        const authorized = store.user.isAuth();
 
         productCreateBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -151,6 +214,9 @@ export class Header {
                 window.Router.navigateTo('/signin');
             }
         });
+
+        nav.querySelector('#logo-btn').replaceWith(logoBtn);
+        nav.querySelector('#product-create').replaceWith(productCreateBtn);
 
         authorized ? this.renderProfile(nav) : this.renderAuthBox(nav);
 

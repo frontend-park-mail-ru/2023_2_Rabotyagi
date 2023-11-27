@@ -6,8 +6,8 @@ export const Product = {
         return await ajax.get({
             url: PRODUCT_API.LIST,
             params: {
-                count: 20,
-                last_id: 0,
+                'count': 20,
+                'last_id': 0,
             },
         });
     },
@@ -16,7 +16,7 @@ export const Product = {
         return await ajax.get({
             url: PRODUCT_API.GET,
             params: {
-                id: id,
+                'id': id,
             },
             // credentials: 'include'
         });
@@ -34,7 +34,7 @@ export const Product = {
         return await ajax.delete({
             url: PRODUCT_API.DELETE,
             params: {
-                id: id,
+                'id': id,
             },
             credentials: 'include',
         });
@@ -44,7 +44,7 @@ export const Product = {
         return await ajax.patch({
             url: PRODUCT_API.PATCH,
             params: {
-                id: id,
+                'id': id,
             },
             body: data,
             credentials: 'include',
@@ -55,7 +55,7 @@ export const Product = {
         return await ajax.patch({
             url: PRODUCT_API.ACTIVATE,
             params: {
-                id: id,
+                'id': id,
             },
             credentials: 'include',
         });
@@ -65,7 +65,7 @@ export const Product = {
         return await ajax.patch({
             url: PRODUCT_API.DEACTIVATE,
             params: {
-                id: id,
+                'id': id,
             },
             credentials: 'include',
         });
@@ -75,9 +75,31 @@ export const Product = {
         return await ajax.put({
             url: PRODUCT_API.PUT,
             params: {
-                id: id,
+                'id': id,
             },
             body: data,
+            credentials: 'include',
+        });
+    },
+
+    search: async(searchString) => {
+        return await ajax.get({
+            url: PRODUCT_API.SEARCH,
+            params: {
+                'searched': searchString,
+            },
+            credentials: 'include',
+        });
+    },
+
+    searchFeed: async(searchString) => {
+        return await ajax.get({
+            url: PRODUCT_API.SEARCH_FEED,
+            params: {
+                'count': 20,
+                'offset': 0,
+                'searched': searchString,
+            },
             credentials: 'include',
         });
     },
