@@ -1,21 +1,34 @@
 import template from './templates/settings.hbs';
 import './styles/settings.scss';
+
+import { store } from '../../shared/store/store';
+
+import { ErrorMessageBox } from '../../components/error/errorMessageBox';
+import button from '../../components/button/button';
+
+import { User } from '../../shared/api/user';
+import { Files } from '../../shared/api/file';
+import statuses from '../../shared/statuses/statuses';
+
 import { stringToElement } from '../../shared/utils/parsing';
 import { cookieParser } from '../../shared/utils/cookie';
-import button from '../../components/button/button';
-import { User } from '../../shared/api/user';
-import { ErrorMessageBox } from '../../components/error/errorMessageBox';
-import { store } from '../../shared/store/store';
 import { extname } from '../../shared/utils/extname';
-import { Files } from '../../shared/api/file';
 
 class Settings {
     async patchProfile(data, errorBox) {
         const res = await User.patchProfile(data);
         const body = res.body;
 
-        if (res.status !== 200) {
-            errorBox.replaceWith(ErrorMessageBox(body.message, 'errorBox'));
+        if (!statuses.IsSuccessfulRequest(res)) {
+            if (statuses.IsBadFormatRequest(res)) {
+                errorBox.replaceWith(ErrorMessageBox(statuses.USER_MESSAGE, 'errorBox'));
+            } 
+            else if (statuses.IsInternalServerError(res)) {
+                errorBox.replaceWith(ErrorMessageBox(statuses.SERVER_MESSAGE, 'errorBox'));
+            }
+            else if (statuses.IsUserError(res)) {
+                errorBox.replaceWith(ErrorMessageBox(body.message, 'errorBox'));
+            }
 
             return;
         }
@@ -29,10 +42,20 @@ class Settings {
         if (this.avatarForUpload) {
             const res = await Files.images(this.avatarForUpload);
 
-            if (res.status !== 200) {
+            if (!statuses.IsSuccessfulRequest(res)) {
                 this.errorBox.innerHTML = '';
-                this.errorBox.append(ErrorMessageBox(res.body.error));
+
+                if (statuses.IsBadFormatRequest(res)) {
+                    this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
+                } 
+                else if (statuses.IsInternalServerError(res)) {
+                    this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
+                }
+                else if (statuses.IsUserError(res)) {
+                    this.errorBox.append(ErrorMessageBox(res.body.error));
+                }
             }
+
             this.uploadedAvatar = res.body.urls[ 0 ];
         }
     }
@@ -126,9 +149,17 @@ class Settings {
             body = res.body;
 
             const errorBox = this.root.querySelector('#errorBox');
-            if (res.status !== 200) {
-                errorBox.replaceWith(ErrorMessageBox(body.error, 'errorBox'));
-
+            if (!statuses.IsSuccessfulRequest(res)) {
+                if (statuses.IsBadFormatRequest(res)) {
+                    errorBox.replaceWith(ErrorMessageBox(statuses.USER_MESSAGE, 'errorBox'));
+                } 
+                else if (statuses.IsInternalServerError(res)) {
+                    errorBox.replaceWith(ErrorMessageBox(statuses.SERVER_MESSAGE, 'errorBox'));
+                }
+                else if (statuses.IsUserError(res)) {
+                    errorBox.replaceWith(ErrorMessageBox(body.error, 'errorBox'));
+                }
+    
                 return;
             }
 

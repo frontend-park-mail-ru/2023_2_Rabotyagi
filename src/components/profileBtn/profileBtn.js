@@ -1,8 +1,11 @@
 import template from './profileBtn.hbs';
 import './profileBtn.scss';
-import { stringToElement } from '../../shared/utils/parsing';
+
 import Dropdown from '../dropdown/dropdown';
+
 import { store } from '../../shared/store/store';
+
+import { stringToElement } from '../../shared/utils/parsing';
 import { deleteCookie } from '../../shared/utils/cookie';
 import { getResourceUrl } from '../../shared/utils/getResource';
 

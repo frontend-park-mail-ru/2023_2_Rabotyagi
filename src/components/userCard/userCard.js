@@ -1,7 +1,9 @@
-import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './userCard.hbs';
 import './userCard.scss';
+
 import button from '../button/button.js';
+
+import { stringToElement } from '../../shared/utils/parsing.js';
 
 export class UserCard {
     #id;

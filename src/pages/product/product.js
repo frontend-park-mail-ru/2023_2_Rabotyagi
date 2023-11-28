@@ -1,19 +1,24 @@
-import { stringToElement } from '../../shared/utils/parsing.js';
 import templateView from './templates/productView.hbs';
 import templateAdd from './templates/productAdd.hbs';
-// import templateChange from './productChange.hbs';
 import './styles/product.scss';
-import { Header } from '../../components/header/header.js';
-import { Product } from '../../shared/api/product.js';
-import { loaderRegular } from '../../components/loader/loader.js';
-import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
+
+import { store } from '../../shared/store/store.js';
+
 import Menu from './menu.js';
 import Content from './content.js';
-import { User } from '../../shared/api/user.js';
+
+import { Header } from '../../components/header/header.js';
+import { loaderRegular } from '../../components/loader/loader.js';
+import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
 import button from '../../components/button/button.js';
-import { store } from '../../shared/store/store.js';
+
+import { Product } from '../../shared/api/product.js';
+import { User } from '../../shared/api/user.js';
 import { Files } from '../../shared/api/file.js';
+import statuses from '../../shared/statuses/statuses.js';
+
 import { extname } from '../../shared/utils/extname.js';
+import { stringToElement } from '../../shared/utils/parsing.js';
 
 class ProductPage {
     async getSaler(salerID) {
@@ -27,8 +32,16 @@ class ProductPage {
             const respPost = await Product.get(id);
             const bodyPost = respPost.body;
 
-            if (respPost.status != 200) {
-                throw new Error(bodyPost.error);
+            if (!statuses.IsSuccessfulRequest(respPost)) {
+                if (statuses.IsBadFormatRequest(respPost)) {
+                    throw statuses.USER_MESSAGE;
+                } 
+                else if (statuses.IsInternalServerError(respPost)) {
+                    throw statuses.SERVER_MESSAGE;
+                }
+                else if (statuses.IsUserError(respPost)) {
+                    throw bodyPost.error;
+                }
             }
 
             const respSaler = await this.getSaler(bodyPost.saler_id);
@@ -70,12 +83,22 @@ class ProductPage {
         if (this.imagesForUpload) {
             const res = await Files.images(this.imagesForUpload);
 
-            if (res.status !== 200) {
+            if (!statuses.IsSuccessfulRequest(res)) {
                 this.errorBox.innerHTML = '';
-                this.errorBox.append(ErrorMessageBox(res.body.error));
+                
+                if (statuses.IsBadFormatRequest(res)) {
+                    this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
+                } 
+                else if (statuses.IsInternalServerError(res)) {
+                    this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
+                }
+                else if (statuses.IsUserError(res)) {
+                    this.errorBox.append(ErrorMessageBox(res.body.error));
+                }
 
                 return;
             }
+
             this.uploadedImages = res.body.urls;
         }
     }
@@ -153,7 +176,7 @@ return;
         const res = await Product.create(body);
         body = res.body;
 
-        if (res.status === 303) {
+        if (statuses.IsRedirectResponse(res)) {
             window.Router.navigateTo('/product', { productId: body.id });
 
 return;

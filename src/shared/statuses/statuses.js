@@ -27,10 +27,21 @@ class Statuses {
 
     /**
      * status_internal_server - используется когда произошла ошибка на сервере.
-     * @constant
      * @type {number}
      */
     STATUS_INTERNAL_SERVER = 5000;
+
+    /**
+     * user_message - используется как сообщение для пользователя при ошибке разработчика
+     * @type {string}
+     */
+    USER_MESSAGE = 'Произошла внутренняя ошибка';
+
+    /**
+     * server_message - используется как сообщение при ошибке на сервере
+     * @type {string}
+     */
+    SERVER_MESSAGE = 'Ошибка на сервере';
 
     /**
      * @summary определяет является ли запрос успешным

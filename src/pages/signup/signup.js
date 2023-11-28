@@ -2,18 +2,23 @@
  * @module signupPage
  * @file signupPage.js
  */
-
-import { store } from '../../shared/store/store.js';
-import { cookieParser } from '../../shared/utils/cookie.js';
-import Validate from '../../shared/utils/validation.js';
-import { Auth } from '../../shared/api/auth.js';
-import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
-import { stringToElement } from '../../shared/utils/parsing.js';
 import template from './signup.hbs';
 import './signup.scss';
+
+import { store } from '../../shared/store/store.js';
+
+import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
 import button from '../../components/button/button.js';
+
+import { Auth } from '../../shared/api/auth.js';
+import statuses from '../../shared/statuses/statuses.js';
+
 import svg from '../../components/svg/svg.js';
 import logo from '../../assets/icons/logo.svg';
+
+import { cookieParser } from '../../shared/utils/cookie.js';
+import { stringToElement } from '../../shared/utils/parsing.js';
+import Validate from '../../shared/utils/validation.js';
 
 export class SignupPage {
     /**
@@ -50,12 +55,22 @@ export class SignupPage {
             const resp = await Auth.signup(email, password);
             const body = resp.body;
 
-            if (resp.status != 200) {
+            if (!statuses.IsSuccessfulRequest(resp)) {
                 errorBox.innerHTML = '';
-                errorBox.appendChild(ErrorMessageBox(body.error));
+
+                if (statuses.IsBadFormatRequest(resp)) {
+                    errorBox.appendChild(ErrorMessageBox(statuses.USER_MESSAGE));
+                } 
+                else if (statuses.IsInternalServerError(resp)) {
+                    errorBox.appendChild(ErrorMessageBox(statuses.SERVER_MESSAGE));
+                }
+                else if (statuses.IsUserError(resp)) {
+                    errorBox.appendChild(ErrorMessageBox(body.error));
+                }
 
                 return false;
             }
+
             const accessToken = cookieParser(document.cookie).access_token;
             await store.user.login(accessToken);
             store.cart.clear();

@@ -1,18 +1,22 @@
-import { stringToElement } from '../../shared/utils/parsing';
+import Handlebars from 'handlebars/runtime';
 import template from './templates/content.hbs';
 import templateChange from './templates/contentChange.hbs';
-import button from '../../components/button/button';
-// import svg from '../../components/svg/svg';
-// import favIcon from '../../assets/icons/fav.svg';
-import { User } from '../../shared/api/user';
+
 import { store } from '../../shared/store/store';
-import { Product } from '../../shared/api/product';
-import Handlebars from 'handlebars/runtime';
+
 import { ErrorMessageBox } from '../../components/error/errorMessageBox';
 import { Carousel } from '../../components/carousel/carousel';
+
+import button from '../../components/button/button';
+
+import { User } from '../../shared/api/user';
+import { Product } from '../../shared/api/product';
+import { Files } from '../../shared/api/file';
+import statuses from '../../shared/statuses/statuses';
+
 import { getResourceUrl } from '../../shared/utils/getResource';
 import { extname } from '../../shared/utils/extname';
-import { Files } from '../../shared/api/file';
+import { stringToElement } from '../../shared/utils/parsing';
 
 class Content {
 
@@ -31,12 +35,22 @@ class Content {
         if (this.imagesForUpload) {
             const res = await Files.images(this.imagesForUpload);
 
-            if (res.status !== 200) {
+            if (!statuses.IsSuccessfulRequest(res)) {
                 this.errorBox.innerHTML = '';
-                this.errorBox.append(ErrorMessageBox(res.body.error));
+
+                if (statuses.IsBadFormatRequest(res)) {
+                    this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
+                } 
+                else if (statuses.IsInternalServerError(res)) {
+                    this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
+                }
+                else if (statuses.IsUserError(res)) {
+                    this.errorBox.append(ErrorMessageBox(res.body.error));
+                }
 
                 return;
             }
+
             this.uploadedImages = res.body.urls;
         }
     }
@@ -125,14 +139,22 @@ class Content {
             const res = await Product.put(this.context.id, body);
             body = res.body;
 
-            if (res.status === 303){
+            if (statuses.IsRedirectResponse(res)){
                 window.Router.navigateTo('/product', { productId: this.context.id });
 
                 return;
             }
 
             this.errorBox.innerHTML = '';
-            this.errorBox.appendChild(ErrorMessageBox(body.error));
+            if (statuses.IsBadFormatRequest(res)) {
+                this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
+            } 
+            else if (statuses.IsInternalServerError(res)) {
+                this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
+            }
+            else if (statuses.IsUserError(res)) {
+                this.errorBox.append(ErrorMessageBox(body.error));
+            }
 
             return;
 

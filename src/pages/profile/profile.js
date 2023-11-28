@@ -1,21 +1,28 @@
-import { stringToElement } from '../../shared/utils/parsing.js';
 import template from './templates/profile.hbs';
 import './styles/profile.scss';
-import { Header } from '../../components/header/header.js';
+
 import { store } from '../../shared/store/store.js';
+
 import { Router, Route } from '../../shared/services/router.js';
+
 import Orders from './orders.js';
 import Products from './products.js';
+import Settings from './settings.js';
+import Favourite from './favourite.js';
+
+import { Header } from '../../components/header/header.js';
 import button from '../../components/button/button.js';
+
+import { User } from '../../shared/api/user.js';
+
 import svg from '../../components/svg/svg.js';
 import listIcon from '../../assets/icons/list-ad.svg';
 import cartIcon from '../../assets/icons/cart.svg';
 import settingsIcon from '../../assets/icons/settings.svg';
 import favIcon from '../../assets/icons/fav.svg';
-import Settings from './settings.js';
-import { User } from '../../shared/api/user.js';
+
 import { getResourceUrl } from '../../shared/utils/getResource.js';
-import Favourite from './favourite.js';
+import { stringToElement } from '../../shared/utils/parsing.js';
 
 class Profile {
     activePage = null;
