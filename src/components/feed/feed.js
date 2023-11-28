@@ -1,14 +1,17 @@
 /**
  * @module Feed
  */
+import template from './feed.hbs';
+import './feed.scss';
 
 import { Card } from '../card/card.js';
 import { ErrorMessageBox } from '../error/errorMessageBox.js';
-import { Product } from '../../shared/api/product.js';
 import { loaderRegular } from '../loader/loader.js';
+
+import { Product } from '../../shared/api/product.js';
+import statuses from '../../shared/statuses/statuses.js';
+
 import { stringToElement } from '../../shared/utils/parsing.js';
-import template from './feed.hbs';
-import './feed.scss';
 
 /**
  * @class Блок с объявлениями
@@ -20,8 +23,16 @@ export class Feed {
             const resp = await Product.feed();
             const body = resp.body;
 
-            if (resp.status !== 200) {
-                throw resp.body.error;
+            if (!statuses.IsSuccessfulRequest(resp)) {
+                if (statuses.IsBadFormatRequest(resp)) {
+                    throw statuses.USER_MESSAGE;
+                } 
+                else if (statuses.IsInternalServerError(resp)) {
+                    throw statuses.SERVER_MESSAGE;
+                }
+                else if (statuses.IsUserError(resp)) {
+                    throw body.error;
+                }
             }
             container.innerHTML = '';
 

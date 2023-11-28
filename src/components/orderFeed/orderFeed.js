@@ -1,16 +1,20 @@
 /**
  * @module OrderFeed
  */
-
-import { store } from '../../shared/store/store.js';
-import { OrderCard } from '../orderCard/orderCard.js';
-import { UserCard } from '../userCard/userCard.js';
-import { Order } from '../../shared/api/order.js';
-import { loaderRegular } from '../loader/loader.js';
-import { stringToElement } from '../../shared/utils/parsing.js';
-import button from '../button/button.js';
 import template from './orderFeed.hbs';
 import './orderFeed.scss';
+
+import { OrderCard } from '../orderCard/orderCard.js';
+import { UserCard } from '../userCard/userCard.js';
+import { loaderRegular } from '../loader/loader.js';
+import button from '../button/button.js';
+
+import { Order } from '../../shared/api/order.js';
+import statuses from '../../shared/statuses/statuses.js';
+
+import { stringToElement } from '../../shared/utils/parsing.js';
+
+import { store } from '../../shared/store/store.js';
 import dispatcher from '../../shared/dispatcher/dispatcher.js';
 
 /**
@@ -46,8 +50,16 @@ export class OrderFeed {
         try {
             const resp = await Order.buyAll();
             const body = resp.body;
-            if (resp.status != 200) {
-                throw body.error;
+            if (!statuses.IsSuccessfulRequest(resp)) {
+                if (statuses.IsBadFormatRequest(resp)) {
+                    throw statuses.USER_MESSAGE;
+                } 
+                else if (statuses.IsInternalServerError(resp)) {
+                    throw statuses.SERVER_MESSAGE;
+                }
+                else if (statuses.IsUserError(resp)) {
+                    throw body.error;
+                }
             }
             dispatcher.dispatch({ type: 'BUY_ALL' });
         } catch(err) {

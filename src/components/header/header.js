@@ -4,12 +4,16 @@
  */
 
 'use strict';
-import { store } from '../../shared/store/store.js';
-import { stringToElement } from '../../shared/utils/parsing.js';
-import ProfileBtn from '../profileBtn/profileBtn.js';
 import template from './header.hbs';
 import './header.scss';
+
+import { store } from '../../shared/store/store.js';
+
+import ProfileBtn from '../profileBtn/profileBtn.js';
 import button from '../button/button.js';
+
+import { stringToElement } from '../../shared/utils/parsing.js';
+
 import svg from '../svg/svg.js';
 import logo from '../../assets/icons/logo.svg';
 import cart from '../../assets/icons/cart.svg';

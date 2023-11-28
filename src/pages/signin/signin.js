@@ -2,19 +2,25 @@
  * @module signinPage
  * @file signin.js
  */
-
-import { store } from '../../shared/store/store.js';
-import { cookieParser } from '../../shared/utils/cookie.js';
-import Validate from '../../shared/utils/validation.js';
-import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
-import { Auth } from '../../shared/api/auth.js';
-import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './signin.hbs';
 import './signin.scss';
+
+import { store } from '../../shared/store/store.js';
+
+import { cookieParser } from '../../shared/utils/cookie.js';
+import Validate from '../../shared/utils/validation.js';
+
+import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
 import button from '../../components/button/button.js';
+
+import { Auth } from '../../shared/api/auth.js';
+import { Order } from '../../shared/api/order.js';
+import statuses from '../../shared/statuses/statuses.js';
+
 import svg from '../../components/svg/svg.js';
 import logo from '../../assets/icons/logo.svg';
-import { Order } from '../../shared/api/order.js';
+
+import { stringToElement } from '../../shared/utils/parsing.js';
 
 /**
  * @class signinPage
@@ -46,8 +52,16 @@ export class SigninPage {
             const resp = await Auth.signin(email, pass);
             const body = resp.body;
 
-            if (resp.status != 200) {
-                throw new Error(body.error);
+            if (!statuses.IsSuccessfulRequest(resp)) {
+                if (statuses.IsBadFormatRequest(resp)) {
+                    throw statuses.USER_MESSAGE;
+                } 
+                else if (statuses.IsInternalServerError(resp)) {
+                    throw statuses.SERVER_MESSAGE;
+                }
+                else if (statuses.IsUserError(resp)) {
+                    throw body.error;
+                }
             }
             const accessToken = cookieParser(document.cookie).access_token;
             await store.user.login(accessToken);
@@ -56,8 +70,16 @@ export class SigninPage {
             const respCart = await Order.getCart();
             const bodyCart = respCart.body;
 
-            if (respCart.status != 200) {
-                throw bodyCart.error;
+            if (!statuses.IsSuccessfulRequest(respCart)) {
+                if (statuses.IsBadFormatRequest(respCart)) {
+                    throw statuses.USER_MESSAGE;
+                } 
+                else if (statuses.IsInternalServerError(respCart)) {
+                    throw statuses.SERVER_MESSAGE;
+                }
+                else if (statuses.IsUserError(respCart)) {
+                    throw bodyCart.error;
+                }
             }
 
             return true;

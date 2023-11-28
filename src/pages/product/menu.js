@@ -1,12 +1,17 @@
-import { stringToElement } from '../../shared/utils/parsing';
 import template from './templates/menu.hbs';
-import button from '../../components/button/button';
-import { Order } from '../../shared/api/order.js';
+
 import { store } from '../../shared/store/store.js';
 import dispatcher from '../../shared/dispatcher/dispatcher.js';
+
 import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
-import { getResourceUrl } from '../../shared/utils/getResource.js';
+import button from '../../components/button/button';
+
+import { Order } from '../../shared/api/order.js';
 import { User } from '../../shared/api/user.js';
+import statuses from '../../shared/statuses/statuses.js';
+
+import { getResourceUrl } from '../../shared/utils/getResource.js';
+import { stringToElement } from '../../shared/utils/parsing';
 
 const buttonTemplates = {
     btnAd: {
@@ -57,9 +62,19 @@ class Menu {
                 'product_id': this.context.productId,
             });
             const body = resp.body;
-            if (resp.status != 200) {
-                throw body.error;
+
+            if (!statuses.IsSuccessfulRequest(resp)) {
+                if (statuses.IsBadFormatRequest(resp)) {
+                    throw statuses.USER_MESSAGE;
+                } 
+                else if (statuses.IsInternalServerError(resp)) {
+                    throw statuses.SERVER_MESSAGE;
+                }
+                else if (statuses.IsUserError(resp)) {
+                    throw body.error;
+                }
             }
+
             dispatcher.dispatch({ type: 'ADD_GOOD', payload: {
                 order: body,
                 saler: this.context.saler,
@@ -74,8 +89,16 @@ class Menu {
     async addToFav() {
         const resp = await User.addToFav(this.context.productId);
 
-        if (resp.status !== 303) {
-            throw new Error(resp.body.error);
+        if (!statuses.IsRedirectResponse(resp)) {
+            if (statuses.IsBadFormatRequest(resp)) {
+                throw statuses.USER_MESSAGE;
+            } 
+            else if (statuses.IsInternalServerError(resp)) {
+                throw statuses.SERVER_MESSAGE;
+            }
+            else if (statuses.IsUserError(resp)) {
+                throw resp.body.error;
+            }
         }
 
         return;
