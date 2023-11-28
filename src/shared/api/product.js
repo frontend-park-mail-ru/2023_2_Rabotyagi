@@ -18,7 +18,7 @@ export const Product = {
             params: {
                 'id': id,
             },
-            // credentials: 'include'
+            credentials: 'include',
         });
     },
 
