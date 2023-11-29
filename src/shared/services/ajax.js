@@ -5,7 +5,7 @@
 
 import { applicationJson, multipartFormData } from '../constants/contentType';
 
-const { SCHEMA, API_URL } = process.env;
+const { SCHEMA, API_URL, API_PORT } = process.env;
 
 /**
  * @constant
@@ -25,9 +25,16 @@ const AJAX_METHODS = {
  * @class
  */
 class Ajax {
-    port = '8080';
 
-    ADRESS_BACKEND = SCHEMA + API_URL + `:${this.port}/api/v1/`;
+    constructor() {
+        if (API_PORT) {
+            this.ADRESS_BACKEND = SCHEMA + API_URL + ':' + API_PORT + '/api/v1';
+        }
+        else {
+            this.ADRESS_BACKEND = SCHEMA + API_URL + '/api/v1';
+        }
+
+    }
 
     /**
      * @async

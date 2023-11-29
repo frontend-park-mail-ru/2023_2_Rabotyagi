@@ -27,6 +27,10 @@ services:
         restart: always
         env_file:
             - .env/.env.fs
+
+        expose:
+            - 8081
+            - 8011
         # ports:
         #     - 8081:8081
         #      - 8011:8011
@@ -44,8 +48,6 @@ services:
         expose:
             - 8012
             - 8011
-        # ports:
-        #     - '8012'
         depends_on:
             - postgres
         volumes:
