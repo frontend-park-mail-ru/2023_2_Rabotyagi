@@ -71,12 +71,11 @@ class Ajax {
         if (body != null) {
             switch (contentType){
                 case applicationJson:
-                    url = this.ADRESS_BACKEND + url;
                     config.body = JSON.stringify(body);
                     break;
 
                 case multipartFormData: {
-                    url = this.ADRESS_UPLOAD + url;
+                    // url = this.ADRESS_UPLOAD + url;
                     const formData = new FormData();
                     if (Object.keys(body).length !== 0) {
                         Object.keys(body).forEach((key) => {
@@ -100,6 +99,7 @@ class Ajax {
             config.credentials = credentials;
         }
 
+        url = this.ADRESS_BACKEND + url;
         if (params) {
             url += `?${new URLSearchParams(params)}`;
         }
