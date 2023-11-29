@@ -11,6 +11,7 @@ import { Product } from '../../shared/api/product.js';
 import { getResourceUrl } from '../../shared/utils/getResource.js';
 import { store } from '../../shared/store/store.js';
 import { User } from '../../shared/api/user.js';
+import statuses from '../../shared/statuses/statuses.js';
 
 const buttons = {
     delete: () => button({
@@ -146,28 +147,12 @@ export class Card {
             e.stopPropagation();
             const res = await User.removeFromFav(Number(this.context.id));
 
-            if (res.status === 303) {
+            if (statuses.IsRedirectResponse(res)) {
                 this.root.remove();
             }
         });
 
         this.root.querySelector('#btn-delete')?.replaceWith(btnDelete);
-
-        btnDelete.previousElementSibling.addEventListener('click', async(e) => {
-            e.stopPropagation();
-
-            const res = await User.removeFromFav(this.context.id);
-
-            if (res.status === 200) {
-                if (this.updateVariant === 'remove') {
-                    this.root.remove();
-                }
-                else if (this.updateVariant === 'reRender') {
-                    this.reRenderStateButton();
-                }
-            }
-
-        });
     }
 
     /**

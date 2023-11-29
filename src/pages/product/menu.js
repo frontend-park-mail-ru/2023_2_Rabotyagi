@@ -66,7 +66,7 @@ class Menu {
             if (!statuses.IsSuccessfulRequest(resp)) {
                 if (statuses.IsBadFormatRequest(resp)) {
                     throw statuses.USER_MESSAGE;
-                } 
+                }
                 else if (statuses.IsInternalServerError(resp)) {
                     throw statuses.SERVER_MESSAGE;
                 }
@@ -92,7 +92,7 @@ class Menu {
         if (!statuses.IsRedirectResponse(resp)) {
             if (statuses.IsBadFormatRequest(resp)) {
                 throw statuses.USER_MESSAGE;
-            } 
+            }
             else if (statuses.IsInternalServerError(resp)) {
                 throw statuses.SERVER_MESSAGE;
             }
@@ -109,14 +109,22 @@ class Menu {
         const btnAd = button(buttonTemplates.btnAd);
         const btnOpenProfile = button(buttonTemplates.openProfile);
         const btnAddToFav = button(buttonTemplates.addToFav);
+
+        if (store.favs.getById(this.context.productId)){
+            btnAddToFav.querySelector('span').textContent = 'Уже в избранном!';
+            btnAddToFav.setAttribute('disabled', 'true');
+        }
+
         root.querySelector('.saler').after(btnAd);
         btnAd.after(btnOpenProfile);
 
         btnOpenProfile.addEventListener('click', () => window.Router.navigateTo('/saler/products', { salerId: this.context.saler.id, variant: 'saler' }));
         btnAddToFav.addEventListener('click', () => {
             this.addToFav()
-            .then(() => {
+            .then(async() => {
                 btnAddToFav.querySelector('span').textContent = 'Уже в избранном!';
+                btnAddToFav.setAttribute('disabled', 'true');
+                await store.favs.refresh();
             })
             .catch(err => {
                 console.error(err);
