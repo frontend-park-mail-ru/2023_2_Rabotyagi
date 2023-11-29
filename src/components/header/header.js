@@ -105,11 +105,6 @@ export class Header {
         buttonBox.replaceWith(cartBtn);
     }
 
-    // renderSuggestionBox(body) {
-    //     const root = document.createElement('div');
-
-    // }
-
     addEventListeners() {
         this.root.querySelectorAll('button[data-link]').forEach(item =>
             item.addEventListener('click', (e) => {
@@ -123,14 +118,13 @@ export class Header {
 
         input.addEventListener('input', async(e) => {
             form.querySelector('#header-search-dropdown')?.remove();
-
             if (input.value && (e.data || e.inputType === 'deleteContentBackward')) {
                 const res = await Product.search(input.value);
 
                 const dropdownContext = {
                     id: 'header-search-dropdown',
                     search: false,
-                    items: () => {
+                    items: (() => {
                         let data = [];
                         if (res.status !== 222 && res.body) {
                             res.body.forEach((item, index) => {
@@ -139,26 +133,24 @@ export class Header {
                                 ];
                             });
                         }
-                        else {
-                            data = [
-                                [null, 'Результатов поиска нет', true],
-                            ];
-                        }
 
                         return data;
-                    },
+                    })(),
                 };
 
-                const dropdown = new Dropdown(dropdownContext).render();
-                dropdown.classList.toggle('hidden');
+                if (dropdownContext.items.length > 0) {
+                    const dropdown = new Dropdown(dropdownContext).render();
+                    dropdown.classList.toggle('hidden');
 
-                dropdown.querySelectorAll('button').forEach((btn) => btn.addEventListener('click', (e) => {
-                    e.preventDefault();
+                    dropdown.querySelectorAll('button').forEach((btn) => btn.addEventListener('click', (e) => {
+                        e.preventDefault();
 
-                    input.value = btn.querySelector('span').textContent;
-                    input.dispatchEvent(new Event('input'));
-                }));
-                input.after(dropdown);
+                        input.value = btn.querySelector('span').textContent;
+                        input.dispatchEvent(new Event('input'));
+                    }));
+
+                    input.after(dropdown);
+                }
 
                 return;
             }

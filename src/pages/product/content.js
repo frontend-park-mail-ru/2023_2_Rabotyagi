@@ -40,7 +40,7 @@ class Content {
 
                 if (statuses.IsBadFormatRequest(res)) {
                     this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
-                } 
+                }
                 else if (statuses.IsInternalServerError(res)) {
                     this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
                 }
@@ -148,7 +148,7 @@ class Content {
             this.errorBox.innerHTML = '';
             if (statuses.IsBadFormatRequest(res)) {
                 this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
-            } 
+            }
             else if (statuses.IsInternalServerError(res)) {
                 this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
             }

@@ -1,6 +1,7 @@
 import { stringToElement } from '../../shared/utils/parsing';
 import template from './dropdown.hbs';
 import searchIcon from '../../assets/icons/search.svg';
+import './dropdown.scss';
 
 class Dropdown {
     constructor(context) {
