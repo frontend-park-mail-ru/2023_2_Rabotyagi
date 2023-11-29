@@ -2,6 +2,8 @@ import { User } from '../api/user.js';
 import { cookieParser, deleteCookie } from '../utils/cookie.js';
 import jwtDecode from '../utils/jwt-decode.js';
 
+import statuses from '../statuses/statuses.js';
+
 const user = {
     clear: function() {
         this.state.fields = null;
@@ -37,6 +39,7 @@ const user = {
      * @returns None
      */
     login: async function(accessToken) {
+        
         this.clear();
 
         if (accessToken === undefined) {
@@ -52,10 +55,10 @@ const user = {
         if (id) {
             const res = await User.getProfile(id);
             switch (res.status){
-                case 200:
+                case statuses.STATUS_RESPONSE_SUCCESSFUL:
                     this.update(res.body);
                     break;
-                case 500:
+                case statuses.STATUS_INTERNAL_SERVER:
                     deleteCookie('access_token');
                     break;
             }
