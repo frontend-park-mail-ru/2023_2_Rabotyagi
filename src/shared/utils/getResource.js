@@ -1,13 +1,5 @@
 import ajax from '../services/ajax';
-const { SCHEMA, API_URL, MOCK, NODE_ENV } = process.env;
-
-let ADRESS_BACKEND;
-
-if (NODE_ENV === 'production'){
-    ADRESS_BACKEND = SCHEMA + API_URL + '/api/v1/';
-} else {
-    ADRESS_BACKEND = ajax.ADRESS_BACKEND;
-}
+const { MOCK } = process.env;
 
 export const getResourceUrl = (resource) => {
     if (!resource) {
@@ -17,17 +9,17 @@ export const getResourceUrl = (resource) => {
         if (Array.isArray(resource)) {
             return resource.map((res) => {
 
-                res.url = ADRESS_BACKEND + res.url;
+                res.url = ajax.ADRESS_BACKEND + res.url;
 
                 return res;
             });
         }
 
         if (typeof resource === 'string'){
-            return ADRESS_BACKEND + resource;
+            return ajax.ADRESS_BACKEND + resource;
         }
 
-        resource.url = ADRESS_BACKEND + resource.url;
+        resource.url = ajax.ADRESS_BACKEND + resource.url;
 
         return resource;
     }

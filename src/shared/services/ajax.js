@@ -5,7 +5,7 @@
 
 import { applicationJson, multipartFormData } from '../constants/contentType';
 
-const { SCHEMA, API_URL } = process.env;
+const { SCHEMA, API_URL, NODE_ENV } = process.env;
 
 /**
  * @constant
@@ -25,11 +25,14 @@ const AJAX_METHODS = {
  * @class
  */
 class Ajax {
-    port = '8080';
-
-    ADRESS_BACKEND = SCHEMA + API_URL + `:${this.port}/api/v1/`;
-    ADRESS_UPLOAD = SCHEMA + API_URL + ':8081/api/v1/';
-
+    constructor() {
+        if (NODE_ENV === 'production') {
+            this.ADRESS_BACKEND = SCHEMA + API_URL + '/api/v1/';
+        }
+        else {
+            this.ADRESS_BACKEND = SCHEMA + API_URL + ':8080/api/v1/';
+        }
+    }
     /**
      * @async
      * @private
