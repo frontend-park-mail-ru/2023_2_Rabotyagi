@@ -10,7 +10,7 @@
             <span class="text-regular">Город</span>
             <select name="city_id">
                 {{#each cities}}
-                <option value="{{this.id}}" {{selected this.id}}>
+                <option value="{{this.id}}" {{selectedCity this.id}}>
                     <span class="text-regular">{{this.name}}</span>
                 </option>
                 {{/each}}
@@ -22,7 +22,7 @@
             <span class="text-regular">Категория</span>
             <select name="category_id">
                 {{#each categories}}
-                    <option value="{{this.id}}" {{selected this.id}}>
+                    <option value="{{this.id}}" {{selectedCategory this.id}}>
                         <span class="text-regular">{{this.name}}</span>
                     </option>
                 {{/each}}

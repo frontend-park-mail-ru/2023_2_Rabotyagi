@@ -81,8 +81,16 @@ class Content {
     };
 
     renderChange() {
-        Handlebars.registerHelper('selected', (id) => {
+        Handlebars.registerHelper('selectedCategory', (id) => {
             if (id === this.context.category_id) {
+                return 'selected';
+            }
+
+            return '';
+        });
+
+        Handlebars.registerHelper('selectedCity', (id) => {
+            if (id === this.context.city_id) {
                 return 'selected';
             }
 
