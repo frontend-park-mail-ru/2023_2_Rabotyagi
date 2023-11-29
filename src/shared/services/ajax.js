@@ -28,6 +28,7 @@ class Ajax {
     port = '8080';
 
     ADRESS_BACKEND = SCHEMA + API_URL + `:${this.port}/api/v1/`;
+    ADRESS_UPLOAD = SCHEMA + API_URL + ':8081/api/v1/';
 
     /**
      * @async
@@ -55,11 +56,6 @@ class Ajax {
         credentials = null,
         contentType = applicationJson,
     } = {}) {
-        url = this.ADRESS_BACKEND + url;
-        if (params) {
-            url += `?${new URLSearchParams(params)}`;
-        }
-
         headers.Accept = applicationJson;
         headers[ 'Content-Type' ] = contentType;
 
@@ -72,10 +68,12 @@ class Ajax {
         if (body != null) {
             switch (contentType){
                 case applicationJson:
+                    url = this.ADRESS_BACKEND + url;
                     config.body = JSON.stringify(body);
                     break;
 
                 case multipartFormData: {
+                    url = this.ADRESS_UPLOAD + url;
                     const formData = new FormData();
                     if (Object.keys(body).length !== 0) {
                         Object.keys(body).forEach((key) => {
@@ -97,6 +95,10 @@ class Ajax {
 
         if (credentials != null) {
             config.credentials = credentials;
+        }
+
+        if (params) {
+            url += `?${new URLSearchParams(params)}`;
         }
 
         return await (await fetch(url, config)).json();
