@@ -76,7 +76,7 @@ class Statuses {
      * @return {boolean}
      */
     IsUserError(body) {
-        return body?.status === STATUS_BAD_CONTENT_REQUEST;
+        return body?.status === this.STATUS_BAD_CONTENT_REQUEST;
     }
 
     /**
@@ -85,8 +85,8 @@ class Statuses {
      * @return {boolean}
      */
     IsInternalServerError(body) {
-        return body?.status === STATUS_INTERNAL_SERVER;
+        return body?.status === this.STATUS_INTERNAL_SERVER;
     }
-};
+}
 
 export default new Statuses();
