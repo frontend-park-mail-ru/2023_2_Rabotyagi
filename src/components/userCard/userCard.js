@@ -1,14 +1,18 @@
-import { stringToElement } from '../../shared/utils/parsing.js';
 import Template from './userCard.hbs';
 import './userCard.scss';
+
 import button from '../button/button.js';
 
+import { stringToElement } from '../../shared/utils/parsing.js';
+
 export class UserCard {
+    #id;
     #name;
     #email;
     #image;
 
-    constructor({ name, email, avatar }) {
+    constructor({ id, name, email, avatar }) {
+        this.#id = id;
         this.#name = name;
         this.#email = email;
         this.#image = avatar;
@@ -19,7 +23,7 @@ export class UserCard {
 
         const context = {
             name: this.#name,
-            email: this.#email
+            email: this.#email,
         };
 
         if (this.#image) {
@@ -30,8 +34,12 @@ export class UserCard {
             variant: 'secondary',
             text: {
                 class: 'text-regular',
-                content: 'Написать продавцу'
-            }
+                content: 'Посмотреть профиль',
+            },
+        });
+        goToSaler.addEventListener('click', (e) => {
+            e.stopPropagation();
+            window.Router.navigateTo('/saler/products', { salerId: this.#id, variant: 'saler' });
         });
 
         const root = stringToElement(template(context));

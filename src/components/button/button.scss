@@ -1,6 +1,6 @@
 @use '../../assets/css/vars.scss';
 
-.btn-base {
+.button-base {
     display: inline-flex;
     height: 36px;
     padding: 6px 12px;
@@ -11,20 +11,20 @@
     border-radius: 8px;
 }
 
-.btn-secondary {
-    @extend .btn-base;
+.button-secondary {
+    @extend .button-base;
     background: vars.$palette-secondary;
     color: vars.$background-primary;
 }
 
-.btn-accent {
-    @extend .btn-base;
+.button-accent {
+    @extend .button-base;
     background: vars.$background-primary;
     color: vars.$text-accent;
 }
 
-.btn-primary {
-    @extend .btn-base;
+.button-primary {
+    @extend .button-base;
     background: vars.$palette-primary;
     color: vars.$background-primary;
 
@@ -37,8 +37,8 @@
     }
 }
 
-.btn-neutral {
-    @extend .btn-base;
+.button-neutral {
+    @extend .button-base;
 
     &.primary {
         background: vars.$background-secondary;
@@ -51,19 +51,12 @@
         &:active {
             background: var(--vkui-color-states-background-secondary-active, #DDDFE4);
         }
-
-        
     }
 
     &.tertiary {
-        &:hover {
+        &:hover, &.active {
             color: vars.$primary-active;
         }
-
-        &.active {
-            color: #9D8DF1;
-        }
-
     }
 
     &.outlined {
@@ -71,12 +64,12 @@
     }
 }
 
-.btn-outlined {
-    @extend .btn-base;
-    border: 1px solid var(--palette-primary, #9D8DF1);
+.button-outlined {
+    @extend .button-base;
+    border: 1px solid var(--palette-primary, #9d8df1);
 
     >span {
-        color: #9D8DF1;
+        color: vars.$palette-primary;
     }
 
     &:hover {

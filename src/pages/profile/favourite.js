@@ -7,7 +7,6 @@ import { ErrorMessageBox } from '../../components/error/errorMessageBox';
 import { Card } from '../../components/card/card';
 import './styles/favourite.scss';
 
-
 class Favourite {
     constructor() {
 
@@ -16,7 +15,7 @@ class Favourite {
     async getFavs(container) {
         try {
             const resp = await User.getFavs();
-            const body = (await resp.json()).body;
+            const body = resp.body;
 
             switch (resp.status) {
                 case 222:
@@ -26,17 +25,15 @@ class Favourite {
 
             container.innerHTML = '';
 
-            if (body.length > 0) {
+            if (body && body.length > 0) {
                 body.forEach((elem) => {
-                    elem.variant = 'profile';
-                    container.appendChild(new Card(elem).render());
+                    container.appendChild(new Card(elem, 'favourite').render());
                 });
             }
             else {
                 container.appendChild(stringToElement(placeholder()));
             }
 
-            
             return;
 
         } catch (err) {

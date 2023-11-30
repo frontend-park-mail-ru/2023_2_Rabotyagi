@@ -1,8 +1,11 @@
 import template from './profileBtn.hbs';
 import './profileBtn.scss';
-import { stringToElement } from '../../shared/utils/parsing';
+
 import Dropdown from '../dropdown/dropdown';
+
 import { store } from '../../shared/store/store';
+
+import { stringToElement } from '../../shared/utils/parsing';
 import { deleteCookie } from '../../shared/utils/cookie';
 import { getResourceUrl } from '../../shared/utils/getResource';
 
@@ -20,7 +23,7 @@ class ProfileBtn {
 
         const avatar = getResourceUrl(store.user.state.fields.avatar);
         const root = stringToElement(template({
-            avatar: avatar
+            avatar: avatar,
         }));
 
         let dropdown = new Dropdown(dropdownContext);
@@ -29,21 +32,21 @@ class ProfileBtn {
 
         function openDropdown() {
             dropdown.classList.toggle(
-                'hidden'
+                'hidden',
             );
             document.body.removeEventListener('click', openDropdown);
         }
-        
+
         root.addEventListener(
             'click',
             (e) => {
                 e.stopPropagation();
                 dropdown.classList.toggle(
-                    'hidden'
+                    'hidden',
                 );
 
                 document.body.addEventListener('click', openDropdown);
-            }
+            },
         );
 
         root.querySelector('#dropdown-btn-logout').addEventListener(
@@ -54,7 +57,7 @@ class ProfileBtn {
                 store.cart.clear();
                 deleteCookie('access_token');
                 window.Router.navigateTo('/signin');
-            }
+            },
         );
 
         root.querySelector('#dropdown-btn-profile').addEventListener('click', (e) => {
@@ -62,13 +65,8 @@ class ProfileBtn {
             window.Router.navigateTo('/profile');
         });
 
-        // root.querySelector('#dropdown-btn-fav').addEventListener('click', (e) => {
-        //     e.stopPropagation();
-        //     window.Router.navigateTo('/profile/favourites');
-        // });
-
         return root;
     }
-};
+}
 
 export default ProfileBtn;

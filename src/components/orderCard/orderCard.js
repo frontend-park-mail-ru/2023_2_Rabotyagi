@@ -1,16 +1,19 @@
-import { stringToElement } from '../../shared/utils/parsing.js';
 import template from './orderCard.hbs';
 import './orderCard.scss';
-import { Order } from '../../shared/api/order.js';
+
 import button from '../button/button.js';
 import { Counter } from '../counter/counter.js';
-import dispatcher from '../../shared/dispatcher/dispatcher.js';
+
+import { Order } from '../../shared/api/order.js';
+import statuses from '../../shared/statuses/statuses.js';
+
+import { stringToElement } from '../../shared/utils/parsing.js';
 import { getResourceUrl } from '../../shared/utils/getResource.js';
 
-// import { store } from '../../shared/store/store.js';
+import dispatcher from '../../shared/dispatcher/dispatcher.js';
 
 export class OrderCard {
-    #order
+    #order;
 
     constructor(order) {
         this.#order = structuredClone(order);
@@ -31,8 +34,8 @@ export class OrderCard {
             subVariant: 'primary',
             text: {
                 class: 'text-regular',
-                content: 'Удалить'
-            }
+                content: 'Удалить',
+            },
         });
 
         this.deleteBtn.addEventListener('click', () => {
@@ -52,18 +55,26 @@ export class OrderCard {
         try {
             const resp = await Order.updateCount({
                 id: this.#order.id,
-                count: count
+                count: count,
             });
             const body = resp.body;
-            if (resp.status != 200) {
-                throw body.error;
+            if (!statuses.IsSuccessfulRequest(resp)) {
+                if (statuses.IsBadFormatRequest(resp)) {
+                    throw statuses.USER_MESSAGE;
+                } 
+                else if (statuses.IsInternalServerError(resp)) {
+                    throw statuses.SERVER_MESSAGE;
+                }
+                else if (statuses.IsUserError(resp)) {
+                    throw body.error;
+                }
             }
             dispatcher.dispatch({ type: 'UPDATE_COUNT_CART', payload: {
                 orderId: Number(this.#order.id),
-                count: count
+                count: count,
             } });
         } catch(err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 
@@ -71,15 +82,23 @@ export class OrderCard {
         try {
             const resp = await Order.deleteOrder(this.#order.id);
             const body = resp.body;
-            if (resp.status != 200) {
-                throw body.error;
+            if (!statuses.IsSuccessfulRequest(resp)) {
+                if (statuses.IsBadFormatRequest(resp)) {
+                    throw statuses.USER_MESSAGE;
+                } 
+                else if (statuses.IsInternalServerError(resp)) {
+                    throw statuses.SERVER_MESSAGE;
+                }
+                else if (statuses.IsUserError(resp)) {
+                    throw body.error;
+                }
             }
             dispatcher.dispatch({ type: 'DELETE_GOOD', payload: this.#order.id });
         } catch(err) {
             // console.log(err);
         }
     }
- 
+
     render() {
         const container = this.root.querySelector('div.right-content');
         container.querySelector('#deleteBtn').replaceWith(this.deleteBtn);

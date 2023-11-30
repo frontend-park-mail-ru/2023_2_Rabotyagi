@@ -1,0 +1,19 @@
+@use '../cardConstants.scss';
+@use '../../../../assets/css/vars.scss';
+
+.image-base {
+    width: -webkit-fill-available;
+    height: 218px;
+    border-radius: cardConstants.$card-radius cardConstants.$card-radius 0 0;
+    flex-shrink: 0;
+    background-color: vars.$background-tertiary;
+    object-fit: cover;
+}
+
+.image-profile {
+    width: 120px;
+    flex-shrink: 0;
+    align-self: stretch;
+    object-fit: cover;
+    background-color: vars.$background-tertiary;
+}

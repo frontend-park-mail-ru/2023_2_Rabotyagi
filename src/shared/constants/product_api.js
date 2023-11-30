@@ -5,4 +5,8 @@ export const PRODUCT_API = {
     DELETE: 'product/delete',
     PATCH: 'product/update',
     PUT: 'product/update',
-}
+    ACTIVATE: 'product/activate',
+    DEACTIVATE: 'product/close',
+    SEARCH: 'product/search',
+    SEARCH_FEED: 'product/get_search_feed',
+};

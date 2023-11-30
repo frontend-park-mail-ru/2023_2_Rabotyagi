@@ -18,7 +18,7 @@
                 </select>
                 {{!-- <input name="city" class="text-regular searchField" type="text"> --}}
                 <span class="text-regular">Описание</span>
-                <textarea name="description" class="text-regular" style="height: 300px"  type="text"></textarea>
+                <textarea name="description" class="textArea text-regular" type="text"></textarea>
                 <span class="text-regular">Категория</span>
                 <select name="category_id">
                     {{#each categories}}
@@ -28,7 +28,7 @@
                     {{/each}}
                 </select>
                 <span class="text-regular">Цена</span>
-                <input name="price" class="text-regular searchField" type="number">
+                <input name="price" class="text-regular searchField" type="number" min="0" oninput="validity.valid||(value='');">
                 <span class="text-regular">Доступное кол-во товара</span>
                 <input name="available_count" class="text-regular searchField" type="number">
                 <span class="text-regular">Безопасная сделка</span>

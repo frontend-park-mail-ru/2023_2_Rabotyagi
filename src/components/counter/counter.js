@@ -30,7 +30,7 @@ export class Counter {
         this.#counterFunc = counterFunc;
 
         this.context = {
-            name: ''
+            name: '',
         };
         this.root = stringToElement(template(this.context));
         this.counterResult = this.root.querySelector('div.counter-result');
@@ -41,19 +41,19 @@ export class Counter {
         this.decButton = button({
             id: 'decBtn',
             variant: 'neutral',
-            leftIcon: svg({ 
+            leftIcon: svg({
                 content: dec,
                 width: 25,
-                height: 25
+                height: 25,
             }),
         });
         this.incButton = button({
             id: 'incBtn',
             variant: 'neutral',
-            leftIcon: svg({ 
+            leftIcon: svg({
                 content: inc,
                 width: 25,
-                height: 25
+                height: 25,
             }),
         });
 
@@ -66,18 +66,17 @@ export class Counter {
     }
 
     renderButton(visible, idName) {
-        // debugger
         if (visible) {
-            this.counterManager.querySelector(idName).style.display = 'block';
+            this.counterManager.querySelector(idName).style.opacity = '1';
             this.counterManager.querySelector(idName).style.pointerEvents = 'auto';
         } else {
-            this.counterManager.querySelector(idName).style.display = 'none';
+            this.counterManager.querySelector(idName).style.opacity = '0.5';
             this.counterManager.querySelector(idName).style.pointerEvents = 'none';
         }
     }
 
     reRenderResult() {
-        this.counterResult.querySelector('span.full-price').innerHTML = this.#price;
+        this.counterResult.querySelector('span.counter-full-price').innerHTML = this.#price;
         this.counterManager.querySelector('div.counter-count').innerHTML = this.#currentCount;
         this.renderButton(this.#incVisible, '#incBtn');
         this.renderButton(this.#decVisible, '#decBtn');
@@ -113,7 +112,7 @@ export class Counter {
     }
 
     render() {
-        this.counterResult.querySelector('span.full-price').innerHTML = this.#price;
+        this.counterResult.querySelector('span.counter-full-price').innerHTML = this.#price;
 
         this.counterManager.querySelector('#incBtn').replaceWith(this.incButton);
         this.counterManager.querySelector('#decBtn').replaceWith(this.decButton);

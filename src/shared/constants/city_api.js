@@ -1,3 +1,3 @@
 export const CITY_API = {
-    GET: 'city/get_full'
-}
+    GET: 'city/get_full',
+};

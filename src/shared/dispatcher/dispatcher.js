@@ -12,6 +12,6 @@ class Dispatcher {
             callback(action);
         });
     }
-};
+}
 
 export default new Dispatcher();

@@ -19,7 +19,6 @@
 }
 
 @import 'text';
-// @import 'font.scss';
 
 body {
     background-color: vars.$background-primary;
@@ -34,7 +33,6 @@ body {
     width: 100%;
     align-items: center;
     height: -webkit-fill-available;
-    // gap: 24px;
 }
 
 .inputField {
@@ -66,14 +64,15 @@ body {
     padding-left: 30px;
 }
 
-// .search-box {
-//     /* width: 50%; */
-// }
+.textArea {
+    height: 150px;
+    resize: none;
 
-input {
+}
+
+input, textarea {
     display: flex;
     width: 100%;
-    height: 36px;
     padding: 8px 12px;
     align-items: center;
     align-self: stretch;
@@ -83,12 +82,13 @@ input {
     outline: none;
 }
 
-input:focus-visible {
-    border: 0.5px solid vars.$palette-primary;
+input {
+    height: 36px;
 }
 
-/* input:focus-visible {
-} */
+input:focus-visible, textarea:focus-visible {
+    border: 0.5px solid vars.$palette-primary;
+}
 
 .cell {
     display: flex;

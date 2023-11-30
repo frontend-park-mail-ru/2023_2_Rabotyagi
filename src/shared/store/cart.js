@@ -1,8 +1,8 @@
-import { BaseStore } from "./baseStore";
-import dispathcer from "../dispatcher/dispatcher";
-import { Order } from "../api/order";
-import { User } from "../api/user";
-import { getResourceUrl } from "../utils/getResource";
+import { BaseStore } from './baseStore';
+import dispathcer from '../dispatcher/dispatcher';
+import { Order } from '../api/order';
+import { User } from '../api/user';
+import { getResourceUrl } from '../utils/getResource';
 
 class Cart {
     constructor() {
@@ -14,8 +14,8 @@ class Cart {
                 name: '',
                 email: '',
                 image: '',
-            }
-        }
+            },
+        };
 
         this.listeners = [];
 
@@ -106,12 +106,13 @@ class Cart {
     updateUser(saler) {
         this.state.saler = {
             ...this.state.saler,
-            ...saler
-        }
+            ...saler,
+        };
     }
 
     hasProduct(productId) {
         const index = this.state.goods?.map(elem => elem.product_id).indexOf(productId);
+
         return index !== -1;
     }
 
@@ -124,11 +125,12 @@ class Cart {
                 this.updateUser({
                     id: element.saler_id,
                     email: '...',
-                    name: '...'
+                    name: '...',
                 });
             }
         });
         this.state.goods = [ ...goods ];
+
         return true;
     }
 
@@ -138,8 +140,10 @@ class Cart {
             if (!this.hasUser()) {
                 this.updateUser(saler);
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -167,6 +171,7 @@ class Cart {
         this.state.goods?.forEach((elem) => {
             result += Number(elem.count);
         });
+
         return result;
     }
 
@@ -175,9 +180,10 @@ class Cart {
         this.state.goods?.forEach((elem) => {
             result += Number(elem.price) * Number(elem.count);
         });
+
         return result;
     }
-};
+}
 
 Object.assign(Cart.prototype, BaseStore);
 

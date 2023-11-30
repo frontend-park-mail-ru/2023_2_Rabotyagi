@@ -12,8 +12,9 @@ export class Carousel {
         images = images?.map((value) => {
             value.id = index;
             index++;
-            return value;
-        })
+
+return value;
+        });
         this.images = images;
         this.currentImageIndex = 0;
     }
@@ -29,7 +30,7 @@ export class Carousel {
                 text: {
                     class: 'text-regular',
                     content: '<',
-                }
+                },
             });
 
             const btnNext = button({
@@ -37,12 +38,12 @@ export class Carousel {
                 text: {
                     class: 'text-regular',
                     content: '>',
-                }
+                },
             });
 
             this.root.querySelector('#selectPrev').replaceWith(btnPrev);
             this.root.querySelector('#selectNext').replaceWith(btnNext);
-    
+
             btnPrev.addEventListener('click', (e) => {
                 e.preventDefault();
                 images[ this.currentImageIndex ].style.display = 'none';
@@ -54,7 +55,7 @@ export class Carousel {
                 }
                 images[ this.currentImageIndex ].style.display = 'flex';
             });
-    
+
             btnNext.addEventListener('click', (e) => {
                 e.preventDefault();
                 images[ this.currentImageIndex ].style.display = 'none';
@@ -66,13 +67,14 @@ export class Carousel {
                 }
                 images[ this.currentImageIndex ].style.display = 'flex';
             });
-    
+
             images[ 0 ].style.display = 'flex';
         }
     }
 
     render() {
         this.preRender();
+
         return this.root;
     }
 }

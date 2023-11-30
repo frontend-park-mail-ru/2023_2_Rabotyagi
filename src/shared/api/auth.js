@@ -14,7 +14,7 @@ export const Auth = {
      * @param {string} email Почта юзера
      * @param {string} password Пароль юзера
      */
-    signin: async (email, pass) => {
+    signin: async(email, pass) => {
         return await ajax.get({
             url: AUTH_API.SIGNIN,
             params: { 'email': email, 'password': pass },
@@ -28,14 +28,12 @@ export const Auth = {
      * @param {string} email Почта юзера
      * @param {string} password Пароль юзера
      */
-    signup: async (email, pass) => {
+    signup: async(email, pass) => {
         return await ajax.post({
             url: AUTH_API.SIGNUP,
-            body: { 
+            body: {
                 email: email,
-                // name: name,
-                // phone: phone, 
-                password: pass
+                password: pass,
             },
             credentials: 'include',
         });

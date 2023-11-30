@@ -2,15 +2,16 @@
  * @file card.js
  */
 import { stringToElement } from '../../shared/utils/parsing.js';
-import './card.scss'
+import './cardStyles/card.scss';
 import Handlebars from 'handlebars/runtime';
-import template from './card.hbs'
-import templateProfile from './card-profile.hbs'
+import template from './card.hbs';
+import templateProfile from './card-profile.hbs';
 import button from '../button/button.js';
 import { Product } from '../../shared/api/product.js';
 import { getResourceUrl } from '../../shared/utils/getResource.js';
 import { store } from '../../shared/store/store.js';
-
+import { User } from '../../shared/api/user.js';
+import statuses from '../../shared/statuses/statuses.js';
 
 const buttons = {
     delete: () => button({
@@ -18,9 +19,9 @@ const buttons = {
         variant: 'outlined',
         text: {
             class: 'text-regular',
-            content: 'Удалить'
+            content: 'Удалить',
         },
-        style: 'width: 100%;'
+        style: 'width: 100%;',
     }),
 
     activate: () => button({
@@ -28,9 +29,9 @@ const buttons = {
         variant: 'primary',
         text: {
             class: 'text-regular',
-            content: 'Активировать'
+            content: 'Активировать',
         },
-        style: 'width: 100%;'
+        style: 'width: 100%;',
     }),
 
     deactivate: () => button({
@@ -38,22 +39,22 @@ const buttons = {
         variant: 'primary',
         text: {
             class: 'text-regular',
-            content: 'Деактивировать'
+            content: 'Деактивировать',
         },
-        style: 'width: 100%;'
+        style: 'width: 100%;',
     }),
-}
+};
 
 /**
  * Description placeholder
  * @date 11/13/2023 - 10:04:14 PM
- * 
+ *
  * @class
  * @export
  * @module Components
  */
 export class Card {
-    
+
     /**
      * Creates an instance of Card.
      * @date 11/13/2023 - 10:04:29 PM
@@ -62,7 +63,7 @@ export class Card {
      * @param {Object} context контекст для рендера
      * @param {string} [variant='default'] вариант карточки
      */
-    constructor(context, variant='default') {
+    constructor(context, variant='default', updateVariant='remove') {
         this.context = context;
         this.variant = variant;
         this.context.city = store.cities.getById(this.context.city_id);
@@ -70,12 +71,21 @@ export class Card {
         if (this.context.images) {
             this.context.image = this.context.images[ 0 ];
         }
+        this.updateVariant = updateVariant;
     }
-    
-    
+
+    reRenderStateButton() {
+        if (!this.context.is_active) {
+            this.root.querySelector('#btn-active').replaceWith(buttons.deactivate());
+        }
+        else {
+            this.root.querySelector('#btn-deactive').replaceWith(buttons.activate());
+        }
+    }
+
     /**
      * @date 11/13/2023 - 10:08:05 PM
-     * 
+     *
      * @summary Асинхронно формирует карточку варианта профиля пользователя
      * @async
      * @returns {void}
@@ -85,8 +95,8 @@ export class Card {
         const btnDelete = buttons.delete();
         const btnActive = buttons.activate();
         const btnDeactive = buttons.deactivate();
-        
-        btnDelete.addEventListener('click', async (e) => {
+
+        btnDelete.addEventListener('click', async(e) => {
             e.stopPropagation();
             const res = await Product.delete(Number(this.context.id));
 
@@ -104,21 +114,50 @@ export class Card {
             btnDelete.before(btnDeactive);
         }
 
-        btnDelete.previousElementSibling.addEventListener('click', async (e) => {
+        btnDelete.previousElementSibling.addEventListener('click', async(e) => {
             e.stopPropagation();
 
-            const res = await Product.patch(this.context.id, {
-                is_active: !this.context.is_active,
-            });
-            body = res.body;
+            let resStatus = 500;
 
-            this.root.remove();
-        })
+            if (!this.context.is_active) {
+                const res = await Product.activate(this.context.id);
+                resStatus = res.status;
+            } else {
+                const res = await Product.deactivate(this.context.id);
+                resStatus = res.status;
+            }
+
+            if (resStatus === 200) {
+                if (this.updateVariant === 'remove') {
+                    this.root.remove();
+                }
+                else if (this.updateVariant === 'reRender') {
+                    this.reRenderStateButton();
+                }
+            }
+
+        });
     }
-    
+
+    async renderFavourite(){
+        this.root = stringToElement(templateProfile(this.context));
+        const btnDelete = buttons.delete();
+
+        btnDelete.addEventListener('click', async(e) => {
+            e.stopPropagation();
+            const res = await User.removeFromFav(Number(this.context.id));
+
+            if (statuses.IsRedirectResponse(res)) {
+                this.root.remove();
+            }
+        });
+
+        this.root.querySelector('#btn-delete')?.replaceWith(btnDelete);
+    }
+
     /**
      * @date 11/13/2023 - 10:07:47 PM
-     * 
+     *
      * @summary Асинхронно формирует карточку варианта чужого профиля
      * @method
      * @async
@@ -127,11 +166,10 @@ export class Card {
     async renderProfileSaler(){
         this.root = stringToElement(templateProfile(this.context));
     }
-    
-    
+
     /**
      * @date 11/13/2023 - 10:07:57 PM
-     * 
+     *
      * @summary Асинхронно формирует карточку дефолтного варианта
      * @method
      * @async
@@ -143,14 +181,14 @@ export class Card {
 
     /**
      * @date 11/13/2023 - 10:03:54 PM
-     * 
+     *
      * @summary Главный метод класса
      * @description Формирует в зависимости от параметра variant элемент и возвращает
      * @method
      * @returns {HTMLElement}
      */
     render() {
-        Handlebars.registerHelper('haveBadges', function () {
+        Handlebars.registerHelper('haveBadges', function() {
             return (this.safe_deal || this.delivery);
         });
 
@@ -161,6 +199,9 @@ export class Card {
             case 'profile-saler':
                 this.renderProfileSaler();
                 break;
+            case 'favourite':
+                this.renderFavourite();
+                break;
             default:
                 this.renderDefault();
                 break;
@@ -168,8 +209,8 @@ export class Card {
 
         this.root.addEventListener('click', (e) => {
             e.stopPropagation();
-            
-            window.Router.navigateTo('/product', { productId: this.context.id })
+
+            window.Router.navigateTo('/product', { productId: this.context.id });
         });
 
         return this.root;
