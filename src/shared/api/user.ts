@@ -1,18 +1,18 @@
-import ajax from '../services/ajax.js';
-import { USER_API } from '../constants/user_api.js';
+import ajax from '../services/ajax/ajax.js';
+import { UserRoutes } from '../constants/api.js';
 
 export const User = {
-    patchProfile: async(body) => {
+    patchProfile: async(body: any) => {
         return await ajax.patch({
-            url: USER_API.PROFILE.PATCH,
+            url: UserRoutes.PROFILE_PATCH,
             body: body,
             credentials: 'include',
         });
     },
 
-    getProfile: async(id) => {
+    getProfile: async(id: number) => {
         return await ajax.get({
-            url: USER_API.PROFILE.GET,
+            url: UserRoutes.PROFILE_GET,
             params: {
                 'id': id,
             },
@@ -22,7 +22,7 @@ export const User = {
 
     getProducts: async() => {
         return await ajax.get({
-            url: USER_API.PRODUCTS.SAME,
+            url: UserRoutes.GET_LIST_OF_USER,
             params: {
                 'count': 20,
                 'last_id': 0,
@@ -31,9 +31,9 @@ export const User = {
         });
     },
 
-    getProductsOfAnotherSaler: async(salerID) => {
+    getProductsOfAnotherSaler: async(salerID: number) => {
         return await ajax.get({
-            url: USER_API.PRODUCTS.ANOTHER,
+            url: UserRoutes.GET_LIST_OF_SALER,
             params: {
                 'count': 20,
                 'last_id': 0,
@@ -45,31 +45,21 @@ export const User = {
 
     getOrders: async() => {
         return await ajax.get({
-            url: USER_API.ORDERS,
-            credentials: 'include',
-        });
-    },
-
-    getSaler: async(salerId) => {
-        return await ajax.get({
-            url: USER_API.PROFILE.GET,
-            params: {
-                'id': salerId,
-            },
+            url: UserRoutes.ORDERS_GET,
             credentials: 'include',
         });
     },
 
     getFavs: async() => {
         return await ajax.get({
-            url: USER_API.PROFILE.FAVS,
+            url: UserRoutes.PROFILE_FAVS,
             credentials: 'include',
         });
     },
 
-    addToFav: async(id) => {
+    addToFav: async(id: number) => {
         return await ajax.post({
-            url: USER_API.ADD_TO_FAV,
+            url: UserRoutes.ADD_TO_FAV,
             credentials: 'include',
             body: {
                 'product_id': id,
@@ -77,9 +67,9 @@ export const User = {
         });
     },
 
-    removeFromFav: async(id) => {
+    removeFromFav: async(id: number) => {
         return await ajax.delete({
-            url: USER_API.REMOVE_FROM_FAV,
+            url: UserRoutes.REMOVE_FROM_FAV,
             credentials: 'include',
             params: {
                 'product_id': id,

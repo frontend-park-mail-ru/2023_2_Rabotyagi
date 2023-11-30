@@ -39,7 +39,7 @@ const user = {
      * @returns None
      */
     login: async function(accessToken) {
-        
+
         this.clear();
 
         if (accessToken === undefined) {
