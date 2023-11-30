@@ -1,10 +1,10 @@
-import "./Button.scss";
+import './Button.scss';
 
-import { Component } from "../snail/component";
-import { createElement, createComponent, createText } from "../snail/vdom/VirtualDOM";
+import { Component } from '../snail/component';
+import { createElement, createComponent, createText } from '../snail/vdom/VirtualDOM';
 
-import { Text, TextTypes } from "../Text/Text";
-import { Svg } from "../svg/Svg";
+import { Text, TextTypes } from '../text/Text';
+import { Svg } from '../svg/Svg';
 
 export type ButtonTypes = 'primary' | 'neutral' | 'secondary' | 'accent' | 'outlined' | 'base';
 
@@ -26,21 +26,21 @@ export interface ButtonProps {
     name?: string,
     type?: string,
     onclick?: Function
-};
+}
 
 export class Button extends Component<ButtonProps, {}> {
 
     render() {
         if (!this.props || !this.children) {
             throw new Error('Button settings are undefined');
-        };
+        }
 
         // отделение параметров для тега и пользовательских параметров
-        const { 
-            variant, subvariant, 
-            text, textvariant, 
+        const {
+            variant, subvariant,
+            text, textvariant,
             leftIcon, rightIcon,
-            ...buttonProps 
+            ...buttonProps
         } = this.props;
 
         return createElement(
@@ -52,25 +52,25 @@ export class Button extends Component<ButtonProps, {}> {
 
             (leftIcon) ?
             createComponent(
-                Svg, { ...leftIcon, id: 'left-icon' }
-            ) 
+                Svg, { ...leftIcon, id: 'left-icon' },
+            )
             : createText(''),
-            
+
             createComponent(
                 Text,
                 {
                     variant: textvariant || 'regular',
                     // проверка на undefined через !== не теряет при передаче число 0 (и другие подобные значения)
                     text: (text !== undefined) ? text : '',
-                    style: 'text-align: center; text-wrap: nowrap;'
-                }
+                    style: 'text-align: center; text-wrap: nowrap;',
+                },
             ),
 
             (rightIcon) ?
             createComponent(
-                Svg, { ...rightIcon, id: 'right-icon' }
-            ) 
+                Svg, { ...rightIcon, id: 'right-icon' },
+            )
             : createText(''),
         );
-    };
+    }
 }

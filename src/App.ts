@@ -4,6 +4,7 @@ import { TextArea } from './components/baseComponents/TextArea/TextArea';
 // import CounterStore from './shared/store/counter';
 import { Button } from './components/baseComponents/button/Button';
 import StoreUser from './shared/store/user';
+import { Dropdown } from './components/baseComponents/dropdown/dropdown';
 
 interface AppState {
     title: string,
@@ -41,22 +42,24 @@ export class App extends Component<never, AppState> {
         return createElement(
             'div',
             { id: 'root' },
+            // createComponent(
+            //     Button,
+            //     {
+            //         id: 'button',
+            //         // leftIcon: {
+            //         //     height: 28,
+            //         //     width: 28,
+            //         //     content: cart,
+            //         // },
+            //         text: 'Принтануть юзера',
+            //         onclick: () => console.log(StoreUser.getFields()),
+            //     },
+            // ),
             createComponent(
-                Button,
+                Dropdown,
                 {
-                    id: 'button',
-                    // leftIcon: {
-                    //     height: 28,
-                    //     width: 28,
-                    //     content: cart,
-                    // },
-                    text: 'Принтануть юзера',
-                    onclick: () => console.log(StoreUser.getFields()),
+                    search: false,
                 },
-            ),
-            createComponent(
-                TextArea,
-                {},
             ),
         );
     }
