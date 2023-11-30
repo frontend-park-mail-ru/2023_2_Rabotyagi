@@ -1,12 +1,13 @@
-import './Button.scss';
+import './button.scss';
 
 import { Component } from '../snail/component';
 import { createElement, createComponent, createText } from '../snail/vdom/VirtualDOM';
 
-import { Text, TextTypes } from '../text/Text';
+import { Text, TextTypes } from '../Text/Text';
 import { Svg } from '../svg/Svg';
 
 export type ButtonTypes = 'primary' | 'neutral' | 'secondary' | 'accent' | 'outlined' | 'base';
+export type ButtonSubVariantTypes = 'primary' | 'tertiary' | 'outlined';
 
 export interface ButtonIconProps {
     content: string,
@@ -17,7 +18,7 @@ export interface ButtonIconProps {
 export interface ButtonProps {
     id?: string,
     variant?: ButtonTypes,
-    subvariant?: string,
+    subvariant?: ButtonSubVariantTypes,
     text?: string | number,
     textvariant?: TextTypes,
     leftIcon?: ButtonIconProps,
@@ -56,15 +57,17 @@ export class Button extends Component<ButtonProps, {}> {
             )
             : createText(''),
 
+            (text !== undefined) ? 
             createComponent(
                 Text,
                 {
                     variant: textvariant || 'regular',
                     // проверка на undefined через !== не теряет при передаче число 0 (и другие подобные значения)
-                    text: (text !== undefined) ? text : '',
+                    text: text,
                     style: 'text-align: center; text-wrap: nowrap;',
                 },
-            ),
+            )
+            : createText(''),
 
             (rightIcon) ?
             createComponent(

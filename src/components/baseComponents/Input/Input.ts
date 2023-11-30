@@ -3,7 +3,7 @@ import './Input.scss';
 import { Component } from '../snail/component';
 import { createElement } from '../snail/vdom/VirtualDOM';
 
-import { TextTypes, getTextClass } from '../text/Text';
+import { TextTypes, getTextClass } from '../Text/Text';
 
 // здесь прописаны все необходимые типы инпутов для проекта
 
@@ -50,7 +50,7 @@ export class TextInput extends Component<TextInputProps, {}> {
 
         const { textType, ...otherProps } = this.props;
 
-return createElement(
+        return createElement(
             'input',
             {
                 class: getTextClass(textType),
@@ -101,11 +101,14 @@ export class Password extends Component<PasswordInputProps, {}> {
     render() {
         if (!this.props) { throw new Error(errorInputMessage); }
 
+        const { textType, ...otherProps } = this.props;
+
         return createElement(
             'input',
             {
+                class: getTextClass(textType),
                 type: 'password',
-                ...this.props,
+                ...otherProps,
             },
         );
     }

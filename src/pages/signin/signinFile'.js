@@ -1,7 +1,3 @@
-/**
- * @module signinPage
- * @file signin.js
- */
 import Template from './signin.hbs';
 import './signin.scss';
 
@@ -22,17 +18,7 @@ import logo from '../../assets/icons/logo.svg';
 
 import { stringToElement } from '../../shared/utils/parsing.js';
 
-/**
- * @class signinPage
- * @summary Класс страницы авторизации
- */
 export class SigninPage {
-    /**
-     * #check() validate email, password and repeated password
-     * @param {string} email - Почта юзера
-     * @param {string} pass - Пароль юзера
-     * @return {null|string} return null if validation ok and return string if not
-     */
     #check(email, pass) {
         const errEmail = Validate.email(email);
         if (errEmail) {
@@ -124,13 +110,6 @@ export class SigninPage {
         return handler;
     }
 
-    /**
-     * @method
-     * @summary Функция рендера страницы-блока авторизации
-     * @description Формирует страницу с элементами \
-     * Навешивает обработчики событий на элементы
-     * @returns {HTMLElement}
-     */
     render() {
         const template = Template;
 
@@ -190,3 +169,4 @@ export class SigninPage {
         return [ root ];
     }
 }
+

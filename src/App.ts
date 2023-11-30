@@ -6,6 +6,8 @@ import { Button } from './components/baseComponents/button/Button';
 import StoreUser from './shared/store/user';
 import { Dropdown } from './components/baseComponents/dropdown/dropdown';
 
+import { Signin } from './pages/signin/Signin';
+
 interface AppState {
     title: string,
     count: number,
@@ -67,14 +69,19 @@ export class App extends Component<never, AppState> {
         return createElement(
             'div',
             { id: 'root' },
-            createComponent(
+            /*createComponent(
                 Button,
                 {
+                    variant: 'neutral',
                     text: 'Показать списочек',
                     onclick: () => dropdown.instance?.setState(() => {return {hidden: false};}),
                 },
             ),
-            dropdown,
+            dropdown,*/
+            createComponent(
+                Signin,
+                {}
+            )
         );
     }
 }
