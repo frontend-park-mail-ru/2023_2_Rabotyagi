@@ -1,5 +1,5 @@
-import ajax from '../services/ajax.js';
-import { UserRoutes } from '../constants/api.js';
+import ajax from '../services/ajax';
+import { UserRoutes } from '../constants/api';
 
 export class UserApi {
     static async patchProfile(body: any) {

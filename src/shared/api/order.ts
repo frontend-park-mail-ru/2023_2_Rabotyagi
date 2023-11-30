@@ -1,5 +1,5 @@
 import ajax from '../services/ajax';
-import { OrderRoutes } from '../constants/api.js';
+import { OrderRoutes } from '../constants/api';
 
 export class Order {
     static async create(product: any) {

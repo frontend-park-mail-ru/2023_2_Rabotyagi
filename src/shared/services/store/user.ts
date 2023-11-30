@@ -1,9 +1,10 @@
-// import { cookieParser, deleteCookie } from '../utils/cookie.js';
-// import jwtDecode from '../utils/jwt-decode.js';
+import { cookieParser, deleteCookie } from '../../utils/cookie';
+import jwtDecode from '../../utils/jwt-decode';
 
-// import { ResponseStatus } from '../constants/response.js';
-import { Store } from '../services/store/Store.js';
-// import { UserApi } from '../api/user.js';
+import { ResponseStatus } from '../../constants/response';
+
+import { Store } from './Store';
+import { UserApi } from '../../api/user';
 
 interface StoreUserState {
     fields: object | null,
@@ -31,26 +32,26 @@ const initState: StoreUserState = {
 //     }
 // }
 
-// (async function init() {
-//     const accessToken = cookieParser(document.cookie)?.access_token;
-//     if (!accessToken){
-//         return;
-//     }
+(async function init() {
+    const accessToken = cookieParser(document.cookie)?.access_token;
+    if (!accessToken){
+        return;
+    }
 
-//     const id = jwtDecode(accessToken).userID;
+    const id = jwtDecode(accessToken).userID;
 
-//     if (id) {
-//         const res = await UserApi.getProfile(id);
-//         switch (res.status){
-//             case ResponseStatus.RESPONSE_SUCCESSFUL:
-//                 initState.fields = res.body;
-//                 break;
-//             case ResponseStatus.INTERNAL_SERVER:
-//                 deleteCookie('access_token');
-//                 break;
-//         }
-//     }
-// })();
+    if (id) {
+        const res = await UserApi.getProfile(id);
+        switch (res.status){
+            case ResponseStatus.RESPONSE_SUCCESSFUL:
+                initState.fields = res.body;
+                break;
+            case ResponseStatus.INTERNAL_SERVER:
+                deleteCookie('access_token');
+                break;
+        }
+    }
+})();
 
 class StoreUser extends Store<StoreUserState> {
     public getFields(): object | null {

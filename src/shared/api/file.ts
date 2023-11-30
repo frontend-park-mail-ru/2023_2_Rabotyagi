@@ -1,6 +1,6 @@
-import ajax from '../services/ajax.js';
-import { FilesRoutes } from '../constants/api.js';
-import { ContentType } from '../constants/contentType.js';
+import ajax from '../services/ajax';
+import { FilesRoutes } from '../constants/api';
+import { ContentType } from '../constants/contentType';
 
 export class Files {
     static async images(files: Array<File>) {

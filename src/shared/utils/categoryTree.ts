@@ -1,17 +1,23 @@
+interface ResponseChild {
+    id: number,
+    name: string,
+    parent_id: number | null
+}
+
 class Node {
     id: number;
     name: string;
-    parentId: number;
+    parentId: number | null;
     childs: Array<Node> = [];
 
-    constructor({ id, name, parent_id: parentId }: {id: number, name: string, parent_id: number}){
+    constructor({ id, name, parent_id: parentId }: {id: number, name: string, parent_id: number | null}){
         this.id = id;
         this.name = name;
         this.parentId = parentId;
     }
 }
 
-export const searchNode = (node: Node, id: number) => {
+export const searchNode = (node: Node | Array<Node>, id: number) => {
     if (Array.isArray(node)){
         let parents: Array<Node | undefined> = [];
         node.forEach((elem) => parents = [...parents, searchNode(elem, id)]);
@@ -33,7 +39,7 @@ export const searchNode = (node: Node, id: number) => {
         return undefined;
     }
 
-    let res = [];
+    let res: Array<Node | undefined> = [];
 
     node.childs.forEach((value) => {
         res = [ ...res, searchNode(value, id) ];
@@ -50,10 +56,11 @@ export const searchNode = (node: Node, id: number) => {
     return res[ 0 ];
 };
 
-export const tree = (childs) => {
-    let roots = [];
-    childs.forEach((value) => {
-        value = new Node(value);
+export const tree = (childs: Array<ResponseChild>) => {
+    let roots: Array<Node> = [];
+
+    childs.forEach((elem) => {
+        const value = new Node(elem);
         if (value.parentId === null) {
             roots = [...roots, value];
 

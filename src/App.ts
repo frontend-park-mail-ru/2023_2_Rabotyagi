@@ -1,21 +1,21 @@
 import { Component } from './components/baseComponents/snail/component';
 import { createElement, createComponent } from './components/baseComponents/snail/vdom/VirtualDOM';
 import { TextArea } from './components/baseComponents/TextArea/TextArea';
-import CounterStore from './shared/store/counter';
+// import CounterStore from './shared/store/counter';
 import { Button } from './components/baseComponents/button/Button';
-import StoreUser from './shared/store/user';
+import StoreUser from './shared/services/store/user';
 
 interface AppState {
     title: string,
     count: number,
 }
 
-const initAppState: AppState = {
-    title: 'Welcome to the App',
-    count: 0,
-};
+// const initAppState: AppState = {
+//     title: 'Welcome to the App',
+//     count: 0,
+// };
 
-export class App extends Component<{}, AppState> {
+export class App extends Component<never, AppState> {
 
     // state = { ...initAppState };
 
@@ -51,7 +51,7 @@ export class App extends Component<{}, AppState> {
                     //     content: cart,
                     // },
                     text: 'Принтануть юзера',
-                    onclick: () => StoreUser.getFields(),
+                    onclick: () => console.log(StoreUser.getFields()),
                 },
             ),
             createComponent(
