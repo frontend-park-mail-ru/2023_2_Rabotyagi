@@ -18,17 +18,17 @@ const minLenPassword = 4;
  * @param {string} email Почта юзера
  * @returns {boolean}
  */
-function regexpEmail(email) {
+function regexpEmail(email: string): boolean {
     return EMAIL_REGEXP.test(email);
 }
 
-export default class Validate {
+export class Validate {
     /**
      * @summary validatePassword() check not empty and min lengths
      * @param {string} password - password
      * @return {null|string} return null if validation ok and return string if not
      */
-    static password(password) {
+    static password(password: string): string | null {
         if (!password) {
             return 'Поле пароля не может быть пустым';
         }
@@ -50,7 +50,7 @@ export default class Validate {
      * @param {string} email - email
      * @return {null|string} return null if validation ok and return string if not
      */
-    static email(email) {
+    static email(email: string): string | null {
         if (!email) {
             return 'Поле почты не может быть пустым';
         }
@@ -67,7 +67,7 @@ export default class Validate {
         return null;
     }
 
-    static phone(phone) {
+    static phone(phone: string): string | null {
         if (!phone) {
             return 'Поле телефона не может быть пустым';
         }
@@ -81,7 +81,7 @@ export default class Validate {
         return null;
     }
 
-    static name(name) {
+    static username(name: string): string | null {
         if (!name) {
             return 'Поле имени не может быть пустым';
         }

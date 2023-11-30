@@ -1,19 +1,19 @@
 class Node {
-    id;
-    name;
-    parentId;
-    childs = [];
+    id: number;
+    name: string;
+    parentId: number;
+    childs: Array<Node> = [];
 
-    constructor({ id, name, parent_id: parentId }){
+    constructor({ id, name, parent_id: parentId }: {id: number, name: string, parent_id: number}){
         this.id = id;
         this.name = name;
         this.parentId = parentId;
     }
 }
 
-export const searchNode = (node, id) => {
+export const searchNode = (node: Node, id: number) => {
     if (Array.isArray(node)){
-        let parents = [];
+        let parents: Array<Node | undefined> = [];
         node.forEach((elem) => parents = [...parents, searchNode(elem, id)]);
         parents = parents.filter((parent) => parent !== undefined);
 

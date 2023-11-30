@@ -1,7 +1,11 @@
 import ajax from '../services/ajax';
 const { MOCK } = process.env;
 
-export const getResourceUrl = (resource) => {
+interface Resource {
+    url: string,
+}
+
+export const getResourceUrl = (resource: string | Resource) => {
     if (!resource) {
         return resource;
     }

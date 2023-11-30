@@ -1,5 +1,5 @@
-import { VDomNodeUpdater, applyChanges, getDifference } from "./vdom/Difference";
-import { VDomNode } from "./vdom/VirtualDOM";
+import { VDomNodeUpdater, applyChanges, getDifference } from './vdom/Difference';
+import { VDomNode } from './vdom/VirtualDOM';
 
 export abstract class Component<PropsType, StateType> {
 
@@ -13,19 +13,19 @@ export abstract class Component<PropsType, StateType> {
     protected applyComponentChanges() {
         if (!this.domElement) {
             throw new Error('domelement is undefined');
-        };
+        }
 
         applyChanges(this.domElement, this.getComponentDifference());
-    };
+    }
 
     protected setState(updater: (state: StateType | undefined) => StateType) {
         if (!this.domElement) {
             throw new Error('domelement is undefined');
-        };
+        }
 
         this.state = updater(this.state);
         this.applyComponentChanges();
-    };
+    }
 
     public setProps(props: PropsType): VDomNodeUpdater {
         if (!this.domElement) {
@@ -34,8 +34,9 @@ export abstract class Component<PropsType, StateType> {
 
         this.state = this.componentWillRecieveProps(props, this.state);
         this.props = props;
+
         return this.getComponentDifference();
-    };
+    }
 
     public setChildren(children: Array<VDomNode>) {
         this.children = children;
@@ -44,9 +45,9 @@ export abstract class Component<PropsType, StateType> {
     public initProps(props: PropsType | undefined): VDomNode {
         this.props = props;
         this.node = this.render();
-        return this.node;
 
-    };
+        return this.node;
+    }
 
     public notifyMounted(element: HTMLElement | Text) {
         this.domElement = element;
@@ -54,25 +55,25 @@ export abstract class Component<PropsType, StateType> {
         setTimeout(() => {
             this.componentDidMount();
         });
-    };
+    }
 
     public unmount() {
         this.componentWillUnmount();
         this.domElement = undefined;
-    };
+    }
 
-    public componentDidMount() {};
-    public componentDidUpdate() {};
-    public componentWillUnmount() {};
+    public componentDidMount() {}
+    public componentDidUpdate() {}
+    public componentWillUnmount() {}
 
     // эта функция определят влияние параметров на состояние компонента
     public componentWillRecieveProps(
-        props: PropsType, 
-        state: StateType | undefined
-    ): StateType | undefined 
-    { 
-        return state; 
-    };
+        props: PropsType,
+        state: StateType | undefined,
+    ): StateType | undefined
+    {
+        return state;
+    }
 
     private getComponentDifference(): VDomNodeUpdater {
         if (!this.node) {
@@ -95,7 +96,7 @@ export abstract class Component<PropsType, StateType> {
         });
 
         return difference;
-    };
+    }
 
     public abstract render(): VDomNode;
-};
+}
