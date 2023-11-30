@@ -15,6 +15,7 @@ export interface BaseInputProps {
     onchange?: Function,
     placeholder?: string,
     autocomplete?: string,
+    style?: string,
     required?: boolean
 }
 

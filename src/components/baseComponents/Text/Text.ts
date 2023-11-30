@@ -12,7 +12,7 @@ export const getTextClass = (type: TextTypes | undefined): string => {
 
 export interface TextProps {
     id?: string,
-    variant: TextTypes,
+    variant?: TextTypes,
     tag?: 'div' | 'span' | 'p',
     text: string | number | boolean,
     style?: string,
