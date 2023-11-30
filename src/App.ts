@@ -3,7 +3,7 @@ import { createElement, createComponent } from './components/baseComponents/snai
 import { TextArea } from './components/baseComponents/TextArea/TextArea';
 // import CounterStore from './shared/store/counter';
 import { Button } from './components/baseComponents/button/Button';
-import StoreUser from './shared/services/store/user';
+import StoreUser from './shared/store/user';
 
 interface AppState {
     title: string,

@@ -1,10 +1,10 @@
-import { cookieParser, deleteCookie } from '../../utils/cookie';
-import jwtDecode from '../../utils/jwt-decode';
+import { cookieParser, deleteCookie } from '../utils/cookie';
+import jwtDecode from '../utils/jwt-decode';
 
-import { ResponseStatus } from '../../constants/response';
+import { ResponseStatus } from '../constants/response';
 
-import { Store } from './Store';
-import { UserApi } from '../../api/user';
+import { Store } from '../services/store/Store';
+import { UserApi } from '../api/user';
 
 interface StoreUserState {
     fields: object | null,
