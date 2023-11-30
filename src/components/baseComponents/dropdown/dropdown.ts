@@ -22,12 +22,15 @@ interface DropDownState {
 //     ...
 
 export class Dropdown extends Component<DropdownProps, DropDownState> {
+    protected state: DropDownState = {
+        hidden: true,
+    };
 
     public render(): VDomNode {
         return createElement(
             'div',
             {
-                class: 'dropdown-container' + this.state?.hidden ? ' hidden' : '',
+                class: 'dropdown-container' + ' ' + (this.state.hidden ? 'hidden' : ''),
             },
             (this.props?.search) ?
             createElement(
@@ -43,7 +46,7 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
                 ),
                 createComponent(
                     TextInput,
-                    {type: 'text'},
+                    {},
                 ),
             ) : createText(''),
             createElement(

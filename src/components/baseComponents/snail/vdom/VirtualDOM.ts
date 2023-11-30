@@ -1,6 +1,6 @@
-import { Component } from "../component";
+import { Component } from '../component';
 
-export type VDomPropType = string | number | boolean | Function; 
+export type VDomPropType = string | number | boolean | Function;
 
 export type VDomPropsType = {
     [key: string]: VDomPropType
@@ -12,13 +12,13 @@ export interface VDomElement {
     children?: Array<VDomNode>
     props?: VDomPropsType
     key: string | number
-};
+}
 
 export interface VDomText {
     kind: 'text'
     value: string
     key: string | number
-};
+}
 
 export interface VDomComponent {
     kind: 'component',
@@ -27,19 +27,19 @@ export interface VDomComponent {
     children: Array<VDomNode>,
     component: { new(): Component<any, any> },
     key: string | number
-};
+}
 
 export type VDomNode = VDomText | VDomElement | VDomComponent;
 
 export const createText = (
     value: string | number | boolean,
-    key: string = ''
+    key: string = '',
 ): VDomText => {
     return ({
         kind: 'text',
         value: value.toString(),
-        key: key
-    });  
+        key: key,
+    });
 };
 
 // парсер необходим для svg-элементов
@@ -55,7 +55,7 @@ export const createElement = (
         tag: tag,
         props: props,
         children: [...children],
-        key: tag
+        key: tag,
     });
 };
 
@@ -69,14 +69,14 @@ export const createComponent = <PropsType extends object>(
         props: props,
         children: children,
         component: component,
-        key: component.name
+        key: component.name,
     });
 };
 
 export const renderVDomNode = (rootNode: VDomNode): HTMLElement | Text => {
     if (rootNode.kind == 'text') {
         return document.createTextNode(rootNode.value.toString());
-    };
+    }
 
     if (rootNode.kind == 'element') {
         if (rootNode.tag == 'svg-element') {
@@ -84,7 +84,7 @@ export const renderVDomNode = (rootNode: VDomNode): HTMLElement | Text => {
                 throw new Error('');
             }
             const svgElement = parser.parseFromString(rootNode.props['svgcontent'].toString(), 'image/svg+xml');
-            
+
             return svgElement.documentElement;
         }
 
@@ -114,23 +114,24 @@ export const renderVDomNode = (rootNode: VDomNode): HTMLElement | Text => {
     if (rootNode.instance) {
         const element = renderVDomNode(rootNode.instance.render());
         rootNode.instance.notifyMounted(element as HTMLElement);
-        return element;
+
+return element;
     }
 
     rootNode.instance = new rootNode.component();
     rootNode.instance.setChildren(rootNode.children);
     const element = renderVDomNode(rootNode.instance.initProps(rootNode.props));
     rootNode.instance.notifyMounted(element as HTMLElement);
-    return element;
-};
 
+return element;
+};
 
 export const renderToElementDyId = (elementId: string, node: VDomNode): HTMLElement => {
     const element = document.getElementById(elementId);
     if (!element) {
       throw new Error('Element with this id is undefined');
     }
-  
+
     const parentElement = element.parentElement;
     if (!parentElement) {
         throw new Error('Parent elment is undefined');

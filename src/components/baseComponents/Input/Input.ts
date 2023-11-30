@@ -19,29 +19,25 @@ export interface BaseInputProps {
 }
 
 export type TextInputProps = BaseInputProps & {
-    type: 'text'
+
 };
 
 export type NumberInputProps = BaseInputProps & {
     min?: number,
     max?: number,
     oninput?: Function,
-    type: 'number'
 };
 
 export type CheckboxInputProps = Omit<BaseInputProps, 'textType'> & {
     checked: boolean,
-    type: 'checkbox'
 };
 
 export type PasswordInputProps = BaseInputProps & {
-    type: 'password'
 };
 
 export type FileInputProps = BaseInputProps & {
     multiple: boolean,
     accept: string,
-    type: 'file'
 };
 
 const errorInputMessage: string = 'Input settings are undefined';
@@ -57,6 +53,7 @@ return createElement(
             'input',
             {
                 class: getTextClass(textType),
+                type: 'text',
                 ...otherProps,
             },
         );
@@ -74,7 +71,9 @@ return createElement(
             'input',
             {
                 class: getTextClass(textType),
+                type: 'number',
                 min: (min !== undefined) ? min.toString() : '0',
+                max: (max !== undefined) ? max.toString() : '',
                 ...otherProps,
             },
         );
@@ -88,7 +87,10 @@ export class Checkbox extends Component<CheckboxInputProps, {}> {
 
         return createElement(
             'input',
-            { ...this.props },
+            {
+                type: 'checkbox',
+                ...this.props,
+            },
         );
     }
 }
@@ -100,7 +102,10 @@ export class Password extends Component<PasswordInputProps, {}> {
 
         return createElement(
             'input',
-            { ...this.props },
+            {
+                type: 'password',
+                ...this.props,
+            },
         );
     }
 }
@@ -112,7 +117,10 @@ export class FileInput extends Component<FileInputProps, {}> {
 
         return createElement(
             'input',
-            { ...this.props },
+            {
+                type: 'file',
+                ...this.props,
+            },
         );
     }
 }
