@@ -2,7 +2,6 @@ import { cookieParser, deleteCookie } from '../utils/cookie';
 import jwtDecode from '../utils/jwt-decode';
 
 import { ResponseStatus } from '../constants/response';
-
 import { Store } from '../services/store/Store';
 import { UserApi } from '../api/user';
 
@@ -53,7 +52,7 @@ const initState: StoreUserState = {
     }
 })();
 
-class StoreUser extends Store<StoreUserState> {
+class UserStore extends Store<StoreUserState> {
     public getFields(): object | null {
         return this.state.fields;
     }
@@ -81,46 +80,50 @@ class StoreUser extends Store<StoreUserState> {
     //     await this.fill(accessToken);
     // }
 
-    // isAuth() {
-    //     return this.state.fields !== null ? true : false;
-    // }
+    isAuth() {
+         return this.state.fields !== null ? true : false;
+    }
 
-    // async login(accessToken) {
+    async login(accessToken: string | undefined) {
 
-    //     this.clear();
+        this.clear();
 
-    //     if (accessToken === undefined) {
-    //         return;
-    //     }
+        if (accessToken === undefined) {
+            return;
+        };
 
-    //     await this.fill(accessToken);
-    // }
+        await this.fill(accessToken);
+    }
 
-    // async fill(accessToken: string) {
-    //     const id = jwtDecode(accessToken).userID;
+    async fill(accessToken: string) {
+        const id = jwtDecode(accessToken).userID;
 
-    //     if (id) {
-    //         const res = await User.getProfile(id);
-    //         switch (res.status){
-    //             case ResponseStatus.RESPONSE_SUCCESSFUL:
-    //                 this.update(res.body);
-    //                 break;
-    //             case ResponseStatus.INTERNAL_SERVER:
-    //                 deleteCookie('access_token');
-    //                 break;
-    //         }
-    //     }
-    // }
+        if (id) {
+            const res = await UserApi.getProfile(id);
+            switch (res.status){
+                case ResponseStatus.RESPONSE_SUCCESSFUL:
+                    this.update(res.body);
+                    break;
+                case ResponseStatus.INTERNAL_SERVER:
+                    deleteCookie('access_token');
+                    break;
+            }
+        }
+    }
 
     public addActions(): void {
         this.addAction({
-            name: 'STORE_USER_UPDATE',
-            operation: (data) => this.update(data),
+            name: 'USER_STORE_UPDATE',
+            operation: (action) => this.update(action.payload),
+        });
+        this.addAction({
+            name: 'USER_STORE_LOGOUT',
+            operation: () => this.clear(),
         });
     }
 }
 
-export default new StoreUser(initState);
+export default new UserStore(initState);
 
 // const user = {
 //     clear: function() {
