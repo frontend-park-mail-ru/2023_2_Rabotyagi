@@ -3,8 +3,8 @@
  * @module Api.Auth
  */
 
-import ajax from '../services/ajax.js';
-import { AuthRoutes } from '../constants/api.js';
+import ajax from '../services/ajax';
+import { AuthRoutes } from '../constants/api';
 
 export class Auth {
     /**
