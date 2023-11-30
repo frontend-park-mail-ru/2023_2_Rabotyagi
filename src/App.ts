@@ -1,9 +1,10 @@
 import { Component } from './components/baseComponents/snail/component';
-import { createElement, createComponent } from './components/baseComponents/snail/vdom/VirtualDOM';
+import { createElement, createComponent, createText } from './components/baseComponents/snail/vdom/VirtualDOM';
 import { TextArea } from './components/baseComponents/TextArea/TextArea';
 // import CounterStore from './shared/store/counter';
 import { Button } from './components/baseComponents/button/Button';
 import StoreUser from './shared/store/user';
+import { Dropdown } from './components/baseComponents/dropdown/dropdown';
 
 interface AppState {
     title: string,
@@ -14,6 +15,31 @@ interface AppState {
 //     title: 'Welcome to the App',
 //     count: 0,
 // };
+
+const dropdown = createComponent(
+    Dropdown,
+    {
+        search: false,
+    },
+    createComponent(
+        Button,
+        {
+            text: 'first',
+        },
+    ),
+    createComponent(
+        Button,
+        {
+            text: 'second',
+        },
+    ),
+    createComponent(
+        Button,
+        {
+            text: 'third',
+        },
+    ),
+);
 
 export class App extends Component<never, AppState> {
 
@@ -44,20 +70,11 @@ export class App extends Component<never, AppState> {
             createComponent(
                 Button,
                 {
-                    id: 'button',
-                    // leftIcon: {
-                    //     height: 28,
-                    //     width: 28,
-                    //     content: cart,
-                    // },
-                    text: 'Принтануть юзера',
-                    onclick: () => console.log(StoreUser.getFields()),
+                    text: 'Показать списочек',
+                    onclick: () => dropdown.instance?.setState(() => {return {hidden: false};}),
                 },
             ),
-            createComponent(
-                TextArea,
-                {},
-            ),
+            dropdown,
         );
     }
 }

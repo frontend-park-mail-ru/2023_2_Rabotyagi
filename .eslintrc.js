@@ -31,6 +31,6 @@ module.exports = {
     'no-irregular-whitespace': 'error', // Запрет неправильных пробелов
     'no-multi-spaces': 'error', // Запрет множественных пробелов
     '@typescript-eslint/no-explicit-any': 'off',
-    // '@typescript-eslint/ban-types': 'off',
+    '@typescript-eslint/ban-types': 'off',
   },
 };

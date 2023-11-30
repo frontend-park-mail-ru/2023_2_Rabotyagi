@@ -40,6 +40,7 @@
     "handlebars-loader": "^1.7.3",
     "mini-css-extract-plugin": "^2.7.6",
     "npm": "^10.2.3",
+    "raw-loader": "^4.0.2",
     "run": "^1.4.0",
     "svg-inline-loader": "^0.8.2",
     "ts-loader": "^9.5.1",
