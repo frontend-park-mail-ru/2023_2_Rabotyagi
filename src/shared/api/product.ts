@@ -1,100 +1,100 @@
-import ajax from '../services/ajax.js';
-import { PRODUCT_API } from '../constants/product_api.js';
+import ajax from '../services/ajax';
+import { ProductRoutes } from '../constants/api';
 
-export const Product = {
-    feed: async() => {
+export class Product {
+    static async feed() {
         return await ajax.get({
-            url: PRODUCT_API.LIST,
+            url: ProductRoutes.LIST,
             params: {
                 'count': 20,
                 'last_id': 0,
             },
         });
-    },
+    }
 
-    get: async(id) => {
+    static async get(id: number) {
         return await ajax.get({
-            url: PRODUCT_API.GET,
+            url: ProductRoutes.GET,
             params: {
                 'id': id,
             },
             credentials: 'include',
         });
-    },
+    }
 
-    create: async(data) => {
+    static async create(data: any) {
         return await ajax.post({
-            url: PRODUCT_API.POST,
+            url: ProductRoutes.POST,
             body: data,
             credentials: 'include',
         });
-    },
+    }
 
-    delete: async(id) => {
+    static async delete(id: number) {
         return await ajax.delete({
-            url: PRODUCT_API.DELETE,
+            url: ProductRoutes.DELETE,
             params: {
                 'id': id,
             },
             credentials: 'include',
         });
-    },
+    }
 
-    patch: async(id, data) => {
+    static async patch(id: number, data: any) {
         return await ajax.patch({
-            url: PRODUCT_API.PATCH,
+            url: ProductRoutes.PATCH,
             params: {
                 'id': id,
             },
             body: data,
             credentials: 'include',
         });
-    },
+    }
 
-    activate: async(id) => {
+    static async activate(id: number) {
         return await ajax.patch({
-            url: PRODUCT_API.ACTIVATE,
+            url: ProductRoutes.ACTIVATE,
             params: {
                 'id': id,
             },
             credentials: 'include',
         });
-    },
+    }
 
-    deactivate: async(id) => {
+    static async deactivate(id: number) {
         return await ajax.patch({
-            url: PRODUCT_API.DEACTIVATE,
+            url: ProductRoutes.DEACTIVATE,
             params: {
                 'id': id,
             },
             credentials: 'include',
         });
-    },
+    }
 
-    put: async(id, data) => {
+    static async put(id: number, data: any) {
         return await ajax.put({
-            url: PRODUCT_API.PUT,
+            url: ProductRoutes.PUT,
             params: {
                 'id': id,
             },
             body: data,
             credentials: 'include',
         });
-    },
+    }
 
-    search: async(searchString) => {
+    static async search(searchString: string) {
         return await ajax.get({
-            url: PRODUCT_API.SEARCH,
+            url: ProductRoutes.SEARCH,
             params: {
                 'searched': searchString,
             },
             credentials: 'include',
         });
-    },
+    }
 
-    searchFeed: async(searchString) => {
+    static async searchFeed(searchString: string) {
         return await ajax.get({
-            url: PRODUCT_API.SEARCH_FEED,
+            url: ProductRoutes.SEARCH_FEED,
             params: {
                 'count': 20,
                 'offset': 0,
@@ -102,5 +102,5 @@ export const Product = {
             },
             credentials: 'include',
         });
-    },
-};
+    }
+}

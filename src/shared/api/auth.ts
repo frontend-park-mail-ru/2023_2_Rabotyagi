@@ -4,9 +4,9 @@
  */
 
 import ajax from '../services/ajax.js';
-import { AUTH_API } from '../constants/auth_api.js';
+import { AuthRoutes } from '../constants/api.js';
 
-export const Auth = {
+export class Auth {
     /**
      * @summary Функция авторизации
      * @description Посылает запрос на бек и получает данные пользователя после чего записывает их в хранилище
@@ -14,13 +14,14 @@ export const Auth = {
      * @param {string} email Почта юзера
      * @param {string} password Пароль юзера
      */
-    signin: async(email, pass) => {
+    static async signin(email: string, pass: string) {
         return await ajax.get({
-            url: AUTH_API.SIGNIN,
+            url: AuthRoutes.SIGNIN,
             params: { 'email': email, 'password': pass },
             credentials: 'include',
         });
-    },
+    }
+
     /**
      * @summary Функция регистрации
      * @description Посылает запрос на бек и получает данные пользователя после чего записывает их в хранилище
@@ -28,14 +29,14 @@ export const Auth = {
      * @param {string} email Почта юзера
      * @param {string} password Пароль юзера
      */
-    signup: async(email, pass) => {
+    static async signup(email: string, pass: string) {
         return await ajax.post({
-            url: AUTH_API.SIGNUP,
+            url: AuthRoutes.SIGNUP,
             body: {
                 email: email,
                 password: pass,
             },
             credentials: 'include',
         });
-    },
-};
+    }
+}

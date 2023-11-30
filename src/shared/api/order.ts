@@ -1,53 +1,58 @@
-import ajax from '../services/ajax.js';
-import { ORDER_API } from '../constants/order_api.js';
+import ajax from '../services/ajax';
+import { OrderRoutes } from '../constants/api.js';
 
-export const Order = {
-    create: async(product) => {
+export class Order {
+    static async create(product: any) {
         return await ajax.post({
-            url: ORDER_API.ADD,
+            url: OrderRoutes.ADD,
             body: product,
             credentials: 'include',
         });
-    },
-    getCart: async() => {
+    }
+
+    static async getCart() {
         return await ajax.get({
-            url: ORDER_API.GET_BASKET,
+            url: OrderRoutes.GET_BASKET,
             credentials: 'include',
         });
-    },
-    deleteOrder: async(orderId) => {
+    }
+
+    static async deleteOrder(orderId: number) {
         return await ajax.delete({
-            url: ORDER_API.DELETE,
+            url: OrderRoutes.DELETE,
             params: {
                 id: orderId,
             },
             credentials: 'include',
         });
-    },
-    buyAll: async() => {
+    }
+
+    static async buyAll() {
         return await ajax.patch({
-            url: ORDER_API.BUY_FULL_BASKET,
+            url: OrderRoutes.BUY_FULL_BASKET,
             credentials: 'include',
         });
-    },
-    updateCount: async({ id, count }) => {
+    }
+
+    static async updateCount({ id, count }: {id: number, count: number}) {
         return await ajax.patch({
-            url: ORDER_API.UPDATE_COUNT,
+            url: OrderRoutes.UPDATE_COUNT,
             body: {
                 id: id,
                 count: count,
             },
             credentials: 'include',
         });
-    },
-    updateStatus: async({ id, status }) => {
+    }
+
+    static async updateStatus({ id, status }: {id: number, status: number}) {
         return await ajax.patch({
-            url: ORDER_API.UPDATE_STATUS,
+            url: OrderRoutes.UPDATE_STATUS,
             body: {
                 id: id,
                 status: status,
             },
             credentials: 'include',
         });
-    },
-};
+    }
+}

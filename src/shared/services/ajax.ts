@@ -1,27 +1,27 @@
-import { ContentType } from "../../constants/contentType"
+import { ContentType } from '../constants/contentType';
 
 interface AjaxPropsType {
     method: string,
     url: string,
     params?: any,
     body?: any,
-    headers: any,
-    credentials: any,
-    contentType: string,
-};
+    headers?: any,
+    credentials?: any,
+    contentType?: string,
+}
 
 interface RequestPropsType {
-    url: string, 
+    url: string,
     params?: any,
-    body?: any, 
-    headers?: any, 
-    credentials: any, 
+    body?: any,
+    headers?: any,
+    credentials?: any,
     contentType?: string
-};
+}
 
 interface ContextType {
     [key: string]: any;
-};
+}
 
 const { SCHEMA, API_URL, NODE_ENV } = process.env;
 
@@ -39,7 +39,7 @@ class Ajax {
 
     constructor() {
         if (!SCHEMA || !API_URL) {
-            throw new Error('SCHEMA or API_URL are undefined')
+            throw new Error('SCHEMA or API_URL are undefined');
         }
 
         if (NODE_ENV === 'production') {
@@ -62,7 +62,7 @@ class Ajax {
         url = this.ADRESS_BACKEND + url;
         if (params) {
             url += `?${new URLSearchParams(params)}`;
-        };
+        }
 
         headers.Accept = ContentType.applicationJson;
         headers[ 'Content-Type' ] = contentType;
@@ -90,18 +90,18 @@ class Ajax {
                             }
                             else {
                                 formData.append(key, body[ key ]);
-                            };
+                            }
                         });
                         config.body = formData;
                         delete config.headers[ 'Content-Type' ];
-                    };
-                };
-            };
-        };
+                    }
+                }
+            }
+        }
 
         if (credentials != null) {
             config.credentials = credentials;
-        };
+        }
 
         return await (await fetch(url, config)).json();
     }
@@ -113,9 +113,9 @@ class Ajax {
             params,
             headers,
             credentials,
-            contentType
+            contentType,
         });
-    };
+    }
 
     post({ url, body, headers={}, credentials, contentType=ContentType.applicationJson }: RequestPropsType) {
         return this.#ajax({
@@ -126,7 +126,7 @@ class Ajax {
             contentType,
             credentials,
         });
-    };
+    }
 
     delete({ url, params, headers, credentials, contentType=ContentType.applicationJson }: RequestPropsType) {
         return this.#ajax({
@@ -135,9 +135,9 @@ class Ajax {
             params,
             headers,
             credentials,
-            contentType
+            contentType,
         });
-    };
+    }
 
     patch({ url, params, body, headers, credentials, contentType=ContentType.applicationJson }: RequestPropsType) {
         return this.#ajax({
@@ -147,9 +147,9 @@ class Ajax {
             body,
             headers,
             credentials,
-            contentType
+            contentType,
         });
-    };
+    }
 
     put({ url, params, body, headers, credentials, contentType=ContentType.applicationJson }: RequestPropsType) {
         return this.#ajax({
@@ -159,9 +159,9 @@ class Ajax {
             body,
             headers,
             credentials,
-            contentType
+            contentType,
         });
-    };
-};
+    }
+}
 
 export default new Ajax();
