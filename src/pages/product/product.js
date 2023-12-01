@@ -210,18 +210,29 @@ return;
     }
 
     render() {
-        const params = history.state;
+        let params = history.state;
+        if (!params) {
+            params = {};
+            const urlParams = new URLSearchParams(window.location.search);
+            params.productId = urlParams.get('id');
+        }
         const header = new Header().render();
 
-        switch (history.state.mode) {
-            case 'add':
-                this.renderAdd();
-                break;
-
-            default:
-                this.renderView(params);
-                break;
+        if (!history.state){
+            this.renderView(params);
         }
+        else {
+            this.renderAdd();
+        }
+        // switch (history.state.mode) {
+        //     case 'add':
+        //         this.renderAdd();
+        //         break;
+
+        //     default:
+        //         this.renderView(params);
+        //         break;
+        // }
 
         return [ header, this.root ];
     }

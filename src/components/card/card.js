@@ -205,7 +205,7 @@ export class Card {
         this.root.addEventListener('click', (e) => {
             e.stopPropagation();
 
-            window.Router.navigateTo('/product', { productId: this.context.id });
+            window.Router.navigateTo(`/product?id=${this.context.id}`, { productId: this.context.id });
         });
 
         return this.root;
