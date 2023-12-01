@@ -23,12 +23,10 @@ export class Feed {
             const resp = await Product.feed();
             const body = resp.body;
 
-            console.log(resp);
-
             if (!statuses.IsSuccessfulRequest(resp)) {
                 if (statuses.IsBadFormatRequest(resp)) {
                     throw statuses.USER_MESSAGE;
-                } 
+                }
                 else if (statuses.IsInternalServerError(resp)) {
                     throw statuses.SERVER_MESSAGE;
                 }
