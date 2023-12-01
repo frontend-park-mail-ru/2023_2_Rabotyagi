@@ -209,7 +209,7 @@ export class Header {
         productCreateBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             if (store.user.isAuth()) {
-                window.Router.navigateTo('/product', { mode: 'add' });
+                window.Router.navigateTo('/product?mode=add', { mode: 'add' });
             } else {
                 window.Router.navigateTo('/signin');
             }

@@ -215,24 +215,20 @@ return;
             params = {};
             const urlParams = new URLSearchParams(window.location.search);
             params.productId = urlParams.get('id');
+
+            params.mode = urlParams.get('mode') ? urlParams.get('mode') : 'view';
         }
         const header = new Header().render();
 
-        if (!history.state){
-            this.renderView(params);
-        }
-        else {
-            this.renderAdd();
-        }
-        // switch (history.state.mode) {
-        //     case 'add':
-        //         this.renderAdd();
-        //         break;
+        switch (params.mode) {
+            case 'add':
+                this.renderAdd();
+                break;
 
-        //     default:
-        //         this.renderView(params);
-        //         break;
-        // }
+            default:
+                this.renderView(params);
+                break;
+        }
 
         return [ header, this.root ];
     }
