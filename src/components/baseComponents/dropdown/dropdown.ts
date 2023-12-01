@@ -1,8 +1,12 @@
+import './Dropdown.scss';
+
 import { Component } from '../snail/component';
 import { VDomNode, createElement, createComponent, createText } from '../snail/vdom/VirtualDOM';
-import { Svg } from '../svg/Svg';
-import searchIcon from '../../../assets/icons/search.svg';
+
+import { Svg } from '../Svg/Svg';
 import { TextInput } from '../Input/Input';
+
+import searchIcon from '../../../assets/icons/search.svg';
 
 // примечания к решению:
 // прдеполагается, что dropdown всегда будет привязан к компоненту выше
@@ -12,20 +16,11 @@ import { TextInput } from '../Input/Input';
 interface DropdownProps {
     search: boolean,
     hidden: boolean;
-}
+};
 
 interface DropDownState {
     hidden: boolean;
-}
-
-// search
-//     svg
-//     input
-// content
-//     span ? button
-//     span ? button
-//     span ? button
-//     ...
+};
 
 export class Dropdown extends Component<DropdownProps, DropDownState> {
     protected state: DropDownState = {
@@ -35,38 +30,31 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
     public render(): VDomNode {
         if (!this.props) {
             throw new Error('Dropdown settings are undefined');
-        }
+        };
 
         return createElement(
             'div',
             {
-                class: 'dropdown-container' + (this.props.hidden ? ' hidden' : ''),
+                class: 'dropdown-container',
+                hidden: this.props.hidden
             },
             (this.props.search) ?
             createElement(
                 'div',
-                {
-                    class: '',
-                },
+                { class: 'dropdown-search' },
                 createComponent(
-                    Svg,
-                    {
-                        content: searchIcon,
-                    },
+                    Svg, { content: searchIcon },
                 ),
                 createComponent(
-                    TextInput,
-                    {},
+                    TextInput, {},
                 ),
             ) : createText(''),
             (!this.props.hidden) ?
             createElement(
                 'div',
-                {
-                    class: 'dropdown-content',
-                },
+                { class: 'dropdown-content' },
                 ...this.children
             ) : createText('')
         );
     }
-}
+};

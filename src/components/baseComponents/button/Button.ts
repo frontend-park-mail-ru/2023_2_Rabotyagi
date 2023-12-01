@@ -1,10 +1,10 @@
-import './button.scss';
+import './Button.scss';
 
 import { Component } from '../snail/component';
 import { createElement, createComponent, createText } from '../snail/vdom/VirtualDOM';
 
 import { Text, TextTypes } from '../Text/Text';
-import { Svg } from '../svg/Svg';
+import { Svg } from '../Svg/Svg';
 
 export type ButtonTypes = 'primary' | 'neutral' | 'secondary' | 'accent' | 'outlined' | 'base';
 export type ButtonSubVariantTypes = 'primary' | 'tertiary' | 'outlined';

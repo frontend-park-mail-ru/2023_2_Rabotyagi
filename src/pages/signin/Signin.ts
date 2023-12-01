@@ -1,12 +1,11 @@
-import "./signin.scss";
+import "./Signin.scss";
 
 import { Component } from "../../components/baseComponents/snail/component";
-import { createComponent, createElement } from "../../components/baseComponents/snail/vdom/VirtualDOM";
+import { createComponent, createElement, createText } from "../../components/baseComponents/snail/vdom/VirtualDOM";
 
-import { Text } from "../../components/baseComponents/Text/Text";
-import { Button } from "../../components/baseComponents/button/Button";
-import { Svg } from "../../components/baseComponents/svg/Svg";
-import { TextInput, Password } from "../../components/baseComponents/Input/Input";
+import { Cell } from "./Cell/Cell";
+import { Caption } from "../../components/Caption/Caption";
+import { Text, Button, TextInput, Password, ErrorMessageBox } from "../../components/baseComponents/index";
 
 import { login } from "../../shared/store/commonActions/auth";
 import UserStore from "../../shared/store/user";
@@ -22,9 +21,20 @@ import safe from "../../assets/icons/sigin/safe.svg";
 import logo from "../../assets/icons/logo.svg";
 
 const TEXT_STYLE: string = 'color: var(--text-secondary);';
-const SVG_SIZE: number = 25;
 
-export class Signin extends Component<{}, {}> {
+export interface SigninState {
+    error: string,
+    email: string,
+    password: string
+};
+
+export class Signin extends Component<{}, SigninState> {
+
+    state = {
+        error: '',
+        email: '',
+        password: ''
+    };
 
     check(email: string, password: string): string | null {
         const errorEmail = Validate.email(email);
@@ -40,10 +50,25 @@ export class Signin extends Component<{}, {}> {
         return null;
     };
 
+    signinEvent() {
+
+    };
+
+    setError(error: string) {
+        this.setState((state) => {
+            state = { ...this.state };
+            state.error = error;
+            return state;
+        });
+    };
+
     render() {
         return createElement(
             'div',
-            { class: 'signin-page' },
+            {
+                class: 'signin-page',
+                keydown: () => { this.signinEvent() }
+            },
             createElement(
                 'div',
                 { class: 'left-block' },
@@ -51,48 +76,18 @@ export class Signin extends Component<{}, {}> {
                     Text,
                     { text: 'Войдите, чтобы использовать все возможности' }
                 ),
-                createElement(
-                    'div',
-                    { class: 'cell' },
-                    createComponent(
-                        Svg, { content: message, height: SVG_SIZE, width: SVG_SIZE }
-                    ),
-                    createComponent(
-                        Text, 
-                        {
-                            text: 'Общение об объявлениях в чатах',
-                            style: TEXT_STYLE
-                        }
-                    )
+                createComponent(
+                    Cell,
+                    { svgIcon: message, text: 'Общение об объявлениях в чатах' }
                 ),
-                createElement(
-                    'div',
-                    { class: 'cell' },
-                    createComponent(
-                        Svg, { content: free, height: SVG_SIZE, width: SVG_SIZE }
-                    ),
-                    createComponent(
-                        Text, 
-                        {
-                            text: 'Бесплатное размещение объявлений',
-                            style: TEXT_STYLE
-                        }
-                    )
+                createComponent(
+                    Cell,
+                    { svgIcon: free, text: 'Бесплатное размещение объявлений' }
                 ),
-                createElement(
-                    'div',
-                    { class: 'cell' },
-                    createComponent(
-                        Svg, { content: safe, height: SVG_SIZE, width: SVG_SIZE }
-                    ),
-                    createComponent(
-                        Text, 
-                        {
-                            text: 'Покупки со скидкой по безопасной сделке',
-                            style: TEXT_STYLE
-                        }
-                    )
-                )
+                createComponent(
+                    Cell,
+                    { svgIcon: safe, text: 'Покупки со скидкой по безопасной сделке' }
+                ),
             ),
             createElement(
                 'div',
@@ -112,10 +107,7 @@ export class Signin extends Component<{}, {}> {
                     ),
                     createComponent(
                         Text, 
-                        {
-                            variant: 'subheader',
-                            text: 'Вход в «GoodsGalaxy»'
-                        }
+                        { variant: 'subheader', text: 'Вход в «GoodsGalaxy»' }
                     ),
                     createComponent(
                         TextInput,
@@ -137,12 +129,18 @@ export class Signin extends Component<{}, {}> {
                             autocomplete: "current-password"
                         }
                     ),
+                    (this.state.error !== '') ?
+                    createComponent(
+                        ErrorMessageBox,
+                        { text: this.state.error }
+                    ) : createText(''),
                     createComponent(
                         Button,
                         {
                             text: 'Продолжить',
                             variant: 'primary',
                             style: 'width: 100%;',
+                            onclick: () => { this.signinEvent() }
                         }
                     ),
                     createComponent(
@@ -157,25 +155,14 @@ export class Signin extends Component<{}, {}> {
                 ),
                 createElement(
                     'div',
-                    { 
-                        class: 'right-block-info',
-                        style: 'display: flex; flex-direction: column; align-items: center; gap: 8px; align-self: stretch;'
-                    },
+                    { class: 'right-block-info' },
                     createComponent(
-                        Text, 
-                        {
-                            variant: 'caption',
-                            text: 'Нажимая «Продолжить», вы принимаете пользовательское соглашение и политику конфиденциальности',
-                            style: 'text-align: center; ' + TEXT_STYLE, 
-                        }
+                        Caption,
+                        { text: 'Нажимая «Продолжить», вы принимаете пользовательское соглашение и политику конфиденциальности' }
                     ),
                     createComponent(
-                        Text, 
-                        {
-                            variant: 'caption',
-                            text: 'Передаваемые данные',
-                            style: 'text-align: center; ' + TEXT_STYLE, 
-                        }
+                        Caption,
+                        { text: 'Передаваемые данные' }
                     )
                 ),
             ),

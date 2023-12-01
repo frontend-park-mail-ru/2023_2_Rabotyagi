@@ -1,0 +1,47 @@
+@use '../../../assets/css/vars.scss';
+
+input {
+    display: flex;
+    width: 100%;
+    padding: 8px 12px;
+    align-items: center;
+    align-self: stretch;
+    border-radius: 8px;
+    border: 0.5px solid var(--vkui-color-stroke-field-border-alpha, rgba(0, 16, 61, 0.12));
+    background: vars.$background-primary;
+    outline: none;
+    height: 36px;
+}
+
+input:focus-visible {
+    border: 0.5px solid vars.$palette-primary;
+}
+
+.input-field {
+    display: flex;
+    padding: 8px 12px 8px 10px;
+    border-width: 1px;
+    align-items: center;
+    align-self: stretch;
+    border-radius: 8px;
+    border-color: vars.$background-tertiary;
+}
+
+.input-field:focus {
+    border-color: vars.$palette-primary;
+}
+
+.input-field:active {
+    display: flex;
+    padding: 8px 12px 8px 10px;
+    border-width: 1px;
+    align-items: center;
+    align-self: stretch;
+    border-radius: 8px;
+    border-color: vars.$palette-primary;
+}
+
+.search-field {
+    // background: url('../icons/search.svg') no-repeat scroll 7px 50%;
+    padding-left: 30px;
+}

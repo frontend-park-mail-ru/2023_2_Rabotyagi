@@ -2,11 +2,11 @@ import { Component } from './components/baseComponents/snail/component';
 import { createElement, createComponent, createText } from './components/baseComponents/snail/vdom/VirtualDOM';
 import { TextArea } from './components/baseComponents/TextArea/TextArea';
 // import CounterStore from './shared/store/counter';
-import { Button } from './components/baseComponents/button/Button';
+import { Button } from './components/baseComponents/Button/Button';
 import StoreUser from './shared/store/user';
-import { Dropdown } from './components/baseComponents/dropdown/dropdown';
+import { Dropdown } from './components/baseComponents/Dropdown/Dropdown';
 
-import { Signin } from './pages/signin/Signin';
+import { Signin } from './pages/Signin/Signin';
 
 // компонент App является родитлеьским для dropdown, а значит он определяет его поведение
 // поэтому hidden должен находиться в state у App, а не у Dropdown
