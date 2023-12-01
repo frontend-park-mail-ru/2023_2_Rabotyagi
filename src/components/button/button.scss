@@ -1,14 +1,23 @@
 @use '../../assets/css/vars.scss';
+@use '../../assets/css/sizes.scss';
 
 .button-base {
     display: inline-flex;
-    height: 36px;
-    padding: 6px 12px;
     justify-content: center;
     align-items: center;
+    
+    height: 36px;
+    padding: 6px 12px;
     gap: 8px;
     flex-shrink: 0;
     border-radius: 8px;
+
+    @media screen and (max-width: sizes.$mobile) {
+        height: 24px;
+        padding: 3px 4px;
+        gap: 8px;
+        border-radius: 8px;
+    }
 }
 
 .button-secondary {

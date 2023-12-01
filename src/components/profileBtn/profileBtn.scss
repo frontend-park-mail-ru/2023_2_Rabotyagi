@@ -1,3 +1,5 @@
+@use '../../assets/css/sizes.scss';
+
 .profileBtn-btn {
     display: flex;
     width: 32px;
@@ -5,4 +7,12 @@
     align-items: flex-start;
     flex-shrink: 0;
     border-radius: 16px;
+
+    
+}
+
+#profileBtn-dropdown {
+    @media screen and (max-width: sizes.$mobile) {
+        right: 30px;
+    }
 }

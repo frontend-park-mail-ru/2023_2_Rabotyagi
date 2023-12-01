@@ -1,4 +1,5 @@
 @use '../../assets/css/vars.scss';
+@use '../../assets/css/sizes.scss';
 
 .signin-page {
     display: flex;
@@ -10,6 +11,13 @@
     align-self: center;
     margin-top: auto;
     margin-bottom: auto;
+
+    @media screen and (max-width: sizes.$mobile) {
+        width: sizes.$mobile;
+        margin-top: 50px;
+        margin-bottom: none;
+        padding: 4px 0px;
+    }
 }
 
 .left-block {
@@ -23,6 +31,11 @@
     background: vars.$background-secondary;
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
+
+    @media screen and (max-width: sizes.$mobile) {
+        display: none;
+        padding: none;
+    }
 }
 
 .right-block {
@@ -33,10 +46,14 @@
     gap: 16px;
     flex: 1 0 0;
     align-self: stretch;
+
+    @media screen and (max-width: sizes.$mobile) {
+        padding: none;
+    }
 }
 
 .right-block-content {
-    /* width: 100%; */
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
