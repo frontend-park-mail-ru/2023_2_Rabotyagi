@@ -27,7 +27,7 @@ const user = {
     },
 
     isAuth: function() {
-        return this.state.fields !== null ? true : false;
+        return this.state.fields !== null;
     },
     /**
      * @summary Редьюсер для изменения стейта пользователя на авторизированного
@@ -39,7 +39,7 @@ const user = {
      * @returns None
      */
     login: async function(accessToken) {
-        
+
         this.clear();
 
         if (accessToken === undefined) {

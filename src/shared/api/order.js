@@ -1,5 +1,5 @@
 import ajax from '../services/ajax.js';
-import { ORDER_API } from '../constants/order_api.js';
+import { ORDER_API } from '../constants/api.js';
 
 export const Order = {
     create: async(product) => {

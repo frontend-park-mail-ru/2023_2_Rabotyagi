@@ -107,12 +107,7 @@ export class Card {
 
         this.root.querySelector('#btn-delete')?.replaceWith(btnDelete);
 
-        if (!this.context.is_active) {
-            btnDelete.before(btnActive);
-        }
-        else {
-            btnDelete.before(btnDeactive);
-        }
+        btnDelete.before( this.context.is_active ? btnDeactive : btnActive);
 
         btnDelete.previousElementSibling.addEventListener('click', async(e) => {
             e.stopPropagation();

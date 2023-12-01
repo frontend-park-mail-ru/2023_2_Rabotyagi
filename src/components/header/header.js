@@ -218,7 +218,12 @@ export class Header {
         nav.querySelector('#header-logo-button').replaceWith(logoBtn);
         nav.querySelector('#header-product-create').replaceWith(productCreateBtn);
 
-        authorized ? this.renderProfile(nav) : this.renderAuthBox(nav);
+        if (authorized) {
+            this.renderProfile(nav);
+        }
+        else {
+            this.renderAuthBox(nav);
+        }
 
         this.addEventListeners();
     }

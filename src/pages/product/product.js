@@ -17,8 +17,8 @@ import { User } from '../../shared/api/user.js';
 import { Files } from '../../shared/api/file.js';
 import statuses from '../../shared/statuses/statuses.js';
 
-import { extname } from '../../shared/utils/extname.js';
 import { stringToElement } from '../../shared/utils/parsing.js';
+import Validate from '../../shared/utils/validation.js';
 
 class ProductPage {
     async getSaler(salerID) {
@@ -35,7 +35,7 @@ class ProductPage {
             if (!statuses.IsSuccessfulRequest(respPost)) {
                 if (statuses.IsBadFormatRequest(respPost)) {
                     throw statuses.USER_MESSAGE;
-                } 
+                }
                 else if (statuses.IsInternalServerError(respPost)) {
                     throw statuses.SERVER_MESSAGE;
                 }
@@ -85,10 +85,10 @@ class ProductPage {
 
             if (!statuses.IsSuccessfulRequest(res)) {
                 this.errorBox.innerHTML = '';
-                
+
                 if (statuses.IsBadFormatRequest(res)) {
                     this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
-                } 
+                }
                 else if (statuses.IsInternalServerError(res)) {
                     this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
                 }
@@ -106,26 +106,17 @@ class ProductPage {
     imagesChange = (e) => {
         e.stopPropagation();
 
-        const allowedFormats = this.images.accept
-            .replaceAll('.', '')
-            .replaceAll(' ', '')
-            .split(',');
-
         this.errorBox.innerHTML = '';
         const files = Array.from(this.images.files);
 
-        files.forEach((file) => {
-            const format = extname(file.name);
-            if (!(
-                allowedFormats.find((value) => value === format)
-            )) {
-                this.errorBox.appendChild(ErrorMessageBox(`Формат ${format} недопустим`));
+        const validation = Validate.allowedFormats(this.images.accept, files);
 
-                return;
-            }
-        });
-
-        this.imagesForUpload = files;
+        if (validation) {
+            this.errorBox.appendChild(ErrorMessageBox(`Формат ${validation} недопустим`));
+        }
+        else {
+            this.imagesForUpload = files;
+        }
     };
 
     formSubmit = async(e) => {

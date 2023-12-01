@@ -15,8 +15,8 @@ import { Files } from '../../shared/api/file';
 import statuses from '../../shared/statuses/statuses';
 
 import { getResourceUrl } from '../../shared/utils/getResource';
-import { extname } from '../../shared/utils/extname';
 import { stringToElement } from '../../shared/utils/parsing';
+import Validate from '../../shared/utils/validation';
 
 class Content {
 
@@ -58,26 +58,18 @@ class Content {
     imagesChange = (e) => {
         e.stopPropagation();
 
-        const allowedFormats = this.images.accept
-            .replaceAll('.', '')
-            .replaceAll(' ', '')
-            .split(',');
-
         this.errorBox.innerHTML = '';
         const files = Array.from(this.images.files);
 
-        files.forEach((file) => {
-            const format = extname(file.name);
-            if (!(
-                allowedFormats.find((value) => value === format)
-            )) {
-                this.errorBox.appendChild(ErrorMessageBox(`Формат ${format} недопустим`));
+        const validation = Validate.allowedFormats(this.images.accept, files);
 
-                return;
-            }
-        });
+        if (validation) {
+            this.errorBox.appendChild(ErrorMessageBox(`Формат ${validation} недопустим`));
+        }
+        else {
+            this.imagesForUpload = files;
+        }
 
-        this.imagesForUpload = files;
     };
 
     renderChange() {

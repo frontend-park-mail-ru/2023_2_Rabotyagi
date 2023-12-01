@@ -12,22 +12,21 @@ import statuses from '../../shared/statuses/statuses';
 
 import { stringToElement } from '../../shared/utils/parsing';
 import { cookieParser } from '../../shared/utils/cookie';
-import { extname } from '../../shared/utils/extname';
+import Validate from '../../shared/utils/validation';
 
 class Settings {
     async patchProfile(data, errorBox) {
         const res = await User.patchProfile(data);
-        const body = res.body;
 
         if (!statuses.IsSuccessfulRequest(res)) {
             if (statuses.IsBadFormatRequest(res)) {
                 errorBox.replaceWith(ErrorMessageBox(statuses.USER_MESSAGE, 'errorBox'));
-            } 
+            }
             else if (statuses.IsInternalServerError(res)) {
                 errorBox.replaceWith(ErrorMessageBox(statuses.SERVER_MESSAGE, 'errorBox'));
             }
             else if (statuses.IsUserError(res)) {
-                errorBox.replaceWith(ErrorMessageBox(body.message, 'errorBox'));
+                errorBox.replaceWith(ErrorMessageBox(res.body.message, 'errorBox'));
             }
 
             return;
@@ -47,7 +46,7 @@ class Settings {
 
                 if (statuses.IsBadFormatRequest(res)) {
                     this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
-                } 
+                }
                 else if (statuses.IsInternalServerError(res)) {
                     this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
                 }
@@ -71,33 +70,26 @@ class Settings {
         inputAvatar.addEventListener('change', async(e) => {
             e.stopPropagation();
 
-            const allowedFormats = inputAvatar.accept
-                .replaceAll('.', '')
-                .replaceAll(' ', '')
-                .split(',');
-
             this.errorBox.innerHTML = '';
             const files = Array.from(inputAvatar.files);
+            const validation = Validate.allowedFormats(inputAvatar.accept, files);
 
-            files.forEach((file) => {
-                const format = extname(file.name);
-                if (!(
-                    allowedFormats.find((value) => value === format)
-                )) {
-                    this.errorBox.appendChild(ErrorMessageBox(`Формат ${format} недопустим`));
+            if (validation) {
+                this.errorBox.appendChild(ErrorMessageBox(`Формат ${validation} недопустим`));
+            }
+            else {
+                this.avatarForUpload = files[ 0 ];
+            }
 
-                    return;
-                }
-            });
-
-            this.avatarForUpload = files[ 0 ];
         });
 
-        for (const el of form.querySelectorAll('input[placeholder][data-slots]')) {
+        const dataSlots = form.querySelectorAll('input[placeholder][data-slots]');
+
+        for (const el of dataSlots) {
             const pattern = el.getAttribute('placeholder'),
                 slots = new Set(el.dataset.slots || '_'), // eslint-disable-line no-undef
-                prev = (j => Array.from(pattern, (c,i) => slots.has(c)? j=i+1: j))(0),
-                first = [ ...pattern ].findIndex(c => slots.has(c)),
+                prev = (end => Array.from(pattern, (index, start) => slots.has(index)? end=start+1: end))(0),
+                first = [ ...pattern ].findIndex(index => slots.has(index)),
                 accept = new RegExp(el.dataset.accept || '\\d', 'g'),
                 clean = input => {
                     input = input.match(accept) || [];
@@ -107,59 +99,61 @@ class Settings {
                     );
                 },
                 format = () => {
-                    const [ i, j ] = [ el.selectionStart, el.selectionEnd ].map(i => {
-                        i = clean(el.value.slice(0, i)).findIndex(c => slots.has(c));
+                    const [ start, end ] = [ el.selectionStart, el.selectionEnd ].map(start => {
+                        start = clean(el.value.slice(0, start)).findIndex(index => slots.has(index));
 
-                        return i<0? prev[ prev.length-1 ]: back? prev[ i-1 ] || first: i;
+                        return start<0? prev[ prev.length-1 ]: back? prev[ start-1 ] || first: start;
                     });
                     el.value = clean(el.value).join``;
-                    el.setSelectionRange(i, j);
+                    el.setSelectionRange(start, end);
                     back = false;
                 };
             let back = false;
             el.addEventListener('keydown', (e) => back = e.key === 'Backspace');
             el.addEventListener('input', format);
             el.addEventListener('focus', format);
-            el.addEventListener('blur', () => el.value === pattern && (el.value=''));
+            el.addEventListener('blur', () => {
+                if (el.value === pattern){
+                    el.value='';
+                }
+            });
         }
 
         form.addEventListener('submit', async(e) => {
             e.preventDefault();
             const { elements } = form;
+
             const data = Array.from(elements)
-                .filter((item) => !!item.name && !!item.value)
-                .map((element) => {
-                    const { name, value } = element;
+            .filter((item) => !!item.name && !!item.value)
+            .reduce((result, element) => {
+                const { name, value } = element;
+                result[name] = value;
 
-                    return { [ name ]: value };
-                });
+                return result;
+            }, {});
 
-            let body = {};
-            data.forEach((elem) => body = { ...body, ...elem });
-
-            body.id = store.user.state.fields.id;
+            data.id = store.user.state.fields.id;
 
             await this.uploadAvatar();
 
             if (this.uploadedAvatar) {
-                body.avatar = this.uploadedAvatar;
+                data.avatar = this.uploadedAvatar;
             }
 
-            const res = await User.patchProfile(body);
-            body = res.body;
+            const res = await User.patchProfile(data);
 
             const errorBox = this.root.querySelector('#errorBox');
             if (!statuses.IsSuccessfulRequest(res)) {
                 if (statuses.IsBadFormatRequest(res)) {
                     errorBox.replaceWith(ErrorMessageBox(statuses.USER_MESSAGE, 'errorBox'));
-                } 
+                }
                 else if (statuses.IsInternalServerError(res)) {
                     errorBox.replaceWith(ErrorMessageBox(statuses.SERVER_MESSAGE, 'errorBox'));
                 }
                 else if (statuses.IsUserError(res)) {
-                    errorBox.replaceWith(ErrorMessageBox(body.error, 'errorBox'));
+                    errorBox.replaceWith(ErrorMessageBox(res.body.error, 'errorBox'));
                 }
-    
+
                 return;
             }
 

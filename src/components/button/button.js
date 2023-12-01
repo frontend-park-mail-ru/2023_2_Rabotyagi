@@ -2,63 +2,43 @@ import { stringToElement } from '../../shared/utils/parsing';
 import template from './button.hbs';
 import './button.scss'; //eslint-disable-line no-unused-vars
 
-//eslint-disable-next-line no-unused-vars
-const config = {
-    id: null,
-    variant: null,
-    link: null,
-    subVariant: null,
-    style: null,
-    leftIcon: null,
-    rightIcon: null,
-    text: {
+const button = ({
+    id = null,
+    variant = null,
+    link = null,
+    subVariant = null,
+    style = null,
+    leftIcon = null,
+    rightIcon = null,
+    text = {
         class: null,
         content: null,
     },
-    name: null,
-    type: null,
-};
-// Добавить в избранное
-const button = (context) => {
-    switch (context.variant) {
-        case 'primary':
-            context.variant = 'button-primary';
-            break;
-        case 'neutral':
-            context.variant = 'button-neutral';
-            break;
-        case 'secondary':
-            context.variant = 'button-secondary';
-            break;
-        case 'accent':
-            context.variant = 'button-accent';
-            break;
-        case 'outlined':
-            context.variant = 'button-outlined';
-            break;
-    }
-    const root = stringToElement(template(context));
+    name = null,
+    type = null,
+}) => {
+    const root = stringToElement(template({id, variant: `button-${variant}`, link, subVariant, style, name, type, text}));
 
-    if (context.leftIcon){
-        root.querySelector('#leftIcon').replaceWith(context.leftIcon);
+    if (leftIcon){
+        root.querySelector('#leftIcon').replaceWith(leftIcon);
     }
     else {
         root.querySelector('#leftIcon').remove();
     }
 
-    if (context.text == undefined) {
+    if (text == undefined) {
         root.querySelector('span').remove();
     }
 
-    if (context.rightIcon){
-        root.querySelector('#rightIcon').replaceWith(context.rightIcon);
+    if (rightIcon){
+        root.querySelector('#rightIcon').replaceWith(rightIcon);
     }
     else {
         root.querySelector('#rightIcon').remove();
     }
 
-    if (context.link){
-        root.dataset.link = context.link;
+    if (link){
+        root.dataset.link = link;
     }
 
     return root;

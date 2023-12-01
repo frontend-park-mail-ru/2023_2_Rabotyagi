@@ -1,5 +1,5 @@
 import ajax from '../services/ajax.js';
-import { USER_API } from '../constants/user_api.js';
+import { USER_API } from '../constants/api.js';
 
 export const User = {
     patchProfile: async(body) => {

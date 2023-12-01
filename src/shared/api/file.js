@@ -1,6 +1,6 @@
 import { multipartFormData } from '../constants/contentType.js';
 import ajax from '../services/ajax.js';
-import { FILES_API } from '../constants/file_api.js';
+import { FILES_API } from '../constants/api.js';
 
 export const Files = {
     images: async(files) => {

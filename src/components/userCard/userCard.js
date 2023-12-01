@@ -1,4 +1,4 @@
-import Template from './userCard.hbs';
+import template from './userCard.hbs';
 import './userCard.scss';
 
 import button from '../button/button.js';
@@ -19,8 +19,6 @@ export class UserCard {
     }
 
     render() {
-        const template = Template;
-
         const context = {
             name: this.#name,
             email: this.#email,
@@ -44,7 +42,7 @@ export class UserCard {
 
         const root = stringToElement(template(context));
 
-        const container = root.querySelector('div.user-info');
+        const container = root.querySelector('.user-info');
         container.querySelector('#goToSaler').replaceWith(goToSaler);
 
         return root;

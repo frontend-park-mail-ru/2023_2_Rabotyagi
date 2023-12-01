@@ -1,5 +1,5 @@
 import ajax from '../services/ajax.js';
-import { PRODUCT_API } from '../constants/product_api.js';
+import { PRODUCT_API } from '../constants/api.js';
 
 export const Product = {
     feed: async() => {

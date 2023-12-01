@@ -83,8 +83,8 @@ export class Counter {
     }
 
     updateVisible() {
-        this.#incVisible = (this.#currentCount === this.#maxCount) ? false : true;
-        this.#decVisible = (this.#currentCount === this.#minCount) ? false : true;
+        this.#incVisible = this.#currentCount !== this.#maxCount;
+        this.#decVisible = this.#currentCount !== this.#minCount;
     }
 
     incCount() {

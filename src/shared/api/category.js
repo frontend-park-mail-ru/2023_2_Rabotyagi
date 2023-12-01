@@ -1,5 +1,5 @@
 import ajax from '../services/ajax';
-import { CATEGORY_API } from '../constants/category_api';
+import { CATEGORY_API } from '../constants/api';
 
 export const CategoryApi = {
     getAll: async() => {

@@ -1,5 +1,5 @@
 import ajax from '../services/ajax';
-import { CITY_API } from '../constants/city_api';
+import { CITY_API } from '../constants/api';
 
 export const CityApi = {
     getAll: async() => {

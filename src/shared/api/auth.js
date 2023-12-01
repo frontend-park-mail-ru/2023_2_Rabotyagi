@@ -4,7 +4,7 @@
  */
 
 import ajax from '../services/ajax.js';
-import { AUTH_API } from '../constants/auth_api.js';
+import { AUTH_API } from '../constants/api.js';
 
 export const Auth = {
     /**

@@ -1,18 +1,16 @@
 import { stringToElement } from '../../shared/utils/parsing';
 
-//eslint-disable-next-line no-unused-vars
-const config = {
-    id: null,
-    variant: null,
-    size: null,
-    width: 60,
-    height: 60,
-};
-
-const svg = (params) => {
-    const root = stringToElement(params.content);
-    root.style.width = params.width ? params.width : 60;
-    root.style.height = params.height ? params.height : 60;
+const svg = ({
+    content,
+    // id = null,
+    // variant = null,
+    // size = null,
+    width = 60,
+    height = 60,
+}) => {
+    const root = stringToElement(content);
+    root.style.width = width;
+    root.style.height = height;
 
     return root;
 };
