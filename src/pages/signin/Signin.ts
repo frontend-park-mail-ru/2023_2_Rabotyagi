@@ -14,6 +14,8 @@ import Dispatcher from "../../shared/services/store/Dispatcher";
 
 import Navigate from "../../shared/services/router/Navigate";
 
+import { Validate } from "../../shared/utils/validation";
+
 import message from "../../assets/icons/sigin/message.svg";
 import free from "../../assets/icons/sigin/free.svg";
 import safe from "../../assets/icons/sigin/safe.svg";
@@ -23,6 +25,20 @@ const TEXT_STYLE: string = 'color: var(--text-secondary);';
 const SVG_SIZE: number = 25;
 
 export class Signin extends Component<{}, {}> {
+
+    check(email: string, password: string): string | null {
+        const errorEmail = Validate.email(email);
+        if (errorEmail) {
+            return errorEmail;
+        };
+
+        const errorPassword = Validate.password(password);
+        if (errorPassword) {
+            return errorPassword;
+        };
+
+        return null;
+    };
 
     render() {
         return createElement(
