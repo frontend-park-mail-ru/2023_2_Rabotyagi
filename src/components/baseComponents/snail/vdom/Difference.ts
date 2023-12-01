@@ -252,8 +252,10 @@ export const applyChanges = (element: HTMLElement | Text, difference: VDomNodeUp
         Object.keys(difference.props.set).forEach((prop) => {
             if (prop == 'class') {
                 if (difference.props.set[prop] !== '') {
-                    debugger;
-                    element.classList.add(difference.props.set[prop].toString().trim());
+                    console.log(difference.props.set[prop]);
+                    difference.props.set[prop].toString().split(' ').forEach((className) => {
+                        element.classList.add(className);
+                    });
                 }
             } else {
                 (element as any)[prop] = difference.props.set[prop];

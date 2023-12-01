@@ -4,8 +4,14 @@ import { Svg } from '../svg/Svg';
 import searchIcon from '../../../assets/icons/search.svg';
 import { TextInput } from '../Input/Input';
 
+// примечания к решению:
+// прдеполагается, что dropdown всегда будет привязан к компоненту выше
+// то есть всегда есть кнопка или строка ввода, которая влияет на состояние компонента dropdown извне
+// внешнее воздействие на компонент осуществляется через его пропсы
+
 interface DropdownProps {
     search: boolean,
+    hidden: boolean;
 }
 
 interface DropDownState {
@@ -27,12 +33,19 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
     };
 
     public render(): VDomNode {
+        if (!this.props) {
+            throw new Error('Dropdown settings are undefined');
+        }
+
+        console.log(this.props, this.children, !this.props.hidden);
+
         return createElement(
             'div',
             {
-                class: 'dropdown-container' + ' ' + (this.state.hidden ? 'hidden' : ''),
+                class: 'dropdown-container',
+                hidden: this.props.hidden
             },
-            (this.props?.search) ?
+            (this.props.search) ?
             createElement(
                 'div',
                 {
@@ -49,14 +62,14 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
                     {},
                 ),
             ) : createText(''),
+            (!this.props.hidden) ?
             createElement(
                 'div',
                 {
-                    class: '',
+                    class: 'dropdown-content',
                 },
-                ...this.children,
-            ),
-
+                ...this.children
+            ) : createText('')
         );
     }
 }

@@ -8,42 +8,43 @@ import { Dropdown } from './components/baseComponents/dropdown/dropdown';
 
 import { Signin } from './pages/signin/Signin';
 
+// компонент App является родитлеьским для dropdown, а значит он определяет его поведение
+// поэтому hidden должен находиться в state у App, а не у Dropdown
+// соответсвенно в App есть функция changeHidden, которая меняет этот параметр
+// для Dropdown hidden - это свойство, которое передаётся в пропсах
+
+// можно для наглядности в будущем называть состояние внутри App как drodownHidden или наподобии
+
+// НЕ НАДО выносить компоненты в константы. Или хотя бы делать это только внутри функции render!
+// НЕ НАДО вызывать setState у детей, это их внутренняя функция, она меняет внутренний state!
+// и instance тоже не надо трогать, он архитектурно обрабатывается только виртуальным DOM-ом!
+
+// ещё комментарии есть в Dropdown компоненте
+
 interface AppState {
     title: string,
     count: number,
+    hidden: boolean
 }
 
-// const initAppState: AppState = {
-//     title: 'Welcome to the App',
-//     count: 0,
-// };
-
-const dropdown = createComponent(
-    Dropdown,
-    {
-        search: false,
-    },
-    createComponent(
-        Button,
-        {
-            text: 'first',
-        },
-    ),
-    createComponent(
-        Button,
-        {
-            text: 'second',
-        },
-    ),
-    createComponent(
-        Button,
-        {
-            text: 'third',
-        },
-    ),
-);
-
 export class App extends Component<never, AppState> {
+
+    state = {
+        title: 'Welcome to the App',
+        count: 0,
+        hidden: true
+    }
+
+    changeHidden() {
+        this.setState((state) => {
+            state = { ...this.state };
+            state.hidden = !this.state.hidden;
+
+            console.log(state);
+
+            return state;
+        });
+    }
 
     // state = { ...initAppState };
 
@@ -69,19 +70,43 @@ export class App extends Component<never, AppState> {
         return createElement(
             'div',
             { id: 'root' },
-            /*createComponent(
+            createComponent(
                 Button,
                 {
                     variant: 'neutral',
                     text: 'Показать списочек',
-                    onclick: () => dropdown.instance?.setState(() => {return {hidden: false};}),
+                    onclick: () => { this.changeHidden() },
                 },
             ),
-            dropdown,*/
             createComponent(
+                Dropdown,
+                {
+                    search: false,
+                    hidden: this.state.hidden
+                },
+                createComponent(
+                    Button,
+                    {
+                        text: 'first',
+                    },
+                ),
+                createComponent(
+                    Button,
+                    {
+                        text: 'second',
+                    },
+                ),
+                createComponent(
+                    Button,
+                    {
+                        text: 'third',
+                    },
+                ),
+            ),
+            /*createComponent(
                 Signin,
                 {}
-            )
+            )*/
         );
     }
 }
