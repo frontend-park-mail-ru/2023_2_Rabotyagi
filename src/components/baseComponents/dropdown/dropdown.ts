@@ -37,13 +37,10 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
             throw new Error('Dropdown settings are undefined');
         }
 
-        console.log(this.props, this.children, !this.props.hidden);
-
         return createElement(
             'div',
             {
-                class: 'dropdown-container',
-                hidden: this.props.hidden
+                class: 'dropdown-container' + (this.props.hidden ? ' hidden' : ''),
             },
             (this.props.search) ?
             createElement(

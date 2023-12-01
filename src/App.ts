@@ -40,8 +40,6 @@ export class App extends Component<never, AppState> {
             state = { ...this.state };
             state.hidden = !this.state.hidden;
 
-            console.log(state);
-
             return state;
         });
     }

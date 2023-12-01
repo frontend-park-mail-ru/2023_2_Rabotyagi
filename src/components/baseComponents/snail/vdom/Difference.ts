@@ -92,7 +92,7 @@ const getRemoveProps = (node: VDomElement, newNode: VDomElement): Array<string> 
     return Object.keys(node.props || {}).filter((prop) => {
         const index = Object.keys(newNode.props || {}).indexOf(prop);
 
-return index == -1;
+        return index == -1;
     });
 };
 
@@ -252,7 +252,7 @@ export const applyChanges = (element: HTMLElement | Text, difference: VDomNodeUp
         Object.keys(difference.props.set).forEach((prop) => {
             if (prop == 'class') {
                 if (difference.props.set[prop] !== '') {
-                    console.log(difference.props.set[prop]);
+                    element.removeAttribute('class');
                     difference.props.set[prop].toString().split(' ').forEach((className) => {
                         element.classList.add(className);
                     });
