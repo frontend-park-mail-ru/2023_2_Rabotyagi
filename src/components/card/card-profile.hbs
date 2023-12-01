@@ -1,17 +1,17 @@
 <button class="card-profile">
     {{#if this.image}}
-    <img class='image' src='{{this.image.url}}' />
+    <img class='image-profile' src='{{this.image.url}}' />
     {{else}}
-    <div class="img"></div>
+    <div class="image-profile"></div>
     {{/if}}
-    <div class="content">
+    <div class="content-profile">
         <span class='text-regular'>{{this.price}} ₽</span>
-        <span class='text-regular title'>{{this.title}}</span>
+        <span class='text-regular title-profile'>{{this.title}}</span>
         <div class="divider"></div>
         {{#if (haveBadges)}}
-        <div class="badges">
+        <div class="badges-profile">
             {{#if this.safe_deal}}
-            <div class="badge">
+            <div class="badge-profile">
                 <svg width="20" height="20" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M21.352 6.36C17.5423 7.40993 13.7586 8.5516 10.004 9.784C9.66115 9.89506 9.35639 10.1002 9.12443 10.376C8.89247 10.6518 8.74263 10.9872 8.69199 11.344C6.47599 27.972 11.596 40.104 17.704 48.096C20.2901 51.5136 23.3736 54.5243 26.852 57.028C28.236 58.004 29.46 58.708 30.424 59.16C30.904 59.388 31.296 59.54 31.596 59.632C31.7272 59.678 31.8625 59.7115 32 59.732C32.1359 59.7099 32.2697 59.6765 32.4 59.632C32.704 59.54 33.096 59.388 33.576 59.16C34.536 58.708 35.764 58 37.148 57.028C40.6263 54.5243 43.7099 51.5135 46.296 48.096C52.404 40.108 57.524 27.972 55.308 11.344C55.2578 10.987 55.1081 10.6514 54.8761 10.3755C54.6441 10.0996 54.3391 9.89464 53.996 9.784C51.392 8.932 46.996 7.544 42.648 6.364C38.208 5.16 34.124 4.268 32 4.268C29.88 4.268 25.792 5.156 21.352 6.36ZM20.288 2.24C24.628 1.06 29.24 0 32 0C34.76 0 39.372 1.06 43.712 2.24C48.152 3.44 52.628 4.86 55.26 5.72C56.3604 6.08341 57.336 6.74986 58.0747 7.6428C58.8134 8.53575 59.2852 9.61896 59.436 10.768C61.82 28.676 56.288 41.948 49.576 50.728C46.7298 54.4839 43.336 57.7914 39.508 60.54C38.1844 61.4911 36.7819 62.3275 35.316 63.04C34.196 63.568 32.992 64 32 64C31.008 64 29.808 63.568 28.684 63.04C27.218 62.3275 25.8156 61.4911 24.492 60.54C20.6641 57.7913 17.2703 54.4838 14.424 50.728C7.71199 41.948 2.17999 28.676 4.56399 10.768C4.71474 9.61896 5.18656 8.53575 5.92526 7.6428C6.66395 6.74986 7.63956 6.08341 8.73999 5.72C12.5608 4.46724 16.4112 3.3069 20.288 2.24Z"
@@ -23,7 +23,7 @@
             </div>
             {{/if}}
             {{#if this.delivery}}
-            <div class='badge'>
+            <div class='badge-profile'>
                 <svg width="20" height="20" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M8 32H32V36H8V32ZM4 22H24V26H4V22Z" fill="#292C2F" />
                     <path
@@ -36,8 +36,8 @@
         {{/if}}
 
         {{#if this.city}}
-        <div class="badges">
-            <div class='badge'>
+        <div class="badges-profile">
+            <div class='badge-profile'>
                 <span class="text-regular">{{this.city.name}}</span>
             </div>
         </div>

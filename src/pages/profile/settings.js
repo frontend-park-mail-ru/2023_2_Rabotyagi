@@ -1,27 +1,39 @@
-import template from './templates/settings.hbs'
+import template from './templates/settings.hbs';
 import './styles/settings.scss';
+
+import { store } from '../../shared/store/store';
+
+import { ErrorMessageBox } from '../../components/error/errorMessageBox';
+import button from '../../components/button/button';
+
+import { User } from '../../shared/api/user';
+import { Files } from '../../shared/api/file';
+import statuses from '../../shared/statuses/statuses';
+
 import { stringToElement } from '../../shared/utils/parsing';
 import { cookieParser } from '../../shared/utils/cookie';
-import button from '../../components/button/button';
-import { User } from '../../shared/api/user';
-import { ErrorMessageBox } from '../../components/error/errorMessageBox';
-import { store } from '../../shared/store/store';
-import { extname } from '../../shared/utils/extname';
-import { Files } from '../../shared/api/file';
-
+import Validate from '../../shared/utils/validation';
 
 class Settings {
     async patchProfile(data, errorBox) {
         const res = await User.patchProfile(data);
-        const body = res.body;
 
-        if (res.status !== 200) {
-            errorBox.replaceWith(ErrorMessageBox(body.message, 'errorBox'));
+        if (!statuses.IsSuccessfulRequest(res)) {
+            if (statuses.IsBadFormatRequest(res)) {
+                errorBox.replaceWith(ErrorMessageBox(statuses.USER_MESSAGE, 'errorBox'));
+            }
+            else if (statuses.IsInternalServerError(res)) {
+                errorBox.replaceWith(ErrorMessageBox(statuses.SERVER_MESSAGE, 'errorBox'));
+            }
+            else if (statuses.IsUserError(res)) {
+                errorBox.replaceWith(ErrorMessageBox(res.body.message, 'errorBox'));
+            }
+
             return;
         }
 
-        store.user.login(
-            cookieParser(document.cookie).access_token
+        await store.user.login(
+            cookieParser(document.cookie).access_token,
         );
     }
 
@@ -29,10 +41,20 @@ class Settings {
         if (this.avatarForUpload) {
             const res = await Files.images(this.avatarForUpload);
 
-            if (res.status !== 200) {
+            if (!statuses.IsSuccessfulRequest(res)) {
                 this.errorBox.innerHTML = '';
-                this.errorBox.append(ErrorMessageBox(res.body.error));
+
+                if (statuses.IsBadFormatRequest(res)) {
+                    this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
+                }
+                else if (statuses.IsInternalServerError(res)) {
+                    this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
+                }
+                else if (statuses.IsUserError(res)) {
+                    this.errorBox.append(ErrorMessageBox(res.body.error));
+                }
             }
+
             this.uploadedAvatar = res.body.urls[ 0 ];
         }
     }
@@ -45,90 +67,98 @@ class Settings {
         const form = this.root.querySelector('.content');
         this.errorBox = this.root.querySelector('#errorBox');
 
-        inputAvatar.addEventListener('change', async (e) => {
+        inputAvatar.addEventListener('change', async(e) => {
             e.stopPropagation();
-
-            const allowedFormats = inputAvatar.accept
-                .replaceAll('.', '')
-                .replaceAll(' ', '')
-                .split(',');
 
             this.errorBox.innerHTML = '';
             const files = Array.from(inputAvatar.files);
+            const validation = Validate.allowedFormats(inputAvatar.accept, files);
 
-            files.forEach((file) => {
-                const format = extname(file.name);
-                if (!(
-                    allowedFormats.find((value) => value === format)
-                )) {
-                    this.errorBox.appendChild(ErrorMessageBox(`Формат ${format} недопустим`));
-                    return;
-                }
-            });
+            if (validation) {
+                this.errorBox.appendChild(ErrorMessageBox(`Формат ${validation} недопустим`));
+            }
+            else {
+                this.avatarForUpload = files[ 0 ];
+            }
 
-            this.avatarForUpload = files[ 0 ];  
-        })
+        });
 
-        for (const el of form.querySelectorAll("input[placeholder][data-slots]")) {
-            const pattern = el.getAttribute("placeholder"),
-                slots = new Set(el.dataset.slots || "_"),
-                prev = (j => Array.from(pattern, (c,i) => slots.has(c)? j=i+1: j))(0),
-                first = [ ...pattern ].findIndex(c => slots.has(c)),
-                accept = new RegExp(el.dataset.accept || "\\d", "g"),
+        const dataSlots = form.querySelectorAll('input[placeholder][data-slots]');
+
+        for (const el of dataSlots) {
+            const pattern = el.getAttribute('placeholder'),
+                slots = new Set(el.dataset.slots || '_'), // eslint-disable-line no-undef
+                prev = (end => Array.from(pattern, (index, start) => slots.has(index)? end=start+1: end))(0),
+                first = [ ...pattern ].findIndex(index => slots.has(index)),
+                accept = new RegExp(el.dataset.accept || '\\d', 'g'),
                 clean = input => {
                     input = input.match(accept) || [];
+
                     return Array.from(pattern, c =>
-                        input[ 0 ] === c || slots.has(c) ? input.shift() || c : c
+                        input[ 0 ] === c || slots.has(c) ? input.shift() || c : c,
                     );
                 },
                 format = () => {
-                    const [ i, j ] = [ el.selectionStart, el.selectionEnd ].map(i => {
-                        i = clean(el.value.slice(0, i)).findIndex(c => slots.has(c));
-                        return i<0? prev[ prev.length-1 ]: back? prev[ i-1 ] || first: i;
+                    const [ start, end ] = [ el.selectionStart, el.selectionEnd ].map(start => {
+                        start = clean(el.value.slice(0, start)).findIndex(index => slots.has(index));
+
+                        return start<0? prev[ prev.length-1 ]: back? prev[ start-1 ] || first: start;
                     });
                     el.value = clean(el.value).join``;
-                    el.setSelectionRange(i, j);
+                    el.setSelectionRange(start, end);
                     back = false;
                 };
             let back = false;
-            el.addEventListener("keydown", (e) => back = e.key === "Backspace");
-            el.addEventListener("input", format);
-            el.addEventListener("focus", format);
-            el.addEventListener("blur", () => el.value === pattern && (el.value=""));
+            el.addEventListener('keydown', (e) => back = e.key === 'Backspace');
+            el.addEventListener('input', format);
+            el.addEventListener('focus', format);
+            el.addEventListener('blur', () => {
+                if (el.value === pattern){
+                    el.value='';
+                }
+            });
         }
 
-        form.addEventListener('submit', async (e) => {
+        form.addEventListener('submit', async(e) => {
             e.preventDefault();
             const { elements } = form;
+
             const data = Array.from(elements)
-                .filter((item) => !!item.name && !!item.value)
-                .map((element) => {
-                    const { name, value } = element
-                    return { [ name ]: value }
-                })
+            .filter((item) => !!item.name && !!item.value)
+            .reduce((result, element) => {
+                const { name, value } = element;
+                result[name] = value;
 
-            let body = {};
-            data.forEach((elem) => body = { ...body, ...elem });
+                return result;
+            }, {});
 
-            body.id = store.user.state.fields.id;
+            data.id = store.user.state.fields.id;
 
             await this.uploadAvatar();
 
             if (this.uploadedAvatar) {
-                body.avatar = this.uploadedAvatar;
+                data.avatar = this.uploadedAvatar;
             }
 
-            const res = await User.patchProfile(body);
-            body = res.body;
+            const res = await User.patchProfile(data);
 
             const errorBox = this.root.querySelector('#errorBox');
-            if (res.status !== 200) {
-                errorBox.replaceWith(ErrorMessageBox(body.error, 'errorBox'));
+            if (!statuses.IsSuccessfulRequest(res)) {
+                if (statuses.IsBadFormatRequest(res)) {
+                    errorBox.replaceWith(ErrorMessageBox(statuses.USER_MESSAGE, 'errorBox'));
+                }
+                else if (statuses.IsInternalServerError(res)) {
+                    errorBox.replaceWith(ErrorMessageBox(statuses.SERVER_MESSAGE, 'errorBox'));
+                }
+                else if (statuses.IsUserError(res)) {
+                    errorBox.replaceWith(ErrorMessageBox(res.body.error, 'errorBox'));
+                }
+
                 return;
             }
-            
+
             await store.user.login(
-                cookieParser(document.cookie)
+                cookieParser(document.cookie),
             );
             window.Router.navigateTo('/profile/settings');
         });
@@ -138,7 +168,7 @@ class Settings {
             variant: 'primary',
             text: {
                 class: 'text-regular',
-                content: 'Сохранить'
+                content: 'Сохранить',
             },
             type: 'submit',
         }));
@@ -148,7 +178,7 @@ class Settings {
             variant: 'outlined',
             text: {
                 class: 'text-regular',
-                content: 'Отменить'
+                content: 'Отменить',
             },
         }));
 
@@ -163,8 +193,9 @@ class Settings {
 
     render() {
         this.preRender();
+
         return [ this.root ];
-    };
+    }
 }
 
 export default Settings;

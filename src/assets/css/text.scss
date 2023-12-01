@@ -1,36 +1,62 @@
+@use './sizes.scss';
+
 .text-caption {
     font-family: 'Nunito Sans', sans-serif;
-    font-size: 10px;
     font-style: normal;
+    white-space: pre-line;
+    font-size: 10px;
     font-weight: 400;
     line-height: 100%;
-    white-space: pre-line;
+
+    @media screen and (max-width: sizes.$mobile) {
+        font-size: 6px;
+        font-weight: 400;
+        line-height: 100%;
+    }
 }
 
 .text-regular {
     font-family: 'Nunito Sans', sans-serif;
-    font-size: 14px;
     font-style: normal;
+    white-space: pre-line;
+    font-size: 14px;
     font-weight: 400;
     line-height: 100%;
-    white-space: pre-line;
+
+    @media screen and (max-width: sizes.$mobile) {
+        font-size: 10px;
+        font-weight: 400;
+        line-height: 100%;
+    }
 }
 
 .text-subheader {
     font-family: 'Roboto Medium', serif;
-    font-size: 22px;
     font-style: normal;
+    white-space: pre-line;
+    font-size: 22px;
     font-weight: 400;
     line-height: 140%;
-    white-space: pre-line;
+
+    @media screen and (max-width: sizes.$mobile) {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 140%;
+    }
 }
 
 .text-header {
     font-family: 'Roboto Regular', serif;
     text-align: center;
-    font-size: 33px;
     font-style: normal;
+    white-space: pre-line;
+    font-size: 33px;
     font-weight: 400;
     line-height: 160%;
-    white-space: pre-line;
+
+    @media screen and (max-width: sizes.$mobile) {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 160%;
+    }
 }

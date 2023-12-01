@@ -1,37 +1,39 @@
-nav {
+@use '../../assets/css/sizes.scss';
+
+.header-nav {
     display: flex;
-    /* padding-top: 8px; */
     align-items: center;
     justify-content: space-between;
-    width: 1280px;
+
+    // @media screen {
+        width: sizes.$desktop;
+    // }
+
+    @media screen and (max-width: sizes.$mobile) {
+        width: 348px;
+    }
 }
 
-#logo-btn {
-    height: auto;
-    padding: 0;
+#header-product-create {
+    @media screen and (max-width: sizes.$mobile) {
+        width: 55px;
+        &>span {
+            text-wrap: wrap !important;
+        }
+    }
 }
 
-#cart-btn {
-    padding: 0;
-}
-
-/* .logo-box {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    color: var(--text-primary);
-} */
-
-.auth-box {
+.header-auth-box {
     display: flex;
     align-items: center;
     gap: 16px;
+
+    @media screen and (max-width: sizes.$mobile) {
+        gap: 8px;
+    }
 }
 
-/* .profile-container {
-} */
-
-.profile-btn {
+.header-profile-button {
     display: flex;
     width: 32px;
     height: 32px;
@@ -40,19 +42,44 @@ nav {
     border-radius: 16px;
 }
 
-.dropdown-container {
-    position: absolute;
-    /* display: inline-block; */
+.header-search-field {
+    padding-left: 30px;
+    @media screen and (max-width: sizes.$mobile) {
+        padding-left: 5px;
+    }
 }
 
-.dropdown-content {
-    display: flex;
-    /* width: 201px; */
-    padding: 16px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    border-radius: 12px;
-    border: 1px solid var(--background-tertiary, rgba(41, 44, 47, 0.12));
-    background: var(--background-primary, #fffaff);
+.header-search-field-input {
+    color: var(--vkui-color-text-secondary, #87898f);
+    font-feature-settings:
+        'clig' off,
+        'liga' off;
+    width: 100%;
+    /* Text */
+    font-family: Arial;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+#header-logo-button {
+    height: auto;
+    padding: 0;
+
+    @media screen and (max-width: sizes.$mobile) {
+        width: 32px;
+        height: 32px;
+        &>span {
+            display: none;
+        }
+        &>svg {
+            viewport-fit: contain;
+            
+        }
+    }
+}
+
+#header-cart-button {
+    padding: 0;
 }

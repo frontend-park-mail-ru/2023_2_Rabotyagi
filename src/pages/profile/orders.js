@@ -6,9 +6,9 @@ class Orders {
 
     }
 
-
     render() {
         const root = stringToElement(template());
+
         return [ root ];
     }
 }

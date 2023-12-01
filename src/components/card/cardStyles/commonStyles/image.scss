@@ -1,0 +1,28 @@
+@use '../cardConstants.scss';
+@use '../../../../assets/css/vars.scss';
+@use '../../../../assets/css/sizes.scss';
+
+.image-base {
+    width: -webkit-fill-available;
+    height: 218px;
+    border-radius: cardConstants.$card-radius cardConstants.$card-radius 0 0;
+    flex-shrink: 0;
+    background-color: vars.$background-tertiary;
+    object-fit: cover;
+
+    @media screen and (max-width: sizes.$mobile) {
+        height: 80px;
+    }
+}
+
+.image-profile {
+    width: 120px;
+    flex-shrink: 0;
+    align-self: stretch;
+    object-fit: cover;
+    background-color: vars.$background-tertiary;
+
+    @media screen and (max-width: sizes.$mobile) {
+        width: -webkit-fill-available;
+    }
+}

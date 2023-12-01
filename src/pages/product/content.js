@@ -1,18 +1,22 @@
-import { stringToElement } from '../../shared/utils/parsing';
+import Handlebars from 'handlebars/runtime';
 import template from './templates/content.hbs';
 import templateChange from './templates/contentChange.hbs';
-import button from '../../components/button/button';
-// import svg from '../../components/svg/svg';
-// import favIcon from '../../assets/icons/fav.svg';
-import { User } from '../../shared/api/user';
+
 import { store } from '../../shared/store/store';
-import { Product } from '../../shared/api/product';
-import Handlebars from 'handlebars/runtime';
+
 import { ErrorMessageBox } from '../../components/error/errorMessageBox';
 import { Carousel } from '../../components/carousel/carousel';
-import { getResourceUrl } from '../../shared/utils/getResource';
-import { extname } from '../../shared/utils/extname';
+
+import button from '../../components/button/button';
+
+import { User } from '../../shared/api/user';
+import { Product } from '../../shared/api/product';
 import { Files } from '../../shared/api/file';
+import statuses from '../../shared/statuses/statuses';
+
+import { getResourceUrl } from '../../shared/utils/getResource';
+import { stringToElement } from '../../shared/utils/parsing';
+import Validate from '../../shared/utils/validation';
 
 class Content {
 
@@ -22,20 +26,31 @@ class Content {
         this.context.cities = store.cities.list;
         this.context.category = store.categories.getById(this.context.category_id);
         this.context.categories = store.categories.list;
-        this.context.created_at = this.context.created_at.split('T')[0] + " " + this.context.created_at.split('T')[1].split('Z')[0];
+        this.context['created_at'] = this.context.created_at.split('T')[ 0 ] + ' ' + this.context.created_at.split('T')[ 1 ].split('Z')[ 0 ];
         this.imagesBackup = structuredClone(this.context.images);
-        this.context.images = getResourceUrl(this.context.images)
+        this.context.images = getResourceUrl(this.context.images);
     }
 
     async uploadImages() {
         if (this.imagesForUpload) {
             const res = await Files.images(this.imagesForUpload);
-    
-            if (res.status !== 200) {
+
+            if (!statuses.IsSuccessfulRequest(res)) {
                 this.errorBox.innerHTML = '';
-                this.errorBox.append(ErrorMessageBox(res.body.error));
+
+                if (statuses.IsBadFormatRequest(res)) {
+                    this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
+                }
+                else if (statuses.IsInternalServerError(res)) {
+                    this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
+                }
+                else if (statuses.IsUserError(res)) {
+                    this.errorBox.append(ErrorMessageBox(res.body.error));
+                }
+
                 return;
             }
+
             this.uploadedImages = res.body.urls;
         }
     }
@@ -43,30 +58,31 @@ class Content {
     imagesChange = (e) => {
         e.stopPropagation();
 
-        const allowedFormats = this.images.accept
-            .replaceAll('.', '')
-            .replaceAll(' ', '')
-            .split(',');
-
         this.errorBox.innerHTML = '';
         const files = Array.from(this.images.files);
 
-        files.forEach((file) => {
-            const format = extname(file.name);
-            if (!(
-                allowedFormats.find((value) => value === format)
-            )) {
-                this.errorBox.appendChild(ErrorMessageBox(`Формат ${format} недопустим`));
-                return;
-            }
-        });
+        const validation = Validate.allowedFormats(this.images.accept, files);
 
-        this.imagesForUpload = files; 
-    }
+        if (validation) {
+            this.errorBox.appendChild(ErrorMessageBox(`Формат ${validation} недопустим`));
+        }
+        else {
+            this.imagesForUpload = files;
+        }
+
+    };
 
     renderChange() {
-        Handlebars.registerHelper('selected', (id) => {
+        Handlebars.registerHelper('selectedCategory', (id) => {
             if (id === this.context.category_id) {
+                return 'selected';
+            }
+
+            return '';
+        });
+
+        Handlebars.registerHelper('selectedCity', (id) => {
+            if (id === this.context.city_id) {
                 return 'selected';
             }
 
@@ -78,7 +94,7 @@ class Content {
         this.images?.addEventListener('change', this.imagesChange);
         this.errorBox = root.querySelector('#errorBox');
 
-        root?.addEventListener('submit', async (e) => {
+        root?.addEventListener('submit', async(e) => {
             e.preventDefault();
 
             const { elements } = root;
@@ -96,26 +112,26 @@ class Content {
                 }
 
                 if (type === 'file') {
-                    return { [ name ]: files }
+                    return { [ name ]: files };
                 }
 
                 return { [ name ]: value };
-            })
+            });
 
             let body = {};
             data.forEach((elem) => body = { ...body, ...elem });
-            
-            body.city_id = Number(body.city_id);
-            body.category_id = Number(body.category_id);
-            body.saler_id = store.user.state.fields.id;
+
+            body['city_id'] = Number(body.city_id);
+            body['category_id'] = Number(body.category_id);
+            body['saler_id'] = store.user.state.fields.id;
 
             await this.uploadImages();
 
             if (this.uploadedImages) {
                 body.images = [];
                 this.uploadedImages.forEach((url) => body.images = [ ...body.images, {
-                    url: url
-                } ])
+                    url: url,
+                } ]);
             } else {
                 body.images = this.imagesBackup;
             }
@@ -123,13 +139,22 @@ class Content {
             const res = await Product.put(this.context.id, body);
             body = res.body;
 
-            if (res.status === 303){
-                window.Router.navigateTo('/product', { productId: this.context.id })
+            if (statuses.IsRedirectResponse(res)){
+                window.Router.navigateTo('/product', { productId: this.context.id });
+
                 return;
             }
 
             this.errorBox.innerHTML = '';
-            this.errorBox.appendChild(ErrorMessageBox(body.error));
+            if (statuses.IsBadFormatRequest(res)) {
+                this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
+            }
+            else if (statuses.IsInternalServerError(res)) {
+                this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
+            }
+            else if (statuses.IsUserError(res)) {
+                this.errorBox.append(ErrorMessageBox(body.error));
+            }
 
             return;
 
@@ -140,11 +165,11 @@ class Content {
             variant: 'primary',
             text: {
                 class: 'text-regular',
-                content: 'Сохранить'
+                content: 'Сохранить',
             },
             type: 'submit',
             style: 'width: 100%',
-        }))
+        }));
 
         return root;
     }
@@ -165,17 +190,6 @@ class Content {
             root = this.renderView();
         }
 
-        // if (store.user.isAuth() && (context.saler_id !== store.user.state.fields.id)) {
-        //     root.querySelector('.content>.header').appendChild(button({
-        //         variant: 'neutral',
-        //         subVariant: 'tertiary',
-        //         text: {
-        //             class: 'text-regular',
-        //             content: 'Добавить в избранное'
-        //         },
-        //         leftIcon: svg({ content: favIcon, width: 20, height: 20 })
-        //     }));
-        // }
         const carousel = new Carousel(this.context.images);
         root.querySelector('#carousel')?.replaceWith(carousel.render());
 

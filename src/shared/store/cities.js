@@ -1,4 +1,4 @@
-import { CityApi } from "../api/city";
+import { CityApi } from '../api/city';
 
 export const cities = {
     init: async function() {
@@ -15,4 +15,4 @@ export const cities = {
         this.list = res.body;
     },
     list: null,
-}
+};

@@ -1,19 +1,28 @@
-import { stringToElement } from '../../shared/utils/parsing.js';
 import template from './templates/profile.hbs';
 import './styles/profile.scss';
-import { Header } from '../../components/header/header.js';
+
 import { store } from '../../shared/store/store.js';
+
 import { Router, Route } from '../../shared/services/router.js';
+
 import Orders from './orders.js';
 import Products from './products.js';
+import Settings from './settings.js';
+import Favourite from './favourite.js';
+
+import { Header } from '../../components/header/header.js';
 import button from '../../components/button/button.js';
+
+import { User } from '../../shared/api/user.js';
+
 import svg from '../../components/svg/svg.js';
 import listIcon from '../../assets/icons/list-ad.svg';
 import cartIcon from '../../assets/icons/cart.svg';
-import settingsIcon from '../../assets/icons/settings.svg'
-import Settings from './settings.js';
-import { User } from '../../shared/api/user.js';
+import settingsIcon from '../../assets/icons/settings.svg';
+import favIcon from '../../assets/icons/fav.svg';
+
 import { getResourceUrl } from '../../shared/utils/getResource.js';
+import { stringToElement } from '../../shared/utils/parsing.js';
 
 class Profile {
     activePage = null;
@@ -25,7 +34,6 @@ class Profile {
     }
 
     async renderOwnProfile(replaced) {
-        // debugger
         const res = await this.getProfile(store.user.state.fields.id);
         store.user.update(res.body);
 
@@ -41,7 +49,7 @@ class Profile {
         this.router = new Router([
             new Route(new RegExp('^/profile/products$'), new Products(this)),
             new Route(new RegExp('^/profile/orders$'), new Orders()),
-            // new Route(new RegExp('^/profile/favourites$'), new Favourite()),
+            new Route(new RegExp('^/profile/favourities$'), new Favourite()),
             new Route(new RegExp('^/profile/settings$'), new Settings()),
         ], content);
 
@@ -50,10 +58,10 @@ class Profile {
             subVariant: 'tertiary',
             text: {
                 class: 'text-regular',
-                content: 'Мои объявления'
+                content: 'Мои объявления',
             },
             link: '/profile/products',
-            leftIcon: svg({ content: listIcon , width: 20, height: 20 })
+            leftIcon: svg({ content: listIcon , width: 20, height: 20 }),
         }));
 
         root.querySelector('#btn-orders')?.replaceWith(button({
@@ -61,42 +69,42 @@ class Profile {
             subVariant: 'tertiary',
             text: {
                 class: 'text-regular',
-                content: 'Мои заказы'
+                content: 'Мои заказы',
             },
             link: '/profile/orders',
-            leftIcon: svg({ content: cartIcon, width: 20, height: 20 })
+            leftIcon: svg({ content: cartIcon, width: 20, height: 20 }),
         }));
-
-        // this.root.querySelector('#btn-favorite')?.replaceWith(button({
-        //     variant: 'neutral',
-        //     subVariant: 'tertiary',
-        //     text: {
-        //         class: 'text-regular',
-        //         content: 'Закладки'
-        //     },
-        //     link: '/profile/favourites',
-        //     leftIcon: svg({ content: heartIcon, width: 20, height: 20 })
-        // }));
 
         root.querySelector('#btn-settings')?.replaceWith(button({
             variant: 'neutral',
             subVariant: 'tertiary',
             text: {
                 class: 'text-regular',
-                content: 'Настройки'
+                content: 'Настройки',
             },
             link: '/profile/settings',
-            leftIcon: svg({ content: settingsIcon, width: 20, height: 20 })
+            leftIcon: svg({ content: settingsIcon, width: 20, height: 20 }),
         }));
 
-        root.querySelectorAll('button[data-link]').forEach(item => 
-            
+        root.querySelector('#btn-favorite')?.replaceWith(button({
+            variant: 'neutral',
+            subVariant: 'tertiary',
+            text: {
+                class: 'text-regular',
+                content: 'Избранное',
+            },
+            link: '/profile/favourities',
+            leftIcon: svg({ content: favIcon, width: 20, height: 20 }),
+        }));
+
+        root.querySelectorAll('button[data-link]').forEach(item =>
+
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
                 if (item.dataset.link !== location.pathname) {
                     this.router.navigateTo(item.dataset.link);
                 }
-            }, { capture: false })
+            }, { capture: false }),
         );
     }
 
@@ -116,10 +124,10 @@ class Profile {
             subVariant: 'tertiary',
             text: {
                 class: 'text-regular',
-                content: 'Объявления'
+                content: 'Объявления',
             },
             link: '/saler/products',
-            leftIcon: svg({ content: listIcon , width: 20, height: 20 })
+            leftIcon: svg({ content: listIcon , width: 20, height: 20 }),
         });
 
         btnProducts.addEventListener('click', (e) => {

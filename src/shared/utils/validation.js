@@ -3,11 +3,13 @@
  * @module validation
  */
 
+import { extname } from './extname';
+
 /**
  * @constant {string} EMAIL_REGEXP
  */
 //eslint-disable-next-line no-useless-escape
-const EMAIL_REGEXP = /^[^\s()<>@,;:\/]+@\w[\w.-]+\.[a-z]{2,}$/i; 
+const EMAIL_REGEXP = /^[^\s()<>@,;:\/]+@\w[\w.-]+\.[a-z]{2,}$/i;
 /**
  * @constant {string} minLenPassword
  */
@@ -90,6 +92,25 @@ export default class Validate {
 
         if (name === '') {
             return 'Поле имени не может быть пустым';
+        }
+
+        return null;
+    }
+
+    static allowedFormats(allowedFormats, files) {
+        allowedFormats = allowedFormats
+            .replaceAll('.', '')
+            .replaceAll(' ', '')
+            .split(',');
+
+        for (let index = 0; index < files.length; index++) {
+            const format = extname(files[index].name);
+            if (!(
+                allowedFormats.find((value) => value === format)
+            )) {
+                return format;
+            }
+
         }
 
         return null;

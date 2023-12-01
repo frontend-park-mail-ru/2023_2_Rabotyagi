@@ -1,11 +1,12 @@
-import { stringToElement } from '../../shared/utils/parsing.js';
 import template from './cart.hbs';
 import './cart.scss';
+
+import { store } from '../../shared/store/store.js';
+
 import { Header } from '../../components/header/header.js';
 import { OrderFeed } from '../../components/orderFeed/orderFeed.js';
-// import Breadcrumb from '../../components/breadcrumb/breadcrumb.js';
-import { store } from '../../shared/store/store.js';
-// import uid from '../../shared/utils/uid.js';
+
+import { stringToElement } from '../../shared/utils/parsing.js';
 
 class Cart {
     render() {

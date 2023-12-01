@@ -10,7 +10,7 @@ import { PROFILE } from './handlers/profile';
 import { CATEGORY } from './handlers/category';
 import { ORDER } from './handlers/order';
 
-const createMockServer = function () {
+const createMockServer = function() {
     const server = createServer({
         models: {
             users: Model,
@@ -27,7 +27,7 @@ const createMockServer = function () {
         //#region Category
         this.get('category/get_full', CATEGORY.getFull);
         //#endregion
-    
+
         //#region Product
         this.get('product/get_list', PRODUCT.getList);
         this.get('product/get', PRODUCT.get);
@@ -37,7 +37,7 @@ const createMockServer = function () {
         this.patch('product/update', PRODUCT.update.patch);
         this.delete('product/delete', PRODUCT.delete);
         //#endregion
-    
+
         //#region Auth
         this.get('signin', AUTH.signin);
         this.post('signup', AUTH.signup);
@@ -58,7 +58,6 @@ const createMockServer = function () {
         this.patch('profile/update', PROFILE.update.patch);
         //#endregion
 
-
         //#region Legacy
         // this.get('/user/products', (schema) => );
 
@@ -76,8 +75,9 @@ const createMockServer = function () {
                 const product = schema.products.find(attrs.productId);
                 data = [ ...data, product.attrs ];
             });
+
             return new Response(200, {}, data);
-        })
+        });
 
         this.post('product/add-to-fav', (schema, request) => {
             const product = schema.products.find(request.queryParams.id);
@@ -87,12 +87,14 @@ const createMockServer = function () {
                 const user = jwtDecode(cookieParser(document.cookie).access_token);
                 schema.create('favourite', {
                     productId: product.id,
-                    userId: user.id
-                })
+                    userId: user.id,
+                });
+
                 return new Response(200);
             }
 
             fav.destroy();
+
             return new Response(200);
 
         });
@@ -111,28 +113,25 @@ const createMockServer = function () {
             birthday: Date.now(),
             avatar: {
                 String: '',
-                Valid: false
-            }
+                Valid: false,
+            },
         });
 
         for (let index = 0; index < 5; index++) {
-            server.create('product', generatePost(user.id));            
+            server.create('product', generatePost(user.id));
         }
-        
+
         for (let index = 0; index < 10; index++) {
             user = server.create('user', generateUser());
-            
+
             for (let index = 0; index < 5; index++) {
-                server.create('product', generatePost(user.id));            
+                server.create('product', generatePost(user.id));
             }
         }
 
         server.create('category', {
             name: fakerRU.hacker.noun(),
-            parent_id: {
-                Int64: 1,
-                Valid: false,
-            }
+            'parent_id': null,
         });
 
    },

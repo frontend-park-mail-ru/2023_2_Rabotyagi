@@ -2,20 +2,25 @@
  * @module signinPage
  * @file signin.js
  */
+import Template from './signin.hbs';
+import './signin.scss';
 
 import { store } from '../../shared/store/store.js';
-// import dispatcher from '../../shared/dispatcher/dispatcher.js';
+
 import { cookieParser } from '../../shared/utils/cookie.js';
 import Validate from '../../shared/utils/validation.js';
+
 import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
-import { Auth } from '../../shared/api/auth.js';
-import { stringToElement } from '../../shared/utils/parsing.js';
-import Template from './signin.hbs';
-import './signin.scss' // eslint-disable-line no-unused-vars
 import button from '../../components/button/button.js';
-import svg from '../../components/svg/svg.js';
-import logo from '../../assets/icons/logo.svg'
+
+import { Auth } from '../../shared/api/auth.js';
 import { Order } from '../../shared/api/order.js';
+import statuses from '../../shared/statuses/statuses.js';
+
+import svg from '../../components/svg/svg.js';
+import logo from '../../assets/icons/logo.svg';
+
+import { stringToElement } from '../../shared/utils/parsing.js';
 
 /**
  * @class signinPage
@@ -47,48 +52,66 @@ export class SigninPage {
             const resp = await Auth.signin(email, pass);
             const body = resp.body;
 
-            if (resp.status != 200) {
-                throw new Error(body.error);
+            if (!statuses.IsSuccessfulRequest(resp)) {
+                if (statuses.IsBadFormatRequest(resp)) {
+                    throw statuses.USER_MESSAGE;
+                } 
+                else if (statuses.IsInternalServerError(resp)) {
+                    throw statuses.SERVER_MESSAGE;
+                }
+                else if (statuses.IsUserError(resp)) {
+                    throw body.error;
+                }
             }
-            const cookies = cookieParser(document.cookie);
-            await store.user.login(cookies);
+            const accessToken = cookieParser(document.cookie).access_token;
+            await store.user.login(accessToken);
             store.cart.clear();
 
             const respCart = await Order.getCart();
             const bodyCart = respCart.body;
-            
-            if (respCart.status != 200) {
-                throw bodyCart.error;
+
+            if (!statuses.IsSuccessfulRequest(respCart)) {
+                if (statuses.IsBadFormatRequest(respCart)) {
+                    throw statuses.USER_MESSAGE;
+                } 
+                else if (statuses.IsInternalServerError(respCart)) {
+                    throw statuses.SERVER_MESSAGE;
+                }
+                else if (statuses.IsUserError(respCart)) {
+                    throw bodyCart.error;
+                }
             }
-            // dispatcher.dispatch({ type: 'FULL_CART', payload: bodyCart });
+
             return true;
         } catch (err) {
             errorBox.innerHTML = '';
             errorBox.appendChild(ErrorMessageBox(err));
+
             return false;
         }
     }
 
     signinEvent(container){
-        var handler = async (e) => {
+        const handler = async(e) => {
             if ((e.type === 'click') || (e.type === 'keydown' && e.code === 'Enter')) {
                 const inputEmail = container.querySelector('#inputEmail');
                 const inputPass = container.querySelector('#inputPass');
                 const errorBox = container.querySelector('#errorBox');
-        
+
                 if (!inputEmail || !inputPass) {
                     // console.log('signin | не найдены инпуты, что-то пошло не так');
                     return;
                 }
-        
+
                 const error = this.#check(inputEmail.value, inputPass.value);
-        
+
                 if (error) {
                     errorBox.innerHTML = '';
                     errorBox.appendChild(ErrorMessageBox(error));
+
                     return;
                 }
-        
+
                 const res = await this.signin(inputEmail.value, inputPass.value, errorBox);
 
                 if (res){
@@ -96,10 +119,10 @@ export class SigninPage {
                     window.Router.navigateTo('/');
                 }
             }
-        }
+        };
 
         return handler;
-    };
+    }
 
     /**
      * @method
@@ -128,7 +151,7 @@ export class SigninPage {
             link: '/',
             variant: 'neutral',
             subVariant: 'outlined',
-            style: 'height: auto; padding: 0;'
+            style: 'height: auto; padding: 0;',
         }));
 
         const btnSubmit = button({
@@ -136,8 +159,8 @@ export class SigninPage {
             style: 'width: 100%',
             text: {
                 content: 'Продолжить',
-                class: 'text-regular'
-            }
+                class: 'text-regular',
+            },
         });
 
         const btnReg = button({
@@ -147,19 +170,18 @@ export class SigninPage {
             subVariant: 'primary',
             text: {
                 content: 'Регистрация',
-                class: 'text-regular'
-            }
-        })
+                class: 'text-regular',
+            },
+        });
 
         container.querySelector('#btnSubmit').replaceWith(btnSubmit);
         container.querySelector('#signup').replaceWith(btnReg);
 
-
-        container.querySelectorAll('button[data-link]').forEach(item => 
+        container.querySelectorAll('button[data-link]').forEach(item =>
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
                 window.Router.navigateTo(item.dataset.link);
-            }, { capture: false })
+            }, { capture: false }),
         );
 
         btnSubmit.addEventListener('click', this.signinEvent(container));

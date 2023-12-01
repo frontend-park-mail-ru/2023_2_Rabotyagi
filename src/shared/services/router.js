@@ -66,7 +66,7 @@ export class Router {
         this.container.innerHTML = '';
 
         const component = route?.component.render();
-        
+
         if (component !== undefined){
             this.container.append(...component);
         }

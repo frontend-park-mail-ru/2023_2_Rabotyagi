@@ -19,7 +19,6 @@
 }
 
 @import 'text';
-// @import 'font.scss';
 
 body {
     background-color: vars.$background-primary;
@@ -34,7 +33,6 @@ body {
     width: 100%;
     align-items: center;
     height: -webkit-fill-available;
-    // gap: 24px;
 }
 
 .inputField {
@@ -72,10 +70,6 @@ body {
 
 }
 
-// .search-box {
-//     /* width: 50%; */
-// }
-
 input, textarea {
     display: flex;
     width: 100%;
@@ -95,9 +89,6 @@ input {
 input:focus-visible, textarea:focus-visible {
     border: 0.5px solid vars.$palette-primary;
 }
-
-/* input:focus-visible {
-} */
 
 .cell {
     display: flex;

@@ -2,6 +2,8 @@ import { User } from '../api/user.js';
 import { cookieParser, deleteCookie } from '../utils/cookie.js';
 import jwtDecode from '../utils/jwt-decode.js';
 
+import statuses from '../statuses/statuses.js';
+
 const user = {
     clear: function() {
         this.state.fields = null;
@@ -16,16 +18,16 @@ const user = {
      * @returns None
      */
     init: async function() {
-        const access_token = cookieParser(document.cookie)?.access_token;
-        if (!access_token){
+        const accessToken = cookieParser(document.cookie)?.access_token;
+        if (!accessToken){
             return;
         }
-        
-        await this.fill(access_token);
+
+        await this.fill(accessToken);
     },
 
     isAuth: function() {
-        return this.state.fields !== null ? true : false;
+        return this.state.fields !== null;
     },
     /**
      * @summary Редьюсер для изменения стейта пользователя на авторизированного
@@ -36,26 +38,27 @@ const user = {
      * @function
      * @returns None
      */
-    login: async function({ access_token }) {
+    login: async function(accessToken) {
+
         this.clear();
 
-        if (access_token === undefined) {
+        if (accessToken === undefined) {
             return;
         }
 
-        await this.fill(access_token);
+        await this.fill(accessToken);
     },
-    
-    fill: async function(access_token) {
-        const id = jwtDecode(access_token).userID;
+
+    fill: async function(accessToken) {
+        const id = jwtDecode(accessToken).userID;
 
         if (id) {
             const res = await User.getProfile(id);
             switch (res.status){
-                case 200:
+                case statuses.STATUS_RESPONSE_SUCCESSFUL:
                     this.update(res.body);
                     break;
-                case 500:
+                case statuses.STATUS_INTERNAL_SERVER:
                     deleteCookie('access_token');
                     break;
             }
@@ -66,8 +69,8 @@ const user = {
         if (data) {
             this.state.fields = {
                 ...this.state.fields,
-                ...data
-            }
+                ...data,
+            };
         }
     },
     state: {

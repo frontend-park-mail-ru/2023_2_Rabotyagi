@@ -6,8 +6,8 @@ services:
         restart: always
         env_file:
             - .env/.env.postgres
-        ports:
-            - 5432:5432
+        # ports:
+        #     - 5432:5432
         volumes:
             - postgres:/var/lib/postgresql/data
 
@@ -22,19 +22,55 @@ services:
         depends_on:
             - postgres
 
-    backend:
-        image: ghcr.io/go-park-mail-ru/2023_2_rabotyagi:dev
+    backend-fs:
+        image: ghcr.io/go-park-mail-ru/2023_2_rabotyagi:fs-latest-dev
         restart: always
         env_file:
-            - .env/.env.backend
+            - .env/.env.fs
+
+        expose:
+            - 8081
+            - 8011
+        # ports:
+        #     - 8081:8081
+        #      - 8011:8011
+        depends_on:
+            - postgres
+        volumes:
+            - imgs:/var/file_service/static/img
+            - log-fs:/var/log/backend
+
+    backend-auth:
+        image: ghcr.io/go-park-mail-ru/2023_2_rabotyagi:auth-latest-dev
+        restart: always
+        env_file:
+            - .env/.env.auth
+        expose:
+            - 8012
+            - 8011
+        depends_on:
+            - postgres
+        volumes:
+            - log-auth:/var/log/backend
+
+    backend:
+        image: ghcr.io/go-park-mail-ru/2023_2_rabotyagi:main-latest-dev
+        restart: always
+        env_file:
+            - .env/.env.main
         ports:
             - 8080:8080
         depends_on:
             - postgres
+            - backend-fs
+            - backend-auth
         volumes:
-            - imgs:/var/backend/static/img
+            - log:/var/log/backend
 
 volumes:
     postgres:
     pgadmin:
     imgs:
+    log:
+    log-fs:
+    log-auth:

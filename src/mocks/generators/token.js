@@ -1,4 +1,4 @@
-import sign from "jwt-encode";
+import sign from 'jwt-encode';
 
 export const setNewToken = (data, name='access_token') => {
     const now = new Date();
@@ -6,4 +6,4 @@ export const setNewToken = (data, name='access_token') => {
     const token = sign(data, 'xxx');
 
     document.cookie = `${name}=${token}; path=/; expires=${cookieExpiration.toUTCString()};`;
-}
+};

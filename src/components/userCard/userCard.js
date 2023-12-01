@@ -1,7 +1,9 @@
-import { stringToElement } from '../../shared/utils/parsing.js';
-import Template from './userCard.hbs';
+import template from './userCard.hbs';
 import './userCard.scss';
+
 import button from '../button/button.js';
+
+import { stringToElement } from '../../shared/utils/parsing.js';
 
 export class UserCard {
     #id;
@@ -17,11 +19,9 @@ export class UserCard {
     }
 
     render() {
-        const template = Template;
-
         const context = {
             name: this.#name,
-            email: this.#email
+            email: this.#email,
         };
 
         if (this.#image) {
@@ -32,8 +32,8 @@ export class UserCard {
             variant: 'secondary',
             text: {
                 class: 'text-regular',
-                content: 'Посмотреть профиль'
-            }
+                content: 'Посмотреть профиль',
+            },
         });
         goToSaler.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -42,7 +42,7 @@ export class UserCard {
 
         const root = stringToElement(template(context));
 
-        const container = root.querySelector('div.user-info');
+        const container = root.querySelector('.user-info');
         container.querySelector('#goToSaler').replaceWith(goToSaler);
 
         return root;
