@@ -251,8 +251,8 @@ export const applyChanges = (element: HTMLElement | Text, difference: VDomNodeUp
 
         Object.keys(difference.props.set).forEach((prop) => {
             if (prop == 'class') {
+                element.removeAttribute('class');
                 if (difference.props.set[prop] !== '') {
-                    element.removeAttribute('class');
                     difference.props.set[prop].toString().split(' ').forEach((className) => {
                         element.classList.add(className);
                     });
@@ -284,7 +284,7 @@ export const applyChildrenChanges = (element: HTMLElement, functions: Array<Chil
                 element.appendChild(renderVDomNode(func.node));
             }
 
-return;
+            return;
         }
 
         const childElement = element.childNodes[index + childIndex];
@@ -293,7 +293,7 @@ return;
             childElement.remove();
             childIndex -= 1;
 
-return;
+            return;
         }
 
         applyChanges(childElement as HTMLElement | Text, func as VDomNodeUpdater);
