@@ -105,7 +105,8 @@ export class App extends Component<never, AppState> {
             createComponent(
                 Card, 
                 {
-                    variant: 'base',
+                    id: 1,
+                    variant: 'profile',
                     price: 1000,
                     title: 'Cat',
                     delivery: true,

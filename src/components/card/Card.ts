@@ -4,7 +4,9 @@ import { Component } from '../baseComponents/snail/component';
 import { VDomNode, createComponent, createElement, createText } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Badge } from './Badge/Badge';
-import { Text } from '../baseComponents/index';
+import { Text, Button } from '../baseComponents/index';
+
+import Navigate from '../../shared/services/router/Navigate';
 
 import delivery from '../../assets/icons/badges/delivery.svg';
 import safe_deal from '../../assets/icons/badges/safe_deal.svg';
@@ -16,7 +18,7 @@ export interface ImageProps {
 };
 
 export interface CardProps {
-    id?: string,
+    id: number,
     class?: string,
     name?: string,
     style?: string,
@@ -30,6 +32,18 @@ export interface CardProps {
 };
 
 export class Card extends Component<CardProps, {}> {
+
+    navigateToProduct(id: number) {
+        Navigate.navigateTo('/product', { productId: id });
+    };
+
+    thisHaveBadges() {
+        if (!this.props) {
+            throw new Error('Card settings are undefined');
+        };
+
+        return this.props.delivery || this.props.safe_deal || this.props.city;
+    };
 
     renderBadges(badgeClass: string) {
         if (!this.props) {
@@ -65,9 +79,11 @@ export class Card extends Component<CardProps, {}> {
             throw new Error('Card settings are undefined');
         };
 
+        const id = this.props.id;
+
         return createElement(
             'button',
-            { class: 'card-base' },
+            { class: 'card-base', onclick: () => { this.navigateToProduct(id) } },
             createElement(
                 'div',
                 { class: 'badges-base' },
@@ -77,14 +93,14 @@ export class Card extends Component<CardProps, {}> {
                 'div',
                 { class: 'body-base' },
                 (this.props.images) ?
-                createElement(
-                    'img',
-                    { class: 'image-base', src: this.props.images[0].url }
-                ) : 
-                createElement(
-                    'div',
-                    { class: 'image-base' }
-                ),
+                    createElement(
+                        'img',
+                        { class: 'image-base', src: this.props.images[0].url }
+                    ) : 
+                    createElement(
+                        'div',
+                        { class: 'image-base' }
+                    ),
                 createElement(
                     'div',
                     { class: 'info-base' },
@@ -100,7 +116,51 @@ export class Card extends Component<CardProps, {}> {
     };
 
     renderProfile() {
+        if (!this.props) {
+            throw new Error('Card settings are undefined');
+        };
 
+        return createElement(
+            'div',
+            { class: 'card-profile' },
+            (this.props.images) ?
+                createElement(
+                    'img',
+                    { class: 'image-profile', src: this.props.images[0].url }
+                ) : 
+                createElement(
+                    'div',
+                    { class: 'image-profile' }
+                ),
+            createElement(
+                'div',
+                { class: 'content-profile' },
+                createComponent(
+                    Text, { text: this.props.price.toString() + ' ₽' }
+                ),
+                createComponent(
+                    Text, { text: this.props.title, additionalClass: 'title-profile' }
+                ),
+                createElement(
+                    'div',
+                    { class: 'divider' }
+                ),
+                (this.thisHaveBadges()) ? 
+                    createElement(
+                        'div',
+                        { class: 'badges-profile' },
+                        ...this.renderBadges('badge-profile')
+                    ) : createText(''),
+                createComponent(
+                    Button,
+                    { 
+                        variant: 'outlined',
+                        text: 'Удалить',
+                        style: 'width: 100%;'
+                    }
+                )        
+            )
+        );
     };
 
     renderCart() {
@@ -112,6 +172,13 @@ export class Card extends Component<CardProps, {}> {
             throw new Error('Card settings are undefined');
         }
 
-        return this.renderBase();
+        switch(this.props.variant) {
+            case 'base':
+                return this.renderBase();
+            case 'profile':
+                return this.renderProfile();
+            default:
+                return this.renderBase();
+        };
     };
 };
