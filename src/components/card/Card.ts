@@ -29,6 +29,7 @@ export interface CardProps {
     delivery?: boolean,
     safe_deal?: boolean,
     city?: string,
+    is_active?: boolean
 };
 
 export class Card extends Component<CardProps, {}> {
@@ -115,10 +116,42 @@ export class Card extends Component<CardProps, {}> {
         );
     };
 
+    changeActiveStatus(is_active: boolean) {
+
+    };
+
+    renderActiveButton() {
+        if (!this.props) {
+            throw new Error('Card settings are undefined');
+        };
+
+        const is_active = this.props.is_active || false;
+        
+        return createComponent(
+            Button, 
+            {
+                variant: 'primary',
+                text: (is_active) ? 'Деактивировать' : 'Активировать',    
+                style: 'width: 100%;',
+                onclick: () => { this.changeActiveStatus(is_active) } 
+            }
+        );
+    };
+
+    deleteFunction(variant: CardVariants) {
+        if (variant == 'profile') {
+
+        } else if (variant == 'favourite') {
+            
+        };
+    };
+
     renderProfile() {
         if (!this.props) {
             throw new Error('Card settings are undefined');
         };
+
+        const variant = this.props.variant || 'profile';
 
         return createElement(
             'div',
@@ -151,14 +184,19 @@ export class Card extends Component<CardProps, {}> {
                         { class: 'badges-profile' },
                         ...this.renderBadges('badge-profile')
                     ) : createText(''),
-                createComponent(
-                    Button,
-                    { 
-                        variant: 'outlined',
-                        text: 'Удалить',
-                        style: 'width: 100%;'
-                    }
-                )        
+                (variant == 'profile') ?
+                    this.renderActiveButton() 
+                    : createText(''),
+                (variant == 'profile' || variant == 'favourite') ?    
+                    createComponent(
+                        Button,
+                        { 
+                            variant: 'outlined',
+                            text: 'Удалить',
+                            style: 'width: 100%;',
+                            onclick: () => { this.deleteFunction(variant) }
+                        }
+                    ) : createText('')        
             )
         );
     };
@@ -177,6 +215,10 @@ export class Card extends Component<CardProps, {}> {
                 return this.renderBase();
             case 'profile':
                 return this.renderProfile();
+            case 'profile-saler':
+                return this.renderProfile(); // renderProfile имеет внутренние проверки для случая чужой карточки
+            case 'favourite': 
+                return this.renderProfile(); // renderProfile имеет внутренние проверки для случая карточки внутри изрбанного
             default:
                 return this.renderBase();
         };

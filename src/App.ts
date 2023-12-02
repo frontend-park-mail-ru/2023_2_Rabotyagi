@@ -106,12 +106,13 @@ export class App extends Component<never, AppState> {
                 Card, 
                 {
                     id: 1,
-                    variant: 'profile',
+                    variant: 'favourite',
                     price: 1000,
                     title: 'Cat',
                     delivery: true,
                     safe_deal: true,
-                    city: 'Moscow'
+                    city: 'Moscow',
+                    is_active: true
                 }
             )
         );
