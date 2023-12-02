@@ -5,6 +5,7 @@ import { TextArea } from './components/baseComponents/TextArea/TextArea';
 import { Button } from './components/baseComponents/Button/Button';
 import StoreUser from './shared/store/user';
 import { Dropdown } from './components/baseComponents/Dropdown/Dropdown';
+import { Card } from './components/Card/Card';
 
 import { Signin } from './pages/Signin/Signin';
 
@@ -68,7 +69,7 @@ export class App extends Component<never, AppState> {
         return createElement(
             'div',
             { id: 'root' },
-            createComponent(
+            /*createComponent(
                 Button,
                 {
                     variant: 'neutral',
@@ -100,11 +101,18 @@ export class App extends Component<never, AppState> {
                         text: 'third',
                     },
                 ),
-            ),
-            /*createComponent(
-                Signin,
-                {}
-            )*/
+            ),*/
+            createComponent(
+                Card, 
+                {
+                    variant: 'base',
+                    price: 1000,
+                    title: 'Cat',
+                    delivery: true,
+                    safe_deal: true,
+                    city: 'Moscow'
+                }
+            )
         );
     }
 }
