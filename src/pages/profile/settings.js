@@ -11,32 +11,9 @@ import { Files } from '../../shared/api/file';
 import statuses from '../../shared/statuses/statuses';
 
 import { stringToElement } from '../../shared/utils/parsing';
-import { cookieParser } from '../../shared/utils/cookie';
 import Validate from '../../shared/utils/validation';
 
 class Settings {
-    async patchProfile(data, errorBox) {
-        const res = await User.patchProfile(data);
-
-        if (!statuses.IsSuccessfulRequest(res)) {
-            if (statuses.IsBadFormatRequest(res)) {
-                errorBox.replaceWith(ErrorMessageBox(statuses.USER_MESSAGE, 'errorBox'));
-            }
-            else if (statuses.IsInternalServerError(res)) {
-                errorBox.replaceWith(ErrorMessageBox(statuses.SERVER_MESSAGE, 'errorBox'));
-            }
-            else if (statuses.IsUserError(res)) {
-                errorBox.replaceWith(ErrorMessageBox(res.body.message, 'errorBox'));
-            }
-
-            return;
-        }
-
-        await store.user.login(
-            cookieParser(document.cookie).access_token,
-        );
-    }
-
     async uploadAvatar() {
         if (this.avatarForUpload) {
             const res = await Files.images(this.avatarForUpload);
@@ -157,9 +134,8 @@ class Settings {
                 return;
             }
 
-            await store.user.login(
-                cookieParser(document.cookie),
-            );
+            store.user.update(res.body);
+
             window.Router.navigateTo('/profile/settings');
         });
 
