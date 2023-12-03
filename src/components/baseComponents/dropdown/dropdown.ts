@@ -29,7 +29,7 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
 
     public render(): VDomNode {
         if (!this.props) {
-            throw new Error('Dropdown settings are undefined');
+            throw new Error('Dropdown props are undefined');
         }
 
         return createElement(

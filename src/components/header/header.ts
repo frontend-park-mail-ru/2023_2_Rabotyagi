@@ -3,13 +3,14 @@ import './header.scss';
 import { Component } from '../baseComponents/snail/component';
 import { createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
 import { Button, TextInput } from '../baseComponents/index';
+import logo from '../../assets/icons/logo.svg';
 
 export interface HeaderProps {
 
 }
 
 export interface HeaderState {
-
+    authorized: boolean
 }
 
 export class Header extends Component<HeaderProps, HeaderState>{
@@ -22,29 +23,9 @@ export class Header extends Component<HeaderProps, HeaderState>{
     }
 
     render() {
-
-        return createElement(
-            'nav',
-            {
-                class: 'header-nav',
-            },
-            createComponent(
-                Button,
-                {
-                    text: 'Logo',
-                },
-            ),
-            createComponent(
-                TextInput,
-                {},
-            ),
-            createComponent(
-                Button,
-                {
-                    text: 'Разместить объявление',
-                    variant: 'neutral',
-                },
-            ),
+        let tail;
+        if (!this.state?.authorized){
+            tail = [
             createComponent(
                 Button,
                 {
@@ -60,7 +41,43 @@ export class Header extends Component<HeaderProps, HeaderState>{
                     variant: 'neutral',
                     onclick: this.routeToSignup,
                 },
+            )];
+        }
+        else {
+            tail = [createComponent(
+                Button,
+                {
+                    text: 'Профиль',
+                    leftIcon: undefined,
+                },
+            )];
+        }
+
+        return createElement(
+            'nav',
+            {
+                class: 'header-nav',
+            },
+            createComponent(
+                Button,
+                {
+                    leftIcon: {
+                        content: logo,
+                    },
+                },
             ),
+            createComponent(
+                TextInput,
+                {},
+            ),
+            createComponent(
+                Button,
+                {
+                    text: 'Разместить объявление',
+                    variant: 'neutral',
+                },
+            ),
+            ...tail,
         );
     }
 }

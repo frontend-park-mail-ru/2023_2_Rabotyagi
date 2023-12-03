@@ -1,7 +1,7 @@
 import { Component } from './components/baseComponents/snail/component';
 import { createElement, createComponent } from './components/baseComponents/snail/vdom/VirtualDOM';
 // import CounterStore from './shared/store/counter';
-import { Card } from './components/card/Card';
+// import { Card } from './components/card/Card';
 import { Header } from './components/header/header';
 
 // компонент App является родитлеьским для dropdown, а значит он определяет его поведение
@@ -97,19 +97,19 @@ export class App extends Component<never, AppState> {
                     },
                 ),
             ),*/
-            createComponent(
-                Card,
-                {
-                    id: 1,
-                    variant: 'favourite',
-                    price: 1000,
-                    title: 'Cat',
-                    delivery: true,
-                    safeDeal: true,
-                    city: 'Moscow',
-                    isActive: true,
-                },
-            ),
+            // createComponent(
+            //     Card,
+            //     {
+            //         id: 1,
+            //         variant: 'favourite',
+            //         price: 1000,
+            //         title: 'Cat',
+            //         delivery: true,
+            //         safeDeal: true,
+            //         city: 'Moscow',
+            //         isActive: true,
+            //     },
+            // ),
 
             createComponent(
                 Header,
