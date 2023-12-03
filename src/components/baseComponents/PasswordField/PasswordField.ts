@@ -1,40 +1,41 @@
 import './PasswordField.scss';
 
-import { Component } from "../snail/component";
-import { createComponent, createElement } from "../snail/vdom/VirtualDOM";
+import { Component } from '../snail/component';
+import { createComponent, createElement } from '../snail/vdom/VirtualDOM';
 
-import { Button } from '../Button/Button';
+import { Button } from '../button/Button';
 import { Password, TextInput, PasswordInputProps } from '../Input/Input';
 
 type FieldType = 'password' | 'text';
 
 export interface PasswordFieldState {
     type: FieldType
-};
+}
 
 export class PasswordField extends Component<PasswordInputProps, PasswordFieldState> {
 
     state: PasswordFieldState = {
-        type: 'password'
+        type: 'password',
     };
 
     setType(newType: FieldType) {
-        console.log('SETTYPE');
+        // console.log('SETTYPE');
         this.setState((state) => {
             state = { ...this.state };
             state.type = newType;
-            console.log(state);
+            // console.log(state);
+
             return state;
         });
-        console.log(this.state);
-    };
+        // console.log(this.state);
+    }
 
     render() {
         const inputProps = {
             placeholder: 'Пароль',
             autocomplete: 'new-password',
             required: true,
-            class: 'input-field'
+            class: 'input-field',
         };
 
         return createElement(
@@ -42,10 +43,10 @@ export class PasswordField extends Component<PasswordInputProps, PasswordFieldSt
             { class: 'password-field' },
             (this.state.type == 'password') ?
                 createComponent(
-                    Password, { ...inputProps }
+                    Password, { ...inputProps },
                 ) :
                 createComponent(
-                    TextInput,  { ...inputProps }
+                    TextInput, { ...inputProps },
                 ),
             createComponent(
                 Button,
@@ -64,9 +65,9 @@ export class PasswordField extends Component<PasswordInputProps, PasswordFieldSt
                     mouseout: (e: any) => {
                         e.preventDefault();
                         this.setType('password');
-                    }
-                }
-            )
+                    },
+                },
+            ),
         );
-    };
-};
+    }
+}

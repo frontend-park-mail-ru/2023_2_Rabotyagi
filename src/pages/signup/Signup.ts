@@ -10,29 +10,30 @@ import Navigate from '../../shared/services/router/Navigate';
 
 import logo from '../../assets/icons/logo.svg';
 
-export interface SignupState {
+export interface SignupPageState {
     error: string,
     email: string,
     password: string,
     repeatPassword: string
-};
+}
 
-export class Signup extends Component<never, SignupState> {
+export class SignupPage extends Component<never, SignupPageState> {
 
     state = {
         error: '',
         email: '',
         password: '',
-        repeatPassword: ''
+        repeatPassword: '',
     };
 
     setError(error: string) {
         this.setState((state) => {
             state = { ...this.state };
             state.error = error;
+
             return state;
         });
-    };
+    }
 
     render() {
         return createElement(
@@ -48,16 +49,16 @@ export class Signup extends Component<never, SignupState> {
                         variant: 'neutral',
                         subvariant: 'outlined',
                         style: 'height: auto; padding: 0;',
-                        onclick: () => { Navigate.navigateTo('/') }
-                    } 
+                        onclick: () => { Navigate.navigateTo('/'); },
+                    },
                 ),
                 createComponent(
                     Text,
                     {
                         tag: 'p',
                         variant: 'subheader',
-                        text: 'Регистрация в «GoodsGalaxy»'
-                    }
+                        text: 'Регистрация в «GoodsGalaxy»',
+                    },
                 ),
                 createComponent(
                     TextInput,
@@ -66,19 +67,19 @@ export class Signup extends Component<never, SignupState> {
                         autocomplete: 'email',
                         required: true,
                         class: 'input-field',
-                        oninput: (e) => { },
-                    }
+                        oninput: () => { },
+                    },
                 ),
                 createComponent(
-                    PasswordField, {}
+                    PasswordField, {},
                 ),
                 createComponent(
-                    PasswordField, {}
+                    PasswordField, {},
                 ),
                 (this.state.error !== '') ?
                     createComponent(
                         ErrorMessageBox,
-                        { text: this.state.error }
+                        { text: this.state.error },
                     ) : createText(''),
                 createComponent(
                     Button,
@@ -86,22 +87,22 @@ export class Signup extends Component<never, SignupState> {
                         variant: 'primary',
                         text: 'Продолжить',
                         style: 'width: 100%;',
-                        type: 'submit'
-                    }
-                )
+                        type: 'submit',
+                    },
+                ),
             ),
             createElement(
                 'div',
                 { class: 'info' },
                 createComponent(
                     Caption,
-                    { text: 'Нажимая «Продолжить», вы принимаете пользовательское соглашение и политику конфиденциальности' }
+                    { text: 'Нажимая «Продолжить», вы принимаете пользовательское соглашение и политику конфиденциальности' },
                 ),
                 createComponent(
                     Caption,
-                    { text: 'Передаваемые данные' }
-                )
+                    { text: 'Передаваемые данные' },
+                ),
             ),
-        )
-    };
+        );
+    }
 }

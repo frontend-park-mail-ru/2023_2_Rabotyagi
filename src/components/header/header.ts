@@ -4,44 +4,36 @@ import { Component } from '../baseComponents/snail/component';
 import { createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
 import { Button, TextInput } from '../baseComponents/index';
 import logo from '../../assets/icons/logo.svg';
+import Navigate from '../../shared/services/router/Navigate';
+import UserStore from '../../shared/store/user';
 
-export interface HeaderProps {
-
-}
-
-export interface HeaderState {
-    authorized: boolean
-}
-
-export class Header extends Component<HeaderProps, HeaderState>{
-    routeToSignin(): void {
-
-    }
-
-    routeToSignup(): void {
-
-    }
+export class Header extends Component<never, never>{
+    routeToSignin = () => Navigate.navigateTo('/signin');
+    routeToSignup = () => Navigate.navigateTo('/signup');
+    // routeToMain = () => Navigate.navigateTo('/');
+    routeToMain = (): void => console.log('click');
 
     render() {
         let tail;
-        if (!this.state?.authorized){
+        if (!UserStore.isAuth()){
             tail = [
-            createComponent(
-                Button,
-                {
-                    text: 'Войти',
-                    variant: 'primary',
-                    onclick: this.routeToSignin,
-                },
-            ),
-            createComponent(
-                Button,
-                {
-                    text: 'Зарегистрироваться',
-                    variant: 'neutral',
-                    onclick: this.routeToSignup,
-                },
-            )];
+                createComponent(
+                    Button,
+                    {
+                        text: 'Войти',
+                        variant: 'primary',
+                        onclick: this.routeToSignin,
+                    },
+                ),
+                createComponent(
+                    Button,
+                    {
+                        text: 'Зарегистрироваться',
+                        variant: 'neutral',
+                        onclick: this.routeToSignup,
+                    },
+                ),
+            ];
         }
         else {
             tail = [createComponent(
@@ -68,11 +60,15 @@ export class Header extends Component<HeaderProps, HeaderState>{
                         height: 40,
                         width: 40,
                     },
+                    onclick: this.routeToMain,
                 },
             ),
             createComponent(
                 TextInput,
-                {},
+                {
+                    class: 'header-search-box',
+                    required: true,
+                },
             ),
             createComponent(
                 Button,

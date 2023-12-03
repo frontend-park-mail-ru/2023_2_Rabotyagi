@@ -3,7 +3,7 @@ import './Signin.scss';
 import { Component } from '../../components/baseComponents/snail/component';
 import { createComponent, createElement, createText } from '../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Cell } from './Cell/Cell';
+import { Cell } from './cell/Cell';
 import { Caption } from '../../components/Caption/Caption';
 import { Text, Button, TextInput, Password, ErrorMessageBox } from '../../components/baseComponents/index';
 
@@ -20,13 +20,13 @@ import free from '../../assets/icons/sigin/free.svg';
 import safe from '../../assets/icons/sigin/safe.svg';
 import logo from '../../assets/icons/logo.svg';
 
-export interface SigninState {
+export interface SigninPageState {
     error: string,
     email: string,
     password: string
 }
 
-export class Signin extends Component<{}, SigninState> {
+export class SigninPage extends Component<{}, SigninPageState> {
 
     state = {
         error: '',
@@ -57,7 +57,7 @@ export class Signin extends Component<{}, SigninState> {
             state = { ...this.state };
             state.error = error;
 
-return state;
+            return state;
         });
     }
 
@@ -149,9 +149,9 @@ return state;
                             variant: 'neutral',
                             subvariant: 'primary',
                             style: 'width: 100%;',
-                            onclick: () => { Navigate.navigateTo('signup') }
-                        }
-                    )
+                            onclick: () => { Navigate.navigateTo('signup'); },
+                        },
+                    ),
                 ),
                 createElement(
                     'div',
