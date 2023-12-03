@@ -48,9 +48,7 @@ export class SigninPage extends Component<{}, SigninPageState> {
         return null;
     }
 
-    signinEvent() {
-
-    }
+    signinEvent = () => console.log('click');
 
     setError(error: string) {
         this.setState((state) => {
@@ -101,7 +99,7 @@ export class SigninPage extends Component<{}, SigninPageState> {
                             variant: 'neutral',
                             subvariant: 'outlined',
                             style: 'height: auto; padding: 0',
-                            onclick: () => { Navigate.navigateTo('/'); },
+                            onclick: (e) => { Navigate.navigateTo('/'); },
                         },
                     ),
                     createComponent(

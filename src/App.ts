@@ -12,7 +12,6 @@ import { login } from './shared/store/commonActions/auth';
 export class App extends Component<never, never> {
 
     render() {
-
         login();
 
         return createElement(
