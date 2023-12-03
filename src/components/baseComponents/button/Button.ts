@@ -60,7 +60,7 @@ export class Button extends Component<ButtonProps, {}> {
             )
             : createText(''),
 
-            (text !== undefined) ? 
+            (text !== undefined) ?
             createComponent(
                 Text,
                 {

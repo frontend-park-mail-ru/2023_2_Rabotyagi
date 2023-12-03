@@ -3,7 +3,7 @@ import './Dropdown.scss';
 import { Component } from '../snail/component';
 import { VDomNode, createElement, createComponent, createText } from '../snail/vdom/VirtualDOM';
 
-import { Svg } from '../Svg/Svg';
+import { Svg } from '../svg/Svg';
 import { TextInput } from '../Input/Input';
 
 import searchIcon from '../../../assets/icons/search.svg';
@@ -16,11 +16,11 @@ import searchIcon from '../../../assets/icons/search.svg';
 interface DropdownProps {
     search: boolean,
     hidden: boolean;
-};
+}
 
 interface DropDownState {
     hidden: boolean;
-};
+}
 
 export class Dropdown extends Component<DropdownProps, DropDownState> {
     protected state: DropDownState = {
@@ -29,14 +29,14 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
 
     public render(): VDomNode {
         if (!this.props) {
-            throw new Error('Dropdown settings are undefined');
-        };
+            throw new Error('Dropdown props are undefined');
+        }
 
         return createElement(
             'div',
             {
                 class: 'dropdown-container',
-                hidden: this.props.hidden
+                hidden: this.props.hidden,
             },
             (this.props.search) ?
             createElement(
@@ -53,8 +53,8 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
             createElement(
                 'div',
                 { class: 'dropdown-content' },
-                ...this.children
-            ) : createText('')
+                ...this.children,
+            ) : createText(''),
         );
     }
-};
+}

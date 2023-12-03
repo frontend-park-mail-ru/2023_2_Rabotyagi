@@ -1,90 +1,91 @@
-import "./Signin.scss";
+import './Signin.scss';
 
-import { Component } from "../../components/baseComponents/snail/component";
-import { createComponent, createElement, createText } from "../../components/baseComponents/snail/vdom/VirtualDOM";
+import { Component } from '../../components/baseComponents/snail/component';
+import { createComponent, createElement, createText } from '../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Cell } from "./Cell/Cell";
-import { Caption } from "../../components/Caption/Caption";
-import { Text, Button, TextInput, Password, ErrorMessageBox } from "../../components/baseComponents/index";
+import { Cell } from './Cell/Cell';
+import { Caption } from '../../components/Caption/Caption';
+import { Text, Button, TextInput, Password, ErrorMessageBox } from '../../components/baseComponents/index';
 
-import { login } from "../../shared/store/commonActions/auth";
-import UserStore from "../../shared/store/user";
-import Dispatcher from "../../shared/services/store/Dispatcher";
+// import { login } from '../../shared/store/commonActions/auth';
+// import UserStore from '../../shared/store/user';
+// import Dispatcher from '../../shared/services/store/Dispatcher';
 
-import Navigate from "../../shared/services/router/Navigate";
+import Navigate from '../../shared/services/router/Navigate';
 
-import { Validate } from "../../shared/utils/validation";
+import { Validate } from '../../shared/utils/validation';
 
-import message from "../../assets/icons/sigin/message.svg";
-import free from "../../assets/icons/sigin/free.svg";
-import safe from "../../assets/icons/sigin/safe.svg";
-import logo from "../../assets/icons/logo.svg";
+import message from '../../assets/icons/sigin/message.svg';
+import free from '../../assets/icons/sigin/free.svg';
+import safe from '../../assets/icons/sigin/safe.svg';
+import logo from '../../assets/icons/logo.svg';
 
 export interface SigninState {
     error: string,
     email: string,
     password: string
-};
+}
 
 export class Signin extends Component<{}, SigninState> {
 
     state = {
         error: '',
         email: '',
-        password: ''
+        password: '',
     };
 
     check(email: string, password: string): string | null {
         const errorEmail = Validate.email(email);
         if (errorEmail) {
             return errorEmail;
-        };
+        }
 
         const errorPassword = Validate.password(password);
         if (errorPassword) {
             return errorPassword;
-        };
+        }
 
         return null;
-    };
+    }
 
     signinEvent() {
 
-    };
+    }
 
     setError(error: string) {
         this.setState((state) => {
             state = { ...this.state };
             state.error = error;
-            return state;
+
+return state;
         });
-    };
+    }
 
     render() {
         return createElement(
             'div',
             {
                 class: 'signin-page',
-                keydown: () => { this.signinEvent() }
+                keydown: () => { this.signinEvent(); },
             },
             createElement(
                 'div',
                 { class: 'left-block' },
                 createComponent(
                     Text,
-                    { text: 'Войдите, чтобы использовать все возможности' }
+                    { text: 'Войдите, чтобы использовать все возможности' },
                 ),
                 createComponent(
                     Cell,
-                    { svgIcon: message, text: 'Общение об объявлениях в чатах' }
+                    { svgIcon: message, text: 'Общение об объявлениях в чатах' },
                 ),
                 createComponent(
                     Cell,
-                    { svgIcon: free, text: 'Бесплатное размещение объявлений' }
+                    { svgIcon: free, text: 'Бесплатное размещение объявлений' },
                 ),
                 createComponent(
                     Cell,
-                    { svgIcon: safe, text: 'Покупки со скидкой по безопасной сделке' }
+                    { svgIcon: safe, text: 'Покупки со скидкой по безопасной сделке' },
                 ),
             ),
             createElement(
@@ -100,12 +101,12 @@ export class Signin extends Component<{}, SigninState> {
                             variant: 'neutral',
                             subvariant: 'outlined',
                             style: 'height: auto; padding: 0',
-                            onclick: () => { Navigate.navigateTo('/') }
-                        }
+                            onclick: () => { Navigate.navigateTo('/'); },
+                        },
                     ),
                     createComponent(
-                        Text, 
-                        { variant: 'subheader', text: 'Вход в «GoodsGalaxy»' }
+                        Text,
+                        { variant: 'subheader', text: 'Вход в «GoodsGalaxy»' },
                     ),
                     createComponent(
                         TextInput,
@@ -114,8 +115,8 @@ export class Signin extends Component<{}, SigninState> {
                             placeholder: 'Электронная почта',
                             style: 'width: 100%;',
                             required: true,
-                            autocomplete: "email"
-                        }
+                            autocomplete: 'email',
+                        },
                     ),
                     createComponent(
                         Password,
@@ -124,13 +125,13 @@ export class Signin extends Component<{}, SigninState> {
                             placeholder: 'Пароль',
                             style: 'width: 100%;',
                             required: true,
-                            autocomplete: "current-password"
-                        }
+                            autocomplete: 'current-password',
+                        },
                     ),
                     (this.state.error !== '') ?
                     createComponent(
                         ErrorMessageBox,
-                        { text: this.state.error }
+                        { text: this.state.error },
                     ) : createText(''),
                     createComponent(
                         Button,
@@ -138,8 +139,8 @@ export class Signin extends Component<{}, SigninState> {
                             text: 'Продолжить',
                             variant: 'primary',
                             style: 'width: 100%;',
-                            onclick: () => { this.signinEvent() }
-                        }
+                            onclick: () => { this.signinEvent(); },
+                        },
                     ),
                     createComponent(
                         Button,
@@ -157,14 +158,14 @@ export class Signin extends Component<{}, SigninState> {
                     { class: 'right-block-info' },
                     createComponent(
                         Caption,
-                        { text: 'Нажимая «Продолжить», вы принимаете пользовательское соглашение и политику конфиденциальности' }
+                        { text: 'Нажимая «Продолжить», вы принимаете пользовательское соглашение и политику конфиденциальности' },
                     ),
                     createComponent(
                         Caption,
-                        { text: 'Передаваемые данные' }
-                    )
+                        { text: 'Передаваемые данные' },
+                    ),
                 ),
             ),
-        )    
-    };
+        );
+    }
 }
