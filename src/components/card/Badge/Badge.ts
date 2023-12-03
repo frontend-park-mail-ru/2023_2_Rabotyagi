@@ -1,16 +1,16 @@
-import "../cardStyles/card.scss";
+import '../cardStyles/card.scss';
 
-import { Component } from "../../baseComponents/snail/component";
-import { createComponent, createElement, createText } from "../../baseComponents/snail/vdom/VirtualDOM";
+import { Component } from '../../baseComponents/snail/component';
+import { createComponent, createElement, createText } from '../../baseComponents/snail/vdom/VirtualDOM';
 
-import { Text, Svg } from "../../baseComponents/index";
+import { Text, Svg } from '../../baseComponents/index';
 
 export interface BadgeProps {
     id?: string,
     class?: string,
     text?: string,
     svgIcon?: string
-};
+}
 
 export class Badge extends Component<BadgeProps, {}> {
 
@@ -28,15 +28,15 @@ export class Badge extends Component<BadgeProps, {}> {
         return createElement(
             'div',
             { ...otherProps },
-            (text) ? 
+            (text) ?
             createComponent(
-                Text, { text: text }
-            ) : 
-            (svgIcon) ? 
+                Text, { text: text },
+            ) :
+            (svgIcon) ?
             createComponent(
-                Svg, { content: svgIcon, width: 20, height: 20 }
-            ) 
-            : createText('')    
-        )
-    };
+                Svg, { content: svgIcon, width: 20, height: 20 },
+            )
+            : createText(''),
+        );
+    }
 }

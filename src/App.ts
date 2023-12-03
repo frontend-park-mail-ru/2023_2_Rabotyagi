@@ -1,13 +1,8 @@
 import { Component } from './components/baseComponents/snail/component';
-import { createElement, createComponent, createText } from './components/baseComponents/snail/vdom/VirtualDOM';
-import { TextArea } from './components/baseComponents/TextArea/TextArea';
+import { createElement, createComponent } from './components/baseComponents/snail/vdom/VirtualDOM';
 // import CounterStore from './shared/store/counter';
-import { Button } from './components/baseComponents/Button/Button';
-import StoreUser from './shared/store/user';
-import { Dropdown } from './components/baseComponents/Dropdown/Dropdown';
-import { Card } from './components/Card/Card';
-
-import { Signin } from './pages/Signin/Signin';
+import { Card } from './components/card/Card';
+import { Header } from './components/header/header';
 
 // компонент App является родитлеьским для dropdown, а значит он определяет его поведение
 // поэтому hidden должен находиться в state у App, а не у Dropdown
@@ -33,8 +28,8 @@ export class App extends Component<never, AppState> {
     state = {
         title: 'Welcome to the App',
         count: 0,
-        hidden: true
-    }
+        hidden: true,
+    };
 
     changeHidden() {
         this.setState((state) => {
@@ -103,18 +98,23 @@ export class App extends Component<never, AppState> {
                 ),
             ),*/
             createComponent(
-                Card, 
+                Card,
                 {
                     id: 1,
                     variant: 'favourite',
                     price: 1000,
                     title: 'Cat',
                     delivery: true,
-                    safe_deal: true,
+                    safeDeal: true,
                     city: 'Moscow',
-                    is_active: true
-                }
-            )
+                    isActive: true,
+                },
+            ),
+
+            createComponent(
+                Header,
+                {},
+            ),
         );
     }
 }

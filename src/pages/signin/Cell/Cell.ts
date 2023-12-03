@@ -8,18 +8,18 @@ import { Svg, Text } from '../../../components/baseComponents/index';
 export interface CellProps {
     svgIcon: string,
     text: string
-};
+}
 
 export interface CellState {
     svgSize: number,
     textStyle: string
-};
+}
 
 export class Cell extends Component<CellProps, CellState> {
 
     state = {
         svgSize: 25,
-        textStyle: 'color: var(--text-secondary);'
+        textStyle: 'color: var(--text-secondary);',
     };
 
     render() {
@@ -31,20 +31,20 @@ export class Cell extends Component<CellProps, CellState> {
             'div',
             { class: 'cell' },
             createComponent(
-                Svg, 
-                { 
-                    content: this.props.svgIcon,  
+                Svg,
+                {
+                    content: this.props.svgIcon,
                     height: this.state.svgSize,
-                    width: this.state.svgSize
-                }
+                    width: this.state.svgSize,
+                },
             ),
             createComponent(
                 Text,
                 {
                     text: this.props.text,
-                    style: this.state.textStyle
-                }
-            )
+                    style: this.state.textStyle,
+                },
+            ),
         );
-    };
-};
+    }
+}
