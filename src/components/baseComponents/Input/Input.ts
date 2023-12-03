@@ -21,6 +21,7 @@ export interface BaseInputProps {
     style?: string,
     required?: boolean,
     class?: string,
+    type?: string,
 }
 
 export type TextInputProps = BaseInputProps & {
@@ -57,8 +58,8 @@ export class BaseInput extends Component<BaseInputProps, never> {
         return createElement(
             'input',
             {
-                class: getTextClass(textType) + (this.props.class ? ' ' + this.props.class : ''),
                 ...otherProps,
+                class: getTextClass(textType) + (this.props.class ? ' ' + this.props.class : ''),
             },
         );
     }
@@ -74,9 +75,9 @@ export class TextInput extends Component<TextInputProps, never> {
         return createElement(
             'input',
             {
-                class: getTextClass(textType) + (this.props.class ? ' ' + this.props.class : ''),
                 type: 'text',
                 ...otherProps,
+                class: getTextClass(textType) + (this.props.class ? ' ' + this.props.class : ''),
             },
         );
     }
@@ -92,11 +93,11 @@ export class NumberInput extends Component<NumberInputProps, never> {
         return createElement(
             'input',
             {
-                class: getTextClass(textType),
                 type: 'number',
                 min: (min !== undefined) ? min.toString() : '0',
                 max: (max !== undefined) ? max.toString() : '',
                 ...otherProps,
+                class: getTextClass(textType) + (this.props.class ? ' ' + this.props.class : ''),
             },
         );
     }
@@ -127,9 +128,9 @@ export class Password extends Component<PasswordInputProps, never> {
         return createElement(
             'input',
             {
-                class: getTextClass(textType),
                 type: 'password',
                 ...otherProps,
+                class: getTextClass(textType) + (this.props.class ? ' ' + this.props.class : ''),
             },
         );
     }

@@ -4,7 +4,7 @@ import { Component } from '../snail/component';
 import { createComponent, createElement } from '../snail/vdom/VirtualDOM';
 
 import { Button } from '../button/Button';
-import { Password, TextInput, PasswordInputProps, BaseInput } from '../input/Input';
+import { BaseInputProps, BaseInput } from '../input/Input';
 
 type FieldType = 'password' | 'text';
 
@@ -13,7 +13,7 @@ export interface PasswordFieldState {
     preventType: FieldType,
 }
 
-export class PasswordField extends Component<PasswordInputProps, PasswordFieldState> {
+export class PasswordField extends Component<BaseInputProps, PasswordFieldState> {
 
     state: PasswordFieldState = {
         type: 'password',
@@ -34,12 +34,13 @@ export class PasswordField extends Component<PasswordInputProps, PasswordFieldSt
     }
 
     render() {
-        const inputProps = {
+        const inputProps: BaseInputProps = {
             placeholder: 'Пароль',
             autocomplete: 'new-password',
             required: true,
             class: 'input-field',
             type: this.state.type,
+            textType: 'regular'
         };
 
         return createElement(
