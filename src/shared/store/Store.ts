@@ -1,4 +1,4 @@
-import UserStore from './user';
+import UserStore from './UserStore';
 
 export const Store = {
 

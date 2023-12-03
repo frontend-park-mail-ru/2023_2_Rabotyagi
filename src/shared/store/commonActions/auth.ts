@@ -1,4 +1,4 @@
-import UserStore from '../user';
+import UserStore from '../UserStore';
 
 import Dispatcher from '../../services/store/Dispatcher';
 import { ResponseStatus } from '../../constants/response';
@@ -30,7 +30,6 @@ export async function login() {
     if (!accessToken) {
         return;
     }
-
     await fillUserByToken(accessToken);
 }
 

@@ -4,7 +4,7 @@ import { Component } from '../snail/component';
 import { createComponent, createElement } from '../snail/vdom/VirtualDOM';
 
 import { Button } from '../button/Button';
-import { BaseInputProps, BaseInput } from '../input/Input';
+import { PasswordInputProps, BaseInput } from '../input/Input';
 
 type FieldType = 'password' | 'text';
 
@@ -13,7 +13,7 @@ export interface PasswordFieldState {
     preventType: FieldType,
 }
 
-export class PasswordField extends Component<BaseInputProps, PasswordFieldState> {
+export class PasswordField extends Component<PasswordInputProps, PasswordFieldState> {
 
     state: PasswordFieldState = {
         type: 'password',
@@ -23,12 +23,16 @@ export class PasswordField extends Component<BaseInputProps, PasswordFieldState>
     setType(newType: FieldType) {
         // к сожалению, пришлось вставить сюда костыль до окончательного решения
         if (newType !== this.state.type) {
-            this.setState((state) => {
-                state = { ...this.state };
-                state.preventType = this.state.type;
-                state.type = newType;
+            // this.setState((state) => {
+            //     state = { ...this.state };
+            //     state.preventType = this.state.type;
+            //     state.type = newType;
 
-                return state;
+            //     return state;
+            // });
+            this.setState({
+                preventType: this.state.type,
+                type: newType,
             });
         }
     }
@@ -40,7 +44,7 @@ export class PasswordField extends Component<BaseInputProps, PasswordFieldState>
             required: true,
             class: 'input-field',
             type: this.state.type,
-            textType: 'regular'
+            textType: 'regular',
         };
 
         return createElement(

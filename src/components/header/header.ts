@@ -5,15 +5,24 @@ import { createComponent, createElement } from '../baseComponents/snail/vdom/Vir
 import { Button, TextInput } from '../baseComponents/index';
 import logo from '../../assets/icons/logo.svg';
 import Navigate from '../../shared/services/router/Navigate';
-import UserStore from '../../shared/store/user';
+import UserStore from '../../shared/store/UserStore';
 
 export class Header extends Component<never, never>{
+    // state = {
+
+    // };
+
     routeToSignin = () => Navigate.navigateTo('/signin');
     routeToSignup = () => Navigate.navigateTo('/signup');
     routeToMain = () => Navigate.navigateTo('/');
 
+    public componentDidMount(): void {
+
+    }
+
     render() {
         let tail;
+
         if (!UserStore.isAuth()){
             tail = [
                 createComponent(

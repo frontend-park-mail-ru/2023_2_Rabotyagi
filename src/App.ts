@@ -8,15 +8,40 @@ import { SignupPage } from './pages/signup/SignupPage';
 import { MainPage } from './pages/main/Main';
 
 import { login } from './shared/store/commonActions/auth';
+import { Loader } from './components/loader/Loader';
 
-export class App extends Component<never, never> {
+interface AppState {
+    loading: boolean
+}
+
+export class App extends Component<never, AppState> {
+    constructor() {
+        super();
+        this.state = {
+            loading: true,
+        };
+
+        this.loader();
+    }
+
+    async loader() {
+        await login();
+        this.setState({
+            loading: false,
+        });
+    }
 
     render() {
-        login();
 
         return createElement(
             'div',
-            { id: 'root' },
+            {id: 'root'},
+            (this.state?.loading) ?
+            createComponent(
+                Loader,
+                {},
+            )
+            :
             createComponent(
                 Router,
                 { },
@@ -43,6 +68,7 @@ export class App extends Component<never, never> {
                     ),
                 ),
             ),
+
         );
     }
 }
