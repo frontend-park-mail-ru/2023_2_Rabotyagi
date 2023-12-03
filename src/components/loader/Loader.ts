@@ -11,7 +11,7 @@ export class Loader extends Component<never, never> {
     render() {
         return createComponent(
             Svg,
-            { content: loader, class: 'loader-regular rotating' }
-        )
-    };
-};
+            { content: loader, class: 'loader-regular rotating' },
+        );
+    }
+}

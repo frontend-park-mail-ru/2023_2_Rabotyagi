@@ -41,7 +41,7 @@ export class SigninPage {
             if (!statuses.IsSuccessfulRequest(resp)) {
                 if (statuses.IsBadFormatRequest(resp)) {
                     throw statuses.USER_MESSAGE;
-                } 
+                }
                 else if (statuses.IsInternalServerError(resp)) {
                     throw statuses.SERVER_MESSAGE;
                 }
@@ -59,7 +59,7 @@ export class SigninPage {
             if (!statuses.IsSuccessfulRequest(respCart)) {
                 if (statuses.IsBadFormatRequest(respCart)) {
                     throw statuses.USER_MESSAGE;
-                } 
+                }
                 else if (statuses.IsInternalServerError(respCart)) {
                     throw statuses.SERVER_MESSAGE;
                 }

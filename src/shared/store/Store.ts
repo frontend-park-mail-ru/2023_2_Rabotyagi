@@ -2,9 +2,9 @@ import UserStore from './user';
 
 export const Store = {
 
-    init: async function () {
+    init: async function() {
         this.user.init();
     },
 
-    user: UserStore
+    user: UserStore,
 };

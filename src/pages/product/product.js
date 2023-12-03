@@ -35,7 +35,7 @@ class ProductPage {
             if (!statuses.IsSuccessfulRequest(respPost)) {
                 if (statuses.IsBadFormatRequest(respPost)) {
                     throw statuses.USER_MESSAGE;
-                } 
+                }
                 else if (statuses.IsInternalServerError(respPost)) {
                     throw statuses.SERVER_MESSAGE;
                 }
@@ -85,10 +85,10 @@ class ProductPage {
 
             if (!statuses.IsSuccessfulRequest(res)) {
                 this.errorBox.innerHTML = '';
-                
+
                 if (statuses.IsBadFormatRequest(res)) {
                     this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
-                } 
+                }
                 else if (statuses.IsInternalServerError(res)) {
                     this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
                 }

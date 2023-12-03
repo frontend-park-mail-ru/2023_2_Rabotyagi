@@ -149,9 +149,9 @@ return state;
                             variant: 'neutral',
                             subvariant: 'primary',
                             style: 'width: 100%;',
-                            onclick: () => { Navigate.navigateTo('signup') }
-                        }
-                    )
+                            onclick: () => { Navigate.navigateTo('signup'); },
+                        },
+                    ),
                 ),
                 createElement(
                     'div',

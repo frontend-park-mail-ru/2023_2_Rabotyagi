@@ -1,35 +1,35 @@
-import { Component } from "../../../components/baseComponents/snail/component";
-import { createElement, createText } from "../../../components/baseComponents/snail/vdom/VirtualDOM";
+import { Component } from '../../../components/baseComponents/snail/component';
+import { createElement, createText } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import Navigate from "./Navigate";
+import Navigate from './Navigate';
 
 export interface RouteProps {
-    path: RegExp;
-};
+    path: RegExp,
+}
 
 // у компонента Route может быть только 1 ребёнок
-export class Route extends Component<RouteProps, {}> {
+export class Route extends Component<RouteProps, never> {
 
     render() {
         if (!this.children) {
             throw new Error('Route children are undefined');
-        };
+        }
         if (this.children.length > 1) {
             throw new Error('Route have only 1 child');
-        };
+        }
 
         return this.children[0];
-    };
-};
+    }
+}
 
-export class Router extends Component<{}, {}> {
+export class Router extends Component<never, never> {
 
     // связка Роутера и Навигатора
     public componentDidMount(): void {
         Navigate.addCallback(() => {
             this.applyComponentChanges();
         });
-    };
+    }
 
     render() {
         if (!this.props) {
@@ -53,8 +53,9 @@ export class Router extends Component<{}, {}> {
                 if (!child.props) {
                     throw new Error('');
                 }
+
                 return child.props[name as keyof typeof child.props];
-            }
+            };
 
             return access('path').exec(location.pathname);
         });
@@ -65,7 +66,7 @@ export class Router extends Component<{}, {}> {
 
         return createElement(
             'div', { },
-            createText('Ошибка при роутинге')
+            createText('Ошибка при роутинге'),
         );
-    };
-};
+    }
+}

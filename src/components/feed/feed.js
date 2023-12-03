@@ -28,7 +28,7 @@ export class Feed {
             if (!statuses.IsSuccessfulRequest(resp)) {
                 if (statuses.IsBadFormatRequest(resp)) {
                     throw statuses.USER_MESSAGE;
-                } 
+                }
                 else if (statuses.IsInternalServerError(resp)) {
                     throw statuses.SERVER_MESSAGE;
                 }

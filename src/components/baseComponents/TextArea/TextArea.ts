@@ -1,5 +1,5 @@
-import { Component } from "../snail/component";
-import { createElement } from "../snail/vdom/VirtualDOM";
+import { Component } from '../snail/component';
+import { createElement } from '../snail/vdom/VirtualDOM';
 
 export interface TextAreaProps {
 
@@ -12,8 +12,8 @@ export class TextArea extends Component<TextAreaProps, {}> {
         return createElement(
             'textarea',
             {
-                ...textAreaProps
+                ...textAreaProps,
             },
-        )
+        );
     }
 }

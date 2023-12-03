@@ -24,24 +24,24 @@ export class App extends Component<never, never> {
                     Route,
                     { path: new RegExp('^/$') },
                     createElement(
-                        'div', { }
-                    )
+                        'div', { },
+                    ),
                 ),
                 createComponent(
                     Route,
                     { path: new RegExp('^/signin$') },
                     createComponent(
-                        Signin, { }
-                    )
+                        Signin, { },
+                    ),
                 ),
                 createComponent(
                     Route,
                     { path: new RegExp('^/signup$') },
                     createComponent(
-                        Signup, { }
-                    )
-                )
-            )
-        )
-    };
-};
+                        Signup, { },
+                    ),
+                ),
+            ),
+        );
+    }
+}

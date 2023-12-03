@@ -20,7 +20,7 @@ export interface BaseInputProps {
     autocomplete?: string,
     style?: string,
     required?: boolean,
-    class?: string
+    class?: string,
 }
 
 export type TextInputProps = BaseInputProps & {
@@ -47,7 +47,7 @@ export type FileInputProps = BaseInputProps & {
 
 const errorInputMessage: string = 'Input settings are undefined';
 
-export class TextInput extends Component<TextInputProps, {}> {
+export class TextInput extends Component<TextInputProps, never> {
 
     render() {
         if (!this.props) { throw new Error(errorInputMessage); }
@@ -65,14 +65,14 @@ export class TextInput extends Component<TextInputProps, {}> {
     }
 }
 
-export class NumberInput extends Component<NumberInputProps, {}> {
+export class NumberInput extends Component<NumberInputProps, never> {
 
     render() {
         if (!this.props) { throw new Error(errorInputMessage); }
 
         const { textType, min, max, ...otherProps } = this.props;
 
-return createElement(
+        return createElement(
             'input',
             {
                 class: getTextClass(textType),
@@ -85,7 +85,7 @@ return createElement(
     }
 }
 
-export class Checkbox extends Component<CheckboxInputProps, {}> {
+export class Checkbox extends Component<CheckboxInputProps, never> {
 
     render() {
         if (!this.props) { throw new Error(errorInputMessage); }
@@ -100,7 +100,7 @@ export class Checkbox extends Component<CheckboxInputProps, {}> {
     }
 }
 
-export class Password extends Component<PasswordInputProps, {}> {
+export class Password extends Component<PasswordInputProps, never> {
 
     render() {
         if (!this.props) { throw new Error(errorInputMessage); }
@@ -118,7 +118,7 @@ export class Password extends Component<PasswordInputProps, {}> {
     }
 }
 
-export class FileInput extends Component<FileInputProps, {}> {
+export class FileInput extends Component<FileInputProps, never> {
 
     render() {
         if (!this.props) { throw new Error(errorInputMessage); }

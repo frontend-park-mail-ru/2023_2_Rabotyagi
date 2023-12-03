@@ -1,12 +1,12 @@
-import UserStore from "../user";
+import UserStore from '../user';
 
-import Dispatcher from "../../services/store/Dispatcher";
-import { ResponseStatus } from "../../constants/response";
+import Dispatcher from '../../services/store/Dispatcher';
+import { ResponseStatus } from '../../constants/response';
 
-import jwtDecode from "../../utils/jwt-decode";
+import jwtDecode from '../../utils/jwt-decode';
 import { cookieParser, deleteCookie } from '../../utils/cookie';
 
-import { UserApi } from "../../api/user";
+import { UserApi } from '../../api/user';
 
 export async function fillUserByToken(accessToken: string) {
     const id = jwtDecode(accessToken).userID;
@@ -22,19 +22,19 @@ export async function fillUserByToken(accessToken: string) {
                 break;
         }
     }
-};
+}
 
 export async function login() {
     const accessToken = cookieParser(document.cookie)?.access_token;
     UserStore.clear();
     if (!accessToken) {
         return;
-    };
+    }
 
     await fillUserByToken(accessToken);
-};
+}
 
 export async function logout() {
     Dispatcher.dispatch({ name: 'USER_STORE_LOGOUT' });
-};
+}
 

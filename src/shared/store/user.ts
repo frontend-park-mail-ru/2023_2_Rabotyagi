@@ -90,7 +90,7 @@ class UserStore extends Store<StoreUserState> {
 
         if (accessToken === undefined) {
             return;
-        };
+        }
 
         await this.fill(accessToken);
     }

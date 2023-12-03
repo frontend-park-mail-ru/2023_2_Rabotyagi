@@ -60,7 +60,7 @@ export class SignupPage {
 
                 if (statuses.IsBadFormatRequest(resp)) {
                     errorBox.appendChild(ErrorMessageBox(statuses.USER_MESSAGE));
-                } 
+                }
                 else if (statuses.IsInternalServerError(resp)) {
                     errorBox.appendChild(ErrorMessageBox(statuses.SERVER_MESSAGE));
                 }

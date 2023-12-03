@@ -22,7 +22,7 @@ class Settings {
         if (!statuses.IsSuccessfulRequest(res)) {
             if (statuses.IsBadFormatRequest(res)) {
                 errorBox.replaceWith(ErrorMessageBox(statuses.USER_MESSAGE, 'errorBox'));
-            } 
+            }
             else if (statuses.IsInternalServerError(res)) {
                 errorBox.replaceWith(ErrorMessageBox(statuses.SERVER_MESSAGE, 'errorBox'));
             }
@@ -47,7 +47,7 @@ class Settings {
 
                 if (statuses.IsBadFormatRequest(res)) {
                     this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
-                } 
+                }
                 else if (statuses.IsInternalServerError(res)) {
                     this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
                 }
@@ -152,14 +152,14 @@ class Settings {
             if (!statuses.IsSuccessfulRequest(res)) {
                 if (statuses.IsBadFormatRequest(res)) {
                     errorBox.replaceWith(ErrorMessageBox(statuses.USER_MESSAGE, 'errorBox'));
-                } 
+                }
                 else if (statuses.IsInternalServerError(res)) {
                     errorBox.replaceWith(ErrorMessageBox(statuses.SERVER_MESSAGE, 'errorBox'));
                 }
                 else if (statuses.IsUserError(res)) {
                     errorBox.replaceWith(ErrorMessageBox(body.error, 'errorBox'));
                 }
-    
+
                 return;
             }
 

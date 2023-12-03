@@ -7,8 +7,8 @@ import { Text } from '../Text/Text';
 
 export interface ErrorMessageBoxProps {
     id?: string,
-    text: string   
-};
+    text: string
+}
 
 export class ErrorMessageBox extends Component<ErrorMessageBoxProps, {}> {
 
@@ -24,9 +24,9 @@ export class ErrorMessageBox extends Component<ErrorMessageBoxProps, {}> {
             { ...divProps, class: 'error' },
             createComponent(
                 Text,
-                { tag: 'p', text: text }
-            )
-        )
+                { tag: 'p', text: text },
+            ),
+        );
     }
-};
+}
 
