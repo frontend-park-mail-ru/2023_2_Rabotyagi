@@ -67,6 +67,7 @@ class UserStore extends Store<StoreUserState> {
     }
 
     clear() {
+        deleteCookie('access_token');
         this.state.fields = null;
         this.state.accessToken = null;
     }

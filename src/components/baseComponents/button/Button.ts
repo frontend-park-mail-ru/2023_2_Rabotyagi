@@ -56,6 +56,7 @@ export class Button extends Component<ButtonProps, {}> {
                 ...buttonProps,
                 class: 'button-' + (variant || 'base') + ' ' + (subvariant || ''),
             },
+            ...this.children,
 
             (leftIcon) ?
             createComponent(

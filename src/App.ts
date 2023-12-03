@@ -15,20 +15,19 @@ interface AppState {
 }
 
 export class App extends Component<never, AppState> {
-    constructor() {
-        super();
-        this.state = {
-            loading: true,
-        };
-
-        this.loader();
-    }
+    state: AppState = {
+        loading: true,
+    };
 
     async loader() {
         await login();
         this.setState({
             loading: false,
         });
+    }
+
+    public componentDidMount(): void {
+        this.loader();
     }
 
     render() {
@@ -68,7 +67,6 @@ export class App extends Component<never, AppState> {
                     ),
                 ),
             ),
-
         );
     }
 }

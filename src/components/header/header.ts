@@ -2,16 +2,13 @@ import './header.scss';
 
 import { Component } from '../baseComponents/snail/component';
 import { createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
-import { Button, TextInput } from '../baseComponents/index';
+import { Button, Dropdown, TextInput } from '../baseComponents/index';
 import logo from '../../assets/icons/logo.svg';
 import Navigate from '../../shared/services/router/Navigate';
 import UserStore from '../../shared/store/UserStore';
+import { logout } from '../../shared/store/commonActions/auth';
 
 export class Header extends Component<never, never>{
-    // state = {
-
-    // };
-
     routeToSignin = () => Navigate.navigateTo('/signin');
     routeToSignup = () => Navigate.navigateTo('/signup');
     routeToMain = () => Navigate.navigateTo('/');
@@ -38,19 +35,52 @@ export class Header extends Component<never, never>{
                     {
                         text: 'Зарегистрироваться',
                         variant: 'neutral',
+                        subvariant: 'primary',
                         onclick: this.routeToSignup,
                     },
                 ),
             ];
         }
         else {
-            tail = [createComponent(
-                Button,
-                {
-                    text: 'Профиль',
-                    leftIcon: undefined,
-                },
-            )];
+            const dropdown = createComponent(
+                Dropdown,
+                {},
+                createComponent(
+                    Button,
+                    {
+                        text: 'Профиль',
+                        variant: 'neutral',
+                        subvariant: 'tertiary',
+                    },
+                ),
+                createComponent(
+                    Button,
+                    {
+                        text: 'Выйти',
+                        variant: 'neutral',
+                        subvariant: 'tertiary',
+                        onclick: async() => {
+                            await logout();
+                            this.applyComponentChanges();
+                        },
+                    },
+                ),
+            );
+            tail = [
+                createComponent(
+                    Button,
+                    {
+                        text: 'Профиль',
+                        variant: 'neutral',
+                        subvariant: 'primary',
+                        leftIcon: undefined,
+                        onclick: () => {
+                            (dropdown.instance as Dropdown).switchHidden();
+                        },
+                    },
+                    dropdown,
+                ),
+            ];
         }
 
         return createElement(
@@ -83,8 +113,10 @@ export class Header extends Component<never, never>{
                 {
                     text: 'Разместить объявление',
                     variant: 'neutral',
+                    subvariant: 'primary',
                 },
             ),
+
             ...tail,
         );
     }

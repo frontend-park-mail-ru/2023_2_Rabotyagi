@@ -14,8 +14,8 @@ import searchIcon from '../../../assets/icons/search.svg';
 // внешнее воздействие на компонент осуществляется через его пропсы
 
 interface DropdownProps {
-    search: boolean,
-    hidden: boolean;
+    search?: boolean,
+    // setHidden: (flag: boolean) => void,
 }
 
 interface DropDownState {
@@ -27,6 +27,12 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
         hidden: true,
     };
 
+    switchHidden() {
+        this.setState({
+            hidden: !this.state.hidden,
+        });
+    }
+
     public render(): VDomNode {
         if (!this.props) {
             throw new Error('Dropdown props are undefined');
@@ -36,7 +42,7 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
             'div',
             {
                 class: 'dropdown-container',
-                hidden: this.props.hidden,
+                hidden: this.state.hidden,
             },
             (this.props.search) ?
             createElement(
@@ -49,7 +55,7 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
                     TextInput, {},
                 ),
             ) : createText(''),
-            (!this.props.hidden) ?
+            (!this.state.hidden) ?
             createElement(
                 'div',
                 { class: 'dropdown-content' },

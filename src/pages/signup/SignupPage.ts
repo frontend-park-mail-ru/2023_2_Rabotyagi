@@ -9,6 +9,10 @@ import { Text, Button, TextInput, ErrorMessageBox, PasswordField } from '../../c
 import Navigate from '../../shared/services/router/Navigate';
 
 import logo from '../../assets/icons/logo.svg';
+import { Validate } from '../../shared/utils/validation';
+import { Auth } from '../../shared/api/auth';
+import { ResponseMessage, ResponseStatusChecker } from '../../shared/constants/response';
+import { login } from '../../shared/store/commonActions/auth';
 
 export interface SignupPageState {
     error: string,
@@ -28,16 +32,82 @@ export class SignupPage extends Component<never, SignupPageState> {
 
     setError(error: string) {
         this.setState({
-            error: error
+            error: error,
         } as SignupPageState);
     }
+
+    check(): string | null {
+        const errorEmail = Validate.email(this.state.email);
+        if (errorEmail) {
+            return errorEmail;
+        }
+
+        const errorPassword = Validate.password(this.state.password);
+        if (errorPassword) {
+            return errorPassword;
+        }
+
+        const errorPasswordRep = Validate.password(this.state.repeatPassword);
+        if (errorPasswordRep) {
+            return errorPasswordRep;
+        }
+
+        const passEqual = Validate.passwordEqual(this.state.password, this.state.repeatPassword);
+        if (passEqual) {
+            return passEqual;
+        }
+
+        return null;
+    }
+
+    signupEvent = async() => {
+        const error = this.check();
+
+        if (error){
+            this.setError(error);
+
+            return;
+        }
+
+        let resp;
+
+        try {
+            resp = await Auth.signup(this.state.email, this.state.password);
+        } catch (err) {
+            console.error(err);
+
+            return;
+        }
+
+        if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {
+            if (ResponseStatusChecker.IsBadFormatRequest(resp)) {
+                this.setError(ResponseMessage.USER_MESSAGE);
+
+                return;
+            }
+            else if (ResponseStatusChecker.IsInternalServerError(resp)) {
+                this.setError(ResponseMessage.SERVER_MESSAGE);
+
+                return;
+            }
+            else if (ResponseStatusChecker.IsUserError(resp)) {
+                this.setError(resp.body.error);
+
+                return;
+            }
+        }
+
+        await login();
+
+        Navigate.navigateTo('/');
+    };
 
     render() {
         return createElement(
             'div',
             { class: 'signup' },
             createElement(
-                'form',
+                'div',
                 { class: 'signup_content' },
                 createComponent(
                     Button,
@@ -64,14 +134,24 @@ export class SignupPage extends Component<never, SignupPageState> {
                         autocomplete: 'email',
                         required: true,
                         class: 'input-field',
-                        oninput: () => { },
+                        onchange: (e: Event) => {
+                            this.state.email = (e.target as HTMLInputElement).value;
+                        },
                     },
                 ),
                 createComponent(
-                    PasswordField, {},
+                    PasswordField, {
+                        onchange: (e: Event) => {
+                            this.state.password = (e.target as HTMLInputElement).value;
+                        },
+                    },
                 ),
                 createComponent(
-                    PasswordField, {},
+                    PasswordField, {
+                        onchange: (e: Event) => {
+                            this.state.repeatPassword = (e.target as HTMLInputElement).value;
+                        },
+                    },
                 ),
                 (this.state.error !== '') ?
                     createComponent(
@@ -85,6 +165,7 @@ export class SignupPage extends Component<never, SignupPageState> {
                         text: 'Продолжить',
                         style: 'width: 100%;',
                         type: 'submit',
+                        onclick: this.signupEvent,
                     },
                 ),
             ),
@@ -102,5 +183,5 @@ export class SignupPage extends Component<never, SignupPageState> {
             ),
         );
     }
-    
+
 }

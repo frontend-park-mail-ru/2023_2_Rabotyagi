@@ -60,18 +60,16 @@ export class SigninPage extends Component<{}, SigninPageState> {
 
             return;
         }
+
         let resp;
+
         try {
             resp = await Auth.signin(this.state.email, this.state.password);
         } catch (err) {
             console.error(err);
-            // errorBox.innerHTML = '';
-            // errorBox.appendChild(ErrorMessageBox(err));
 
-            // return false;
+            return;
         }
-
-            // const body = resp.body;
 
         if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {
             if (ResponseStatusChecker.IsBadFormatRequest(resp)) {
@@ -88,16 +86,9 @@ export class SigninPage extends Component<{}, SigninPageState> {
         await login();
 
         Navigate.navigateTo('/');
-            // return true;
     };
 
     setError(error: string) {
-        // this.setState((state) => {
-        //     state = { ...this.state };
-        //     state.error = error;
-
-        //     return state;
-        // });
         this.setState({
             error: error,
         } as SigninPageState);

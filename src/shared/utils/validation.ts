@@ -45,6 +45,17 @@ export class Validate {
         return null;
     }
 
+    static passwordEqual(password: string, passwordRepeat: string): string | null {
+        password = password.trim();
+        passwordRepeat = passwordRepeat.trim();
+
+        if (password !== passwordRepeat){
+            return 'Пароли не совпадают';
+        }
+
+        return null;
+    }
+
     /**
      * @summary Валидация почты с использованием регулярки {@link validation:EMAIL_REGEXP}
      * @param {string} email - email

@@ -38,13 +38,14 @@ export class PasswordField extends Component<PasswordInputProps, PasswordFieldSt
     }
 
     render() {
-        const inputProps: BaseInputProps = {
+        const inputProps: PasswordInputProps = {
             placeholder: 'Пароль',
             autocomplete: 'new-password',
             required: true,
             class: 'input-field',
             type: this.state.type,
             textType: 'regular',
+            ...this.props,
         };
 
         return createElement(
