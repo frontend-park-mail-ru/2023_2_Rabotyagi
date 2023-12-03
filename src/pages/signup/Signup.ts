@@ -10,14 +10,14 @@ import Navigate from '../../shared/services/router/Navigate';
 
 import logo from '../../assets/icons/logo.svg';
 
-export interface SignupState {
+export interface SignupPageState {
     error: string,
     email: string,
     password: string,
     repeatPassword: string,
 }
 
-export class Signup extends Component<never, SignupState> {
+export class SignupPage extends Component<never, SignupPageState> {
 
     state = {
         error: '',
@@ -105,4 +105,5 @@ export class Signup extends Component<never, SignupState> {
             ),
         );
     }
+    
 }

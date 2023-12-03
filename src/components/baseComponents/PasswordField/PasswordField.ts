@@ -3,7 +3,7 @@ import './PasswordField.scss';
 import { Component } from '../snail/component';
 import { createComponent, createElement } from '../snail/vdom/VirtualDOM';
 
-import { Button } from '../Button/Button';
+import { Button } from '../button/Button';
 import { Password, TextInput, PasswordInputProps } from '../Input/Input';
 
 type FieldType = 'password' | 'text';
@@ -19,7 +19,7 @@ export class PasswordField extends Component<PasswordInputProps, PasswordFieldSt
     };
 
     setType(newType: FieldType) {
-        console.log('SETTYPE');
+        // console.log('SETTYPE');
         this.setState((state) => {
             state = { ...this.state };
             state.type = newType;

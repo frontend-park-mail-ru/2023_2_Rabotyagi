@@ -3,8 +3,9 @@ import { createComponent, createElement } from './components/baseComponents/snai
 
 import { Router, Route } from './shared/services/router/Routing';
 
-import { Signin } from './pages/Signin/Signin';
-import { Signup } from './pages/Signup/Signup';
+import { SigninPage } from './pages/Signin/Signin';
+import { SignupPage } from './pages/Signup/Signup';
+import { MainPage } from './pages/Main/Main';
 
 import { login } from './shared/store/commonActions/auth';
 
@@ -23,22 +24,23 @@ export class App extends Component<never, never> {
                 createComponent(
                     Route,
                     { path: new RegExp('^/$') },
-                    createElement(
-                        'div', { },
+                    createComponent(
+                        MainPage,
+                        { },
                     ),
                 ),
                 createComponent(
                     Route,
                     { path: new RegExp('^/signin$') },
                     createComponent(
-                        Signin, { },
+                        SigninPage, { },
                     ),
                 ),
                 createComponent(
                     Route,
                     { path: new RegExp('^/signup$') },
                     createComponent(
-                        Signup, { },
+                        SignupPage, { },
                     ),
                 ),
             ),

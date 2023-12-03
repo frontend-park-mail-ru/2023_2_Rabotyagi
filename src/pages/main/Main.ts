@@ -1,3 +1,17 @@
 import { Component } from '../../components/baseComponents/snail/component';
-import { createComponent } from '../../components/baseComponents/snail/vdom/VirtualDOM';
+import { VDomNode, createComponent, createElement } from '../../components/baseComponents/snail/vdom/VirtualDOM';
+import { Header } from '../../components/header/header';
 
+export class MainPage extends Component<never, never> {
+
+    public render(): VDomNode {
+        return createElement(
+            'div',
+            {},
+            createComponent(
+                Header,
+                {},
+            ),
+        );
+    }
+}
