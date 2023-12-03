@@ -12,11 +12,15 @@ export interface BaseInputProps {
     name?: string,
     textType?: TextTypes,
     value?: string,
-    onchange?: Function,
+    onchange?: (e?: any) => void,
+    onkeypress?: (e?: any) => void,
+    onkeyup?: (e?: any) => void,
+    oninput?: (e?: any) => void,
     placeholder?: string,
     autocomplete?: string,
     style?: string,
-    required?: boolean
+    required?: boolean,
+    class?: string
 }
 
 export type TextInputProps = BaseInputProps & {
@@ -53,7 +57,7 @@ export class TextInput extends Component<TextInputProps, {}> {
         return createElement(
             'input',
             {
-                class: getTextClass(textType),
+                class: getTextClass(textType) + (this.props.class ? ' ' + this.props.class : ''),
                 type: 'text',
                 ...otherProps,
             },

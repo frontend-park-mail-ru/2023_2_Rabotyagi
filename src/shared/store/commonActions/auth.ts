@@ -24,18 +24,10 @@ export async function fillUserByToken(accessToken: string) {
     }
 };
 
-export async function login(accessToken: string | undefined) {
-    UserStore.clear();
-    if (accessToken === undefined) {
-        return;
-    };
-
-    await fillUserByToken(accessToken);
-};
-
-export async function cookieLogin() {
+export async function login() {
     const accessToken = cookieParser(document.cookie)?.access_token;
-    if (!accessToken){
+    UserStore.clear();
+    if (!accessToken) {
         return;
     };
 

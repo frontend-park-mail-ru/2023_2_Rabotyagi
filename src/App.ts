@@ -1,120 +1,47 @@
 import { Component } from './components/baseComponents/snail/component';
-import { createElement, createComponent, createText } from './components/baseComponents/snail/vdom/VirtualDOM';
-import { TextArea } from './components/baseComponents/TextArea/TextArea';
-// import CounterStore from './shared/store/counter';
-import { Button } from './components/baseComponents/Button/Button';
-import StoreUser from './shared/store/user';
-import { Dropdown } from './components/baseComponents/Dropdown/Dropdown';
-import { Card } from './components/Card/Card';
+import { createComponent, createElement } from './components/baseComponents/snail/vdom/VirtualDOM';
+
+import { Router, Route } from './shared/services/router/Routing';
 
 import { Signin } from './pages/Signin/Signin';
+import { Signup } from './pages/Signup/Signup';
 
-// компонент App является родитлеьским для dropdown, а значит он определяет его поведение
-// поэтому hidden должен находиться в state у App, а не у Dropdown
-// соответсвенно в App есть функция changeHidden, которая меняет этот параметр
-// для Dropdown hidden - это свойство, которое передаётся в пропсах
+import { login } from './shared/store/commonActions/auth';
 
-// можно для наглядности в будущем называть состояние внутри App как drodownHidden или наподобии
-
-// НЕ НАДО выносить компоненты в константы. Или хотя бы делать это только внутри функции render!
-// НЕ НАДО вызывать setState у детей, это их внутренняя функция, она меняет внутренний state!
-// и instance тоже не надо трогать, он архитектурно обрабатывается только виртуальным DOM-ом!
-
-// ещё комментарии есть в Dropdown компоненте
-
-interface AppState {
-    title: string,
-    count: number,
-    hidden: boolean
-}
-
-export class App extends Component<never, AppState> {
-
-    state = {
-        title: 'Welcome to the App',
-        count: 0,
-        hidden: true
-    }
-
-    changeHidden() {
-        this.setState((state) => {
-            state = { ...this.state };
-            state.hidden = !this.state.hidden;
-
-            return state;
-        });
-    }
-
-    // state = { ...initAppState };
-
-    // функция для демонстрации работы setState
-    // incCount() {
-    //     this.setState((state) => {
-    //         // к сожалению здесь придётся делать подобные проверки
-    //         if (!state) {
-    //             state = { ...initAppState };
-    //         }
-    //         state.count = this.state.count + 1;
-
-    //         return state;
-    //     });
-    // }
-
-    // связка стора и компонента
-    public componentDidMount() {
-        // CounterStore.addStoreUpdater(() => { this.applyComponentChanges(); });
-    }
+export class App extends Component<never, never> {
 
     render() {
+
+        login();
+
         return createElement(
             'div',
             { id: 'root' },
-            /*createComponent(
-                Button,
-                {
-                    variant: 'neutral',
-                    text: 'Показать списочек',
-                    onclick: () => { this.changeHidden() },
-                },
-            ),
             createComponent(
-                Dropdown,
-                {
-                    search: false,
-                    hidden: this.state.hidden
-                },
+                Router,
+                { },
                 createComponent(
-                    Button,
-                    {
-                        text: 'first',
-                    },
+                    Route,
+                    { path: new RegExp('^/$') },
+                    createElement(
+                        'div', { }
+                    )
                 ),
                 createComponent(
-                    Button,
-                    {
-                        text: 'second',
-                    },
+                    Route,
+                    { path: new RegExp('^/signin$') },
+                    createComponent(
+                        Signin, { }
+                    )
                 ),
                 createComponent(
-                    Button,
-                    {
-                        text: 'third',
-                    },
-                ),
-            ),*/
-            createComponent(
-                Card, 
-                {
-                    id: 1,
-                    variant: 'favourite',
-                    price: 1000,
-                    title: 'Cat',
-                    delivery: true,
-                    safe_deal: true,
-                    city: 'Moscow',
-                    is_active: true
-                }
+                    Route,
+                    { path: new RegExp('^/signup$') },
+                    createComponent(
+                        Signup, { }
+                    )
+                )
             )
-        );
-    }
-}
+        )
+    };
+};

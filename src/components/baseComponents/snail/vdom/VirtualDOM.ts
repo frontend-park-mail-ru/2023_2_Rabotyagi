@@ -98,6 +98,16 @@ export const renderVDomNode = (rootNode: VDomNode): HTMLElement | Text => {
                             element.classList.add(elementClass);
                         }
                     });
+                } else if (rootNode.props[prop] instanceof Function) {
+                    let eventName: any = '';
+                    let eventFunc: any = () => {};
+                    try {
+                        eventName = prop as unknown as EventListenerOrEventListenerObject;
+                        eventFunc = rootNode.props[prop];
+                    } catch {
+                        throw new Error(prop + ' is not an event name');
+                    }
+                    element.addEventListener(eventName, eventFunc);
                 } else {
                     (element as any)[prop] = rootNode.props[prop];
                 }

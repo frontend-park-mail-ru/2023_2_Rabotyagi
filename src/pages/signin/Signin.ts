@@ -20,8 +20,6 @@ import free from "../../assets/icons/sigin/free.svg";
 import safe from "../../assets/icons/sigin/safe.svg";
 import logo from "../../assets/icons/logo.svg";
 
-const TEXT_STYLE: string = 'color: var(--text-secondary);';
-
 export interface SigninState {
     error: string,
     email: string,
@@ -150,6 +148,7 @@ export class Signin extends Component<{}, SigninState> {
                             variant: 'neutral',
                             subvariant: 'primary',
                             style: 'width: 100%;',
+                            onclick: () => { Navigate.navigateTo('signup') }
                         }
                     )
                 ),

@@ -7,6 +7,7 @@ export interface SvgProps {
     content: string,
     width?: number,
     height?: number,
+    class?: string,
 }
 
 export class Svg extends Component<SvgProps, never> {
@@ -22,6 +23,12 @@ export class Svg extends Component<SvgProps, never> {
         svgElement.setAttribute('width', (this.props.width || 60).toString() + 'px');
         if (this.props.id) {
             svgElement.setAttribute('id', this.props.id);
+        }
+        // это необходимо исключительно для loader
+        if (this.props.class) {
+            this.props.class.split(' ').forEach((oneClass) => {
+                svgElement.classList.toggle(oneClass);
+            });
         }
 
         return createElement(

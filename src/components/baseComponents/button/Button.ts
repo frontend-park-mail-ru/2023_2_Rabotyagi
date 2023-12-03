@@ -26,7 +26,10 @@ export interface ButtonProps {
     style?: string,
     name?: string,
     type?: string,
-    onclick?: Function
+    onclick?: (e?: any) => void,
+    mousedown?: (e?: any) => any,
+    mouseup?: (e?: any) => any,
+    mouseout?: (e?: any) => any
 }
 
 export class Button extends Component<ButtonProps, {}> {
