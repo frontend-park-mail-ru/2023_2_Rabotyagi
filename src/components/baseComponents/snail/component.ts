@@ -18,12 +18,21 @@ export abstract class Component<PropsType, StateType> {
         applyChanges(this.domElement, this.getComponentDifference());
     }
 
-    public setState(updater: (state: StateType | undefined) => StateType) {
+    // public setState(updater: (state: StateType | undefined) => StateType) {
+    //     if (!this.domElement) {
+    //         throw new Error('domelement is undefined');
+    //     }
+
+    //     this.state = updater(this.state);
+    //     this.applyComponentChanges();
+    // }
+
+    public setState(state: StateType): void {
         if (!this.domElement) {
             throw new Error('domelement is undefined');
         }
 
-        this.state = updater(this.state);
+        this.state = {...this.state, ...state};
         this.applyComponentChanges();
     }
 

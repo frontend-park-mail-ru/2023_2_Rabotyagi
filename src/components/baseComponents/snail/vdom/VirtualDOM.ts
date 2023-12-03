@@ -125,7 +125,7 @@ export const renderVDomNode = (rootNode: VDomNode): HTMLElement | Text => {
         const element = renderVDomNode(rootNode.instance.render());
         rootNode.instance.notifyMounted(element as HTMLElement);
 
-return element;
+        return element;
     }
 
     rootNode.instance = new rootNode.component();
@@ -133,7 +133,7 @@ return element;
     const element = renderVDomNode(rootNode.instance.initProps(rootNode.props));
     rootNode.instance.notifyMounted(element as HTMLElement);
 
-return element;
+    return element;
 };
 
 export const renderToElementDyId = (elementId: string, node: VDomNode): HTMLElement => {

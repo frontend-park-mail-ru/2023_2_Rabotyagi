@@ -25,11 +25,7 @@ export abstract class Store<StateType> {
 
         this.addActions();
         Dispatcher.register((action: ActionInterface) => {
-            this.actions.forEach((innerAction) => {
-                if (innerAction.name == action.name) {
-                    innerAction.operation(action.payload);
-                }
-            });
+            this.actions.find((innerAction) => innerAction.name == action.name)?.operation(action.payload);
             this.emitChange();
         });
     }

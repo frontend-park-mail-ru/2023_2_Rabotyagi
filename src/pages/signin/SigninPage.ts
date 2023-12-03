@@ -8,7 +8,6 @@ import { Caption } from '../../components/caption/Caption';
 import { Text, Button, TextInput, Password, ErrorMessageBox } from '../../components/baseComponents/index';
 
 // import { login } from '../../shared/store/commonActions/auth';
-// import UserStore from '../../shared/store/user';
 // import Dispatcher from '../../shared/services/store/Dispatcher';
 
 import Navigate from '../../shared/services/router/Navigate';
@@ -19,6 +18,9 @@ import message from '../../assets/icons/sigin/message.svg';
 import free from '../../assets/icons/sigin/free.svg';
 import safe from '../../assets/icons/sigin/safe.svg';
 import logo from '../../assets/icons/logo.svg';
+import { Auth } from '../../shared/api/auth';
+import { ResponseMessage, ResponseStatusChecker } from '../../shared/constants/response';
+import { login } from '../../shared/store/commonActions/auth';
 
 export interface SigninPageState {
     error: string,
@@ -27,6 +29,8 @@ export interface SigninPageState {
 }
 
 export class SigninPage extends Component<{}, SigninPageState> {
+    routeToMain = (): void => Navigate.navigateTo('/');
+    routeToSignup = (): void => Navigate.navigateTo('signup');
 
     state = {
         error: '',
@@ -34,13 +38,13 @@ export class SigninPage extends Component<{}, SigninPageState> {
         password: '',
     };
 
-    check(email: string, password: string): string | null {
-        const errorEmail = Validate.email(email);
+    check(): string | null {
+        const errorEmail = Validate.email(this.state.email);
         if (errorEmail) {
             return errorEmail;
         }
 
-        const errorPassword = Validate.password(password);
+        const errorPassword = Validate.password(this.state.password);
         if (errorPassword) {
             return errorPassword;
         }
@@ -48,15 +52,55 @@ export class SigninPage extends Component<{}, SigninPageState> {
         return null;
     }
 
-    signinEvent = () => console.log('click');
+    signinEvent = async() => {
+        const error = this.check();
+
+        if (error){
+            this.setError(error);
+
+            return;
+        }
+        let resp;
+        try {
+            resp = await Auth.signin(this.state.email, this.state.password);
+        } catch (err) {
+            console.error(err);
+            // errorBox.innerHTML = '';
+            // errorBox.appendChild(ErrorMessageBox(err));
+
+            // return false;
+        }
+
+            // const body = resp.body;
+
+        if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {
+            if (ResponseStatusChecker.IsBadFormatRequest(resp)) {
+                throw ResponseMessage.USER_MESSAGE;
+            }
+            else if (ResponseStatusChecker.IsInternalServerError(resp)) {
+                throw ResponseMessage.SERVER_MESSAGE;
+            }
+            else if (ResponseStatusChecker.IsUserError(resp)) {
+                // throw resp.body.error;
+            }
+        }
+
+        await login();
+
+        Navigate.navigateTo('/');
+            // return true;
+    };
 
     setError(error: string) {
-        this.setState((state) => {
-            state = { ...this.state };
-            state.error = error;
+        // this.setState((state) => {
+        //     state = { ...this.state };
+        //     state.error = error;
 
-            return state;
-        });
+        //     return state;
+        // });
+        this.setState({
+            error: error,
+        } as SigninPageState);
     }
 
     render() {
@@ -64,7 +108,7 @@ export class SigninPage extends Component<{}, SigninPageState> {
             'div',
             {
                 class: 'signin-page',
-                keydown: () => { this.signinEvent(); },
+                // keydown: () => { this.signinEvent(); },
             },
             createElement(
                 'div',
@@ -99,7 +143,7 @@ export class SigninPage extends Component<{}, SigninPageState> {
                             variant: 'neutral',
                             subvariant: 'outlined',
                             style: 'height: auto; padding: 0',
-                            onclick: (e) => { Navigate.navigateTo('/'); },
+                            onclick: this.routeToMain,
                         },
                     ),
                     createComponent(
@@ -114,7 +158,10 @@ export class SigninPage extends Component<{}, SigninPageState> {
                             style: 'width: 100%;',
                             required: true,
                             autocomplete: 'email',
-                            value: this.state.email,
+                            onchange: (e: Event) => {
+                                const elem = e.target as HTMLInputElement;
+                                this.state.email = elem.value;
+                            },
                         },
                     ),
                     createComponent(
@@ -125,6 +172,10 @@ export class SigninPage extends Component<{}, SigninPageState> {
                             style: 'width: 100%;',
                             required: true,
                             autocomplete: 'current-password',
+                            onchange: (e: Event) => {
+                                const elem = e.target as HTMLInputElement;
+                                this.state.password = elem.value;
+                            },
                         },
                     ),
                     (this.state.error !== '') ?
@@ -138,7 +189,7 @@ export class SigninPage extends Component<{}, SigninPageState> {
                             text: 'Продолжить',
                             variant: 'primary',
                             style: 'width: 100%;',
-                            onclick: () => { this.signinEvent(); },
+                            onclick: this.signinEvent,
                         },
                     ),
                     createComponent(
@@ -148,7 +199,7 @@ export class SigninPage extends Component<{}, SigninPageState> {
                             variant: 'neutral',
                             subvariant: 'primary',
                             style: 'width: 100%;',
-                            onclick: () => { Navigate.navigateTo('signup'); },
+                            onclick: this.routeToSignup,
                         },
                     ),
                 ),

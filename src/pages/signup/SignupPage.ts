@@ -27,12 +27,9 @@ export class SignupPage extends Component<never, SignupPageState> {
     };
 
     setError(error: string) {
-        this.setState((state) => {
-            state = { ...this.state };
-            state.error = error;
-
-            return state;
-        });
+        this.setState({
+            error: error
+        } as SignupPageState);
     }
 
     render() {
