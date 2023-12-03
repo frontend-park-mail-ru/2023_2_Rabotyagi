@@ -10,8 +10,7 @@ import UserStore from '../../shared/store/user';
 export class Header extends Component<never, never>{
     routeToSignin = () => Navigate.navigateTo('/signin');
     routeToSignup = () => Navigate.navigateTo('/signup');
-    // routeToMain = () => Navigate.navigateTo('/');
-    routeToMain = (): void => console.log('click');
+    routeToMain = () => Navigate.navigateTo('/');
 
     render() {
         let tail;
@@ -81,16 +80,3 @@ export class Header extends Component<never, never>{
         );
     }
 }
-
-// <div class="wrapper">
-//     <nav class="header-nav">
-//         <div id="header-logo-button"></div>
-//         <form class='header-search-box'>
-//             <input name="search" class='header-search-input text-regular header-search-field' placeholder='Поиск' autocomplete="off"/>
-//         </form>
-//         <div id="header-product-create"></div>
-//         <div id="header-cart-button"></div>
-//         <div id="header-profile-button"></div>
-//         <div id="header-auth-box"></div>
-//     </nav>
-// </div>
