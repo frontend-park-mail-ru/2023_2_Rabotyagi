@@ -61,8 +61,12 @@ export class Header extends Component<HeaderProps, HeaderState>{
             createComponent(
                 Button,
                 {
+                    text: 'Goods Galaxy',
+                    textvariant: 'subheader',
                     leftIcon: {
                         content: logo,
+                        height: 40,
+                        width: 40,
                     },
                 },
             ),
