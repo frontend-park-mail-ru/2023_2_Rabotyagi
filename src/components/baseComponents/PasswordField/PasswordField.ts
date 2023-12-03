@@ -3,7 +3,7 @@ import './PasswordField.scss';
 import { Component } from '../snail/component';
 import { createComponent, createElement } from '../snail/vdom/VirtualDOM';
 
-import { Button } from '../button/Button';
+import { Button } from '../Button/Button';
 import { Password, TextInput, PasswordInputProps } from '../Input/Input';
 
 type FieldType = 'password' | 'text';

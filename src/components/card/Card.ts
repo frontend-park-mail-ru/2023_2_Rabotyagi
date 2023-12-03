@@ -3,7 +3,7 @@ import './cardStyles/card.scss';
 import { Component } from '../baseComponents/snail/component';
 import { VDomNode, createComponent, createElement, createText } from '../baseComponents/snail/vdom/VirtualDOM';
 
-import { Badge } from './badge/Badge';
+import { Badge } from './Badge/Badge';
 import { Text, Button } from '../baseComponents/index';
 
 import Navigate from '../../shared/services/router/Navigate';

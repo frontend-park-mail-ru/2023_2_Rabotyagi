@@ -3,7 +3,7 @@ import './Signin.scss';
 import { Component } from '../../components/baseComponents/snail/component';
 import { createComponent, createElement, createText } from '../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Cell } from './cell/Cell';
+import { Cell } from './Cell/Cell';
 import { Caption } from '../../components/Caption/Caption';
 import { Text, Button, TextInput, Password, ErrorMessageBox } from '../../components/baseComponents/index';
 
