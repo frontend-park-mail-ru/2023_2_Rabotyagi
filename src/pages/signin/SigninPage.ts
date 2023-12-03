@@ -114,6 +114,7 @@ export class SigninPage extends Component<{}, SigninPageState> {
                             style: 'width: 100%;',
                             required: true,
                             autocomplete: 'email',
+                            value: this.state.email,
                         },
                     ),
                     createComponent(

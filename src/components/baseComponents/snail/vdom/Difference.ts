@@ -100,6 +100,7 @@ export const getDifference = (
     node: VDomNode,
     newNode: VDomNode,
 ): VDomNodeUpdater => {
+
     if (
         node.kind == 'text'
         && newNode.kind == 'text'
@@ -292,7 +293,12 @@ export const applyChildrenChanges = (element: HTMLElement, functions: Array<Chil
             if (element.childNodes[index + childIndex - 1]) {
                 element.childNodes[index + childIndex - 1].after(renderVDomNode(func.node));
             } else {
-                element.appendChild(renderVDomNode(func.node));
+                if (index + childIndex - 1 < 0) {
+                    const firstChild = element.firstChild;
+                    element.insertBefore(renderVDomNode(func.node), firstChild);
+                } else {
+                    element.appendChild(renderVDomNode(func.node));
+                }
             }
 
             return;
