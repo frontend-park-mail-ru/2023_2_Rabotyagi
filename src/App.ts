@@ -3,9 +3,9 @@ import { createComponent, createElement } from './components/baseComponents/snai
 
 import { Router, Route } from './shared/services/router/Routing';
 
-import { SigninPage } from './pages/Signin/Signin';
-import { SignupPage } from './pages/Signup/Signup';
-import { MainPage } from './pages/Main/Main';
+import { SigninPage } from './pages/signin/SigninPage';
+import { SignupPage } from './pages/signup/SignupPage';
+import { MainPage } from './pages/main/Main';
 
 import { login } from './shared/store/commonActions/auth';
 

@@ -3,7 +3,7 @@ import './ErrorMessageBox.scss';
 import { Component } from '../snail/component';
 import { createComponent, createElement } from '../snail/vdom/VirtualDOM';
 
-import { Text } from '../Text/Text';
+import { Text } from '../text/Text';
 
 export interface ErrorMessageBoxProps {
     id?: string,

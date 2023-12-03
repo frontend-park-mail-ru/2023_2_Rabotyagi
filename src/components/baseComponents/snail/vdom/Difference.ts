@@ -230,6 +230,7 @@ export const getChildrenDifference = (children: Array<VDomNode>, newChildren: Ar
 };
 
 export const applyChanges = (element: HTMLElement | Text, difference: VDomNodeUpdater): HTMLElement | Text => {
+
     if (difference.kind == 'pass') {
         return element;
     }
@@ -257,6 +258,16 @@ export const applyChanges = (element: HTMLElement | Text, difference: VDomNodeUp
                         element.classList.add(className);
                     });
                 }
+            } else if (difference.props.set[prop] instanceof Function && !prop.startsWith('on')) {
+                let eventName: any = '';
+                let eventFunc: any = () => {};
+                try {
+                    eventName = prop as unknown as EventListenerOrEventListenerObject;
+                    eventFunc = difference.props.set[prop];
+                } catch {
+                    throw new Error(prop + ' is not an event name');
+                }
+                element.addEventListener(eventName, eventFunc);
             } else {
                 (element as any)[prop] = difference.props.set[prop];
             }

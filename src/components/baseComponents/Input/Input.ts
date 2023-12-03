@@ -3,7 +3,7 @@ import './Input.scss';
 import { Component } from '../snail/component';
 import { createElement } from '../snail/vdom/VirtualDOM';
 
-import { TextTypes, getTextClass } from '../Text/Text';
+import { TextTypes, getTextClass } from '../text/Text';
 
 // здесь прописаны все необходимые типы инпутов для проекта
 
@@ -46,6 +46,23 @@ export type FileInputProps = BaseInputProps & {
 };
 
 const errorInputMessage: string = 'Input settings are undefined';
+
+export class BaseInput extends Component<BaseInputProps, never> {
+
+    render() {
+        if (!this.props) { throw new Error(errorInputMessage); }
+
+        const { textType, ...otherProps } = this.props;
+
+        return createElement(
+            'input',
+            {
+                class: getTextClass(textType) + (this.props.class ? ' ' + this.props.class : ''),
+                ...otherProps,
+            },
+        );
+    }
+}
 
 export class TextInput extends Component<TextInputProps, never> {
 

@@ -98,7 +98,7 @@ export const renderVDomNode = (rootNode: VDomNode): HTMLElement | Text => {
                             element.classList.add(elementClass);
                         }
                     });
-                } else if (rootNode.props[prop] instanceof Function) {
+                } else if (rootNode.props[prop] instanceof Function && !prop.startsWith('on')) {
                     let eventName: any = '';
                     let eventFunc: any = () => {};
                     try {
