@@ -8,11 +8,6 @@ import { TextInput } from '../input/Input';
 
 import searchIcon from '../../../assets/icons/search.svg';
 
-// примечания к решению:
-// прдеполагается, что dropdown всегда будет привязан к компоненту выше
-// то есть всегда есть кнопка или строка ввода, которая влияет на состояние компонента dropdown извне
-// внешнее воздействие на компонент осуществляется через его пропсы
-
 interface DropdownProps {
     search?: boolean,
     // setHidden: (flag: boolean) => void,
@@ -34,33 +29,60 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
     }
 
     public render(): VDomNode {
-        if (!this.props) {
-            throw new Error('Dropdown props are undefined');
+        if (!this.props || !this.children) {
+            throw new Error('Dropdown settings are undefined');
+        }
+
+        if (this.children.length < 1) {
+            throw new Error('Dropdown must have at least 1 child');
+        }
+
+        if (this.children[0].kind == 'text') {
+            throw new Error('Control component must be element or component');
+        }
+
+        if (this.children[0].kind == 'element') {
+            if (!this.children[0].props) {
+                this.children[0].props = {};
+            }
+            this.children[0].props['onclick'] = () => { this.switchHidden(); }; 
+        }
+
+        if (this.children[0].kind == 'component') {
+            this.children[0].props = {
+                ...this.children[0].props,
+                'onclick': () => { this.switchHidden(); },
+            }
         }
 
         return createElement(
             'div',
-            {
-                class: 'dropdown-container',
-                hidden: this.state.hidden,
-            },
-            (this.props.search) ?
+            { },
+            this.children[0],
             createElement(
                 'div',
-                { class: 'dropdown-search' },
-                createComponent(
-                    Svg, { content: searchIcon },
-                ),
-                createComponent(
-                    TextInput, {},
-                ),
-            ) : createText(''),
-            (!this.state.hidden) ?
-            createElement(
-                'div',
-                { class: 'dropdown-content' },
-                ...this.children,
-            ) : createText(''),
+                {
+                    class: 'dropdown-container',
+                    hidden: this.state.hidden,
+                },
+                (this.props.search) ?
+                createElement(
+                    'div',
+                    { class: 'dropdown-search' },
+                    createComponent(
+                        Svg, { content: searchIcon },
+                    ),
+                    createComponent(
+                        TextInput, {},
+                    ),
+                ) : createText(''),
+                (!this.state.hidden) ?
+                createElement(
+                    'div',
+                    { class: 'dropdown-content' },
+                    ...this.children.slice(1),
+                ) : createText(''),
+            ),
         );
     }
 }
