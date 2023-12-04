@@ -49,7 +49,11 @@ export class Header extends Component<never, never>{
         else {
             const dropdown = createComponent(
                 Dropdown,
-                {},
+                { },
+                createComponent(
+                    Button,
+                    { text: 'DROPDOWN', variant: 'primary' },
+                ),
                 createComponent(
                     Button,
                     {
@@ -78,7 +82,6 @@ export class Header extends Component<never, never>{
                     subvariant: 'primary',
                     height: 36,
                     width: 36,
-                    // leftIcon: undefined,
                     onclick: () => {
                         (dropdown.instance as Dropdown).switchHidden();
                     },
