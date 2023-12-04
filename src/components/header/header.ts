@@ -13,10 +13,14 @@ export class Header extends Component<never, never>{
     routeToSignin = () => Navigate.navigateTo('/signin');
     routeToSignup = () => Navigate.navigateTo('/signup');
     routeToMain = () => Navigate.navigateTo('/');
-
-    public componentDidMount(): void {
-
-    }
+    routeToProductNew = () => {
+        if (UserStore.isAuth()){
+            Navigate.navigateTo('/product/new');
+        }
+        else {
+            Navigate.navigateTo('/signin');
+        }
+    };
 
     render() {
         let tail;
@@ -50,10 +54,6 @@ export class Header extends Component<never, never>{
             const dropdown = createComponent(
                 Dropdown,
                 { },
-                createComponent(
-                    Button,
-                    { text: 'DROPDOWN', variant: 'primary' },
-                ),
                 createComponent(
                     Button,
                     {
@@ -121,6 +121,7 @@ export class Header extends Component<never, never>{
                     text: 'Разместить объявление',
                     variant: 'neutral',
                     subvariant: 'primary',
+                    onclick: this.routeToProductNew,
                 },
             ),
             tail,

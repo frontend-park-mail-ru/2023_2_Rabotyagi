@@ -1,0 +1,22 @@
+.content-add {
+    // display: flex;
+    // flex-direction: column;
+    // gap: 24px;
+    // width: 100%;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    grid-row-gap: 24px;
+    padding: 32px;
+    width: 100%;
+
+    &-body {
+    }
+
+    &-btn-group {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-row-gap: 24px;
+        padding: 32px;
+        width: 50%;
+    }
+}

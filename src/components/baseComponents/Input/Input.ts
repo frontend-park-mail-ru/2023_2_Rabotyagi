@@ -35,7 +35,7 @@ export type NumberInputProps = BaseInputProps & {
 };
 
 export type CheckboxInputProps = Omit<BaseInputProps, 'textType'> & {
-    checked: boolean,
+    checked?: boolean,
 };
 
 export type PasswordInputProps = BaseInputProps & {
@@ -103,7 +103,7 @@ export class NumberInput extends Component<NumberInputProps, never> {
     }
 }
 
-export class Checkbox extends Component<CheckboxInputProps, never> {
+export class BooleanInput extends Component<CheckboxInputProps, never> {
 
     render() {
         if (!this.props) { throw new Error(errorInputMessage); }

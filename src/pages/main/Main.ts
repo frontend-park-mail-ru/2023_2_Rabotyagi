@@ -12,7 +12,7 @@ export class MainPage extends Component<never, never> {
 
     public render(): VDomNode {
         return createElement(
-            'div',
+            'mainpage',
             {},
             createComponent(
                 Header,

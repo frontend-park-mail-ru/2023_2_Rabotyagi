@@ -9,6 +9,7 @@ import { MainPage } from './pages/main/Main';
 
 import { login } from './shared/store/commonActions/auth';
 import { Loader } from './components/loader/Loader';
+import { Product } from './pages/product/product';
 
 interface AppState {
     loading: boolean
@@ -64,6 +65,13 @@ export class App extends Component<never, AppState> {
                     { path: new RegExp('^/signup$') },
                     createComponent(
                         SignupPage, { },
+                    ),
+                ),
+                createComponent(
+                    Route,
+                    { path: new RegExp('^/product.+') },
+                    createComponent(
+                        Product, { },
                     ),
                 ),
             ),
