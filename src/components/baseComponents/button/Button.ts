@@ -51,7 +51,7 @@ export interface ButtonImageProps extends ButtonEvents {
     type?: string,
 }
 
-export class Button extends Component<ButtonProps, {}> {
+export class Button extends Component<ButtonProps, never> {
 
     render() {
         if (!this.props || !this.children) {

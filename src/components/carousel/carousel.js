@@ -13,7 +13,7 @@ export class Carousel {
             value.id = index;
             index++;
 
-return value;
+            return value;
         });
         this.images = images;
         this.currentImageIndex = 0;
