@@ -10,6 +10,7 @@ import { MainPage } from './pages/main/Main';
 import { login } from './shared/store/commonActions/auth';
 import { Loader } from './components/loader/Loader';
 import { Product } from './pages/product/product';
+import { Profile } from './pages/profile/profile';
 
 interface AppState {
     loading: boolean
@@ -72,6 +73,13 @@ export class App extends Component<never, AppState> {
                     { path: new RegExp('^/product.+') },
                     createComponent(
                         Product, { },
+                    ),
+                ),
+                createComponent(
+                    Route,
+                    { path: new RegExp('^/profile.*') },
+                    createComponent(
+                        Profile, { },
                     ),
                 ),
             ),

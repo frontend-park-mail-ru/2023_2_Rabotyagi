@@ -60,6 +60,7 @@ export class Header extends Component<never, never>{
                         text: 'Профиль',
                         variant: 'neutral',
                         subvariant: 'tertiary',
+                        onclick: () => Navigate.navigateTo('/profile'),
                     },
                 ),
                 createComponent(

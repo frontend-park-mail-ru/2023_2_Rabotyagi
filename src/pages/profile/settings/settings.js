@@ -1,18 +1,18 @@
 import template from './templates/settings.hbs';
 import './styles/settings.scss';
 
-import { store } from '../../shared/store/store';
+import { store } from '../../../shared/store/store';
 
 import { ErrorMessageBox } from '../../components/error/errorMessageBox';
 import button from '../../components/button/button';
 
-import { User } from '../../shared/api/user';
-import { Files } from '../../shared/api/file';
+import { User } from '../../../shared/api/user';
+import { Files } from '../../../shared/api/file';
 import statuses from '../../shared/statuses/statuses';
 
-import { stringToElement } from '../../shared/utils/parsing';
-import { cookieParser } from '../../shared/utils/cookie';
-import { extname } from '../../shared/utils/extname';
+import { stringToElement } from '../../../shared/utils/parsing';
+import { cookieParser } from '../../../shared/utils/cookie';
+import { extname } from '../../../shared/utils/extname';
 
 class Settings {
     async patchProfile(data, errorBox) {

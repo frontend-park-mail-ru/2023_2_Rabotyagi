@@ -1,4 +1,4 @@
-import { stringToElement } from '../../shared/utils/parsing';
+import { stringToElement } from '../../../shared/utils/parsing';
 import template from './templates/orders.hbs';
 
 class Orders {

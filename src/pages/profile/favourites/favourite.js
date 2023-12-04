@@ -1,10 +1,10 @@
-import { stringToElement } from '../../shared/utils/parsing';
+import { stringToElement } from '../../../shared/utils/parsing';
 import template from './templates/favourite.hbs';
 import placeholder from './templates/placeholder.hbs';
-import { User } from '../../shared/api/user';
-import { loaderRegular } from '../../components/loader/loader';
+import { User } from '../../../shared/api/user';
+import { loaderRegular } from '../../../components/loader/loader';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox';
-import { Card } from '../../components/card/card';
+import { Card } from '../../../components/card/card';
 import './styles/favourite.scss';
 
 class Favourite {

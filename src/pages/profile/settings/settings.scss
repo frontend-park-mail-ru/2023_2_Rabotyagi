@@ -1,4 +1,4 @@
-.settings-container {
+.settings {
     display: flex;
     padding-top: 30px;
     flex-direction: column;
@@ -7,7 +7,7 @@
     flex: 1 0 0;
     align-self: stretch;
 
-    >.content {
+    &-content {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-column-gap: 32px;

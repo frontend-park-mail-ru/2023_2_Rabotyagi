@@ -3,10 +3,15 @@ import { Component } from '../snail/component';
 import { createComponent, createElement } from '../snail/vdom/VirtualDOM';
 import './select.scss';
 
+interface SelectEvents {
+    onchange?: (e: Event) => void,
+}
+
 interface SelectProps {
     items: Array<object>,
     key: string,
-    value: string
+    value: string,
+    events?: SelectEvents,
 }
 
 export class Select extends Component<SelectProps, never> {
@@ -29,9 +34,20 @@ export class Select extends Component<SelectProps, never> {
     };
 
     public render() {
+        if (!this.props) {
+            throw new Error('Select props must be set');
+        }
+
+        let props = {};
+        if (this.props.events){
+            props = {
+                ...this.props.events,
+            };
+        }
+
         return createElement(
             'select',
-            {},
+            props,
             ...this.createOptions(),
         );
     }

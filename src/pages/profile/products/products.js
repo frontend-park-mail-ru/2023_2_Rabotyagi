@@ -2,14 +2,14 @@ import template from './templates/products.hbs';
 import placeholder from './templates/placeholder.hbs';
 import './styles/products.scss';
 
-import { User } from '../../shared/api/user.js';
+import { User } from '../../../shared/api/user.js';
 import statuses from '../../shared/statuses/statuses.js';
 
-import { loaderRegular } from '../../components/loader/loader.js';
+import { loaderRegular } from '../../../components/loader/loader.js';
 import { ErrorMessageBox } from '../../components/error/errorMessageBox.js';
-import { Card } from '../../components/card/card.js';
+import { Card } from '../../../components/card/card.js';
 
-import { stringToElement } from '../../shared/utils/parsing.js';
+import { stringToElement } from '../../../shared/utils/parsing.js';
 
 class Products {
 

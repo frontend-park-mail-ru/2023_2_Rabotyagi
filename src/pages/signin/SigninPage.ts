@@ -111,7 +111,6 @@ export class SigninPage extends Component<{}, SigninPageState> {
             'div',
             {
                 class: 'signin-page',
-                // keydown: () => { this.signinEvent(); },
             },
             createElement(
                 'div',
