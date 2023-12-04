@@ -32,7 +32,7 @@ services:
         depends_on:
             - postgres
         volumes:
-            - imgs:/var/file_service/static/img
+            - ./static/imgs:/var/file_service/static/img
             - log-fs:/var/log/backend
 
     backend-auth:

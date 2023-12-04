@@ -7,6 +7,7 @@ import logo from '../../assets/icons/logo.svg';
 import Navigate from '../../shared/services/router/Navigate';
 import UserStore from '../../shared/store/UserStore';
 import { logout } from '../../shared/store/commonActions/auth';
+import { ButtonImage } from '../baseComponents/button/Button';
 
 export class Header extends Component<never, never>{
     routeToSignin = () => Navigate.navigateTo('/signin');
@@ -21,7 +22,11 @@ export class Header extends Component<never, never>{
         let tail;
 
         if (!UserStore.isAuth()){
-            tail = [
+            tail = createElement(
+                'div',
+                {
+                    class: 'header-auth-box',
+                },
                 createComponent(
                     Button,
                     {
@@ -39,7 +44,7 @@ export class Header extends Component<never, never>{
                         onclick: this.routeToSignup,
                     },
                 ),
-            ];
+            );
         }
         else {
             const dropdown = createComponent(
@@ -61,26 +66,25 @@ export class Header extends Component<never, never>{
                         subvariant: 'tertiary',
                         onclick: async() => {
                             await logout();
-                            this.applyComponentChanges();
+                            Navigate.navigateTo('/signin');
                         },
                     },
                 ),
             );
-            tail = [
-                createComponent(
-                    Button,
-                    {
-                        text: 'Профиль',
-                        variant: 'neutral',
-                        subvariant: 'primary',
-                        leftIcon: undefined,
-                        onclick: () => {
-                            (dropdown.instance as Dropdown).switchHidden();
-                        },
+            tail = createComponent(
+                ButtonImage,
+                {
+                    variant: 'neutral',
+                    subvariant: 'primary',
+                    height: 36,
+                    width: 36,
+                    // leftIcon: undefined,
+                    onclick: () => {
+                        (dropdown.instance as Dropdown).switchHidden();
                     },
-                    dropdown,
-                ),
-            ];
+                },
+                dropdown,
+            );
         }
 
         return createElement(
@@ -116,8 +120,7 @@ export class Header extends Component<never, never>{
                     subvariant: 'primary',
                 },
             ),
-
-            ...tail,
+            tail,
         );
     }
 }

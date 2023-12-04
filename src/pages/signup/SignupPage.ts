@@ -30,6 +30,12 @@ export class SignupPage extends Component<never, SignupPageState> {
         repeatPassword: '',
     };
 
+    constructor(){
+        super();
+
+        document.title = 'GoodsGalaxy | Регистрация';
+    }
+
     setError(error: string) {
         this.setState({
             error: error,
@@ -134,21 +140,21 @@ export class SignupPage extends Component<never, SignupPageState> {
                         autocomplete: 'email',
                         required: true,
                         class: 'input-field',
-                        onchange: (e: Event) => {
+                        oninput: (e: Event) => {
                             this.state.email = (e.target as HTMLInputElement).value;
                         },
                     },
                 ),
                 createComponent(
                     PasswordField, {
-                        onchange: (e: Event) => {
+                        oninput: (e: Event) => {
                             this.state.password = (e.target as HTMLInputElement).value;
                         },
                     },
                 ),
                 createComponent(
                     PasswordField, {
-                        onchange: (e: Event) => {
+                        oninput: (e: Event) => {
                             this.state.repeatPassword = (e.target as HTMLInputElement).value;
                         },
                     },

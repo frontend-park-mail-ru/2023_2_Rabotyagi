@@ -5,6 +5,9 @@
     align-items: center;
     justify-content: space-between;
     width: sizes.$base-width;
+    gap: 32px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 .header-auth-box {

@@ -38,6 +38,12 @@ export class SigninPage extends Component<{}, SigninPageState> {
         password: '',
     };
 
+    constructor(){
+        super();
+
+        document.title = 'GoodsGalaxy | Вход';
+    }
+
     check(): string | null {
         const errorEmail = Validate.email(this.state.email);
         if (errorEmail) {
@@ -73,13 +79,19 @@ export class SigninPage extends Component<{}, SigninPageState> {
 
         if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {
             if (ResponseStatusChecker.IsBadFormatRequest(resp)) {
-                throw ResponseMessage.USER_MESSAGE;
+                this.setError(ResponseMessage.USER_MESSAGE);
+
+                return;
             }
             else if (ResponseStatusChecker.IsInternalServerError(resp)) {
-                throw ResponseMessage.SERVER_MESSAGE;
+                this.setError(ResponseMessage.SERVER_MESSAGE);
+
+                return;
             }
             else if (ResponseStatusChecker.IsUserError(resp)) {
-                // throw resp.body.error;
+                this.setError(resp.body.error);
+
+                return;
             }
         }
 
@@ -149,7 +161,7 @@ export class SigninPage extends Component<{}, SigninPageState> {
                             style: 'width: 100%;',
                             required: true,
                             autocomplete: 'email',
-                            onchange: (e: Event) => {
+                            oninput: (e: Event) => {
                                 const elem = e.target as HTMLInputElement;
                                 this.state.email = elem.value;
                             },
@@ -163,7 +175,7 @@ export class SigninPage extends Component<{}, SigninPageState> {
                             style: 'width: 100%;',
                             required: true,
                             autocomplete: 'current-password',
-                            onchange: (e: Event) => {
+                            oninput: (e: Event) => {
                                 const elem = e.target as HTMLInputElement;
                                 this.state.password = elem.value;
                             },

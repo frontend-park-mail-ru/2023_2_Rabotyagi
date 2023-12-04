@@ -1,12 +1,13 @@
 import './Button.scss';
 
 import { Component } from '../snail/component';
-import { createElement, createComponent, createText } from '../snail/vdom/VirtualDOM';
+import { createElement, createComponent, createText, VDomNode } from '../snail/vdom/VirtualDOM';
 
 import { Text, TextTypes } from '../text/Text';
 import { Svg } from '../svg/Svg';
+import { Image } from '../image/image';
 
-export type ButtonTypes = 'primary' | 'neutral' | 'secondary' | 'accent' | 'outlined' | 'base';
+export type ButtonTypes = 'primary' | 'neutral' | 'secondary' | 'accent' | 'outlined' | 'base' | 'image';
 export type ButtonSubVariantTypes = 'primary' | 'tertiary' | 'outlined';
 
 export interface ButtonIconProps {
@@ -15,7 +16,17 @@ export interface ButtonIconProps {
     height?: number,
 }
 
-export interface ButtonProps {
+interface ButtonEvents {
+    onclick?: (e?: any) => void,
+    onmousedown?: (e?: any) => any,
+    onmouseup?: (e?: any) => any,
+    onmouseout?: (e?: any) => any,
+    mousedown?: (e?: any) => any,
+    mouseup?: (e?: any) => any,
+    mouseout?: (e?: any) => any
+}
+
+export interface ButtonProps extends ButtonEvents {
     id?: string,
     variant?: ButtonTypes,
     subvariant?: ButtonSubVariantTypes,
@@ -26,13 +37,18 @@ export interface ButtonProps {
     style?: string,
     name?: string,
     type?: string,
-    onclick?: (e?: any) => void,
-    onmousedown?: (e?: any) => any,
-    onmouseup?: (e?: any) => any,
-    onmouseout?: (e?: any) => any,
-    mousedown?: (e?: any) => any,
-    mouseup?: (e?: any) => any,
-    mouseout?: (e?: any) => any
+}
+
+export interface ButtonImageProps extends ButtonEvents {
+    href?: string,
+    width?: number,
+    height?: number,
+    id?: string,
+    variant?: ButtonTypes,
+    subvariant?: ButtonSubVariantTypes,
+    style?: string,
+    name?: string,
+    type?: string,
 }
 
 export class Button extends Component<ButtonProps, {}> {
@@ -81,6 +97,51 @@ export class Button extends Component<ButtonProps, {}> {
                 Svg, { ...rightIcon, id: 'right-icon' },
             )
             : createText(''),
+        );
+    }
+}
+
+export class ButtonImage extends Component<ButtonImageProps, never> {
+    public render(): VDomNode {
+        if (!this.props){
+            throw new Error('ButtonImageProps undefined');
+        }
+
+        const {
+            href,
+            variant,
+            subvariant,
+            ...buttonProps
+        } = this.props;
+
+        let {
+            width,
+            height,
+        } = this.props;
+
+        if (!width){
+            width = 60;
+        }
+
+        if (!height) {
+            height = 60;
+        }
+
+        return createElement(
+            'button',
+            {
+                ...buttonProps,
+                class: 'button-' + (variant || 'base') + ' ' + (subvariant || ''),
+            },
+            createComponent(
+                Image,
+                {
+                    href: href,
+                    width: width,
+                    height: height,
+                },
+            ),
+            ...this.children,
         );
     }
 }

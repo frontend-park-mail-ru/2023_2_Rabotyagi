@@ -5,10 +5,10 @@
 
 .dropdown-content {
     display: flex;
-    padding: 16px;
+    padding: 8px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 8px;
     border-radius: 12px;
     border: 1px solid var(--background-tertiary, rgba(41, 44, 47, 0.12));
     background: var(--background-primary, #fffaff);

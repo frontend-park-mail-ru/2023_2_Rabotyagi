@@ -15,7 +15,6 @@ import searchIcon from '../../../assets/icons/search.svg';
 
 interface DropdownProps {
     search?: boolean,
-    // setHidden: (flag: boolean) => void,
 }
 
 interface DropDownState {
@@ -27,11 +26,23 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
         hidden: true,
     };
 
+    // switchHiddenDOMEvent = (e: Event) => {
+    //     debugger;
+    //     if ((e.target as HTMLElement) != (this.domElement?.parentElement || this.domElement)){
+    //         this.switchHidden();
+    //     }
+
+    // };
+
     switchHidden() {
         this.setState({
             hidden: !this.state.hidden,
         });
     }
+
+    // public componentDidMount(): void {
+    //     document.body.addEventListener('click', this.switchHiddenDOMEvent);
+    // }
 
     public render(): VDomNode {
         if (!this.props) {
@@ -42,6 +53,7 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
             'div',
             {
                 class: 'dropdown-container',
+                style: 'top: 44px;',
                 hidden: this.state.hidden,
             },
             (this.props.search) ?
@@ -63,4 +75,8 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
             ) : createText(''),
         );
     }
+
+    // public componentWillUnmount(): void {
+    //     document.body.removeEventListener('click', this.switchHiddenDOMEvent);
+    // }
 }

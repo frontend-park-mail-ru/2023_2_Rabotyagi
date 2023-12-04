@@ -11,10 +11,10 @@ export const getTextClass = (type: TextTypes | undefined): string => {
 };
 
 export interface TextProps {
+    text: string | number | boolean,
     id?: string,
     variant?: TextTypes,
     tag?: 'div' | 'span' | 'p',
-    text: string | number | boolean,
     style?: string,
     name?: string,
     type?: string,
