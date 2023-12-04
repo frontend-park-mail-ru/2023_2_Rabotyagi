@@ -57,7 +57,7 @@ export class Router extends Component<never, never> {
                 return child.props[name as keyof typeof child.props];
             };
 
-            return access('path').exec(location.pathname);
+            return access('path').exec(location.pathname + location.search);
         });
 
         if (route) {

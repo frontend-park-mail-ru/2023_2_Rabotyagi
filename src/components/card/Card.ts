@@ -35,7 +35,7 @@ export interface CardProps {
 export class Card extends Component<CardProps, {}> {
 
     navigateToProduct(id: number) {
-        Navigate.navigateTo('/product', { productId: id });
+        Navigate.navigateTo(`/product?id=${id}`, { productId: id });
     }
 
     thisHaveBadges() {

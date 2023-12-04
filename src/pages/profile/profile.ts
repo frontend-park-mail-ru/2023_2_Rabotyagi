@@ -7,6 +7,8 @@ import { ProfileOrders } from './orders/orders';
 import { ProfileProducts } from './products/products';
 import { ProfileSettings } from './settings/settings';
 import { Sidebar } from './sidebar/sidebar';
+import { ProfileFavourites } from './favourites/favourites';
+import { ProfileSaler } from './saler/saler';
 
 export class Profile extends Component<never, never> {
 
@@ -52,6 +54,16 @@ export class Profile extends Component<never, never> {
                    createComponent(
                        Route,
                        {
+                           path: new RegExp('/profile/favourites$'),
+                       },
+                       createComponent(
+                           ProfileFavourites,
+                           {},
+                       ),
+                   ),
+                   createComponent(
+                       Route,
+                       {
                            path: new RegExp('/profile/products$'),
                        },
                        createComponent(
@@ -66,6 +78,16 @@ export class Profile extends Component<never, never> {
                        },
                        createComponent(
                            ProfileOrders,
+                           {},
+                       ),
+                   ),
+                   createComponent(
+                       Route,
+                       {
+                           path: new RegExp('/profile/saler.+'),
+                       },
+                       createComponent(
+                           ProfileSaler,
                            {},
                        ),
                    ),

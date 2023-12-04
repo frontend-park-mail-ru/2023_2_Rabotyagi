@@ -70,7 +70,7 @@ export class App extends Component<never, AppState> {
                 ),
                 createComponent(
                     Route,
-                    { path: new RegExp('^/product.+') },
+                    { path: new RegExp('^/product.*') },
                     createComponent(
                         Product, { },
                     ),

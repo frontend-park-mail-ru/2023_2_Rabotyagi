@@ -1,5 +1,6 @@
+import { Text } from '../../components/baseComponents/index';
 import { Component } from '../../components/baseComponents/snail/component';
-import { createComponent } from '../../components/baseComponents/snail/vdom/VirtualDOM';
+import { createComponent, createElement } from '../../components/baseComponents/snail/vdom/VirtualDOM';
 import { Route, Router } from '../../shared/services/router/Routing';
 import { ProductNew } from './new/productNew';
 
@@ -12,11 +13,27 @@ export class Product extends Component<never, never> {
             createComponent(
                 Route,
                 {
-                    path: new RegExp('/product/new$'),
+                    path: /\/product\/new$/,
                 },
                 createComponent(
                     ProductNew,
                     {},
+                ),
+            ),
+            createComponent(
+                Route,
+                {
+                    path: /\/product\?id=.+/,
+                },
+                createElement(
+                    'product',
+                    {},
+                    createComponent(
+                        Text,
+                        {
+                            text: 'Product',
+                        },
+                    ),
                 ),
             ),
         );
