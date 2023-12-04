@@ -1,3 +1,4 @@
+import './profile.scss';
 import { Component } from '../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../components/baseComponents/snail/vdom/VirtualDOM';
 import { Header } from '../../components/header/header';

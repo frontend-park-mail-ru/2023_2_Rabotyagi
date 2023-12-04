@@ -4,9 +4,10 @@ import jwtDecode from '../utils/jwt-decode';
 import { ResponseStatus } from '../constants/response';
 import { Store } from '../services/store/Store';
 import { UserApi } from '../api/user';
+import { UserModel } from '../models/userModel';
 
 interface StoreUserState {
-    fields: object | null,
+    fields: UserModel | null,
     accessToken: string | null,
 }
 
@@ -53,7 +54,7 @@ const initState: StoreUserState = {
 // })();
 
 class UserStore extends Store<StoreUserState> {
-    public getFields(): object | null {
+    public getFields(): UserModel | null {
         return this.state.fields;
     }
 
@@ -62,7 +63,7 @@ class UserStore extends Store<StoreUserState> {
             this.state.fields = {
                 ...this.state.fields,
                 ...data,
-            };
+            } as UserModel;
         }
     }
 
