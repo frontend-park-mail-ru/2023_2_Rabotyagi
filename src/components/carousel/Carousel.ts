@@ -72,7 +72,7 @@ export class Carousel extends Component<CarouselProps, CarouselState> {
                     Image,
                     { 
                         class: 'carousel_item',
-                        href: images[this.state.currentImageIndex].url,
+                        src: images[this.state.currentImageIndex].url,
                     }
                 ) :
                 createElement(

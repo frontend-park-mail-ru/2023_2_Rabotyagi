@@ -136,7 +136,7 @@ export class ButtonImage extends Component<ButtonImageProps, never> {
             createComponent(
                 Image,
                 {
-                    href: href,
+                    src: href,
                     width: width,
                     height: height,
                 },
