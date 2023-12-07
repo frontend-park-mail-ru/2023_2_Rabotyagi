@@ -4,3 +4,11 @@
     grid-column-gap: 32px;
     grid-row-gap: 16px;
 }
+
+.fav-container-placeholder {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    text-align: center;
+}

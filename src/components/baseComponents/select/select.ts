@@ -11,6 +11,7 @@ interface SelectProps {
     items: Array<object>,
     key: string,
     value: string,
+    select?: string,
     events?: SelectEvents,
 }
 
@@ -20,17 +21,18 @@ export class Select extends Component<SelectProps, never> {
             throw new Error('Select props must be set');
         }
 
-        const {key, value} = this.props;
+        const {key, value, select} = this.props;
 
-        return this.props.items.map((item: any) =>
-            createComponent(
+        return this.props.items.map((item: any) => {
+            return createComponent(
                 Option,
                 {
                     key: item[key],
                     value: item[value],
+                    selected: item[key] === select ? true : false,
                 },
-            ),
-        );
+            );
+        });
     };
 
     public render() {

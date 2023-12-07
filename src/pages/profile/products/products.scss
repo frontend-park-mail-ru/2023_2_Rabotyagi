@@ -22,10 +22,11 @@
         }
     }
     
-    >.products-container {
-        display: grid;
-        grid-template-columns: repeat(3,1fr);
-        grid-column-gap: 32px;
-        grid-row-gap: 16px;
-    }
+}
+
+.products-container {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-column-gap: 32px;
+    grid-row-gap: 16px;
 }

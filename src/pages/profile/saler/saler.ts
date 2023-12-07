@@ -1,5 +1,7 @@
+import { Text } from '../../../components/baseComponents/index';
 import { Component } from '../../../components/baseComponents/snail/component';
-import { createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { Route, Router } from '../../../shared/services/router/Routing';
 
 export class ProfileSaler extends Component<never, never> {
 
@@ -8,6 +10,36 @@ export class ProfileSaler extends Component<never, never> {
         return createElement(
             'saler',
             {},
+            createComponent(
+                Router,
+                {},
+                createComponent(
+                    Route,
+                    {
+                        path: /\/profile\/saler\?id=.+/,
+                    },
+                    createComponent(
+                        Text,
+                        {
+                            text: 'profile',
+                            variant: 'header',
+                        },
+                    ),
+                ),
+                createComponent(
+                    Route,
+                    {
+                        path: /\/profile\/saler\/products/,
+                    },
+                    createComponent(
+                        Text,
+                        {
+                            text: 'products',
+                            variant: 'header',
+                        },
+                    ),
+                ),
+            ),
         );
     }
 }

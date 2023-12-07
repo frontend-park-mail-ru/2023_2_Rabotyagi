@@ -4,7 +4,7 @@ import { Component } from '../snail/component';
 import { createComponent, createElement } from '../snail/vdom/VirtualDOM';
 
 import { Button } from '../button/Button';
-import { PasswordInputProps, BaseInput } from '../input/Input';
+import { PasswordInputProps, BaseInput } from '../Input/Input';
 
 type FieldType = 'password' | 'text';
 

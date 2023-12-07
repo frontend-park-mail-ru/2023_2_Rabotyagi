@@ -18,7 +18,7 @@ export interface TextProps {
     style?: string,
     name?: string,
     type?: string,
-    additionalClass?: string,
+    className?: string,
 }
 
 export class Text extends Component<TextProps, {}> {
@@ -28,13 +28,13 @@ export class Text extends Component<TextProps, {}> {
             throw new Error('Text settings are undefined');
         }
 
-        const { variant, tag, text, additionalClass, ...textProps } = this.props;
+        const { variant, tag, text, className, ...textProps } = this.props;
 
         return createElement(
             tag || 'span',
             {
                 ...textProps,
-                class: getTextClass(variant) + (additionalClass ? ' ' + additionalClass : ''),
+                class: (className ? className + ' ' : '') + getTextClass(variant),
             },
             createText(text),
         );

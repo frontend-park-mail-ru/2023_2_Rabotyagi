@@ -3,13 +3,14 @@ import './cardStyles/card.scss';
 import { Component } from '../baseComponents/snail/component';
 import { VDomNode, createComponent, createElement, createText } from '../baseComponents/snail/vdom/VirtualDOM';
 
-import { Badge } from './badge/Badge';
+import { Badge } from './Badge/Badge';
 import { Text, Button } from '../baseComponents/index';
 
 import Navigate from '../../shared/services/router/Navigate';
 
 import delivery from '../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../assets/icons/badges/safe_deal.svg';
+import { getResourceUrl } from '../../shared/utils/getResource';
 
 export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite' | 'cart';
 
@@ -34,9 +35,7 @@ export interface CardProps {
 
 export class Card extends Component<CardProps, {}> {
 
-    navigateToProduct(id: number) {
-        Navigate.navigateTo(`/product?id=${id}`, { productId: id });
-    }
+    navigateToProduct = () => Navigate.navigateTo(`/product?id=${this.props?.id}`, { productId: this.props?.id });
 
     thisHaveBadges() {
         if (!this.props) {
@@ -80,11 +79,14 @@ export class Card extends Component<CardProps, {}> {
             throw new Error('Card props are undefined');
         }
 
-        const id = this.props.id;
+        // const id = this.props.id;
 
         return createElement(
             'button',
-            { class: 'card-base', onclick: () => { this.navigateToProduct(id); } },
+            {
+                class: 'card-base',
+                onclick: this.navigateToProduct,
+            },
             createElement(
                 'div',
                 { class: 'badges-base' },
@@ -96,7 +98,7 @@ export class Card extends Component<CardProps, {}> {
                 (this.props.images) ?
                     createElement(
                         'img',
-                        { class: 'image-base', src: this.props.images[0].url },
+                        { class: 'image-base', src: getResourceUrl(this.props.images[0].url) as string },
                     ) :
                     createElement(
                         'div',
@@ -109,16 +111,16 @@ export class Card extends Component<CardProps, {}> {
                         Text, { text: this.props.price.toString() + ' ₽' },
                     ),
                     createComponent(
-                        Text, { text: this.props.title, additionalClass: 'title-base' },
+                        Text, { text: this.props.title, className: 'title-base' },
                     ),
                 ),
             ),
         );
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    changeActiveStatus(isActive: boolean) {
-
-    }
+    changeActiveStatus = (e: Event) => {
+        e.stopPropagation();
+    };
 
     renderActiveButton() {
         if (!this.props) {
@@ -133,19 +135,32 @@ export class Card extends Component<CardProps, {}> {
                 variant: 'primary',
                 text: (isActive) ? 'Деактивировать' : 'Активировать',
                 style: 'width: 100%;',
-                onclick: () => { this.changeActiveStatus(isActive); },
+                onclick: this.changeActiveStatus,
             },
         );
     }
 
-    deleteFunction(variant: CardVariants) {
-        // eslint-disable-next-line no-empty
-        if (variant == 'profile') {
-        // eslint-disable-next-line no-empty
-        } else if (variant == 'favourite') {
+    deleteProduct = async() => {};
+    deleteFavourite = async() => {};
 
+    deleteFunction = async(e: Event) => {
+        e.stopPropagation();
+
+        switch (this.props?.variant as CardVariants) {
+            case 'base':
+                break;
+
+            case 'cart':
+                break;
+
+            case 'favourite':
+                await this.deleteFavourite();
+                break;
+
+            case 'profile':
+                break;
         }
-    }
+    };
 
     renderProfile() {
         if (!this.props) {
@@ -155,8 +170,11 @@ export class Card extends Component<CardProps, {}> {
         const variant = this.props.variant || 'profile';
 
         return createElement(
-            'div',
-            { class: 'card-profile' },
+            'button',
+            {
+                class: 'card-profile',
+                onclick: this.navigateToProduct,
+            },
             (this.props.images) ?
                 createElement(
                     'img',
@@ -173,7 +191,7 @@ export class Card extends Component<CardProps, {}> {
                     Text, { text: this.props.price.toString() + ' ₽' },
                 ),
                 createComponent(
-                    Text, { text: this.props.title, additionalClass: 'title-profile' },
+                    Text, { text: this.props.title, className: 'title-profile' },
                 ),
                 createElement(
                     'div',
@@ -195,7 +213,7 @@ export class Card extends Component<CardProps, {}> {
                             variant: 'outlined',
                             text: 'Удалить',
                             style: 'width: 100%;',
-                            onclick: () => { this.deleteFunction(variant); },
+                            onclick: this.deleteFunction,
                         },
                     ) : createText(''),
             ),

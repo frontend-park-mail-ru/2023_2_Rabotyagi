@@ -1,74 +1,87 @@
-import './productNew.scss';
+import { BooleanInput, Button, FileInput, NumberInput, Select, Text, TextArea, TextInput } from '../../../../components/baseComponents/index';
+import { Component } from '../../../../components/baseComponents/snail/component';
+import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { Carousel } from '../../../../components/carousel/Carousel';
+import { Files } from '../../../../shared/api/file';
+import { Product } from '../../../../shared/api/product';
+import { ResponseStatusChecker } from '../../../../shared/constants/response';
+import { ProductModel, productImageUrl } from '../../../../shared/models/product';
+import Navigate from '../../../../shared/services/router/Navigate';
+// import UserStore from '../../../../shared/store/UserStore';
+import CategoryStore from '../../../../shared/store/category';
+import CityStore from '../../../../shared/store/city';
+import { Validate } from '../../../../shared/utils/validation';
 
-import { FileInput, NumberInput, Text, TextArea, TextInput, BooleanInput, Button } from '../../../components/baseComponents/index';
-import { Component } from '../../../components/baseComponents/snail/component';
-import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
-import { Select } from '../../../components/baseComponents/select/select';
-import { Files } from '../../../shared/api/file';
-import { ResponseStatusChecker } from '../../../shared/constants/response';
-import { Validate } from '../../../shared/utils/validation';
-import { ProductModelPut, productImageUrl } from '../../../shared/models/product';
-import { Product } from '../../../shared/api/product';
-import UserStore from '../../../shared/store/UserStore';
-import Navigate from '../../../shared/services/router/Navigate';
-import CategoryStore from '../../../shared/store/category';
-import CityStore from '../../../shared/store/city';
+interface ProductBaseEditProps extends ProductModel {}
 
-interface ProductNewState {
-    title: string,
-    description: string,
-    city: number,
-    category: number,
-    price: number,
-    availableCount: number,
-    safeDeal: boolean,
-    delivery: boolean,
-    imagesForUpload?: Array<File>,
-    uploadedImages?: Array<productImageUrl>
+interface ProductBaseEditState {
+    // title?: string,
+    // description?: string,
+    // city?: number,
+    // category?: number,
+    // price?: number,
+    // availableCount?: number,
+    // safeDeal?: boolean,
+    // delivery?: boolean,
+
+    [key: string]: any
 }
 
-const initState: ProductNewState = {
-    title: '',
-    description: '',
-    city: 1,
-    category: 1,
-    price: -1,
-    availableCount: -1,
-    safeDeal: false,
-    delivery: false,
-    imagesForUpload: [],
-    uploadedImages: [],
-};
+interface ProductBaseEditImages {
+    imagesForUpload?: Array<File>,
+    uploadedImages?: Array<productImageUrl>,
+}
 
-export class ProductNew extends Component<never,ProductNewState> {
-    state: ProductNewState = initState;
+export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBaseEditState> {
+    // state: ProductBaseEditState = {
+    //     title: '',
+    //     description: '',
+    //     city: -1,
+    //     category: -1,
+    //     price: -1,
+    //     availableCount: -1,
+    //     safeDeal: false,
+    //     delivery: false,
+    // };
+    state: ProductBaseEditState = {};
+
+    images: ProductBaseEditImages = {
+        imagesForUpload: [],
+        uploadedImages: [],
+    };
 
     validate = () => {
-        if (this.state.title.trim() === '') {
-            return 'Title must be not empty string';
+        if (this.state.title?.trim() === '') {
+            delete this.state.title;
+            // return 'Title must be not empty string';
         }
 
-        if (this.state.description.trim() === '') {
-            return 'Desc must be not empty string';
+        if (this.state.description?.trim() === '') {
+            delete this.state.description;
+            // return 'Desc must be not empty string';
         }
 
-        if (this.state.city === -1) {
-            return 'City must be chosen';
+        // if (this.state.city === -1) {
+        //     return 'City must be chosen';
+        // }
+
+        // if (this.state.category === -1) {
+        //     return 'Category must be chosen';
+        // }
+
+        // if (this.state.price === -1) {
+        //     return 'Price must be chosen';
+        // }
+
+        // if (this.state.availableCount === -1) {
+        //     return 'available count must be chosen';
+        // }
+
+        if (!this.state) {
+            return false;
         }
 
-        if (this.state.category === -1) {
-            return 'Category must be chosen';
-        }
-
-        if (this.state.price === -1) {
-            return 'Price must be chosen';
-        }
-
-        if (this.state.availableCount === -1) {
-            return 'available count must be chosen';
-        }
-
-        return null;
+        return true;
     };
 
     async uploadImages() {
@@ -80,25 +93,21 @@ export class ProductNew extends Component<never,ProductNewState> {
 
                 if (ResponseStatusChecker.IsBadFormatRequest(res)) {
                     // this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
-                    return false;
+                    return;
                 }
                 else if (ResponseStatusChecker.IsInternalServerError(res)) {
                     // this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
-                    return false;
+                    return;
                 }
                 else if (ResponseStatusChecker.IsUserError(res)) {
                     // this.errorBox.append(ErrorMessageBox(res.body.error));
-                    return false;
+                    return;
                 }
 
-                return false;
+                return;
             }
 
-            debugger;
-
-            this.state.uploadedImages = res.body.urls.map((respUrl: string) => {return {url: respUrl};});
-
-            return true;
+            this.state.uploadedImages = res.body.urls;
         }
     }
 
@@ -123,35 +132,16 @@ export class ProductNew extends Component<never,ProductNewState> {
 
     formSubmit = async(e: Event) => {
         e.preventDefault();
+        const productId = Number(new URLSearchParams(location.search).get('id'));
 
         const validation = this.validate();
-        if (validation) {
-            console.error(new Error(validation));
-
+        if (!validation) {
             return;
         }
 
-        debugger;
-
-        const successful = await this.uploadImages();
-
-        if (!successful){
-            return;
-        }
-
-        const res = await Product.create({
-            'title': this.state.title,
-            'description': this.state.description,
-            'available_count': this.state.availableCount,
-            'category_id': this.state.category,
-            'city_id': this.state.city,
-            'delivery': this.state.delivery,
-            'is_active': false,
-            'price': this.state.price,
-            'safe_deal': this.state.safeDeal,
-            'saler_id': UserStore.getFields()?.id,
-            'images': this.state.uploadedImages,
-        } as ProductModelPut);
+        const res = await Product.patch(productId, {
+            ...this.state,
+        } as ProductModel);
 
         if (!ResponseStatusChecker.IsRedirectResponse(res)) {
             // this.errorBox.innerHTML = '';
@@ -176,12 +166,10 @@ export class ProductNew extends Component<never,ProductNewState> {
 
     };
 
-    // clear() {
-    //     this.setState(initState);
-    //     this.children
-    // }
-
     public render() {
+        if (!this.props){
+            throw new Error('ProductBaseEdit props undefined');
+        }
 
         return createElement(
             'form',
@@ -204,6 +192,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                 createComponent(
                     TextInput,
                     {
+                        placeholder: this.props.title,
                         oninput: (e: Event) => this.state.title = (e.target as HTMLInputElement).value,
                     },
                 ),
@@ -213,13 +202,21 @@ export class ProductNew extends Component<never,ProductNewState> {
                         text: 'Изображения',
                     },
                 ),
-                createComponent(
-                    FileInput,
-                    {
-                        accept: '.png, .jpg, .jpeg',
-                        multiple: true,
-                        oninput: this.fileInputEvent,
-                    },
+                createElement(
+                    'div',
+                    {},
+                    createComponent(
+                        Carousel,
+                        {images: this.props.images},
+                    ),
+                    createComponent(
+                        FileInput,
+                        {
+                            accept: '.png, .jpg, .jpeg',
+                            multiple: true,
+                            oninput: this.fileInputEvent,
+                        },
+                    ),
                 ),
                 createComponent(
                     Text,
@@ -233,8 +230,9 @@ export class ProductNew extends Component<never,ProductNewState> {
                         items: CityStore.getList(),
                         key: 'id',
                         value: 'name',
+                        select: this.props.city_id?.toString(),
                         events: {
-                            onchange: (e: Event) => this.state.city = Number((e.target as HTMLInputElement).value),
+                            onchange: (e: Event) => this.state['city_id'] = Number((e.target as HTMLInputElement).value),
                         },
                     },
                 ),
@@ -247,6 +245,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                 createComponent(
                     TextArea,
                     {
+                        placeholder: this.props.description,
                         oninput: (e: Event) => this.state.description = (e.target as HTMLInputElement).value,
                     },
                 ),
@@ -262,8 +261,9 @@ export class ProductNew extends Component<never,ProductNewState> {
                         items: CategoryStore.getList(),
                         key: 'id',
                         value: 'name',
+                        select: this.props.category_id?.toString(),
                         events: {
-                            onchange: (e: Event) => this.state.category = Number((e.target as HTMLInputElement).value),
+                            onchange: (e: Event) => this.state['category_id'] = Number((e.target as HTMLInputElement).value),
                         },
                     },
                 ),
@@ -276,6 +276,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                 createComponent(
                     NumberInput,
                     {
+                        placeholder: this.props.price?.toString(),
                         oninput: (e: Event) => this.state.price = Number((e.target as HTMLInputElement).value),
                     },
                 ),
@@ -288,7 +289,8 @@ export class ProductNew extends Component<never,ProductNewState> {
                 createComponent(
                     NumberInput,
                     {
-                        oninput: (e: Event) => this.state.availableCount = Number((e.target as HTMLInputElement).value),
+                        placeholder: this.props.available_count?.toString(),
+                        oninput: (e: Event) => this.state['available_count'] = Number((e.target as HTMLInputElement).value),
                     },
                 ),
                 createComponent(
@@ -300,7 +302,8 @@ export class ProductNew extends Component<never,ProductNewState> {
                 createComponent(
                     BooleanInput,
                     {
-                        oninput: (e: Event) => this.state.safeDeal = Boolean((e.target as HTMLInputElement).value),
+                        checked: this.props.safe_deal,
+                        oninput: (e: Event) => this.state['safe_deal'] = Boolean((e.target as HTMLInputElement).value),
                     },
                 ),
                 createComponent(
@@ -312,6 +315,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                 createComponent(
                     BooleanInput,
                     {
+                        checked: this.props.delivery,
                         oninput: (e: Event) => this.state.delivery = Boolean((e.target as HTMLInputElement).value),
                     },
                 ),
@@ -324,7 +328,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                 createComponent(
                     Button,
                     {
-                        text: 'Создать',
+                        text: 'Сохранить',
                         variant: 'primary',
                         style: 'width: 100%',
                     },

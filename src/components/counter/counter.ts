@@ -33,7 +33,7 @@ export class Counter extends Component<CounterProps, CounterState> {
         Object.entries(style).forEach(([ key, value ]) => {
             result += key + ': ' + value + ';';
         });
-    
+
         return result;
     }
 
@@ -45,7 +45,8 @@ export class Counter extends Component<CounterProps, CounterState> {
         if (this.state.currentCount == param) {
             return this.generateStyle({ pointerEvents: 'none', opacity: '0.5' });
         }
-        return this.generateStyle({ pointerEvents: 'auto', opacity: '1' });
+
+return this.generateStyle({ pointerEvents: 'auto', opacity: '1' });
     }
 
     decCount() {
@@ -83,7 +84,7 @@ export class Counter extends Component<CounterProps, CounterState> {
             this.state = {
                 currentCount: this.props.selectedCount,
                 price: this.props.unitPrice * this.props.selectedCount,
-            }
+            };
         }
 
         return createElement(
@@ -91,12 +92,12 @@ export class Counter extends Component<CounterProps, CounterState> {
             createElement(
                 'div', { class: 'counter-result' },
                 createComponent(
-                    Text, 
+                    Text,
                     {
                         variant: 'header',
                         text: this.state.price + ' ₽',
-                    }
-                )
+                    },
+                ),
             ),
             createElement(
                 'div', { class: 'counter-manager' },
@@ -104,10 +105,10 @@ export class Counter extends Component<CounterProps, CounterState> {
                     Button,
                     {
                         variant: 'neutral',
-                        leftIcon: { content: dec, width: 25, height: 25, },
+                        leftIcon: { content: dec, width: 25, height: 25 },
                         style: this.getVisibleStyle(this.props.minCount),
                         onclick: () => { this.decCount(); },
-                    }
+                    },
                 ),
                 createComponent(
                     Text,
@@ -115,17 +116,17 @@ export class Counter extends Component<CounterProps, CounterState> {
                         tag: 'div',
                         variant: 'header',
                         text: this.state.currentCount,
-                        additionalClass: 'counter-count',
-                    }
+                        className: 'counter-count',
+                    },
                 ),
                 createComponent(
                     Button,
                     {
                         variant: 'neutral',
-                        leftIcon: { content: inc, width: 25, height: 25, },
+                        leftIcon: { content: inc, width: 25, height: 25 },
                         style: this.getVisibleStyle(this.props.maxCount),
                         onclick: () => { this.incCount(); },
-                    }
+                    },
                 ),
             ),
         );

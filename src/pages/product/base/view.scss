@@ -1,0 +1,67 @@
+@use '../../../assets/css/vars.scss';
+@use '../../../assets/css/utility.scss';
+
+.wrapper-product {
+    @extend .wrapper;
+    background-color: vars.$background-secondary;
+    height: 100%;
+    padding-top: 32px;
+}
+
+.product {
+    width: 1280px;
+    display: flex;
+    padding: 8px 8px;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--background-primary, #FFFAFF);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    height: fit-content;
+}
+
+.product-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 0 0;
+}
+
+.product-content-header {
+    display: flex;
+    height: 60px;
+    padding: 12px 8px;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+
+    &-title {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        align-self: stretch;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: left;
+    }
+}
+
+.product-content-body {
+    width: 100%;
+
+    &-image {
+        width: 100%;
+        height: 400px;
+        flex-shrink: 0;
+        align-self: stretch;
+    }
+
+}
+
+.product-content-body-info {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-row-gap: 24px;
+    padding: 16px;
+    overflow-wrap: anywhere;
+}

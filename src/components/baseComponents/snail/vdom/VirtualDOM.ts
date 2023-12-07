@@ -37,7 +37,7 @@ export const createText = (
 ): VDomText => {
     return ({
         kind: 'text',
-        value: value.toString(),
+        value: value ? value.toString() : '',
         key: key,
     });
 };
@@ -102,7 +102,7 @@ export const renderVDomNode = (rootNode: VDomNode): HTMLElement | Text => {
                     let eventName: any = '';
                     let eventFunc: any = () => {};
                     try {
-                        eventName = prop as unknown as EventListenerOrEventListenerObject;
+                        eventName = prop as unknown as EventListenerOrEventListenerObject; // eslint-disable-line no-undef
                         eventFunc = rootNode.props[prop];
                     } catch {
                         throw new Error(prop + ' is not an event name');

@@ -4,6 +4,7 @@ import { Component } from '../baseComponents/snail/component';
 import { createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Button, Image } from '../baseComponents/index';
+import { getResourceUrl } from '../../shared/utils/getResource';
 
 export interface CarouselProps {
     images: Array<{ url: string }> | undefined | null,
@@ -19,39 +20,50 @@ export class Carousel extends Component<CarouselProps, CarouselState> {
         currentImageIndex: 0,
     };
 
-    goBack(imageArrayLength: number | undefined) {
-        if (!imageArrayLength) {
+    imageArrayLength = () => this.props?.images ? this.props.images.length : 0;
+
+    constructor() {
+        super();
+
+    }
+
+    goBack = (e: Event) => {
+        e.preventDefault();
+
+        if (this.imageArrayLength() === 0) {
             return;
         }
 
         let newIndex = this.state.currentImageIndex;
         if (newIndex - 1 < 0) {
-            newIndex = imageArrayLength - 1;
+            newIndex = this.imageArrayLength() - 1;
         } else {
             newIndex -= 1;
         }
 
-        this.setState({ currentImageIndex: newIndex, });
-    }
+        this.setState({ currentImageIndex: newIndex });
+    };
 
-    goNext(imageArrayLength: number | undefined) {
-        if (!imageArrayLength) {
+    goNext = (e: Event) => {
+        e.preventDefault();
+
+        if (this.imageArrayLength() === 0) {
             return;
         }
 
         let newIndex = this.state.currentImageIndex;
-        if (newIndex + 1 > imageArrayLength) {
+        if (newIndex + 2 > this.imageArrayLength()) {
             newIndex = 0;
         } else {
             newIndex += 1;
         }
 
-        this.setState({ currentImageIndex: newIndex, });
-    }
+        this.setState({ currentImageIndex: newIndex });
+    };
 
     render() {
         if (!this.props) {
-            throw new Error('Carousel settings are undefined');
+            throw new Error('Carousel props are undefined');
         }
 
         const images = this.props.images;
@@ -60,32 +72,30 @@ export class Carousel extends Component<CarouselProps, CarouselState> {
             'div',
             { class: 'carousel' },
             createComponent(
-                Button, 
+                Button,
                 {
-                    variant: 'outlined',
-                    text: '<',
-                    onclick: () => { this.goBack(images ? images.length : undefined); },
-                }
+                    className: 'carousel-button--left',
+                    onclick: this.goBack,
+                },
             ),
             (images) ?
                 createComponent(
                     Image,
-                    { 
-                        class: 'carousel_item',
-                        src: images[this.state.currentImageIndex].url,
-                    }
+                    {
+                        class: 'carousel-item',
+                        src: getResourceUrl(images[this.state.currentImageIndex].url) as string,
+                    },
                 ) :
                 createElement(
-                    'div', { class: 'carousel_empty placeholder', }
+                    'div', { class: 'carousel-empty placeholder' },
                 ),
             createComponent(
                 Button,
                 {
-                    variant: 'outlined',
-                    text: '>',
-                    onclick: () => { this.goNext(images ? images.length : undefined); },
-                }
-            )
-        )
-    };
+                    className: 'carousel-button--right',
+                    onclick: this.goNext,
+                },
+            ),
+        );
+    }
 }

@@ -4,7 +4,7 @@ import jwtDecode from '../utils/jwt-decode';
 import { ResponseStatus } from '../constants/response';
 import { Store } from '../services/store/Store';
 import { UserApi } from '../api/user';
-import { UserModel } from '../models/userModel';
+import { UserModel } from '../models/user';
 
 interface StoreUserState {
     fields: UserModel | null,
@@ -85,6 +85,8 @@ class UserStore extends Store<StoreUserState> {
     isAuth() {
          return this.state.fields !== null ? true : false;
     }
+
+    isSameUser = (id: number): boolean => this.state.fields?.id === id;
 
     async login(accessToken: string | undefined) {
 

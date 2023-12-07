@@ -1,5 +1,6 @@
 import ajax from '../services/ajax';
 import { ProductRoutes } from '../constants/api';
+import { ProductModel, ProductModelPut } from '../models/product';
 
 export class Product {
     static async feed() {
@@ -22,7 +23,7 @@ export class Product {
         });
     }
 
-    static async create(data: any) {
+    static async create(data: ProductModelPut) {
         return await ajax.post({
             url: ProductRoutes.POST,
             body: data,
@@ -40,7 +41,7 @@ export class Product {
         });
     }
 
-    static async patch(id: number, data: any) {
+    static async patch(id: number, data: ProductModel) {
         return await ajax.patch({
             url: ProductRoutes.PATCH,
             params: {
@@ -71,7 +72,7 @@ export class Product {
         });
     }
 
-    static async put(id: number, data: any) {
+    static async put(id: number, data: ProductModelPut) {
         return await ajax.put({
             url: ProductRoutes.PUT,
             params: {

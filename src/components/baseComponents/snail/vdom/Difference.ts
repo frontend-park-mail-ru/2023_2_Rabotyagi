@@ -118,7 +118,11 @@ export const getDifference = (
         newNode.instance = node.instance;
         newNode.instance.setChildren(newNode.children);
 
-        return newNode.instance.setProps(newNode.props);
+        const res = newNode.instance.setProps(newNode.props);
+
+        if (res) {
+            return res;
+        }
     }
 
     if (node.kind == 'component') {
@@ -263,7 +267,7 @@ export const applyChanges = (element: HTMLElement | Text, difference: VDomNodeUp
                 let eventName: any = '';
                 let eventFunc: any = () => {};
                 try {
-                    eventName = prop as unknown as EventListenerOrEventListenerObject;
+                    eventName = prop as unknown as EventListenerOrEventListenerObject; // eslint-disable-line no-undef
                     eventFunc = difference.props.set[prop];
                 } catch {
                     throw new Error(prop + ' is not an event name');

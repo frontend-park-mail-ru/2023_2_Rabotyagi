@@ -4,7 +4,8 @@ import { createComponent, createElement } from '../snail/vdom/VirtualDOM';
 
 export interface OptionProps {
     key: string,
-    value: string
+    value: string,
+    selected?: boolean,
 }
 
 export class Option extends Component<OptionProps, never> {
@@ -18,6 +19,7 @@ export class Option extends Component<OptionProps, never> {
             'option',
             {
                 value: this.props.key,
+                'selected': 'selected',
             },
             createComponent(
                 Text,

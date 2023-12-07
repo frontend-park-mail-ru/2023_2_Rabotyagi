@@ -1,6 +1,7 @@
 .dropdown-container {
     position: absolute;
-    top: 36px
+    top: 36px;
+    z-index: 20;
 }
 
 .dropdown-content {

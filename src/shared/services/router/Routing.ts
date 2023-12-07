@@ -5,6 +5,7 @@ import Navigate from './Navigate';
 
 export interface RouteProps {
     path: RegExp,
+    callback?: () => void
 }
 
 // у компонента Route может быть только 1 ребёнок
@@ -16,6 +17,10 @@ export class Route extends Component<RouteProps, never> {
         }
         if (this.children.length > 1) {
             throw new Error('Route have only 1 child');
+        }
+
+        if (this.props?.callback) {
+            this.props.callback();
         }
 
         return this.children[0];

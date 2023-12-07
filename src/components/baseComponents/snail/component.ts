@@ -36,10 +36,10 @@ export abstract class Component<PropsType, StateType> {
         this.applyComponentChanges();
     }
 
-    public setProps(props: PropsType): VDomNodeUpdater | void {
+    public setProps(props: PropsType): VDomNodeUpdater | null {
         if (!this.domElement) {
 
-            return;
+            return null;
             // throw new Error('domelement is undefined');
         }
 

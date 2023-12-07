@@ -1,10 +1,6 @@
-interface ResponseChild {
-    id: number,
-    name: string,
-    parent_id: number | null
-}
+import { CategoryModel } from '../models/category';
 
-class Node {
+export class Node {
     id: number;
     name: string;
     parentId: number | null;
@@ -56,7 +52,7 @@ export const searchNode = (node: Node | Array<Node>, id: number) => {
     return res[ 0 ];
 };
 
-export const tree = (childs: Array<ResponseChild>) => {
+export const tree = (childs: Array<CategoryModel>) => {
     let roots: Array<Node> = [];
 
     childs.forEach((elem) => {

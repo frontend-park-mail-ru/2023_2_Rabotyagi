@@ -1,3 +1,4 @@
+import './favourite.scss';
 import { Svg, Text } from '../../../components/baseComponents/index';
 import { Component } from '../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
@@ -21,20 +22,24 @@ export class ProfileFavourites extends Component<never, ProfileFavouritesState> 
             // debugger;
 
             return [
-                createComponent(
-                    Svg,
-                    {
-                        content: placeholder,
-                        width: 190,
-                        height: 120,
-                    },
-                ),
-                createComponent(
-                    Text,
-                    {
-                        text: 'Все созданные объявления будут отображаться на этой странице',
-                        variant: 'regular',
-                    },
+                createElement(
+                    'div',
+                    {class: 'fav-container-placeholder'},
+                    createComponent(
+                        Svg,
+                        {
+                            content: placeholder,
+                            width: 190,
+                            height: 120,
+                        },
+                    ),
+                    createComponent(
+                        Text,
+                        {
+                            text: 'Все добавленные объявления будут отображаться на этой вкладке',
+                            variant: 'regular',
+                        },
+                    ),
                 ),
             ];
         }
@@ -93,8 +98,8 @@ export class ProfileFavourites extends Component<never, ProfileFavouritesState> 
     public render() {
 
         return createElement(
-            'favourites',
-            {},
+            'div',
+            {class: 'fav-container'},
             ...this.createFavs(),
         );
     }

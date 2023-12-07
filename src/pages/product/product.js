@@ -170,7 +170,7 @@ class ProductPage {
             this.errorBox.innerHTML = '';
             this.errorBox.appendChild(ErrorMessageBox('Должно быть хотя бы одно изображение'));
 
-return;
+            return;
         }
 
         const res = await Product.create(body);
@@ -179,7 +179,7 @@ return;
         if (statuses.IsRedirectResponse(res)) {
             window.Router.navigateTo('/product', { productId: body.id });
 
-return;
+            return;
         }
 
         this.errorBox.innerHTML = '';

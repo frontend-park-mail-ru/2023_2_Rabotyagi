@@ -1,10 +1,10 @@
-import './Dropdown.scss';
+import './dropdown.scss';
 
 import { Component } from '../snail/component';
 import { VDomNode, createElement, createComponent, createText } from '../snail/vdom/VirtualDOM';
 
 import { Svg } from '../svg/Svg';
-import { TextInput } from '../input/Input';
+import { TextInput } from '../Input/Input';
 
 import searchIcon from '../../../assets/icons/search.svg';
 

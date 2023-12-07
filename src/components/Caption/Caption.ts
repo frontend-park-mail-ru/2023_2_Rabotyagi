@@ -20,7 +20,7 @@ export class Caption extends Component<CaptionProps, {}> {
             {
                 variant: 'caption',
                 text: this.props.text,
-                additionalClass: 'caption-message',
+                className: 'caption-message',
             },
         );
     }

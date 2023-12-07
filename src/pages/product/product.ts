@@ -1,38 +1,41 @@
-import { Text } from '../../components/baseComponents/index';
 import { Component } from '../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../components/baseComponents/snail/vdom/VirtualDOM';
+import { Header } from '../../components/header/header';
 import { Route, Router } from '../../shared/services/router/Routing';
 import { ProductNew } from './new/productNew';
+import { ProductBase } from './base/base';
 
 export class Product extends Component<never, never> {
     public render() {
 
-        return createComponent(
-            Router,
+        return createElement(
+            'product',
             {},
             createComponent(
-                Route,
-                {
-                    path: /\/product\/new$/,
-                },
-                createComponent(
-                    ProductNew,
-                    {},
-                ),
+                Header,
+                {},
             ),
             createComponent(
-                Route,
-                {
-                    path: /\/product\?id=.+/,
-                },
-                createElement(
-                    'product',
-                    {},
+                Router,
+                {},
+                createComponent(
+                    Route,
+                    {
+                        path: /\/product\/new$/,
+                    },
                     createComponent(
-                        Text,
-                        {
-                            text: 'Product',
-                        },
+                        ProductNew,
+                        {},
+                    ),
+                ),
+                createComponent(
+                    Route,
+                    {
+                        path: /\/product\?id=.+/,
+                    },
+                    createComponent(
+                        ProductBase,
+                        {},
                     ),
                 ),
             ),
