@@ -10,10 +10,6 @@ export abstract class Component<PropsType, StateType> {
     private node: VDomNode | undefined;
     private domElement: HTMLElement | Text | undefined;
 
-    // constructor() {
-    //     this.props = {}
-    // }
-
     protected applyComponentChanges() {
         if (!this.domElement) {
             throw new Error('domelement is undefined');
@@ -21,15 +17,6 @@ export abstract class Component<PropsType, StateType> {
 
         applyChanges(this.domElement, this.getComponentDifference());
     }
-
-    // public setState(updater: (state: StateType | undefined) => StateType) {
-    //     if (!this.domElement) {
-    //         throw new Error('domelement is undefined');
-    //     }
-
-    //     this.state = updater(this.state);
-    //     this.applyComponentChanges();
-    // }
 
     public setState(state: StateType): void {
         if (!this.domElement) {
@@ -44,7 +31,6 @@ export abstract class Component<PropsType, StateType> {
         if (!this.domElement) {
 
             return null;
-            // throw new Error('domelement is undefined');
         }
 
         this.state = this.componentWillRecieveProps(props, this.state);
@@ -74,6 +60,7 @@ export abstract class Component<PropsType, StateType> {
 
     public unmount() {
         this.componentWillUnmount();
+        // this.domElement?.remove();
         this.domElement = undefined;
     }
 

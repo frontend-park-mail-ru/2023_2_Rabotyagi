@@ -23,7 +23,7 @@ export class ProfileFavourites extends Component<never, ProfileFavouritesState> 
     }
 
     createFavs() {
-        // debugger;
+        debugger;
         if (this.state.items.length === 0) {
             // debugger;
 
@@ -74,21 +74,8 @@ export class ProfileFavourites extends Component<never, ProfileFavouritesState> 
         }
 
         if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {
-            if (ResponseStatusChecker.IsBadFormatRequest(resp)) {
-                // this.setError(ResponseMessage.USER_MESSAGE);
 
-                return;
-            }
-            else if (ResponseStatusChecker.IsInternalServerError(resp)) {
-                // this.setError(ResponseMessage.SERVER_MESSAGE);
-
-                return;
-            }
-            else if (ResponseStatusChecker.IsUserError(resp)) {
-                // this.setError(resp.body.error);
-
-                return;
-            }
+            return;
         }
 
         if (resp.body && resp.body.length > 0) {

@@ -11,6 +11,9 @@ import Navigate from '../../shared/services/router/Navigate';
 import delivery from '../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../assets/icons/badges/safe_deal.svg';
 import { getResourceUrl } from '../../shared/utils/getResource';
+import { UserApi } from '../../shared/api/user';
+import { ResponseStatusChecker } from '../../shared/constants/response';
+import Dispatcher from '../../shared/services/store/Dispatcher';
 
 export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite' | 'cart';
 
@@ -33,9 +36,31 @@ export interface CardProps {
     isActive?: boolean
 }
 
+enum MouseButtons {
+    LEFT = 0,
+    WHEEL = 1,
+    RIGHT = 2
+}
+
 export class Card extends Component<CardProps, {}> {
 
-    navigateToProduct = () => Navigate.navigateTo(`/product?id=${this.props?.id}`, { productId: this.props?.id });
+    navigateToProduct = (e: MouseEvent) => {
+        switch (e.button) {
+            case MouseButtons.LEFT:
+                if (e.ctrlKey){
+                    window.open(`/product?id=${this.props?.id}`, '_blank');
+
+                    return;
+                }
+
+                Navigate.navigateTo(`/product?id=${this.props?.id}`, { productId: this.props?.id });
+                break;
+
+            case MouseButtons.WHEEL:
+                window.open(`/product?id=${this.props?.id}`, '_blank');
+                break;
+        }
+    };
 
     thisHaveBadges() {
         if (!this.props) {
@@ -85,7 +110,7 @@ export class Card extends Component<CardProps, {}> {
             'button',
             {
                 class: 'card-base',
-                onclick: this.navigateToProduct,
+                onmouseup: this.navigateToProduct,
             },
             createElement(
                 'div',
@@ -141,9 +166,38 @@ export class Card extends Component<CardProps, {}> {
     }
 
     deleteProduct = async() => {};
-    deleteFavourite = async() => {};
+    deleteFavourite = async(e: Event) => {
+        e.stopPropagation();
 
-    deleteFunction = async(e: Event) => {
+        if (this.props) {
+
+            let res;
+
+            try {
+                res = await UserApi.removeFromFav(this.props.id);
+            }
+            catch(err) {
+                console.error(err);
+
+                return;
+            }
+
+            if (!ResponseStatusChecker.IsRedirectResponse(res)) {
+                return;
+            }
+
+            Dispatcher.dispatch({
+                name: 'FAVOURITE_REMOVE',
+                payload: this.props.id,
+            });
+
+            this.
+
+            this.unmount();
+        }
+    };
+
+    deleteFunction = (e: Event) => {
         e.stopPropagation();
 
         switch (this.props?.variant as CardVariants) {
@@ -154,7 +208,7 @@ export class Card extends Component<CardProps, {}> {
                 break;
 
             case 'favourite':
-                await this.deleteFavourite();
+                this.deleteFavourite(e);
                 break;
 
             case 'profile':
@@ -173,7 +227,7 @@ export class Card extends Component<CardProps, {}> {
             'button',
             {
                 class: 'card-profile',
-                onclick: this.navigateToProduct,
+                onmouseup: this.navigateToProduct,
             },
             (this.props.images) ?
                 createElement(
@@ -213,7 +267,7 @@ export class Card extends Component<CardProps, {}> {
                             variant: 'outlined',
                             text: 'Удалить',
                             style: 'width: 100%;',
-                            onclick: this.deleteFunction,
+                            onmouseup: this.deleteFunction,
                         },
                     ) : createText(''),
             ),
