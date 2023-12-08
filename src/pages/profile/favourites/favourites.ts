@@ -16,6 +16,12 @@ export class ProfileFavourites extends Component<never, ProfileFavouritesState> 
         items: [],
     };
 
+    constructor() {
+        super();
+
+        this.getFavs();
+    }
+
     createFavs() {
         // debugger;
         if (this.state.items.length === 0) {

@@ -10,6 +10,10 @@ export abstract class Component<PropsType, StateType> {
     private node: VDomNode | undefined;
     private domElement: HTMLElement | Text | undefined;
 
+    // constructor() {
+    //     this.props = {}
+    // }
+
     protected applyComponentChanges() {
         if (!this.domElement) {
             throw new Error('domelement is undefined');

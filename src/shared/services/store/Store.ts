@@ -34,9 +34,9 @@ export abstract class Store<StateType> {
         this.state = structuredClone(this.initState);
     }
 
-    public addAction(action: InnerActionInterface) {
+    public addAction = (action: InnerActionInterface) => {
         this.actions.push(action);
-    }
+    };
 
     public addStoreUpdater(listener: StoreListener): void {
         this.listeners.push(listener);

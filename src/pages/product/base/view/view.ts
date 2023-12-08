@@ -6,12 +6,99 @@ import fav from '../../../../assets/icons/heart.svg';
 import { Carousel } from '../../../../components/carousel/Carousel';
 import CityStore from '../../../../shared/store/city';
 import CategoryStore from '../../../../shared/store/category';
+import FavouriteStore from '../../../../shared/store/favourite';
+import { UserApi } from '../../../../shared/api/user';
+import Dispatcher from '../../../../shared/services/store/Dispatcher';
+import { ResponseStatusChecker } from '../../../../shared/constants/response';
 
 interface ProductBaseViewProps extends ProductModelResponse {
 
 }
 
-export class ProductBaseView extends Component<ProductBaseViewProps, never> {
+interface ProductBaseViewState {
+
+    inFav: boolean
+}
+
+export class ProductBaseView extends Component<ProductBaseViewProps, ProductBaseViewState> {
+
+    protected state: ProductBaseViewState = {
+        inFav: FavouriteStore.getById(
+            Number((new URLSearchParams(location.search)).get('id')),
+        ) ? true : false,
+    };
+
+    listener = () => {
+        if (this.props) {
+            this.setState({
+                inFav: FavouriteStore.getById(this.props.id) ? true : false,
+            });
+        }
+    };
+
+    constructor() {
+        super();
+
+        FavouriteStore.addStoreUpdater(this.listener);
+    }
+
+    removeFromFav = async(e: Event) => {
+        e.stopPropagation();
+
+        if (this.props) {
+
+            let res;
+
+            try {
+                res = await UserApi.removeFromFav(this.props.id);
+            }
+            catch(err) {
+                console.error(err);
+
+                return;
+            }
+
+            if (!ResponseStatusChecker.IsRedirectResponse(res)) {
+                return;
+            }
+
+            Dispatcher.dispatch({
+                name: 'FAVOURITE_REMOVE',
+                payload: this.props.id,
+            });
+
+            this.setState({inFav: false});
+        }
+    };
+
+    addToFav = async(e: Event) => {
+        e.stopPropagation();
+
+        if (this.props) {
+            let res;
+
+            try {
+                res = await UserApi.addToFav(this.props.id);
+            }
+            catch(err) {
+                console.error(err);
+
+                return;
+            }
+
+            if (!ResponseStatusChecker.IsRedirectResponse(res)) {
+                return;
+            }
+
+            Dispatcher.dispatch({
+                name: 'FAVOURITE_ADD',
+                payload: res.body.id,
+            });
+
+            this.setState({inFav: true});
+        }
+
+    };
 
     public render() {
         if (!this.props) {
@@ -42,12 +129,13 @@ export class ProductBaseView extends Component<ProductBaseViewProps, never> {
                 createComponent(
                     Button,
                     {
-                        text: 'Добавить в избранное',
+                        text: this.state?.inFav ? 'В избранном' : 'Добавить в избранное',
                         leftIcon: {
                             width: 24,
                             height: 24,
                             content: fav,
                         },
+                        onclick: this.state?.inFav ? this.removeFromFav : this.addToFav,
                         variant: 'outlined',
                     },
                 ),

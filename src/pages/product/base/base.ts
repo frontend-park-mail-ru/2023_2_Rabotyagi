@@ -68,7 +68,7 @@ export class ProductBase extends Component<never, ProductBaseState> {
     }
 
     async getProduct() {
-        const productId = history.state.productId;
+        const productId = Number((new URLSearchParams(location.search)).get('id'));
         let respPost;
 
         try {
