@@ -41,7 +41,7 @@ export interface ButtonProps extends ButtonEvents {
 }
 
 export interface ButtonImageProps extends ButtonEvents {
-    href?: string,
+    src?: string,
     width?: number,
     height?: number,
     id?: string,
@@ -111,7 +111,7 @@ export class ButtonImage extends Component<ButtonImageProps, never> {
         }
 
         const {
-            href,
+            src,
             variant,
             subvariant,
             ...buttonProps
@@ -139,7 +139,7 @@ export class ButtonImage extends Component<ButtonImageProps, never> {
             createComponent(
                 Image,
                 {
-                    src: href,
+                    src: src,
                     width: width,
                     height: height,
                 },

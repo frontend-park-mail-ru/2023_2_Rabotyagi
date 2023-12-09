@@ -2,13 +2,169 @@ import './settings.scss';
 import { Button, FileInput, Text, TextInput } from '../../../components/baseComponents/index';
 import { Component } from '../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import user, { UserStoreAction } from '../../../shared/store/user';
+import { UserModel, UserModelPatch } from '../../../shared/models/user';
+import Dispatcher from '../../../shared/services/store/Dispatcher';
+import { UserApi } from '../../../shared/api/user';
+import { ResponseStatusChecker } from '../../../shared/constants/response';
+import { Files } from '../../../shared/api/file';
 
-export class ProfileSettings extends Component<never, never> {
-    formSubmit = async(e: Event) => {
+type inputFields = UserModelPatch & {
+    forUpload?: File,
+}
+
+interface ProfileSettingsState {
+    inputFields?: inputFields,
+    user?: UserModel
+}
+
+export class ProfileSettings extends Component<never, ProfileSettingsState> {
+    emailField?: HTMLInputElement;
+    phoneField?: HTMLInputElement;
+    nameField?: HTMLInputElement;
+    avatarField?: HTMLInputElement;
+
+    state: ProfileSettingsState = {
+        inputFields: {},
+    };
+
+    public componentDidMount(): void {
+        user.addStoreUpdater(this.listener);
+
+        Dispatcher.dispatch({
+            name: UserStoreAction.REFRESH,
+        });
+    }
+
+    public componentWillUnmount(): void {
+        user.removeStoreUpdater(this.listener);
+    }
+
+    clear = () => {
+        delete this.state.inputFields;
+
+        if (this.emailField){
+            this.emailField.value = '';
+            // delete this.state.inputFields?.email;
+        }
+
+        if (this.phoneField) {
+            this.phoneField.value = '';
+            // delete this.state.inputFields?.phone;
+        }
+
+        if (this.nameField) {
+            this.nameField.value = '';
+            // delete this.state.inputFields?.name;
+        }
+    };
+
+    clearEvent = (e: Event) => {
         e.preventDefault();
+
+        this.clear();
+    };
+
+    listener = () => {
+        const fields = user.getFields();
+
+        if (fields) {
+            this.setState({
+                user: {...fields},
+            });
+        }
+    };
+
+    async uploadAvatar() {
+        if (this.state.inputFields?.forUpload) {
+
+            let res;
+
+            try {
+                res = await Files.images(this.state.inputFields.forUpload);
+            }
+            catch(err) {
+                console.error(err);
+            }
+
+            if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
+                console.error(new Error(res.body.error));
+
+                return;
+            }
+
+            this.state.inputFields.avatar = res.body.urls[ 0 ];
+        }
+    }
+
+    private formSubmit = async(e: Event) => {
+        e.preventDefault();
+
+        await this.uploadAvatar();
+
+        let res;
+        try {
+            res = await UserApi.patchProfile({...this.state.inputFields});
+        }
+        catch(err) {
+            console.error(err);
+
+            return;
+        }
+
+        if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
+            console.error(new Error(res.body.error));
+
+            return;
+        }
+
+        this.clear();
+
+        Dispatcher.dispatch({
+            name: UserStoreAction.UPDATE,
+            payload: res.body as UserModel,
+        });
+    };
+
+    setAvatar = (e: Event) => {
+        const input = (e.currentTarget as HTMLInputElement);
+        if (!this.avatarField) {
+            this.avatarField = input;
+        }
+        if (this.state.inputFields && input.files) {
+            this.state.inputFields.forUpload = input.files[0];
+        }
+    };
+
+    setName = (e: Event) => {
+        if (!this.nameField) {
+            this.nameField = (e.currentTarget as HTMLInputElement);
+        }
+        if (this.state.inputFields) {
+            this.state.inputFields.name = (e.currentTarget as HTMLInputElement).value;
+        }
+    };
+
+    setEmail = (e: Event) => {
+        if (!this.emailField) {
+            this.emailField = (e.currentTarget as HTMLInputElement);
+        }
+        if (this.state.inputFields) {
+            this.state.inputFields.email = (e.currentTarget as HTMLInputElement).value;
+        }
+    };
+
+    setPhone = (e: Event) => {
+        if (!this.phoneField) {
+            this.phoneField = (e.currentTarget as HTMLInputElement);
+        }
+        if (this.state.inputFields) {
+            this.state.inputFields.phone = (e.currentTarget as HTMLInputElement).value;
+        }
     };
 
     public render() {
+        this;
 
         return createElement(
             'settings',
@@ -32,6 +188,7 @@ export class ProfileSettings extends Component<never, never> {
                     {
                         accept: '.png, .jpg, .jpeg',
                         multiple: false,
+                        oninput: this.setAvatar,
                     },
                 ),
                 createComponent(
@@ -43,7 +200,8 @@ export class ProfileSettings extends Component<never, never> {
                 createComponent(
                     TextInput,
                     {
-
+                        placeholder: this.state?.user?.name ? this.state?.user?.name : '',
+                        oninput: this.setName,
                     },
                 ),
                 createComponent(
@@ -55,7 +213,8 @@ export class ProfileSettings extends Component<never, never> {
                 createComponent(
                     TextInput,
                     {
-
+                        placeholder: this.state?.user?.phone ? this.state?.user.phone : '',
+                        oninput: this.setPhone,
                     },
                 ),
                 createComponent(
@@ -67,7 +226,8 @@ export class ProfileSettings extends Component<never, never> {
                 createComponent(
                     TextInput,
                     {
-
+                        placeholder: this.state?.user?.email ? this.state?.user?.email : '',
+                        oninput: this.setPhone,
                     },
                 ),
                 createComponent(
@@ -83,25 +243,10 @@ export class ProfileSettings extends Component<never, never> {
                         text: 'Отменить',
                         variant: 'neutral',
                         subvariant: 'primary',
+                        onclick: this.clearEvent,
                     },
                 ),
             ),
         );
     }
 }
-
-// <div class="settings-container">
-//     <form class="content">
-//         <span class="text-regular">Аватарка</span>
-//         <input name="avatar" type="file" accept=".png, .jpg, .jpeg">
-//         <span class="text-regular">Имя</span>
-//         <input name="name" class="text-regular searchField" type="text" placeholder="{{this.name}}">
-//         <span class="text-regular">Телефон</span>
-//         <input name="phone" class="text-regular searchField" placeholder="+7 ___ ___ __ __" data-slots="_" type="text" placeholder="{{this.phone}}">
-//         <span class="text-regular">Почта</span>
-//         <input name="email" class="text-regular searchField" type="email" placeholder="{{this.email}}">
-//         <div id="btn-submit"></div>
-//         <div id="btn-cancel"></div>
-//     </form>
-//     <div id="errorBox"></div>
-// </div>

@@ -6,10 +6,9 @@ import { createComponent, createElement } from '../../../components/baseComponen
 import { Select } from '../../../components/baseComponents/select/select';
 import { Files } from '../../../shared/api/file';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
-import { Validate } from '../../../shared/utils/validation';
 import { ProductModelPut, productImageUrl } from '../../../shared/models/product';
 import { Product } from '../../../shared/api/product';
-import UserStore from '../../../shared/store/UserStore';
+import UserStore from '../../../shared/store/user';
 import Navigate from '../../../shared/services/router/Navigate';
 import CategoryStore from '../../../shared/store/category';
 import CityStore from '../../../shared/store/city';
@@ -102,19 +101,10 @@ export class ProductNew extends Component<never,ProductNewState> {
 
     fileInputEvent = (e: Event) => {
         const input = e.target as HTMLInputElement;
-
-        const allowedFormats = input.accept;
         if (!input.files) {
             return;
         }
-
         const files = Array.from(input.files);
-
-        const validation = Validate.allowedFormats(allowedFormats, files);
-
-        if (validation) {
-            return;
-        }
 
         this.state.imagesForUpload = files;
     };

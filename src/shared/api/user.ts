@@ -1,8 +1,9 @@
 import ajax from '../services/ajax';
 import { UserRoutes } from '../constants/api';
+import { UserModelPatch } from '../models/user';
 
 export class UserApi {
-    static async patchProfile(body: any) {
+    static async patchProfile(body: UserModelPatch) {
         return await ajax.patch({
             url: UserRoutes.PROFILE_PATCH,
             body: body,

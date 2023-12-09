@@ -149,7 +149,7 @@ export class FileInput extends Component<FileInputProps, FileInputState> {
         files: [],
     };
 
-    onChangeEvent = (e: Event) => {
+    onInputEvent = (e: Event) => {
         const input = e.currentTarget as HTMLInputElement;
 
         if (input.files) {
@@ -169,13 +169,18 @@ export class FileInput extends Component<FileInputProps, FileInputState> {
             this.setState({
                 files: files,
             });
+
+            if (this.props?.oninput) {
+                this.props.oninput(e);
+            }
         }
+
     };
 
     render() {
         if (!this.props) { throw new Error(errorInputMessage); }
 
-        let {text, ...other} = this.props; // eslint-disable-line prefer-const
+        let {text, oninput, ...other} = this.props; // eslint-disable-line prefer-const, @typescript-eslint/no-unused-vars
         let error: VDomComponent[] = [];
         const fileNames: VDomComponent[] = [];
 
@@ -216,7 +221,7 @@ export class FileInput extends Component<FileInputProps, FileInputState> {
                     {
                         class: 'input-container-file',
                         type: 'file',
-                        onchange: this.onChangeEvent,
+                        oninput: this.onInputEvent,
                         ...other,
                     },
                 ),

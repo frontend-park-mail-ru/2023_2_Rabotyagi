@@ -1,5 +1,6 @@
 import { Component } from '../../../components/baseComponents/snail/component';
-import { createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { ProfilePlaceholder } from '../placeholder';
 
 export class ProfileOrders extends Component<never, never> {
 
@@ -8,6 +9,12 @@ export class ProfileOrders extends Component<never, never> {
         return createElement(
             'orders',
             {},
+            createComponent(
+                ProfilePlaceholder,
+                {
+                    text: 'Все созданные вами заказы будут на этой вкладке',
+                },
+            ),
         );
     }
 }

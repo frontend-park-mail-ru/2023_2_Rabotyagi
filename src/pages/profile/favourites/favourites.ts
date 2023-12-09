@@ -3,13 +3,12 @@ import './favourite.scss';
 import { Component } from '../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Svg, Text } from '../../../components/baseComponents/index';
 import { Card, CardProps } from '../../../components/card/Card';
 
 import { UserApi } from '../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
-
-import placeholder from '../../../assets/icons/placeholder.svg';
+import { ProfilePlaceholder } from '../placeholder';
+import { Text } from '../../../components/baseComponents/index';
 
 interface ProfileFavouritesState {
     items: Array<CardProps>,
@@ -39,8 +38,8 @@ export class ProfileFavourites extends Component<never, ProfileFavouritesState> 
 
             return [
                 createComponent(
-                    Text, 
-                    { 
+                    Text,
+                    {
                         variant: 'subheader',
                         text: 'Идёт загрузка...',
                     },
@@ -51,24 +50,11 @@ export class ProfileFavourites extends Component<never, ProfileFavouritesState> 
         if (this.state.items.length === 0) {
 
             return [
-                createElement(
-                    'div',
-                    {class: 'fav-container-placeholder'},
-                    createComponent(
-                        Svg,
-                        {
-                            content: placeholder,
-                            width: 190,
-                            height: 120,
-                        },
-                    ),
-                    createComponent(
-                        Text,
-                        {
-                            text: 'Все добавленные объявления будут отображаться на этой вкладке',
-                            variant: 'regular',
-                        },
-                    ),
+                createComponent(
+                    ProfilePlaceholder,
+                    {
+                        text: 'Все добавленные объявления будут отображаться на этой вкладке',
+                    },
                 ),
             ];
         }
@@ -108,7 +94,6 @@ export class ProfileFavourites extends Component<never, ProfileFavouritesState> 
         });
 
         return;
-
     }
 
     public render() {

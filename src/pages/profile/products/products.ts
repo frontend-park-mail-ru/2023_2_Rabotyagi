@@ -1,10 +1,11 @@
 import './products.scss';
 import { Component } from '../../../components/baseComponents/snail/component';
-import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { VDomComponent, createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 import { Card } from '../../../components/card/Card';
 import { UserApi } from '../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
 import { ProductModelResponse } from '../../../shared/models/product';
+import { ProfilePlaceholder } from '../placeholder';
 
 interface ProfileProductsState {
     products: Array<ProductModelResponse>
@@ -57,6 +58,26 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
     }
 
     public render() {
+        const products: VDomComponent[] = [];
+
+        if (this.state.products) {
+            this.state.products.forEach((product: ProductModelResponse) => products.push(
+                createComponent(
+                    Card,
+                    {variant: 'profile', ...product},
+                )),
+            );
+        }
+        else {
+            products.push(
+                createComponent(
+                    ProfilePlaceholder,
+                    {
+                        text: 'Все созданные вами объявления будут на этой вкладке',
+                    },
+                ),
+            );
+        }
 
         return createElement(
             'div',
@@ -64,10 +85,7 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
             createElement(
                 'container',
                 {class: 'products-container'},
-                ...this.state.products.map((product: ProductModelResponse) => createComponent(
-                    Card,
-                    {variant: 'profile', ...product},
-                )),
+                ...products,
             ),
         );
     }

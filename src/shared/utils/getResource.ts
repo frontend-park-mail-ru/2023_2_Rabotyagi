@@ -1,17 +1,31 @@
 import ajax from '../services/ajax';
 // const { MOCK } = process.env;
 
-interface Resource {
+type Resource = {
     url: string,
 }
 
-export const getResourceUrl = (resource: string | Resource) => {
+function getResourceUrl(resource: Resource): Resource;
 
-    if (typeof resource === 'string'){
+function getResourceUrl(resource: string): string;
+
+// function getResourceUrl(resource: Resource) {
+
+// }
+
+function getResourceUrl(resource: string | Resource): Resource | string {
+    if (typeof resource === 'string') {
         return ajax.ADRESS_BACKEND + resource;
     }
-
     resource.url = ajax.ADRESS_BACKEND + resource.url;
 
     return resource;
+}
+
+// function getResourceUrl(resource: string): string {
+//     return ajax.ADRESS_BACKEND + resource;
+// }
+
+export {
+    getResourceUrl,
 };

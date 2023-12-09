@@ -32,7 +32,7 @@ export interface VDomComponent {
 export type VDomNode = VDomText | VDomElement | VDomComponent;
 
 export const createText = (
-    value: string | number | boolean,
+    value: string | number | boolean | null,
     key: string = '',
 ): VDomText => {
     return ({

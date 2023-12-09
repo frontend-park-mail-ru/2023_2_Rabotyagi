@@ -13,7 +13,6 @@ import safeDeal from '../../assets/icons/badges/safe_deal.svg';
 import { getResourceUrl } from '../../shared/utils/getResource';
 import { UserApi } from '../../shared/api/user';
 import { ResponseStatusChecker } from '../../shared/constants/response';
-import Dispatcher from '../../shared/services/store/Dispatcher';
 
 export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite' | 'cart';
 
