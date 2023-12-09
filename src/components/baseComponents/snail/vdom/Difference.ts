@@ -100,7 +100,7 @@ export const getDifference = (
     node: VDomNode,
     newNode: VDomNode,
 ): VDomNodeUpdater => {
-
+    
     if (
         node.kind == 'text'
         && newNode.kind == 'text'
@@ -195,13 +195,12 @@ const appendBeforeKey = (elements: Array<VDomNode>, key: string | number | undef
 export const getChildrenDifference = (children: Array<VDomNode>, newChildren: Array<VDomNode>): Array<ChildUpdater> => {
     const copyChildren: Array<VDomNode> = Object.assign([], children);
     const copyNewChildren: Array<VDomNode> = Object.assign([], newChildren);
-    const newChildrenKeys: Array<string | number> = newChildren.map(node => node.key);
 
     let functions: Array<ChildUpdater> = [];
 
     // ищем первый элемент с одинаковым ключом
     let firstEqualElement: VDomNode | undefined = copyChildren.find((node) => {
-       return newChildrenKeys.indexOf(node.key) != -1;
+       return copyNewChildren.map(newNode => newNode.key).indexOf(node.key) != -1;
     });
 
     while (firstEqualElement !== undefined) {
@@ -215,14 +214,13 @@ export const getChildrenDifference = (children: Array<VDomNode>, newChildren: Ar
 
         const lastChild = copyChildren.shift();
         const lastNewChild = copyNewChildren.shift();
-        newChildrenKeys.shift();
 
         if (lastChild && lastNewChild) {
             functions.push(getDifference(lastChild, lastNewChild));
         }
 
         firstEqualElement = copyChildren.find((node) => {
-            return newChildrenKeys.indexOf(node.key) != -1;
+            return copyNewChildren.map(newNode => newNode.key).indexOf(node.key) != -1;
         });
     }
 
@@ -286,7 +284,7 @@ export const applyChanges = (element: HTMLElement | Text, difference: VDomNodeUp
 
 export const applyChildrenChanges = (element: HTMLElement, functions: Array<ChildUpdater>) => {
 
-    // индекс элемента, к которому нужно применить операцию
+    // сдвиг, необходимый, чтобы операции применялись к нужным элементам, если до этого были удаления
     let childIndex: number = 0;
     functions.forEach((func: ChildUpdater, index: number) => {
         if (func.kind == 'pass') {

@@ -44,6 +44,11 @@ export class FavouriteStore extends Store<FavouriteStoreState> {
 
     public addActions(): void {
         this.addAction({
+            name: 'FAVOURITE_FULL',
+            operation: ({payload}) => this.state.list.push({id: payload} as FavouriteModel),
+        });
+
+        this.addAction({
             name: 'FAVOURITE_ADD',
             operation: ({payload}) => this.state.list.push({id: payload} as FavouriteModel),
         });

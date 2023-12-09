@@ -12,24 +12,43 @@ import { ResponseStatusChecker } from '../../../shared/constants/response';
 import placeholder from '../../../assets/icons/placeholder.svg';
 
 interface ProfileFavouritesState {
-    items: Array<object>
+    items: Array<CardProps>,
+    isLoading: boolean,
 }
 
 export class ProfileFavourites extends Component<never, ProfileFavouritesState> {
     state: ProfileFavouritesState = {
         items: [],
+        isLoading: true,
     };
 
-    constructor() {
-        super();
-
+    public componentDidMount() {
         this.getFavs();
     }
 
+    public deleteFavFromArray(index: number) {
+        this.setState({
+            ...this.state,
+            items: this.state.items.filter((elem: CardProps) => elem.id !== index),
+        });
+    }
+
     createFavs() {
-        debugger;
+        //debugger;
+        if (this.state.isLoading) {
+
+            return [
+                createComponent(
+                    Text, 
+                    { 
+                        variant: 'subheader',
+                        text: 'Идёт загрузка...',
+                    },
+                ),
+            ];
+        }
+
         if (this.state.items.length === 0) {
-            // debugger;
 
             return [
                 createElement(
@@ -58,8 +77,9 @@ export class ProfileFavourites extends Component<never, ProfileFavouritesState> 
             createComponent(
                 Card,
                 {
+                    ...item,
                     variant: 'favourite',
-                    ...item as CardProps,
+                    favouriteInfluence: (index: number) => { this.deleteFavFromArray(index); },
                 },
             ),
         );
@@ -82,11 +102,10 @@ export class ProfileFavourites extends Component<never, ProfileFavouritesState> 
             return;
         }
 
-        if (resp.body && resp.body.length > 0) {
-            this.setState({
-                items: resp.body,
-            });
-        }
+        this.setState({
+            items: (resp.body === null ? [] : resp.body),
+            isLoading: false,
+        });
 
         return;
 

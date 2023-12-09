@@ -40,7 +40,7 @@ export abstract class Component<PropsType, StateType> {
     }
 
     public setChildren(children: Array<VDomNode>) {
-        this.children = children;
+        this.children = [...children];
     }
 
     public initProps(props: PropsType | undefined): VDomNode {

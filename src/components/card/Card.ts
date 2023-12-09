@@ -3,7 +3,7 @@ import './cardStyles/card.scss';
 import { Component } from '../baseComponents/snail/component';
 import { VDomNode, createComponent, createElement, createText } from '../baseComponents/snail/vdom/VirtualDOM';
 
-import { Badge } from './Badge/Badge';
+import { Badge } from './badge/Badge';
 import { Text, Button } from '../baseComponents/index';
 
 import Navigate from '../../shared/services/router/Navigate';
@@ -31,9 +31,10 @@ export interface CardProps {
     title: string,
     price: number,
     delivery?: boolean,
-    safeDeal?: boolean,
+    safe_deal?: boolean,
     city?: string,
-    isActive?: boolean
+    isActive?: boolean,
+    favouriteInfluence?: (index: number) => void,
 }
 
 enum MouseButtons {
@@ -67,7 +68,7 @@ export class Card extends Component<CardProps, {}> {
             throw new Error('Card props are undefined');
         }
 
-        return this.props.delivery || this.props.safeDeal || this.props.city;
+        return this.props.delivery || this.props.safe_deal || this.props.city;
     }
 
     renderBadges(badgeClass: string) {
@@ -83,7 +84,7 @@ export class Card extends Component<CardProps, {}> {
                 { class: badgeClass, svgIcon: delivery },
             ));
         }
-        if (this.props.safeDeal) {
+        if (this.props.safe_deal) {
             badges.push(createComponent(
                 Badge,
                 { class: badgeClass, svgIcon: safeDeal },
@@ -167,6 +168,10 @@ export class Card extends Component<CardProps, {}> {
 
     deleteProduct = async() => {};
     deleteFavourite = async(e: Event) => {
+        if (!this.props || !this.props.favouriteInfluence) {
+            throw new Error('Favourite card props are undefined');
+        }
+
         e.stopPropagation();
 
         if (this.props) {
@@ -186,12 +191,14 @@ export class Card extends Component<CardProps, {}> {
                 return;
             }
 
-            Dispatcher.dispatch({
+            this.props.favouriteInfluence(this.props.id);
+
+            /*Dispatcher.dispatch({
                 name: 'FAVOURITE_REMOVE',
                 payload: this.props.id,
-            });
+            });*/
 
-            this.unmount();
+            //this.unmount();
         }
     };
 
