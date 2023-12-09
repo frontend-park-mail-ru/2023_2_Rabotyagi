@@ -22,6 +22,11 @@ export interface SignupPageState {
 }
 
 export class SignupPage extends Component<never, SignupPageState> {
+    keyupEvent = (e: KeyboardEvent) => {
+        if (e.key === 'Enter'){
+            this.signupEvent();
+        }
+    };
 
     state = {
         error: '',
@@ -34,6 +39,14 @@ export class SignupPage extends Component<never, SignupPageState> {
         super();
 
         document.title = 'GoodsGalaxy | Регистрация';
+    }
+
+    public componentDidMount(): void {
+        document.body.addEventListener('keyup', this.keyupEvent);
+    }
+
+    public componentWillUnmount(): void {
+        document.body.removeEventListener('keyup', this.keyupEvent);
     }
 
     setError(error: string) {

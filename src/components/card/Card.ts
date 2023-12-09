@@ -191,8 +191,6 @@ export class Card extends Component<CardProps, {}> {
                 payload: this.props.id,
             });
 
-            this.
-
             this.unmount();
         }
     };

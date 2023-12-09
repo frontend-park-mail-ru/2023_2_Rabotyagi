@@ -31,6 +31,11 @@ export interface SigninPageState {
 export class SigninPage extends Component<{}, SigninPageState> {
     routeToMain = (): void => Navigate.navigateTo('/');
     routeToSignup = (): void => Navigate.navigateTo('signup');
+    keyupEvent = (e: KeyboardEvent) => {
+        if (e.key === 'Enter'){
+            this.signinEvent();
+        }
+    };
 
     state = {
         error: '',
@@ -42,6 +47,14 @@ export class SigninPage extends Component<{}, SigninPageState> {
         super();
 
         document.title = 'GoodsGalaxy | Вход';
+    }
+
+    public componentDidMount(): void {
+        document.body.addEventListener('keyup', this.keyupEvent);
+    }
+
+    public componentWillUnmount(): void {
+        document.body.removeEventListener('keyup', this.keyupEvent);
     }
 
     check(): string | null {
