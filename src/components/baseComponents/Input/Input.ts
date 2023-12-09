@@ -155,13 +155,15 @@ export class FileInput extends Component<FileInputProps, FileInputState> {
         if (input.files) {
             const files = Array.from(input.files);
 
-            const validation = Validate.allowedFormats(input.accept, files);
-            if (validation) {
-                this.setState({
-                    error: `Недопустимый формат: ${validation}`,
-                });
+            if (input.accept) {
+                const validation = Validate.allowedFormats(input.accept, files);
+                if (validation) {
+                    this.setState({
+                        error: `Недопустимый формат: ${validation}`,
+                    });
 
-                return;
+                    return;
+                }
             }
 
             this.setState({
