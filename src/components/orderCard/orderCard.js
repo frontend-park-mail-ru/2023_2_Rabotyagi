@@ -21,7 +21,7 @@ export class OrderCard {
     constructor(order) {
         this.#order = structuredClone({
             ...order,
-            images: getResourceUrl(this.#order.images),
+            images: getResourceUrl(order.images),
 
         });
 

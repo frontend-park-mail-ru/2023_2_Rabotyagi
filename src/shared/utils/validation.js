@@ -41,7 +41,7 @@ export default class Validate {
             return 'Поле пароля не может быть пустым';
         }
         if (password.length < minLenPassword) {
-            return `Пароль не должен быть короче ${minLenPassword} символов`;
+            return 'Пароль или почта пользователя не верны';
         }
 
         return null;
@@ -63,7 +63,7 @@ export default class Validate {
             return 'Поле почты не может быть пустым';
         }
         if (!regexpEmail(email)) {
-            return 'Некорректый email';
+            return 'Пароль или почта пользователя не верны';
         }
 
         return null;
