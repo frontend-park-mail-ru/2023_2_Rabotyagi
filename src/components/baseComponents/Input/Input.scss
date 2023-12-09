@@ -1,4 +1,5 @@
 @use '../../../assets/css/vars.scss';
+@use '../button/button.scss';
 
 input {
     display: flex;
@@ -44,4 +45,25 @@ input:focus-visible {
 .search-field {
     // background: url('../icons/search.svg') no-repeat scroll 7px 50%;
     padding-left: 30px;
+}
+
+.input-base {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+}
+
+.input-container {
+    @extend .button-primary;
+    position: relative;
+    cursor: pointer;
+}
+
+.input-container-file {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    padding: 14px 0;
 }

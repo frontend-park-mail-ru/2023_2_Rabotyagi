@@ -4,7 +4,7 @@ import { Component } from '../snail/component';
 import { VDomNode, createElement, createComponent, createText } from '../snail/vdom/VirtualDOM';
 
 import { Svg } from '../svg/Svg';
-import { TextInput } from '../Input/Input';
+import { TextInput } from '../input/Input';
 
 import searchIcon from '../../../assets/icons/search.svg';
 
