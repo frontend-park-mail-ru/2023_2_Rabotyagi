@@ -94,8 +94,6 @@ export class ProductNew extends Component<never,ProductNewState> {
                 return false;
             }
 
-            debugger;
-
             this.state.uploadedImages = res.body.urls.map((respUrl: string) => {return {url: respUrl};});
 
             return true;
@@ -130,8 +128,6 @@ export class ProductNew extends Component<never,ProductNewState> {
 
             return;
         }
-
-        debugger;
 
         const successful = await this.uploadImages();
 
@@ -214,8 +210,9 @@ export class ProductNew extends Component<never,ProductNewState> {
                     },
                 ),
                 createComponent(
-                    FileInput,
+                FileInput,
                     {
+                        text: 'Выбрать файлики',
                         accept: '.png, .jpg, .jpeg',
                         multiple: true,
                         oninput: this.fileInputEvent,

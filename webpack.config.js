@@ -16,6 +16,10 @@ module.exports = {
     filename: 'bundle.js',
     chunkFilename: '[name].js',
   },
+  cache: {
+    type: 'filesystem',
+    maxAge: 1,
+  },
   module: {
     rules: [
       {

@@ -1,9 +1,11 @@
 import './Input.scss';
 
 import { Component } from '../snail/component';
-import { createElement } from '../snail/vdom/VirtualDOM';
+import { VDomComponent, createComponent, createElement } from '../snail/vdom/VirtualDOM';
 
-import { TextTypes, getTextClass } from '../text/Text';
+import { Text, TextTypes, getTextClass } from '../text/Text';
+import { ErrorMessageBox } from '../index';
+import { Validate } from '../../../shared/utils/validation';
 
 // здесь прописаны все необходимые типы инпутов для проекта
 
@@ -44,6 +46,7 @@ export type PasswordInputProps = BaseInputProps & {
 export type FileInputProps = BaseInputProps & {
     multiple: boolean,
     accept: string,
+    text?: string,
 };
 
 const errorInputMessage: string = 'Input settings are undefined';
@@ -136,17 +139,98 @@ export class Password extends Component<PasswordInputProps, never> {
     }
 }
 
-export class FileInput extends Component<FileInputProps, never> {
+interface FileInputState {
+    files?: Array<File>,
+    error?: string,
+}
+
+export class FileInput extends Component<FileInputProps, FileInputState> {
+    protected state: FileInputState = {
+        files: [],
+    };
+
+    onChangeEvent = (e: Event) => {
+        const input = e.currentTarget as HTMLInputElement;
+
+        if (input.files) {
+            const files = Array.from(input.files);
+
+            if (input.accept) {
+                const validation = Validate.allowedFormats(input.accept, files);
+                if (validation) {
+                    this.setState({
+                        error: `Недопустимый формат: ${validation}`,
+                    });
+
+                    return;
+                }
+            }
+
+            this.setState({
+                files: files,
+            });
+        }
+    };
 
     render() {
         if (!this.props) { throw new Error(errorInputMessage); }
 
+        let {text, ...other} = this.props; // eslint-disable-line prefer-const
+        let error: VDomComponent[] = [];
+        const fileNames: VDomComponent[] = [];
+
+        if (text === undefined) {
+            text = 'Выбрать файлы';
+        }
+
+        if (this.state.error) {
+            error = [
+                createComponent(
+                    ErrorMessageBox,
+                    {
+                        text: this.state.error,
+                    },
+                ),
+            ];
+        }
+
+        if (this.state.files && !this.state.error) {
+            this.state.files.forEach((file) => fileNames.push(
+                createComponent(
+                    Text,
+                    {text: file.name},
+                ),
+            ));
+        }
+
         return createElement(
-            'input',
-            {
-                type: 'file',
-                ...this.props,
-            },
+            'div',
+            {class: 'input-base'},
+            createElement(
+                'div',
+                {
+                    class: 'input-container',
+                },
+                createElement(
+                    'input',
+                    {
+                        class: 'input-container-file',
+                        type: 'file',
+                        onchange: this.onChangeEvent,
+                        ...other,
+                    },
+                ),
+                createElement(
+                    'label',
+                    {class: 'input-container-label'},
+                    createComponent(
+                        Text,
+                        {text},
+                    ),
+                ),
+            ),
+            ...fileNames,
+            ...error,
         );
     }
 }
