@@ -1,10 +1,14 @@
 import './favourite.scss';
-import { Svg, Text } from '../../../components/baseComponents/index';
+
 import { Component } from '../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+
+import { Svg, Text } from '../../../components/baseComponents/index';
 import { Card, CardProps } from '../../../components/card/Card';
+
 import { UserApi } from '../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
+
 import placeholder from '../../../assets/icons/placeholder.svg';
 
 interface ProfileFavouritesState {

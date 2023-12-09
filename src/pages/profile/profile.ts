@@ -1,14 +1,17 @@
 import './profile.scss';
+
 import { Component } from '../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../components/baseComponents/snail/vdom/VirtualDOM';
+
 import { Header } from '../../components/header/header';
 import { Route, Router } from '../../shared/services/router/Routing';
+
 import { ProfileOrders } from './orders/orders';
 import { ProfileProducts } from './products/products';
 import { ProfileSettings } from './settings/settings';
-import { Sidebar } from './sidebar/sidebar';
 import { ProfileFavourites } from './favourites/favourites';
 import { ProfileSaler } from './saler/saler';
+import { Sidebar } from './sidebar/sidebar';
 
 export class Profile extends Component<never, never> {
 

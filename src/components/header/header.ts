@@ -2,12 +2,15 @@ import './header.scss';
 
 import { Component } from '../baseComponents/snail/component';
 import { createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
-import { Button, Dropdown, TextInput } from '../baseComponents/index';
-import logo from '../../assets/icons/logo.svg';
+
+import { Button, Dropdown, TextInput, ButtonImage } from '../baseComponents/index';
+
 import Navigate from '../../shared/services/router/Navigate';
+
 import UserStore from '../../shared/store/UserStore';
 import { logout } from '../../shared/store/commonActions/auth';
-import { ButtonImage } from '../baseComponents/button/Button';
+
+import logo from '../../assets/icons/logo.svg';
 
 export class Header extends Component<never, never>{
     routeToSignin = () => Navigate.navigateTo('/signin');
