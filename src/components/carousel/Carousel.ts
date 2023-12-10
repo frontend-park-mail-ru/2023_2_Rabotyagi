@@ -4,7 +4,7 @@ import { Component } from '../baseComponents/snail/component';
 import { createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Button, Image } from '../baseComponents/index';
-import { getResourceUrl } from '../../shared/utils/getResource';
+import { getResourceUrl } from '../../shared/utils/getResource/getResource';
 
 export interface CarouselProps {
     images: Array<{ url: string }> | undefined | null,
@@ -21,11 +21,6 @@ export class Carousel extends Component<CarouselProps, CarouselState> {
     };
 
     imageArrayLength = () => this.props?.images ? this.props.images.length : 0;
-
-    constructor() {
-        super();
-
-    }
 
     goBack = (e: Event) => {
         e.preventDefault();
@@ -83,7 +78,7 @@ export class Carousel extends Component<CarouselProps, CarouselState> {
                     Image,
                     {
                         class: 'carousel-item',
-                        src: getResourceUrl(images[this.state.currentImageIndex].url) as string,
+                        src: images[this.state.currentImageIndex].url,
                     },
                 ) :
                 createElement(

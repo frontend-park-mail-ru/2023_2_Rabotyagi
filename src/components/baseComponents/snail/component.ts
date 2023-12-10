@@ -8,27 +8,32 @@ export abstract class Component<PropsType, StateType> {
     protected children: Array<VDomNode> = [];
 
     private node: VDomNode | undefined;
-    private domElement: HTMLElement | Text | undefined;
+    private _domElement: HTMLElement | Text | undefined;
 
     protected applyComponentChanges() {
-        if (!this.domElement) {
+        if (!this._domElement) {
             throw new Error('domelement is undefined');
         }
 
-        applyChanges(this.domElement, this.getComponentDifference());
+        applyChanges(this._domElement, this.getComponentDifference());
+    }
+
+    public get domElement() {
+        // return this._domElement?.cloneNode();
+        return this._domElement;
     }
 
     public setState(state: StateType): void {
-        if (!this.domElement) {
-            throw new Error('domelement is undefined');
+        if (this._domElement) {
+            this.state = {...this.state, ...state};
+            this.applyComponentChanges();
+            // throw new Error('domelement is undefined');
         }
 
-        this.state = {...this.state, ...state};
-        this.applyComponentChanges();
     }
 
     public setProps(props: PropsType): VDomNodeUpdater | null {
-        if (!this.domElement) {
+        if (!this._domElement) {
 
             return null;
         }
@@ -51,7 +56,7 @@ export abstract class Component<PropsType, StateType> {
     }
 
     public notifyMounted(element: HTMLElement | Text) {
-        this.domElement = element;
+        this._domElement = element;
         // необходимо для асинхронного выполнения
         setTimeout(() => {
             this.componentDidMount();
@@ -60,8 +65,8 @@ export abstract class Component<PropsType, StateType> {
 
     public unmount() {
         this.componentWillUnmount();
-        // this.domElement?.remove();
-        this.domElement = undefined;
+        // this._domElement?.remove();
+        this._domElement = undefined;
     }
 
     public componentDidMount() {}
@@ -88,7 +93,7 @@ export abstract class Component<PropsType, StateType> {
             // передаём стрелочную функцию для сохранения контекста
             // здесь не вызывается notifyMounted, так как он учатсвует в жизненном цикле компонента
             difference.callback = (element) => {
-                this.domElement = element;
+                this._domElement = element;
             };
         }
         this.node = newNode;

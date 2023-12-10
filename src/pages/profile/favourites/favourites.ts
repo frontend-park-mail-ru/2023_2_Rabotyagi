@@ -8,7 +8,7 @@ import { Card, CardProps } from '../../../components/card/Card';
 import { UserApi } from '../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
 import { ProfilePlaceholder } from '../placeholder';
-import { Text } from '../../../components/baseComponents/index';
+import { Loader } from '../../../components/loader/Loader';
 
 interface ProfileFavouritesState {
     items: Array<CardProps>,
@@ -25,6 +25,31 @@ export class ProfileFavourites extends Component<never, ProfileFavouritesState> 
         this.getFavs();
     }
 
+    async getFavs() {
+        let resp;
+
+        try {
+            resp = await UserApi.getFavs();
+
+        } catch (err) {
+            console.error(err);
+
+            return;
+        }
+
+        if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {
+
+            return;
+        }
+
+        this.setState({
+            items: (resp.body === null ? [] : resp.body),
+            isLoading: false,
+        });
+
+        return;
+    }
+
     public deleteFavFromArray(index: number) {
         this.setState({
             ...this.state,
@@ -38,11 +63,8 @@ export class ProfileFavourites extends Component<never, ProfileFavouritesState> 
 
             return [
                 createComponent(
-                    Text,
-                    {
-                        variant: 'subheader',
-                        text: 'Идёт загрузка...',
-                    },
+                    Loader,
+                    {},
                 ),
             ];
         }
@@ -69,31 +91,6 @@ export class ProfileFavourites extends Component<never, ProfileFavouritesState> 
                 },
             ),
         );
-    }
-
-    async getFavs() {
-        let resp;
-
-        try {
-            resp = await UserApi.getFavs();
-
-        } catch (err) {
-            console.error(err);
-
-            return;
-        }
-
-        if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {
-
-            return;
-        }
-
-        this.setState({
-            items: (resp.body === null ? [] : resp.body),
-            isLoading: false,
-        });
-
-        return;
     }
 
     public render() {

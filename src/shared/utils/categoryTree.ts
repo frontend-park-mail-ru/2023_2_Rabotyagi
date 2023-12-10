@@ -1,6 +1,6 @@
 import { CategoryModel } from '../models/category';
 
-export class Node {
+class Node {
     id: number;
     name: string;
     parentId: number | null;
@@ -13,7 +13,7 @@ export class Node {
     }
 }
 
-export const searchNode = (node: Node | Array<Node>, id: number) => {
+function searchNode(node: Node | Array<Node>, id: number) {
     if (Array.isArray(node)){
         let parents: Array<Node | undefined> = [];
         node.forEach((elem) => parents = [...parents, searchNode(elem, id)]);
@@ -50,9 +50,9 @@ export const searchNode = (node: Node | Array<Node>, id: number) => {
     }
 
     return res[ 0 ];
-};
+}
 
-export const tree = (childs: Array<CategoryModel>) => {
+function tree(childs: Array<CategoryModel>) {
     let roots: Array<Node> = [];
 
     childs.forEach((elem) => {
@@ -71,4 +71,10 @@ export const tree = (childs: Array<CategoryModel>) => {
     });
 
     return roots;
+}
+
+export {
+    Node,
+    searchNode,
+    tree,
 };

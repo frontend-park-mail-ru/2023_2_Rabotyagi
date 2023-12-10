@@ -108,7 +108,7 @@ export class Validate {
         return null;
     }
 
-    static allowedFormats(allowedFormats: string, files: Array<File>) {
+    static allowedFormats(allowedFormats: string, files: Array<File>): string | null {
         const formats = allowedFormats
             .replaceAll('.', '')
             .replaceAll(' ', '')

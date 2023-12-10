@@ -60,7 +60,7 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
     public render() {
         const products: VDomComponent[] = [];
 
-        if (this.state.products) {
+        if (this.state.products.length !== 0) {
             this.state.products.forEach((product: ProductModelResponse) => products.push(
                 createComponent(
                     Card,

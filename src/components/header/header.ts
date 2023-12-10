@@ -25,6 +25,18 @@ export class Header extends Component<never, never>{
         }
     };
 
+    avatar: string | null;
+
+    constructor() {
+        super();
+
+        const fields = UserStore.getFields();
+        this.avatar = null;
+        if (fields) {
+            this.avatar = fields.avatar;
+        }
+    }
+
     render() {
         let tail;
 
@@ -86,6 +98,7 @@ export class Header extends Component<never, never>{
                     subvariant: 'primary',
                     height: 36,
                     width: 36,
+                    src: this.avatar ? this.avatar : undefined,
                     onclick: () => {
                         (dropdown.instance as Dropdown).switchHidden();
                     },

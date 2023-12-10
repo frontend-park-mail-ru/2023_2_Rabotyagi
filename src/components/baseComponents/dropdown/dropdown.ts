@@ -18,30 +18,47 @@ interface DropdownProps {
 }
 
 interface DropDownState {
-    hidden: boolean;
+    hidden: boolean,
+    // buf?: boolean,
 }
 
 export class Dropdown extends Component<DropdownProps, DropDownState> {
     protected state: DropDownState = {
         hidden: true,
+        // buf: true,
     };
 
     // switchHiddenDOMEvent = (e: Event) => {
     //     debugger;
-    //     if ((e.target as HTMLElement) != (this.domElement?.parentElement || this.domElement)){
+    //     if ((e.target as HTMLElement) != (this.domElement?.parentElement || this.domElement) && !this.state.hidden){
     //         this.switchHidden();
     //     }
 
     // };
 
     switchHidden() {
+        // this.state.buf = !this.state.buf;
         this.setState({
             hidden: !this.state.hidden,
         });
     }
 
+    // clickEvent = () => {
+    //     debugger;
+    //     if (!this.state.buf) {
+    //         this.switchHidden();
+    //     }
+    //     else {
+    //         this.state.buf = false;
+    //     }
+    // };
+
     // public componentDidMount(): void {
     //     document.body.addEventListener('click', this.switchHiddenDOMEvent);
+    // }
+
+    // public componentWillUnmount(): void {
+    //     document.body.removeEventListener('click', this.switchHiddenDOMEvent);
     // }
 
     public render(): VDomNode {
@@ -75,8 +92,4 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
             ) : createText(''),
         );
     }
-
-    // public componentWillUnmount(): void {
-    //     document.body.removeEventListener('click', this.switchHiddenDOMEvent);
-    // }
 }
