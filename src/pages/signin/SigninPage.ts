@@ -4,23 +4,20 @@ import { Component } from '../../components/baseComponents/snail/component';
 import { createComponent, createElement, createText } from '../../components/baseComponents/snail/vdom/VirtualDOM';
 
 import { Cell } from './cell/Cell';
-import { Caption } from '../../components/сaption/Caption';
+import { Caption } from '../../components/caption/Caption';
 import { Text, Button, TextInput, Password, ErrorMessageBox } from '../../components/baseComponents/index';
-
-// import { login } from '../../shared/store/commonActions/auth';
-// import Dispatcher from '../../shared/services/store/Dispatcher';
 
 import Navigate from '../../shared/services/router/Navigate';
 
 import { Validate } from '../../shared/utils/validation';
+import { Auth } from '../../shared/api/auth';
+import { ResponseMessage, ResponseStatusChecker } from '../../shared/constants/response';
+import { login } from '../../shared/store/commonActions/auth';
 
 import message from '../../assets/icons/sigin/message.svg';
 import free from '../../assets/icons/sigin/free.svg';
 import safe from '../../assets/icons/sigin/safe.svg';
 import logo from '../../assets/icons/logo.svg';
-import { Auth } from '../../shared/api/auth';
-import { ResponseMessage, ResponseStatusChecker } from '../../shared/constants/response';
-import { login } from '../../shared/store/commonActions/auth';
 
 export interface SigninPageState {
     error: string,
@@ -29,14 +26,6 @@ export interface SigninPageState {
 }
 
 export class SigninPage extends Component<{}, SigninPageState> {
-    routeToMain = (): void => Navigate.navigateTo('/');
-    routeToSignup = (): void => Navigate.navigateTo('signup');
-    keyupEvent = (e: KeyboardEvent) => {
-        if (e.key === 'Enter'){
-            this.signinEvent();
-        }
-    };
-
     state = {
         error: '',
         email: '',
@@ -48,6 +37,14 @@ export class SigninPage extends Component<{}, SigninPageState> {
 
         document.title = 'GoodsGalaxy | Вход';
     }
+
+    routeToMain = (): void => Navigate.navigateTo('/');
+    routeToSignup = (): void => Navigate.navigateTo('signup');
+    keyupEvent = (e: KeyboardEvent) => {
+        if (e.key === 'Enter'){
+            this.signinEvent();
+        }
+    };
 
     public componentDidMount(): void {
         document.body.addEventListener('keyup', this.keyupEvent);

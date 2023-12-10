@@ -3,16 +3,17 @@ import './Signup.scss';
 import { Component } from '../../components/baseComponents/snail/component';
 import { createComponent, createElement, createText } from '../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Caption } from '../../components/сaption/Caption';
+import { Caption } from '../../components/caption/Caption';
 import { Text, Button, TextInput, ErrorMessageBox, PasswordField } from '../../components/baseComponents/index';
 
 import Navigate from '../../shared/services/router/Navigate';
 
-import logo from '../../assets/icons/logo.svg';
 import { Validate } from '../../shared/utils/validation';
 import { Auth } from '../../shared/api/auth';
 import { ResponseMessage, ResponseStatusChecker } from '../../shared/constants/response';
 import { login } from '../../shared/store/commonActions/auth';
+
+import logo from '../../assets/icons/logo.svg';
 
 export interface SignupPageState {
     error: string,
@@ -22,11 +23,6 @@ export interface SignupPageState {
 }
 
 export class SignupPage extends Component<never, SignupPageState> {
-    keyupEvent = (e: KeyboardEvent) => {
-        if (e.key === 'Enter'){
-            this.signupEvent();
-        }
-    };
 
     state = {
         error: '',
@@ -40,6 +36,12 @@ export class SignupPage extends Component<never, SignupPageState> {
 
         document.title = 'GoodsGalaxy | Регистрация';
     }
+
+    keyupEvent = (e: KeyboardEvent) => {
+        if (e.key === 'Enter'){
+            this.signupEvent();
+        }
+    };
 
     public componentDidMount(): void {
         document.body.addEventListener('keyup', this.keyupEvent);
