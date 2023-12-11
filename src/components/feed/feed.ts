@@ -54,7 +54,7 @@ export class Feed extends Component<FeedProps, FeedState> {
         }
 
         this.setState({
-            products: resp.body,
+            products: resp.body ? resp.body : [],
         });
     }
 

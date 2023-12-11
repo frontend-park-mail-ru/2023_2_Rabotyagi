@@ -74,7 +74,6 @@ services:
 volumes:
     postgres:
     pgadmin:
-    imgs:
     log:
     log-fs:
     log-auth:
