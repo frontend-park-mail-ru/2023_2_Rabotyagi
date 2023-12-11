@@ -1,4 +1,4 @@
-import './Loader.scss';
+import './loader.scss';
 
 import { Component } from '../baseComponents/snail/component';
 import { createComponent } from '../baseComponents/snail/vdom/VirtualDOM';

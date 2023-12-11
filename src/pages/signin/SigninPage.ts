@@ -1,4 +1,4 @@
-import './Signin.scss';
+import './signin.scss';
 
 import { Component } from '../../components/baseComponents/snail/component';
 import { createComponent, createElement, createText } from '../../components/baseComponents/snail/vdom/VirtualDOM';

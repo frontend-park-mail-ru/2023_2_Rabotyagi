@@ -11,7 +11,7 @@ import { login } from './shared/store/commonActions/auth';
 import { Loader } from './components/loader/Loader';
 import { Product } from './pages/product/product';
 import { Profile } from './pages/profile/profile';
-import CityStore from './shared/store/city';
+import CityStore from './shared/store/city'; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 interface AppState {
     loading: boolean

@@ -1,4 +1,4 @@
-import './Button.scss';
+import './button.scss';
 
 import { Component } from '../snail/component';
 import { createElement, createComponent, createText, VDomNode } from '../snail/vdom/VirtualDOM';
