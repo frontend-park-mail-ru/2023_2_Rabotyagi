@@ -7,6 +7,10 @@ import { applicationJson, multipartFormData } from '../constants/contentType';
 
 const { SCHEMA, API_URL, NODE_ENV } = process.env;
 
+let { API_PORT } = process.env;
+
+API_PORT = API_PORT || 8080;
+
 /**
  * @constant
  * @summary Методы, поддерживаемые беком на данный момент
@@ -30,7 +34,7 @@ class Ajax {
             this.ADRESS_BACKEND = SCHEMA + API_URL + '/api/v1/';
         }
         else {
-            this.ADRESS_BACKEND = SCHEMA + API_URL + ':8080/api/v1/';
+            this.ADRESS_BACKEND = SCHEMA + API_URL + ':'+ API_PORT + '/api/v1/';
         }
     }
     /**
