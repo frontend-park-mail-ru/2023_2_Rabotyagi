@@ -110,7 +110,6 @@ export class ProductBaseView extends Component<ProductBaseViewProps, ProductBase
         if (!this.props) {
             throw new Error('ProductBaseView props undefined');
         }
-        debugger;
         const city = CityStore.getById(this.props.city_id);
         const category = CategoryStore.getById(this.props.category_id);
 

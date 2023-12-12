@@ -76,7 +76,14 @@ export class Sidebar extends Component<never, SidebarState> {
     }
 
     routeToProfile = () => Navigate.navigateTo(`/profile${this.state?.variant === 'saler' ? '/saler?id=' + this.state.id : '' }`);
-    routeToProducts = () => Navigate.navigateTo(`/profile/${this.state?.variant === 'saler' ? 'saler/' : '' }products`);
+    routeToProducts = () => {
+        if (this.state?.variant === 'saler') {
+            Navigate.navigateTo('/profile/saler/products', { salerId: this.state.id});
+
+            return;
+        }
+        Navigate.navigateTo('/profile/products');
+    };
     routeToOrders = () => Navigate.navigateTo(`/profile/${this.state?.variant === 'saler' ? 'saler/' : '' }orders`);
     routeToFavourites = () => Navigate.navigateTo(`/profile/${this.state?.variant === 'saler' ? 'saler/' : '' }favourites`);
     routeToSettings = () => Navigate.navigateTo(`/profile/${this.state?.variant === 'saler' ? 'saler/' : '' }settings`);
