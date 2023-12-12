@@ -1,7 +1,7 @@
 import { Button, Image, Text } from '../../../components/baseComponents/index';
 import { Component } from '../../../components/baseComponents/snail/component';
 import { VDomComponent, createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
-import UserStore from '../../../shared/store/src/user';
+import UserStore from '../../../shared/store/user';
 import list from '../../../assets/icons/list.svg';
 import heart from '../../../assets/icons/heart.svg';
 import settings from '../../../assets/icons/settings.svg';

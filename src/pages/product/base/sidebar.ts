@@ -7,7 +7,7 @@ import delivery from '../../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../../assets/icons/badges/safe_deal.svg';
 import Navigate from '../../../shared/services/router/Navigate';
 import { ProductBase } from './base';
-import UserStore from '../../../shared/store/src/user';
+import UserStore from '../../../shared/store/user';
 
 interface ProductSidebarProps extends UserModel {
     price: number,

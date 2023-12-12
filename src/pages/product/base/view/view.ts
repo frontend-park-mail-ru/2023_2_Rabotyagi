@@ -3,9 +3,9 @@ import { Component } from '../../../../components/baseComponents/snail/component
 import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 import fav from '../../../../assets/icons/heart.svg';
 import { Carousel } from '../../../../components/carousel/Carousel';
-import CityStore from '../../../../shared/store/src/city';
-import CategoryStore from '../../../../shared/store/src/category';
-import FavouriteStore from '../../../../shared/store/src/favourite';
+import CityStore from '../../../../shared/store/city';
+import CategoryStore from '../../../../shared/store/category';
+import FavouriteStore from '../../../../shared/store/favourite';
 import { UserApi } from '../../../../shared/api/user';
 import Dispatcher from '../../../../shared/services/store/Dispatcher';
 import { ResponseStatusChecker } from '../../../../shared/constants/response';

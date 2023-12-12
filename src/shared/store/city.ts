@@ -1,5 +1,5 @@
-import { CityApi } from '../../api/city';
-import { Store } from '../../services/store/Store';
+import { CityApi } from '../api/city';
+import { Store } from '../services/store/Store';
 
 interface CityStoreState {
     list: Array<CityModel>

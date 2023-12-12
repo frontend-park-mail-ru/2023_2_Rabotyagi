@@ -7,10 +7,10 @@ import { Select } from '../../../components/baseComponents/select/select';
 import { Files } from '../../../shared/api/file';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
 import { Product } from '../../../shared/api/product';
-import UserStore from '../../../shared/store/src/user';
+import UserStore from '../../../shared/store/user';
 import Navigate from '../../../shared/services/router/Navigate';
-import CategoryStore from '../../../shared/store/src/category';
-import CityStore from '../../../shared/store/src/city';
+import CategoryStore from '../../../shared/store/category';
+import CityStore from '../../../shared/store/city';
 
 interface ProductNewState {
     title: string,

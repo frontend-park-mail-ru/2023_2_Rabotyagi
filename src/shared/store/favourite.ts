@@ -1,5 +1,5 @@
-import { UserApi } from '../../api/user';
-import { Store } from '../../services/store/Store';
+import { UserApi } from '../api/user';
+import { Store } from '../services/store/Store';
 
 interface FavouriteStoreState {
     list: Array<FavouriteModel>

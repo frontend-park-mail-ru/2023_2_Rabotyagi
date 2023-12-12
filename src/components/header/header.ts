@@ -7,8 +7,8 @@ import { Button, Dropdown, TextInput, ButtonImage } from '../baseComponents/inde
 
 import Navigate from '../../shared/services/router/Navigate';
 
-import UserStore from '../../shared/store/src/user';
-import { logout } from '../../shared/store/src/commonActions/auth';
+import UserStore from '../../shared/store/user';
+import { logout } from '../../shared/store/commonActions/auth';
 
 import logo from '../../assets/icons/logo.svg';
 

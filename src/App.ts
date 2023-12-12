@@ -7,11 +7,11 @@ import { SigninPage } from './pages/signin/SigninPage';
 import { SignupPage } from './pages/signup/SignupPage';
 import { MainPage } from './pages/main/Main';
 
-import { login } from './shared/store/src/commonActions/auth';
+import { login } from './shared/store/commonActions/auth';
 import { Loader } from './components/loader/Loader';
 import { Product } from './pages/product/product';
 import { Profile } from './pages/profile/profile';
-import CityStore from './shared/store/src/city'; // eslint-disable-line @typescript-eslint/no-unused-vars
+import CityStore from './shared/store/city'; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 interface AppState {
     loading: boolean

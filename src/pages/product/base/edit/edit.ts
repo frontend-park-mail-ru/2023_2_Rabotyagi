@@ -7,8 +7,8 @@ import { Product } from '../../../../shared/api/product';
 import { ResponseStatusChecker } from '../../../../shared/constants/response';
 import Navigate from '../../../../shared/services/router/Navigate';
 // import UserStore from '../../../../shared/store/UserStore';
-import CategoryStore from '../../../../shared/store/src/category';
-import CityStore from '../../../../shared/store/src/city';
+import CategoryStore from '../../../../shared/store/category';
+import CityStore from '../../../../shared/store/city';
 import { Validate } from '../../../../shared/utils/validation';
 
 interface ProductBaseEditProps extends ProductModel {}

@@ -1,6 +1,6 @@
-import { CategoryApi } from '../../api/category';
-import { Store } from '../../services/store/Store';
-import { TreeNode, searchNode, tree } from '../../utils/categoryTree';
+import { CategoryApi } from '../api/category';
+import { Store } from '../services/store/Store';
+import { TreeNode, searchNode, tree } from '../utils/categoryTree';
 
 interface CategoryStoreState {
     root?: Array<TreeNode>,

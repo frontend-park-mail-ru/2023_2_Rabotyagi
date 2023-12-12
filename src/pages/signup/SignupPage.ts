@@ -11,7 +11,7 @@ import Navigate from '../../shared/services/router/Navigate';
 import { Validate } from '../../shared/utils/validation';
 import { Auth } from '../../shared/api/auth';
 import { ResponseMessage, ResponseStatusChecker } from '../../shared/constants/response';
-import { login } from '../../shared/store/src/commonActions/auth';
+import { login } from '../../shared/store/commonActions/auth';
 
 import logo from '../../assets/icons/logo.svg';
 
