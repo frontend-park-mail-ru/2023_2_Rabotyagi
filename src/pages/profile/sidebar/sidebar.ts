@@ -40,7 +40,10 @@ export class Sidebar extends Component<never, SidebarState> {
     }
 
     async fetchSalerProfile() {
-        const salerId = Number((new URLSearchParams(window.location.search)).get('id'));
+        let salerId = Number((new URLSearchParams(window.location.search)).get('id'));
+        if (!salerId){
+            salerId = history.state.salerId;
+        }
 
         let resp;
 
@@ -75,7 +78,15 @@ export class Sidebar extends Component<never, SidebarState> {
         });
     }
 
-    routeToProfile = () => Navigate.navigateTo(`/profile${this.state?.variant === 'saler' ? '/saler?id=' + this.state.id : '' }`);
+    routeToProfile = () => {
+        if (this.state?.variant === 'saler'){
+            Navigate.navigateTo(`/profile${'/saler?id=' + this.state.id }`, {salerId: this.state.id});
+
+            return;
+        }
+        Navigate.navigateTo('/profile');
+    };
+
     routeToProducts = () => {
         if (this.state?.variant === 'saler') {
             Navigate.navigateTo('/profile/saler/products', { salerId: this.state.id});
