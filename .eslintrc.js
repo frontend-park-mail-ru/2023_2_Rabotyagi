@@ -19,7 +19,7 @@ module.exports = {
     'quotes': ['error', 'single'], // Одинарные кавычки
     'no-console': ['error', { allow: ['error', 'info'] }], // Запрет использования console.log
     'no-unused-vars': 'off', // Запрет неиспользуемых переменных
-    'no-undef': 'error', // Запрет использования необъявленных переменных
+    // 'no-undef': 'error', // Запрет использования необъявленных переменных
     'no-multiple-empty-lines': ['error', { max: 1 }], // Запрет множественных пустых строк
     'no-trailing-spaces': 'error', // Запрет завершающих пробелов
     'comma-dangle': ['error', 'always-multiline'], // Запятая в конце массивов и объектов

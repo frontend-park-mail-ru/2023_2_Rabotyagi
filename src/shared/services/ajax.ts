@@ -23,7 +23,7 @@ interface ContextType {
     [key: string]: any;
 }
 
-const { SCHEMA, API_URL, NODE_ENV } = process.env;
+const { SCHEMA, API_URL, NODE_ENV, API_PORT } = process.env;
 
 const AJAX_METHODS = {
     GET: 'GET',
@@ -33,11 +33,12 @@ const AJAX_METHODS = {
     PUT: 'PUT',
 };
 
-class Ajax {
-    port: string = '8080';
-    ADRESS_BACKEND: string;
+export class Ajax {
+    private port: string = API_PORT || '8080';
+    public ADRESS_BACKEND: string;
+    private static instance: Ajax;
 
-    constructor() {
+    private constructor() {
         if (!SCHEMA || !API_URL) {
             throw new Error('SCHEMA or API_URL are undefined');
         }
@@ -46,8 +47,16 @@ class Ajax {
             this.ADRESS_BACKEND = SCHEMA + API_URL + '/api/v1/';
         }
         else {
-            this.ADRESS_BACKEND = SCHEMA + API_URL + ':8080/api/v1/';
+            this.ADRESS_BACKEND = SCHEMA + API_URL + ':' + this.port + '/api/v1/';
         }
+    }
+
+    public static getInstance(): Ajax {
+        if (!Ajax.instance) {
+            Ajax.instance = new Ajax();
+        }
+
+        return Ajax.instance;
     }
 
     async #ajax({
@@ -163,5 +172,3 @@ class Ajax {
         });
     }
 }
-
-export default new Ajax();

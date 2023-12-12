@@ -1,4 +1,4 @@
-import { Store } from '../services/store/Store';
+import { Store } from '../../services/store/Store';
 
 export interface CounterStoreInterface {
     count: number

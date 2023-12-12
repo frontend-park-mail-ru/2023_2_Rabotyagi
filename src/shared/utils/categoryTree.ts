@@ -1,10 +1,8 @@
-import { CategoryModel } from '../models/category';
-
-class Node {
+export class TreeNode {
     id: number;
     name: string;
     parentId: number | null;
-    childs: Array<Node> = [];
+    childs: Array<TreeNode> = [];
 
     constructor({ id, name, parent_id: parentId }: {id: number, name: string, parent_id: number | null}){
         this.id = id;
@@ -13,9 +11,9 @@ class Node {
     }
 }
 
-function searchNode(node: Node | Array<Node>, id: number) {
+export function searchNode(node: TreeNode | Array<TreeNode>, id: number) {
     if (Array.isArray(node)){
-        let parents: Array<Node | undefined> = [];
+        let parents: Array<TreeNode | undefined> = [];
         node.forEach((elem) => parents = [...parents, searchNode(elem, id)]);
         parents = parents.filter((parent) => parent !== undefined);
 
@@ -35,7 +33,7 @@ function searchNode(node: Node | Array<Node>, id: number) {
         return undefined;
     }
 
-    let res: Array<Node | undefined> = [];
+    let res: Array<TreeNode | undefined> = [];
 
     node.childs.forEach((value) => {
         res = [ ...res, searchNode(value, id) ];
@@ -52,11 +50,11 @@ function searchNode(node: Node | Array<Node>, id: number) {
     return res[ 0 ];
 }
 
-function tree(childs: Array<CategoryModel>) {
-    let roots: Array<Node> = [];
+export function tree(childs: Array<CategoryModel>) {
+    let roots: Array<TreeNode> = [];
 
     childs.forEach((elem) => {
-        const value = new Node(elem);
+        const value = new TreeNode(elem);
         if (value.parentId === null) {
             roots = [...roots, value];
 
@@ -72,9 +70,3 @@ function tree(childs: Array<CategoryModel>) {
 
     return roots;
 }
-
-export {
-    Node,
-    searchNode,
-    tree,
-};

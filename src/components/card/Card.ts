@@ -10,7 +10,7 @@ import Navigate from '../../shared/services/router/Navigate';
 
 import delivery from '../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../assets/icons/badges/safe_deal.svg';
-import { getResourceUrl } from '../../shared/utils/getResource/getResource';
+import { getResourceUrl } from '../../shared/utils/getResource/src/getResource';
 import { UserApi } from '../../shared/api/user';
 import { ResponseStatusChecker } from '../../shared/constants/response';
 import { Product } from '../../shared/api/product';
@@ -167,7 +167,6 @@ export class Card extends Component<CardProps, {}> {
     }
 
     deleteProduct = async(e: Event) => {
-        debugger;
         e.stopPropagation();
 
         if (this.props) {

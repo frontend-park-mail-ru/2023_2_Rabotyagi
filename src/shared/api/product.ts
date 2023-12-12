@@ -1,10 +1,9 @@
-import ajax from '../services/ajax';
 import { ProductRoutes } from '../constants/api';
-import { ProductModel, ProductModelPut } from '../models/product';
+import { Ajax } from '../services/ajax';
 
 export class Product {
     static async feed() {
-        return await ajax.get({
+        return await Ajax.getInstance().get({
             url: ProductRoutes.LIST,
             params: {
                 'count': 20,
@@ -14,7 +13,7 @@ export class Product {
     }
 
     static async get(id: number) {
-        return await ajax.get({
+        return await Ajax.getInstance().get({
             url: ProductRoutes.GET,
             params: {
                 'id': id,
@@ -24,7 +23,7 @@ export class Product {
     }
 
     static async create(data: ProductModelPut) {
-        return await ajax.post({
+        return await Ajax.getInstance().post({
             url: ProductRoutes.POST,
             body: data,
             credentials: 'include',
@@ -32,7 +31,7 @@ export class Product {
     }
 
     static async delete(id: number) {
-        return await ajax.delete({
+        return await Ajax.getInstance().delete({
             url: ProductRoutes.DELETE,
             params: {
                 'id': id,
@@ -42,7 +41,7 @@ export class Product {
     }
 
     static async patch(id: number, data: ProductModel) {
-        return await ajax.patch({
+        return await Ajax.getInstance().patch({
             url: ProductRoutes.PATCH,
             params: {
                 'id': id,
@@ -53,7 +52,7 @@ export class Product {
     }
 
     static async activate(id: number) {
-        return await ajax.patch({
+        return await Ajax.getInstance().patch({
             url: ProductRoutes.ACTIVATE,
             params: {
                 'id': id,
@@ -63,7 +62,7 @@ export class Product {
     }
 
     static async deactivate(id: number) {
-        return await ajax.patch({
+        return await Ajax.getInstance().patch({
             url: ProductRoutes.DEACTIVATE,
             params: {
                 'id': id,
@@ -73,7 +72,7 @@ export class Product {
     }
 
     static async put(id: number, data: ProductModelPut) {
-        return await ajax.put({
+        return await Ajax.getInstance().put({
             url: ProductRoutes.PUT,
             params: {
                 'id': id,
@@ -84,7 +83,7 @@ export class Product {
     }
 
     static async search(searchString: string) {
-        return await ajax.get({
+        return await Ajax.getInstance().get({
             url: ProductRoutes.SEARCH,
             params: {
                 'searched': searchString,
@@ -94,7 +93,7 @@ export class Product {
     }
 
     static async searchFeed(searchString: string) {
-        return await ajax.get({
+        return await Ajax.getInstance().get({
             url: ProductRoutes.SEARCH_FEED,
             params: {
                 'count': 20,

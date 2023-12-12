@@ -1,9 +1,9 @@
-import ajax from '../services/ajax';
 import { OrderRoutes } from '../constants/api';
+import { Ajax } from '../services/ajax';
 
 export class Order {
     static async create(product: any) {
-        return await ajax.post({
+        return await Ajax.getInstance().post({
             url: OrderRoutes.ADD,
             body: product,
             credentials: 'include',
@@ -11,14 +11,14 @@ export class Order {
     }
 
     static async getCart() {
-        return await ajax.get({
+        return await Ajax.getInstance().get({
             url: OrderRoutes.GET_BASKET,
             credentials: 'include',
         });
     }
 
     static async deleteOrder(orderId: number) {
-        return await ajax.delete({
+        return await Ajax.getInstance().delete({
             url: OrderRoutes.DELETE,
             params: {
                 id: orderId,
@@ -28,14 +28,14 @@ export class Order {
     }
 
     static async buyAll() {
-        return await ajax.patch({
+        return await Ajax.getInstance().patch({
             url: OrderRoutes.BUY_FULL_BASKET,
             credentials: 'include',
         });
     }
 
     static async updateCount({ id, count }: {id: number, count: number}) {
-        return await ajax.patch({
+        return await Ajax.getInstance().patch({
             url: OrderRoutes.UPDATE_COUNT,
             body: {
                 id: id,
@@ -46,7 +46,7 @@ export class Order {
     }
 
     static async updateStatus({ id, status }: {id: number, status: number}) {
-        return await ajax.patch({
+        return await Ajax.getInstance().patch({
             url: OrderRoutes.UPDATE_STATUS,
             body: {
                 id: id,

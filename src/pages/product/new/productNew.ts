@@ -6,12 +6,11 @@ import { createComponent, createElement } from '../../../components/baseComponen
 import { Select } from '../../../components/baseComponents/select/select';
 import { Files } from '../../../shared/api/file';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
-import { ProductModelPut, productImageUrl } from '../../../shared/models/product';
 import { Product } from '../../../shared/api/product';
-import UserStore from '../../../shared/store/user';
+import UserStore from '../../../shared/store/src/user';
 import Navigate from '../../../shared/services/router/Navigate';
-import CategoryStore from '../../../shared/store/category';
-import CityStore from '../../../shared/store/city';
+import CategoryStore from '../../../shared/store/src/category';
+import CityStore from '../../../shared/store/src/city';
 
 interface ProductNewState {
     title: string,

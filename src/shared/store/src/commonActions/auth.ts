@@ -1,10 +1,10 @@
-import Dispatcher from '../../services/store/Dispatcher';
-import { ResponseStatus } from '../../constants/response';
+import Dispatcher from '../../../services/store/Dispatcher';
+import { ResponseStatus } from '../../../constants/response';
 
-import jwtDecode from '../../utils/jwt-decode';
-import { cookieParser } from '../../utils/cookie';
+import jwtDecode from '../../../utils/jwt-decode';
+import { cookieParser } from '../../../utils/cookie';
 
-import { UserApi } from '../../api/user';
+import { UserApi } from '../../../api/user';
 
 export async function fillUserByToken(accessToken: string) {
     const id = jwtDecode(accessToken).userID;

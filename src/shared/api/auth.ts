@@ -3,8 +3,8 @@
  * @module Api.Auth
  */
 
-import ajax from '../services/ajax';
 import { AuthRoutes } from '../constants/api';
+import { Ajax } from '../services/ajax';
 
 export class Auth {
     /**
@@ -15,7 +15,7 @@ export class Auth {
      * @param {string} password Пароль юзера
      */
     static async signin(email: string, pass: string) {
-        return await ajax.get({
+        return await Ajax.getInstance().get({
             url: AuthRoutes.SIGNIN,
             params: { 'email': email, 'password': pass },
             credentials: 'include',
@@ -30,7 +30,7 @@ export class Auth {
      * @param {string} password Пароль юзера
      */
     static async signup(email: string, pass: string) {
-        return await ajax.post({
+        return await Ajax.getInstance().post({
             url: AuthRoutes.SIGNUP,
             body: {
                 email: email,

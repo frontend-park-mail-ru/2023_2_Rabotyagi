@@ -2,13 +2,12 @@ import './sidebar.scss';
 import { Component } from '../../../components/baseComponents/snail/component';
 import { VDomComponent, VDomElement, createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 import { Button, Svg, Text } from '../../../components/baseComponents/index';
-import { UserModel } from '../../../shared/models/user';
 import star from '../../../assets/icons/star.svg';
 import delivery from '../../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../../assets/icons/badges/safe_deal.svg';
 import Navigate from '../../../shared/services/router/Navigate';
 import { ProductBase } from './base';
-import UserStore from '../../../shared/store/user';
+import UserStore from '../../../shared/store/src/user';
 
 interface ProductSidebarProps extends UserModel {
     price: number,

@@ -4,7 +4,6 @@ import { Component } from '../baseComponents/snail/component';
 import { createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Button, Image } from '../baseComponents/index';
-import { getResourceUrl } from '../../shared/utils/getResource/getResource';
 
 export interface CarouselProps {
     images: Array<{ url: string }> | undefined | null,

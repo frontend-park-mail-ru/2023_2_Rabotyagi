@@ -4,7 +4,6 @@ import { VDomComponent, createComponent, createElement } from '../../../componen
 import { Card } from '../../../components/card/Card';
 import { UserApi } from '../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
-import { ProductModelResponse } from '../../../shared/models/product';
 import { ProfilePlaceholder } from '../placeholder';
 
 interface ProfileProductsState {

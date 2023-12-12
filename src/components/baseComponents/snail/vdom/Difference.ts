@@ -100,7 +100,7 @@ export const getDifference = (
     node: VDomNode,
     newNode: VDomNode,
 ): VDomNodeUpdater => {
-    
+
     if (
         node.kind == 'text'
         && newNode.kind == 'text'
@@ -306,15 +306,17 @@ export const applyChildrenChanges = (element: HTMLElement, functions: Array<Chil
             return;
         }
 
-        const childElement = element.childNodes[index + childIndex];
+        if (element.childNodes) {
+            const childElement = element.childNodes[index + childIndex];
 
-        if (func.kind == 'remove') {
-            childElement.remove();
-            childIndex -= 1;
+            if (func.kind == 'remove') {
+                childElement.remove();
+                childIndex -= 1;
 
-            return;
+                return;
+            }
+
+            applyChanges(childElement as HTMLElement | Text, func as VDomNodeUpdater);
         }
-
-        applyChanges(childElement as HTMLElement | Text, func as VDomNodeUpdater);
     });
 };

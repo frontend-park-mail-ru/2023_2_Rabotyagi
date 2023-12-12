@@ -1,12 +1,11 @@
 import { Button, Text } from '../../../../components/baseComponents/index';
 import { Component } from '../../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
-import { ProductModelResponse } from '../../../../shared/models/product';
 import fav from '../../../../assets/icons/heart.svg';
 import { Carousel } from '../../../../components/carousel/Carousel';
-import CityStore from '../../../../shared/store/city';
-import CategoryStore from '../../../../shared/store/category';
-import FavouriteStore from '../../../../shared/store/favourite';
+import CityStore from '../../../../shared/store/src/city';
+import CategoryStore from '../../../../shared/store/src/category';
+import FavouriteStore from '../../../../shared/store/src/favourite';
 import { UserApi } from '../../../../shared/api/user';
 import Dispatcher from '../../../../shared/services/store/Dispatcher';
 import { ResponseStatusChecker } from '../../../../shared/constants/response';
@@ -16,7 +15,6 @@ interface ProductBaseViewProps extends ProductModelResponse {
 }
 
 interface ProductBaseViewState {
-
     inFav: boolean
 }
 
@@ -40,6 +38,14 @@ export class ProductBaseView extends Component<ProductBaseViewProps, ProductBase
         super();
 
         FavouriteStore.addStoreUpdater(this.listener);
+    }
+
+    public componentDidMount(): void {
+        if (this.props) {
+            this.setState({
+                inFav: FavouriteStore.getById(this.props.id) ? true : false,
+            });
+        }
     }
 
     removeFromFav = async(e: Event) => {
@@ -92,7 +98,7 @@ export class ProductBaseView extends Component<ProductBaseViewProps, ProductBase
 
             Dispatcher.dispatch({
                 name: 'FAVOURITE_ADD',
-                payload: res.body.id,
+                payload: this.props.id,
             });
 
             this.setState({inFav: true});
@@ -104,7 +110,7 @@ export class ProductBaseView extends Component<ProductBaseViewProps, ProductBase
         if (!this.props) {
             throw new Error('ProductBaseView props undefined');
         }
-
+        debugger;
         const city = CityStore.getById(this.props.city_id);
         const category = CategoryStore.getById(this.props.category_id);
 

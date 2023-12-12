@@ -5,9 +5,7 @@ import { ProductSidebar } from './sidebar';
 import { ProductBaseView } from './view/view';
 import { Product } from '../../../shared/api/product';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
-import { ProductModelResponse } from '../../../shared/models/product';
 import { UserApi } from '../../../shared/api/user';
-import { UserModel } from '../../../shared/models/user';
 import { ProductBaseEdit } from './edit/edit';
 
 interface ProductBaseState {

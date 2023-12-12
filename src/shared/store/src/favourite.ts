@@ -1,6 +1,5 @@
-import { UserApi } from '../api/user';
-import { FavouriteModel } from '../models/favourite';
-import { Store } from '../services/store/Store';
+import { UserApi } from '../../api/user';
+import { Store } from '../../services/store/Store';
 
 interface FavouriteStoreState {
     list: Array<FavouriteModel>
@@ -38,7 +37,7 @@ export class FavouriteStore extends Store<FavouriteStoreState> {
         }
 
         if (res.status === 2000 && res.body) {
-            res.body.forEach((elem: FavouriteModel) => this.state.list.push(elem));
+            res.body.forEach((elem: FavouriteModel) => this.state.list.push(elem as FavouriteModel));
         }
     };
 
@@ -50,12 +49,12 @@ export class FavouriteStore extends Store<FavouriteStoreState> {
 
         this.addAction({
             name: 'FAVOURITE_ADD',
-            operation: ({payload}) => this.state.list.push({id: payload} as FavouriteModel),
+            operation: action => this.state.list.push({id: action.payload} as FavouriteModel),
         });
 
         this.addAction({
             name: 'FAVOURITE_REMOVE',
-            operation: ({payload}) => this.state.list = this.state.list.filter((elem) => elem.id !== payload),
+            operation: action => this.state.list = this.state.list.filter((elem) => elem.id !== action.payload as number),
         });
     }
 }

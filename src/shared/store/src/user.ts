@@ -1,10 +1,9 @@
-import { deleteCookie } from '../utils/cookie';
-import jwtDecode from '../utils/jwt-decode';
+import { deleteCookie } from '../../utils/cookie';
+import jwtDecode from '../../utils/jwt-decode';
 
-import { ResponseStatus, ResponseStatusChecker } from '../constants/response';
-import { Store } from '../services/store/Store';
-import { UserApi } from '../api/user';
-import { UserModel } from '../models/user';
+import { ResponseStatus, ResponseStatusChecker } from '../../constants/response';
+import { Store } from '../../services/store/Store';
+import { UserApi } from '../../api/user';
 
 export enum UserStoreAction {
     UPDATE = 'USER_STORE_UPDATE',

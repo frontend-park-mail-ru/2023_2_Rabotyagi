@@ -1,4 +1,4 @@
-import { getResourceUrl } from '../../../shared/utils/getResource/getResource';
+import { getResourceUrl } from '../../../shared/utils/getResource/src/getResource';
 import { Component } from '../snail/component';
 import { createElement } from '../snail/vdom/VirtualDOM';
 

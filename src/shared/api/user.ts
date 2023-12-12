@@ -1,10 +1,9 @@
-import ajax from '../services/ajax';
 import { UserRoutes } from '../constants/api';
-import { UserModelPatch } from '../models/user';
+import { Ajax } from '../services/ajax';
 
 export class UserApi {
     static async patchProfile(body: UserModelPatch) {
-        return await ajax.patch({
+        return await Ajax.getInstance().patch({
             url: UserRoutes.PROFILE_PATCH,
             body: body,
             credentials: 'include',
@@ -12,7 +11,7 @@ export class UserApi {
     }
 
     static async getProfile(id: number) {
-        return await ajax.get({
+        return await Ajax.getInstance().get({
             url: UserRoutes.PROFILE_GET,
             params: {
                 'id': id,
@@ -22,7 +21,7 @@ export class UserApi {
     }
 
     static async getProducts() {
-        return await ajax.get({
+        return await Ajax.getInstance().get({
             url: UserRoutes.GET_LIST_OF_USER,
             params: {
                 'count': 20,
@@ -33,7 +32,7 @@ export class UserApi {
     }
 
     static async getProductsOfAnotherSaler(salerID: number) {
-        return await ajax.get({
+        return await Ajax.getInstance().get({
             url: UserRoutes.GET_LIST_OF_SALER,
             params: {
                 'count': 20,
@@ -45,21 +44,21 @@ export class UserApi {
     }
 
     static async getOrders() {
-        return await ajax.get({
+        return await Ajax.getInstance().get({
             url: UserRoutes.ORDERS_GET,
             credentials: 'include',
         });
     }
 
     static async getFavs() {
-        return await ajax.get({
+        return await Ajax.getInstance().get({
             url: UserRoutes.PROFILE_FAVS,
             credentials: 'include',
         });
     }
 
     static async addToFav(id: number) {
-        return await ajax.post({
+        return await Ajax.getInstance().post({
             url: UserRoutes.ADD_TO_FAV,
             credentials: 'include',
             body: {
@@ -69,7 +68,7 @@ export class UserApi {
     }
 
     static async removeFromFav(id: number) {
-        return await ajax.delete({
+        return await Ajax.getInstance().delete({
             url: UserRoutes.REMOVE_FROM_FAV,
             credentials: 'include',
             params: {
