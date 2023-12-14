@@ -25,13 +25,6 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
         let resp;
         try {
             resp = await UserApi.getProducts();
-            // if (this.variant === 'saler') {
-            //     resp = await User.getProductsOfAnotherSaler(history.state.salerId);
-            // }
-            // else {
-            //     resp = await User.getProducts();
-            // }
-
         } catch (err) {
             console.error(err);
         }
@@ -59,7 +52,7 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
     public render() {
         const products: VDomComponent[] = [];
 
-        if (this.state.products.length !== 0) {
+        if (this.state.products && this.state.products.length !== 0) {
             this.state.products.forEach((product: ProductModelResponse) => products.push(
                 createComponent(
                     Card,

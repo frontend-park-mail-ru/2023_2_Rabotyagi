@@ -12,7 +12,7 @@ export class Auth {
      * @description Посылает запрос на бек и получает данные пользователя после чего записывает их в хранилище
      * @borrows store, Router
      * @param {string} email Почта юзера
-     * @param {string} password Пароль юзера
+     * @param {string} pass Пароль юзера
      */
     static async signin(email: string, pass: string) {
         return await Ajax.getInstance().get({
@@ -27,7 +27,7 @@ export class Auth {
      * @description Посылает запрос на бек и получает данные пользователя после чего записывает их в хранилище
      * @borrows store, Router
      * @param {string} email Почта юзера
-     * @param {string} password Пароль юзера
+     * @param {string} pass Пароль юзера
      */
     static async signup(email: string, pass: string) {
         return await Ajax.getInstance().post({
