@@ -1,0 +1,32 @@
+@use '../../../assets/css/vars.scss';
+
+.container {
+    > .tabs {
+        display: inline-flex;
+        flex-direction: row;
+        margin-bottom: 8px;
+        >.tab {
+            padding: 8px 24px;
+            border-bottom: 3px solid vars.$text-tertiary;
+        
+            &:hover {
+                color: vars.$palette-primary;
+            }
+        
+            ;
+        
+            &.selected {
+                border-color: vars.$palette-primary;
+                color: vars.$palette-primary;
+            }
+        }
+    }
+    
+}
+
+.products-container {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-column-gap: 32px;
+    grid-row-gap: 16px;
+}

@@ -2,6 +2,7 @@
 @use '../cardConstants.scss';
 
 .badge-base {
+    position: absolute;
     border-radius: cardConstants.$badge-radius cardConstants.$badge-radius 0 0;
     background-color: vars.$background-secondary;
     padding: 8px 9px;

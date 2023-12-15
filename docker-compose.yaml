@@ -6,13 +6,12 @@ services:
         restart: always
         env_file:
             - .env/.env.postgres
-        # ports:
-        #     - 5432:5432
         volumes:
             - postgres:/var/lib/postgresql/data
 
     pgadmin:
         image: dpage/pgadmin4:7.8
+        restart: always
         env_file:
             - .env/.env.pgadmin
         ports:
@@ -31,13 +30,10 @@ services:
         expose:
             - 8081
             - 8011
-        # ports:
-        #     - 8081:8081
-        #      - 8011:8011
         depends_on:
             - postgres
         volumes:
-            - imgs:/var/file_service/static/img
+            - ./static/imgs:/var/file_service/static/img
             - log-fs:/var/log/backend
 
     backend-auth:
@@ -58,8 +54,8 @@ services:
         restart: always
         env_file:
             - .env/.env.main
-        ports:
-            - 8080:8080
+        expose:
+            - 8080
         depends_on:
             - postgres
             - backend-fs
@@ -67,10 +63,17 @@ services:
         volumes:
             - log:/var/log/backend
 
+    nginx:
+        image: nginx:stable
+        restart: always
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf
+        ports:
+            - 8080:80
+
 volumes:
     postgres:
     pgadmin:
-    imgs:
     log:
     log-fs:
     log-auth:

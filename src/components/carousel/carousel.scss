@@ -1,4 +1,7 @@
+@use '../../assets/css/vars.scss';
+
 .carousel {
+    position: relative;
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -6,8 +9,42 @@
     align-items: center;
     justify-content: center;
 
-    &__item {
+    &-item {
         display: flex;
         height: 100%;
+        width: 100%;
+    }
+
+    &-empty {
+        display: flex; 
+        width: 100%; 
+        height: 100%; 
+        background-color: darkgrey;
+    }
+}
+
+.carousel-button {
+    position: absolute;
+    height: 100%;
+    width: 10%;
+    
+    z-index: 1;
+    background-color: black;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.25s;
+
+    &:hover {
+        opacity: 0.35;
+    }
+
+    &--left {
+        @extend .carousel-button;
+        left: 0;
+    }
+
+    &--right {
+        @extend .carousel-button;
+        right: 0;
     }
 }

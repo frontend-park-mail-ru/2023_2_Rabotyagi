@@ -1,0 +1,90 @@
+@use '../../../assets/css/vars.scss';
+
+.button-base {
+    display: inline-flex;
+    height: 36px;
+    padding: 6px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    transition-property: background;
+    transition-duration: 0.25s;
+    // transition: background 2s;
+}
+
+.button-secondary {
+    @extend .button-base;
+    background: vars.$palette-secondary;
+    color: vars.$background-primary;
+}
+
+.button-accent {
+    @extend .button-base;
+    background: vars.$background-primary;
+    color: vars.$text-accent;
+}
+
+.button-primary {
+    @extend .button-base;
+    background: vars.$palette-primary;
+    color: vars.$background-primary;
+
+    &:hover {
+        background: var(--primary-hover, rgba(157, 141, 241, 0.80));
+    }
+
+    &:active {
+        background: vars.$palette-primary;
+    }
+}
+
+.button-neutral {
+    @extend .button-base;
+
+    &:hover {
+        background: var(--primary-hover, rgba(157, 141, 241, 0.80));
+        color: vars.$text-primary;
+    }
+
+    &.primary {
+        background: vars.$background-secondary;
+        color: vars.$text-primary;
+
+        &:hover {
+            background: var(--vkui-color-states-background-secondary-hover, #E6E8EC);
+        }
+
+        &:active {
+            background: var(--vkui-color-states-background-secondary-active, #DDDFE4);
+        }
+    }
+
+    &.tertiary {
+        &:hover, &.active {
+            color: vars.$primary-active;
+        }
+    }
+
+    &.outlined {
+        border: 1px solid vars.$background-tertiary;
+    }
+}
+
+.button-outlined {
+    @extend .button-base;
+    border: 1px solid var(--palette-primary, #9d8df1);
+
+    >span {
+        color: vars.$palette-primary;
+    }
+
+    &:hover {
+        background: var(--vkui-color-states-transparent-hover, rgba(0, 16, 61, 0.04));
+    }
+
+    &:active {
+        background: var(--vkui-color-states-transparent-active, rgba(0, 16, 61, 0.08));
+    }
+}

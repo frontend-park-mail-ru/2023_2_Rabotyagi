@@ -1,7 +1,8 @@
 module.exports = {
-  extends: [
-    'eslint:recommended',
-  ],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+
   parserOptions: {
     ecmaVersion: 2022,
     sourceType: 'module',
@@ -17,8 +18,8 @@ module.exports = {
     'eol-last': ['error', 'always'], // Пустая строка в конце файла
     'quotes': ['error', 'single'], // Одинарные кавычки
     'no-console': ['error', { allow: ['error', 'info'] }], // Запрет использования console.log
-    'no-unused-vars': 'error', // Запрет неиспользуемых переменных
-    'no-undef': 'error', // Запрет использования необъявленных переменных
+    'no-unused-vars': 'off', // Запрет неиспользуемых переменных
+    // 'no-undef': 'error', // Запрет использования необъявленных переменных
     'no-multiple-empty-lines': ['error', { max: 1 }], // Запрет множественных пустых строк
     'no-trailing-spaces': 'error', // Запрет завершающих пробелов
     'comma-dangle': ['error', 'always-multiline'], // Запятая в конце массивов и объектов
@@ -29,5 +30,7 @@ module.exports = {
     'newline-before-return': 'error', // Перенос строки перед return
     'no-irregular-whitespace': 'error', // Запрет неправильных пробелов
     'no-multi-spaces': 'error', // Запрет множественных пробелов
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/ban-types': 'off',
   },
 };

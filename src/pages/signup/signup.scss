@@ -22,11 +22,19 @@
         padding: 4px 0px;
     }
     
-    &__content {
+    &_content {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 16px;
+        align-self: stretch;
+    }
+
+    .info {
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        gap: 8px; 
         align-self: stretch;
     }
 }
