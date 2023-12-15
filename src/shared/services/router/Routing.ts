@@ -1,5 +1,5 @@
 import { Component } from '../../../components/baseComponents/snail/component';
-import { createElement, createText } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { VDomComponent, createElement, createText } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 
 import Navigate from './Navigate';
 
@@ -10,6 +10,14 @@ export interface RouteProps {
 
 // у компонента Route может быть только 1 ребёнок
 export class Route extends Component<RouteProps, never> {
+    public get path(): RegExp {
+        if (!this.props) {
+            throw new Error('');
+        }
+
+        return this.props.path;
+    }
+
     render() {
         if (!this.children) {
             throw new Error('Route children are undefined');
@@ -43,31 +51,14 @@ export class Router extends Component<never, never> {
             throw new Error('children are undefined');
         }
 
-        const route = this.children.find((child) => {
-            if (child.kind != 'component') {
+        const route = (this.children).find((child) => {
+            if (child.key !== 'Route'){
                 throw new Error('Router child must be Route component');
             }
 
-            switch (child.component.name) {
-                case 'Route':
-                    break;
-                case '_': // @FIX Почему-то на проде *name* у **Route** получается '_'
-                    break;
-                default:
-                    throw new Error('Router child must be Route component');
-            }
+            const props = (child as VDomComponent).props as RouteProps;
 
-            // данное решение применяется только для Роутера в качестве исключения
-            // в других случаях лучше избегать просмотра внутренних свойств детей
-            const access = (name: string): any => {
-                if (!child.props) {
-                    throw new Error('');
-                }
-
-                return child.props[name as keyof typeof child.props];
-            };
-
-            return access('path').exec(location.pathname + location.search);
+            return props.path.exec(location.pathname + location.search);
         });
 
         if (route) {
