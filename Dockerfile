@@ -7,6 +7,7 @@ COPY server server
 COPY package*.json . 
 COPY webpack.config.js .
 COPY tsconfig.json .
+COPY custom.d.ts .
 RUN npm ci
 
 ENV NODE_ENV=development
