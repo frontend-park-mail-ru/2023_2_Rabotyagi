@@ -45,24 +45,24 @@ export class Router extends Component<never, never> {
         }
 
         const route = this.children.find((child) => {
-            if (child.kind != 'component') {
-                throw new Error('Router child must be Route component');
-            }
-            if (child.component.name != 'Route') {
-                throw new Error('Router child must be Route component');
-            }
+            if (child.kind === 'component') {
+                // throw new Error('Router child must be Route component');
+                if (child.component.name === 'Route') {
+                    // throw new Error('Router child must be Route component');
+                    // данное решение применяется только для Роутера в качестве исключения
+                    // в других случаях лучше избегать просмотра внутренних свойств детей
+                    const access = (name: string): any => {
+                        if (!child.props) {
+                            throw new Error('');
+                        }
 
-            // данное решение применяется только для Роутера в качестве исключения
-            // в других случаях лучше избегать просмотра внутренних свойств детей
-            const access = (name: string): any => {
-                if (!child.props) {
-                    throw new Error('');
+                        return child.props[name as keyof typeof child.props];
+                    };
+
+                    return access('path').exec(location.pathname + location.search);
                 }
 
-                return child.props[name as keyof typeof child.props];
-            };
-
-            return access('path').exec(location.pathname + location.search);
+            }
         });
 
         if (route) {
