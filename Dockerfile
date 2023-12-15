@@ -6,6 +6,7 @@ COPY src src
 COPY server server
 COPY package*.json . 
 COPY webpack.config.js .
+COPY tsconfig.json .
 RUN npm install
 
 ENV NODE_ENV=development
