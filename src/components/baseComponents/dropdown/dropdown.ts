@@ -15,6 +15,7 @@ import searchIcon from '../../../assets/icons/search.svg';
 
 interface DropdownProps {
     search?: boolean,
+    hidden?: boolean,
 }
 
 interface DropDownState {
@@ -35,6 +36,14 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
     //     }
 
     // };
+
+    // public componentWillRecieveProps(props: DropdownProps, state: DropDownState | undefined): DropDownState | undefined {
+    //     if (props.hidden){
+    //         this.state.hidden = props.hidden;
+    //     }
+
+    //     return this.state;
+    // }
 
     switchHidden() {
         // this.state.buf = !this.state.buf;
@@ -84,7 +93,7 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
                     TextInput, {},
                 ),
             ) : createText(''),
-            (!this.state.hidden) ?
+            (!this.state.hidden && this.children && this.children.length !== 0) ?
             createElement(
                 'div',
                 { class: 'dropdown-content' },

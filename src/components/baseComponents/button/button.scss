@@ -43,6 +43,11 @@
 .button-neutral {
     @extend .button-base;
 
+    &:hover {
+        background: var(--primary-hover, rgba(157, 141, 241, 0.80));
+        color: vars.$text-primary;
+    }
+
     &.primary {
         background: vars.$background-secondary;
         color: vars.$text-primary;

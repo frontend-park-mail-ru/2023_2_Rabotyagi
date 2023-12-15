@@ -12,7 +12,8 @@ export abstract class Component<PropsType, StateType> {
 
     protected applyComponentChanges() {
         if (!this._domElement) {
-            throw new Error('domelement is undefined');
+            // throw new Error('domelement is undefined');
+            return;
         }
 
         applyChanges(this._domElement, this.getComponentDifference());
@@ -46,6 +47,7 @@ export abstract class Component<PropsType, StateType> {
 
     public setChildren(children: Array<VDomNode>) {
         this.children = [...children];
+        this.applyComponentChanges();
     }
 
     public initProps(props: PropsType | undefined): VDomNode {

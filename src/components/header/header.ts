@@ -1,7 +1,7 @@
 import './header.scss';
 
 import { Component } from '../baseComponents/snail/component';
-import { createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
+import { VDomComponent, VDomElement, createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Button, Dropdown, TextInput, ButtonImage } from '../baseComponents/index';
 
@@ -11,6 +11,8 @@ import UserStore from '../../shared/store/user';
 import { logout } from '../../shared/store/commonActions/auth';
 
 import logo from '../../assets/icons/logo.svg';
+import { Product } from '../../shared/api/product';
+import { ResponseStatusChecker } from '../../shared/constants/response';
 
 export class Header extends Component<never, never>{
     routeToSignin = () => Navigate.navigateTo('/signin');
@@ -26,6 +28,7 @@ export class Header extends Component<never, never>{
     };
 
     avatar: string | null;
+    currentSearch?: string;
 
     constructor() {
         super();
@@ -35,6 +38,79 @@ export class Header extends Component<never, never>{
         if (fields) {
             this.avatar = fields.avatar;
         }
+    }
+
+    private createSearchForm(): VDomElement {
+        var cp = this;
+
+        const searchDropdown = createComponent(
+            Dropdown,
+            {},
+        );
+
+        
+        const submitEvent = async(e: SubmitEvent) => {
+            e.preventDefault();
+            debugger
+
+            const search = (e.currentTarget as HTMLFormElement).elements[0] as HTMLInputElement;
+            const value = search.value;
+
+            const res = await Product.searchFeed(this.currentSearch ? this.currentSearch : value);
+            Navigate.navigateTo('/', {
+                products: res.body
+            })
+        }
+        
+        const inputEvent = async(e: InputEvent) => {
+            const input = e.currentTarget as HTMLInputElement;
+            if (input.value && (e.data || e.inputType === 'deleteContentBackward')) {
+                const res = await Product.search(input.value);
+
+                if (!ResponseStatusChecker.IsSuccessfulRequest(res)){
+                    return;
+                }
+
+                if (res.body) {
+                    let hrefs: Array<VDomComponent> = [];
+                    (res.body as Array<string>).forEach((item) => hrefs.push(
+                        createComponent(
+                            Button,
+                            {
+                                text: item,
+                                variant: 'neutral',
+                                style: 'width: 100%; justify-content: start;',
+                                onclick: () => cp.currentSearch = item
+                            }
+                        )
+                    ))
+                    
+                    searchDropdown.instance?.setChildren(hrefs);
+                    (searchDropdown.instance as Dropdown).switchHidden();
+                }
+                return;
+            }
+        }
+
+        const searchInput = createComponent(
+            TextInput,
+            {
+                class: 'header-search-box',
+                required: true,
+                oninput: inputEvent,
+            },
+        );
+
+        
+
+        return createElement(
+            'form',
+            {
+                onsubmit: submitEvent
+            },
+            searchInput,
+            searchDropdown
+        )
     }
 
     render() {
@@ -125,13 +201,7 @@ export class Header extends Component<never, never>{
                     onclick: this.routeToMain,
                 },
             ),
-            createComponent(
-                TextInput,
-                {
-                    class: 'header-search-box',
-                    required: true,
-                },
-            ),
+            this.createSearchForm(),
             createComponent(
                 Button,
                 {

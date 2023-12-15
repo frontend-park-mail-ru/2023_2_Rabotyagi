@@ -7,6 +7,7 @@ import { Card, CardProps } from '../card/Card';
 import { Loader } from '../loader/Loader';
 import { Product } from '../../shared/api/product';
 import { ResponseStatusChecker } from '../../shared/constants/response';
+import Navigate from '../../shared/services/router/Navigate';
 
 interface FeedProps {
 
@@ -24,8 +25,20 @@ export class Feed extends Component<FeedProps, FeedState> {
     constructor(){
         super();
 
-        this.getProductList();
+        Navigate.addCallback(this.updateEvent);
+        this.updateEvent();
     }
+
+    updateEvent = () => {
+        if (history.state?.products) {
+            this.setState({
+                products: history.state.products,
+            });
+        }
+        else {
+            this.getProductList();
+        }
+    };
 
     async getProductList() {
         let resp;
