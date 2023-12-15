@@ -10,7 +10,6 @@ export interface RouteProps {
 
 // у компонента Route может быть только 1 ребёнок
 export class Route extends Component<RouteProps, never> {
-
     render() {
         if (!this.children) {
             throw new Error('Route children are undefined');
@@ -45,24 +44,30 @@ export class Router extends Component<never, never> {
         }
 
         const route = this.children.find((child) => {
-            if (child.kind === 'component') {
-                // throw new Error('Router child must be Route component');
-                if (child.component.name === 'Route') {
-                    // throw new Error('Router child must be Route component');
-                    // данное решение применяется только для Роутера в качестве исключения
-                    // в других случаях лучше избегать просмотра внутренних свойств детей
-                    const access = (name: string): any => {
-                        if (!child.props) {
-                            throw new Error('');
-                        }
+            if (child.kind != 'component') {
+                throw new Error('Router child must be Route component');
+            }
 
-                        return child.props[name as keyof typeof child.props];
-                    };
+            switch (child.component.name) {
+                case 'Route':
+                    break;
+                case '_': // @FIX Почему-то на проде *name* у **Route** получается '_'
+                    break;
+                default:
+                    throw new Error('Router child must be Route component');
+            }
 
-                    return access('path').exec(location.pathname + location.search);
+            // данное решение применяется только для Роутера в качестве исключения
+            // в других случаях лучше избегать просмотра внутренних свойств детей
+            const access = (name: string): any => {
+                if (!child.props) {
+                    throw new Error('');
                 }
 
-            }
+                return child.props[name as keyof typeof child.props];
+            };
+
+            return access('path').exec(location.pathname + location.search);
         });
 
         if (route) {

@@ -21,6 +21,7 @@ export class Svg extends Component<SvgProps, never> {
         const svgElement = parser.parseFromString(this.props.content, 'image/svg+xml').documentElement;
         svgElement.setAttribute('height', (this.props.height || 60).toString() + 'px');
         svgElement.setAttribute('width', (this.props.width || 60).toString() + 'px');
+
         if (this.props.id) {
             svgElement.setAttribute('id', this.props.id);
         }

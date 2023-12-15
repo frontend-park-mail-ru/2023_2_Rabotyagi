@@ -63,6 +63,9 @@ services:
         volumes:
             - log:/var/log/backend
 
+    # frontend:
+    #     iamge:
+
     nginx:
         image: nginx:stable
         restart: always

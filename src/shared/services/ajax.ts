@@ -23,7 +23,7 @@ interface ContextType {
     [key: string]: any;
 }
 
-const { SCHEMA, API_URL, NODE_ENV, API_PORT } = process.env;
+const { SCHEMA, API_URL } = process.env;
 
 const AJAX_METHODS = {
     GET: 'GET',
@@ -34,7 +34,6 @@ const AJAX_METHODS = {
 };
 
 export class Ajax {
-    private port: string = API_PORT || '8080';
     public ADRESS_BACKEND: string;
     private static instance: Ajax;
 
@@ -43,12 +42,7 @@ export class Ajax {
             throw new Error('SCHEMA or API_URL are undefined');
         }
 
-        if (NODE_ENV === 'production') {
             this.ADRESS_BACKEND = SCHEMA + API_URL + '/api/v1/';
-        }
-        else {
-            this.ADRESS_BACKEND = SCHEMA + API_URL + ':' + this.port + '/api/v1/';
-        }
     }
 
     public static getInstance(): Ajax {
