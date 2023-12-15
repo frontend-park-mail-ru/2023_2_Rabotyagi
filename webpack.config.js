@@ -44,7 +44,7 @@ module.exports = {
     new MiniCssExtractPlugin(),
   ],
   resolve: {
-    extensions: [ '.json', '.ts', '.scss', '.svg', '', '.js' ],
+    extensions: [ '.json', '.ts', '.scss', '.svg' ],
     modules: [ 'node_modules' ],
   },
   devtool: 'source-map',

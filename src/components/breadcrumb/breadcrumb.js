@@ -1,4 +1,4 @@
-import styles from './breadcrumb.scss'; // eslint-disable-line no-unused-vars
+import './breadcrumb.scss';
 import template from './breadcrumb.hbs';
 import { stringToElement } from '../../shared/utils/parsing';
 
