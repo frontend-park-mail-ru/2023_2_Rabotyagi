@@ -1,6 +1,5 @@
 @use '../../../assets/css/vars.scss';
 @use './cardConstants.scss';
-@use '../../../assets/css/sizes.scss';
 
 @import './commonStyles/image.scss';
 @import './commonStyles/badges.scss';
@@ -12,15 +11,13 @@
 
 .card-base {
     display: flex;
-    width: cardConstants.$card-base-width-desktop;
+    width: cardConstants.$card-base-width;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-
-    @media screen and (max-width: sizes.$mobile) {
-        width: cardConstants.$card-base-width-mobile;
-    }
+    font-family: 'Nunito Sans';
+    font-size: 15px;
 }
 
 .card-profile {

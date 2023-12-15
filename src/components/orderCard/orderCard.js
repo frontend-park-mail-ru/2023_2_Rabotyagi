@@ -14,27 +14,22 @@ import dispatcher from '../../shared/dispatcher/dispatcher.js';
 
 export class OrderCard {
     #order;
-    #counter;
-    #root;
-    #deleteBtn;
 
     constructor(order) {
-        this.#order = structuredClone({
-            ...order,
-            images: getResourceUrl(order.images),
+        this.#order = structuredClone(order);
 
-        });
-
-        const context = {
+        this.context = {
             product: this.#order,
         };
 
-        if (this.#order.images) {
-            context.image = this.#order.images[ 0 ];
-        }
-        this.#root = stringToElement(template(context));
+        this.#order.images = getResourceUrl(this.#order.images);
 
-        this.#deleteBtn = button({
+        if (this.#order.images) {
+            this.context.image = this.#order.images[ 0 ];
+        }
+        this.root = stringToElement(template(this.context));
+
+        this.deleteBtn = button({
             variant: 'accent',
             subVariant: 'primary',
             text: {
@@ -43,11 +38,11 @@ export class OrderCard {
             },
         });
 
-        this.#deleteBtn.addEventListener('click', () => {
+        this.deleteBtn.addEventListener('click', () => {
             this.deleteOrder();
         });
 
-        this.#counter = new Counter({
+        this.counter = new Counter({
             unitPrice: Number(this.#order.price),
             minCount: 1,
             maxCount: Number(this.#order.available_count),
@@ -62,6 +57,7 @@ export class OrderCard {
                 id: this.#order.id,
                 count: count,
             });
+            const body = resp.body;
             if (!statuses.IsSuccessfulRequest(resp)) {
                 if (statuses.IsBadFormatRequest(resp)) {
                     throw statuses.USER_MESSAGE;
@@ -70,7 +66,7 @@ export class OrderCard {
                     throw statuses.SERVER_MESSAGE;
                 }
                 else if (statuses.IsUserError(resp)) {
-                    throw resp.body.error;
+                    throw body.error;
                 }
             }
             dispatcher.dispatch({ type: 'UPDATE_COUNT_CART', payload: {
@@ -78,14 +74,14 @@ export class OrderCard {
                 count: count,
             } });
         } catch(err) {
-            console.error(err);
+            // console.log(err);
         }
     }
 
     async deleteOrder() {
         try {
             const resp = await Order.deleteOrder(this.#order.id);
-
+            const body = resp.body;
             if (!statuses.IsSuccessfulRequest(resp)) {
                 if (statuses.IsBadFormatRequest(resp)) {
                     throw statuses.USER_MESSAGE;
@@ -94,7 +90,7 @@ export class OrderCard {
                     throw statuses.SERVER_MESSAGE;
                 }
                 else if (statuses.IsUserError(resp)) {
-                    throw resp.body.error;
+                    throw body.error;
                 }
             }
             dispatcher.dispatch({ type: 'DELETE_GOOD', payload: this.#order.id });
@@ -104,10 +100,10 @@ export class OrderCard {
     }
 
     render() {
-        const container = this.#root.querySelector('div.right-content');
-        container.querySelector('#deleteBtn').replaceWith(this.#deleteBtn);
-        container.querySelector('div.counter').replaceWith(this.#counter.render());
+        const container = this.root.querySelector('div.right-content');
+        container.querySelector('#deleteBtn').replaceWith(this.deleteBtn);
+        container.querySelector('div.counter').replaceWith(this.counter.render());
 
-        return this.#root;
+        return this.root;
     }
 }

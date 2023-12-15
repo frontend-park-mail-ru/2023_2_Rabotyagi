@@ -4,22 +4,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    // @media screen {
-        width: sizes.$desktop;
-    // }
+    width: sizes.$desktop;
+    gap: 32px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 
     @media screen and (max-width: sizes.$mobile) {
-        width: 348px;
-    }
-}
-
-#header-product-create {
-    @media screen and (max-width: sizes.$mobile) {
-        width: 55px;
-        &>span {
-            text-wrap: wrap !important;
-        }
+        width: sizes.$mobile;
     }
 }
 
@@ -27,10 +18,6 @@
     display: flex;
     align-items: center;
     gap: 16px;
-
-    @media screen and (max-width: sizes.$mobile) {
-        gap: 8px;
-    }
 }
 
 .header-profile-button {
@@ -44,9 +31,6 @@
 
 .header-search-field {
     padding-left: 30px;
-    @media screen and (max-width: sizes.$mobile) {
-        padding-left: 5px;
-    }
 }
 
 .header-search-field-input {
@@ -66,18 +50,6 @@
 #header-logo-button {
     height: auto;
     padding: 0;
-
-    @media screen and (max-width: sizes.$mobile) {
-        width: 32px;
-        height: 32px;
-        &>span {
-            display: none;
-        }
-        &>svg {
-            viewport-fit: contain;
-            
-        }
-    }
 }
 
 #header-cart-button {

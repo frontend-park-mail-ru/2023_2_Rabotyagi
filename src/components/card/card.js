@@ -107,7 +107,12 @@ export class Card {
 
         this.root.querySelector('#btn-delete')?.replaceWith(btnDelete);
 
-        btnDelete.before( this.context.is_active ? btnDeactive : btnActive);
+        if (!this.context.is_active) {
+            btnDelete.before(btnActive);
+        }
+        else {
+            btnDelete.before(btnDeactive);
+        }
 
         btnDelete.previousElementSibling.addEventListener('click', async(e) => {
             e.stopPropagation();
@@ -205,7 +210,7 @@ export class Card {
         this.root.addEventListener('click', (e) => {
             e.stopPropagation();
 
-            window.Router.navigateTo(`/product?id=${this.context.id}`, { productId: this.context.id });
+            window.Router.navigateTo('/product', { productId: this.context.id });
         });
 
         return this.root;
