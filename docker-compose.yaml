@@ -60,6 +60,14 @@ services:
             - 8080
         depends_on:
             - postgres
+            - backend-fs
+            - backend-auth
+        volumes:
+            - log:/var/log/backend
+
+    nginx:
+        image: nginx:stable
+        restart: always
         volumes:
             - ./nginx.conf:/etc/nginx/nginx.conf
         ports:

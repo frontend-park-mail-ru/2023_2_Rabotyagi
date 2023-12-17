@@ -38,6 +38,9 @@ jobs:
               id: build
               with:
                   context: .
+                  build-args: |
+                      SCHEMA=http://
+                      API_URL=dev.goods-galaxy.ru
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
