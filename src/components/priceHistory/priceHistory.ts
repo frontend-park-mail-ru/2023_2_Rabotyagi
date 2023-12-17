@@ -78,6 +78,10 @@ return 'down';
     }
 
     getYCoor(price: number, minPrice: number, priceLength: number): number {
+        if (priceLength === 0) {
+            return this.state.graphicPadding;
+        }
+
         let result = 100 - (price - minPrice) / priceLength * 100;
         if (result == 0)
             result += this.state.graphicPadding;
@@ -95,6 +99,10 @@ return result;
     }
 
     getXCoor(date: string, minDate: string, dateLength: number): number {
+        if (dateLength == 0) {
+            return 100;
+        }
+
         let result = this.getDayDifference(minDate, date) / dateLength * 100;
         if (result == 0)
             result += this.state.graphicPadding;
@@ -129,6 +137,14 @@ return result;
         return result.join(' ');
     }
 
+    getDifferenceTitle(minPrice: number, maxPrice: number) {
+        if (maxPrice !== minPrice) {
+            return 'Цена менялась от ' + this.minPrice() + ' ₽ до ' + this.maxPrice() + ' ₽'
+        }   
+
+        return minPrice.toString() + ' ₽'; 
+    }
+
     render() {
         if (!this.props) {
             throw new Error('PriceHistory settings are undefined');
@@ -137,6 +153,8 @@ return result;
         /*if (this.props.points.length == 0) {
             throw new Error('Points must have at least one point');
         }*/
+
+        console.log(this.props);
 
         return createElement(
             'div',
@@ -155,7 +173,7 @@ return result;
                 {
                     tag: 'p',
                     variant: 'regular',
-                    text: 'Цена менялась от ' + this.minPrice() + ' ₽ до ' + this.maxPrice() + ' ₽',
+                    text: this.getDifferenceTitle(this.minPrice(), this.maxPrice()),
                 },
             ),
             createElement(
