@@ -249,8 +249,6 @@ export class Card extends Component<CardProps, CardState> {
                 return;
             }
 
-            // debugger;
-            // this.props.favouriteInfluence(this.props.id);
             if (this.props.removeCallback){
                 this.props.removeCallback(this.props.id);
             }

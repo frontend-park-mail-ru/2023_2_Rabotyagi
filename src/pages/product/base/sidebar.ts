@@ -61,7 +61,6 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
         }
 
         try {
-            // debugger;
             if (!CartStore.sameUser(this.props.id)) {
                 throw new Error('В корзину можно добавлять продукты только с одинаковым пользователем');
             }
