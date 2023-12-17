@@ -38,6 +38,7 @@ export interface ButtonProps extends ButtonEvents {
     name?: string,
     type?: string,
     className?: string,
+    disabled?: boolean
 }
 
 export interface ButtonImageProps extends ButtonEvents {

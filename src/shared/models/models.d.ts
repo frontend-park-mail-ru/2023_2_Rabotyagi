@@ -100,11 +100,3 @@ declare interface SalerModel {
     email: string,
     avatar: string,
 }
-
-declare enum PremiumPeriods {
-    Week = 1,
-    Month = 2,
-    ThreeMonth = 3,
-    HalfYear = 4,
-    Year = 5
-}

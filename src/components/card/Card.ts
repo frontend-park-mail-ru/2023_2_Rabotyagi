@@ -1,10 +1,10 @@
 import './cardStyles/card.scss';
 
 import { Component } from '../baseComponents/snail/component';
-import { VDomNode, createComponent, createElement, createText } from '../baseComponents/snail/vdom/VirtualDOM';
+import { VDomComponent, VDomNode, createComponent, createElement, createText } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Badge } from './badge/Badge';
-import { Text, Button, Image } from '../baseComponents/index';
+import { Text, Button, Image, Select } from '../baseComponents/index';
 
 import Navigate from '../../shared/services/router/Navigate';
 
@@ -13,6 +13,9 @@ import safeDeal from '../../assets/icons/badges/safe_deal.svg';
 import { UserApi } from '../../shared/api/user';
 import { ResponseStatusChecker } from '../../shared/constants/response';
 import { ProductApi } from '../../shared/api/product';
+import { Modal } from '../modal/modal';
+import { PremiumPeriods, premiumPeriodsList } from '../../shared/models/premium';
+import { PremiumApi } from '../../shared/api/premium';
 
 export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite' | 'cart';
 
@@ -72,7 +75,8 @@ enum MouseButtons {
 }
 
 interface CardState {
-    isActive: boolean
+    isActive?: boolean,
+    modalActive?: VDomComponent,
 }
 
 export class Card extends Component<CardProps, CardState> {
@@ -229,6 +233,95 @@ export class Card extends Component<CardProps, CardState> {
         );
     }
 
+    renderPromoteButton() {
+        if (!this.props) {
+            throw new Error('Card props are undefined');
+        }
+
+        const cp = this; // eslint-disable-line
+
+        const promoteEvent = (e: Event) => {
+            e.stopPropagation();
+            let period: PremiumPeriods = PremiumPeriods.Year;
+
+            if (this.state.modalActive) {
+                return;
+            }
+
+            const accept = async() => {
+                if (cp.props) {
+                    let res;
+
+                    try {
+                        res = await PremiumApi.add(cp.props.id, period);
+                    }
+                    catch(err){
+                        console.error(err);
+
+                        return;
+                    }
+
+                    if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
+                        return;
+                    }
+
+                    // @FIX Это оч жесткий костыль, за который мне стыдно, но пока diff работает плохо, будет так
+                    Navigate.navigateTo('/profile/orders');
+                    Navigate.navigateTo('/profile/products');
+                    // cp.setProps({
+                    //     ...cp.props,
+                    //     premium: true,
+                    // });
+
+                    // cp.setState({
+                    //     modalActive: undefined,
+                    // });
+                }
+
+            };
+
+            const deny = () => this.setState({modalActive: undefined});
+
+            const chooseValue = (e: Event) => {
+                const select = (e.currentTarget as HTMLSelectElement);
+                period = Number(select.value);
+            };
+
+            const modal = createComponent(
+                Modal,
+                {
+                    onAccept: accept,
+                    onDeny: deny,
+                },
+                createComponent(
+                    Select,
+                    {
+                        items: premiumPeriodsList,
+                        key: 'value',
+                        value: 'name',
+                        events: {
+                            onchange: chooseValue,
+                        },
+                    },
+                ),
+            );
+            this.setState({
+                modalActive: modal,
+            });
+        };
+
+        return createComponent(
+            Button,
+            {
+                variant: (this.props.premium) ? 'secondary' : 'primary',
+                text: (this.props.premium) ? 'Продвижение активно' : 'Платное продвижение',
+                style: 'width: 100%;',
+                disabled: this.props.premium,
+                onclick: promoteEvent,
+            },
+        );
+    }
+
     deleteProduct = async(e: Event) => {
         e.stopPropagation();
 
@@ -307,55 +400,77 @@ export class Card extends Component<CardProps, CardState> {
             throw new Error('Card props are undefined');
         }
 
+        const modal: Array<VDomComponent> = [];
+
+        if (this.state.modalActive) {
+            modal.push(this.state.modalActive);
+        }
+
         const variant = this.props.variant || 'profile';
 
         return createElement(
-            'button',
-            {
-                class: 'card-profile',
-                onclick: this.navigateToProduct,
-            },
-            (this.props.images) ?
-                createElement(
-                    'img',
-                    { class: 'image-profile', src: this.props.images[0].url },
-                ) :
-                createElement(
-                    'div',
-                    { class: 'image-profile' },
-                ),
+            'card',
+            {},
+            ...modal,
             createElement(
-                'div',
-                { class: 'content-profile' },
-                createComponent(
-                    Text, { text: this.props.price.toString() + ' ₽' },
-                ),
-                createComponent(
-                    Text, { text: this.props.title, className: 'title-profile' },
-                ),
-                createElement(
-                    'div',
-                    { class: 'divider' },
-                ),
-                (this.thisHaveBadges()) ?
+                'button',
+                {
+                    class: `card-profile${this.props.premium ? '--premium' : ''}`,
+                    onclick: this.navigateToProduct,
+                },
+                (this.props.images) ?
+                    createComponent(
+                        Image,
+                        {
+                            class: 'image-profile',
+                            src: this.props.images[0].url,
+                        },
+                    )
+                    // createElement(
+                    //     'img',
+                    //     { class: 'image-profile', src: this.props.images[0].url },
+                    // )
+                    :
                     createElement(
                         'div',
-                        { class: 'badges-profile' },
-                        ...this.renderBadges('badge-profile'),
-                    ) : createText(''),
-                (variant == 'profile') ?
-                    this.renderActiveButton()
-                    : createText(''),
-                (variant == 'profile' || variant == 'favourite') ?
+                        { class: 'image-profile' },
+                    ),
+                createElement(
+                    'div',
+                    { class: 'content-profile' },
                     createComponent(
-                        Button,
-                        {
-                            variant: 'outlined',
-                            text: 'Удалить',
-                            style: 'width: 100%;',
-                            onclick: this.deleteFunction,
-                        },
-                    ) : createText(''),
+                        Text, { text: this.props.price.toString() + ' ₽' },
+                    ),
+                    createComponent(
+                        Text, { text: this.props.title, className: 'title-profile' },
+                    ),
+                    createElement(
+                        'div',
+                        { class: 'divider' },
+                    ),
+                    (this.thisHaveBadges()) ?
+                        createElement(
+                            'div',
+                            { class: 'badges-profile' },
+                            ...this.renderBadges('badge-profile'),
+                        ) : createText(''),
+                    (variant == 'profile') ?
+                        this.renderActiveButton()
+                        : createText(''),
+                    (variant == 'profile') ?
+                        this.renderPromoteButton()
+                        : createText(''),
+                    (variant == 'profile' || variant == 'favourite') ?
+                        createComponent(
+                            Button,
+                            {
+                                variant: 'outlined',
+                                text: 'Удалить',
+                                style: 'width: 100%;',
+                                onclick: this.deleteFunction,
+                            },
+                        ) : createText(''),
+                ),
             ),
         );
     }

@@ -1,4 +1,5 @@
 import { PremiumRoutes } from '../constants/api';
+import { PremiumPeriods } from '../models/premium';
 import { Ajax } from '../services/ajax';
 
 export class PremiumApi {

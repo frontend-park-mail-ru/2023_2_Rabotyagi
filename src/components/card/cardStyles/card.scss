@@ -12,6 +12,7 @@
 .card-base {
     display: flex;
     width: cardConstants.$card-base-width;
+    padding: 8px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -27,8 +28,13 @@
 .card-profile {
     display: flex;
     width: cardConstants.$card-profile-width;
+    padding: 8px;
     align-items: flex-start;
     border-radius: 0 cardConstants.$card-radius cardConstants.$card-radius 0;
     background: vars.$background-primary;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+
+    &--premium {
+        box-shadow: 0px 0px 10px gold;
+    }
 }

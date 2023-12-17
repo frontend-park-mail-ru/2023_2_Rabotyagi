@@ -1,3 +1,4 @@
+import './option.scss';
 import { Text } from '../index';
 import { Component } from '../snail/component';
 import { createComponent, createElement } from '../snail/vdom/VirtualDOM';

@@ -22,6 +22,16 @@ export class ProductApi {
         });
     }
 
+    static async getMy(id: number) {
+        return await Ajax.getInstance().get({
+            url: ProductRoutes.GET_MY,
+            params: {
+                'id': id,
+            },
+            credentials: 'include',
+        });
+    }
+
     static async create(data: ProductModelPut) {
         return await Ajax.getInstance().post({
             url: ProductRoutes.POST,
