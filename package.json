@@ -6,11 +6,11 @@
   "scripts": {
     "dev-win": "start npm run build-dev && start npm run server",
     "dev-linux": "npm run build-dev & npm run server",
-    "preprod": "webpack --node-env production --mode production --no-watch",
+    "preprod": "webpack --config ./webpack.prod.config.js",
     "prod": "NODE_ENV=production npm run server",
     "server": "node server/index.js",
     "build-dev": "webpack --config ./webpack.dev.config.js",
-    "build-prod": "webpack --config ./webpack.prod.config.js",
+    "build-prod": "webpack --config ./webpack.prod.config.js --watch",
     "predocs": "rmdir -r -f ./docs",
     "docs": "jsdoc .\\src\\ --recurse -d .\\docs -c .\\jsdoc.json",
     "lint": "npx eslint src"

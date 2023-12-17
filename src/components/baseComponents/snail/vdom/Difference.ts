@@ -306,7 +306,7 @@ export const applyChildrenChanges = (element: HTMLElement, functions: Array<Chil
             return;
         }
 
-        if (element.childNodes) {
+        if (element?.childNodes) {
             const childElement = element.childNodes[index + childIndex];
 
             if (func.kind == 'remove') {
