@@ -41,27 +41,27 @@ export class Header extends Component<never, never>{
     }
 
     private createSearchForm(): VDomElement {
-        var cp = this;
+        const cp = this;
 
         const searchDropdown = createComponent(
             Dropdown,
             {},
         );
 
-        
         const submitEvent = async(e: SubmitEvent) => {
             e.preventDefault();
-            debugger
+            debugger;
 
             const search = (e.currentTarget as HTMLFormElement).elements[0] as HTMLInputElement;
             const value = search.value;
 
             const res = await Product.searchFeed(this.currentSearch ? this.currentSearch : value);
+            search.value = '';
             Navigate.navigateTo('/', {
-                products: res.body
-            })
-        }
-        
+                products: res.body,
+            });
+        };
+
         const inputEvent = async(e: InputEvent) => {
             const input = e.currentTarget as HTMLInputElement;
             if (input.value && (e.data || e.inputType === 'deleteContentBackward')) {
@@ -72,7 +72,7 @@ export class Header extends Component<never, never>{
                 }
 
                 if (res.body) {
-                    let hrefs: Array<VDomComponent> = [];
+                    const hrefs: Array<VDomComponent> = [];
                     (res.body as Array<string>).forEach((item) => hrefs.push(
                         createComponent(
                             Button,
@@ -80,37 +80,37 @@ export class Header extends Component<never, never>{
                                 text: item,
                                 variant: 'neutral',
                                 style: 'width: 100%; justify-content: start;',
-                                onclick: () => cp.currentSearch = item
-                            }
-                        )
-                    ))
-                    
+                                onclick: () => cp.currentSearch = item,
+                            },
+                        ),
+                    ));
+
                     searchDropdown.instance?.setChildren(hrefs);
                     (searchDropdown.instance as Dropdown).switchHidden();
                 }
-                return;
+
+return;
             }
-        }
+        };
 
         const searchInput = createComponent(
             TextInput,
             {
-                class: 'header-search-box',
+                class: 'header-search-field-input',
                 required: true,
                 oninput: inputEvent,
             },
         );
 
-        
-
         return createElement(
             'form',
             {
-                onsubmit: submitEvent
+                class: 'header-search-box',
+                onsubmit: submitEvent,
             },
             searchInput,
-            searchDropdown
-        )
+            searchDropdown,
+        );
     }
 
     render() {
