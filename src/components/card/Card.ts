@@ -34,6 +34,7 @@ export interface BaseCardProps {
     city?: string,
     is_active?: boolean,
     in_favourites?: boolean,
+    premium: boolean,
 }
 
 export interface FavouriteCardProps extends BaseCardProps {
@@ -59,6 +60,7 @@ export interface CardProps {
     safe_deal?: boolean,
     city?: string,
     is_active?: boolean,
+    premium: boolean,
     favouriteInfluence?: (index: number) => void,
     removeCallback?: (id: number) => void
 }
@@ -144,12 +146,10 @@ export class Card extends Component<CardProps, CardState> {
             throw new Error('Card props are undefined');
         }
 
-        // const id = this.props.id;
-
         return createElement(
             'button',
             {
-                class: 'card-base',
+                class: `card-base${(this.props.premium ? '--premium' : '')}`,
                 onclick: this.navigateToProduct,
             },
             createElement(
@@ -186,7 +186,6 @@ export class Card extends Component<CardProps, CardState> {
             ),
         );
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
     renderActiveButton() {
         if (!this.props) {

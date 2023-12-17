@@ -18,6 +18,10 @@
     flex-shrink: 0;
     font-family: 'Nunito Sans';
     font-size: 15px;
+
+    &--premium {
+        box-shadow: 0px 0px 10px gold;
+    }
 }
 
 .card-profile {

@@ -58,6 +58,7 @@ declare interface ProductModelResponse extends ProductModelPut {
     favourites: number,
     in_favourites: boolean,
     views: number,
+    premium: boolean,
     price_history?: Array<productPriceUnit> | null,
 
 }
@@ -98,4 +99,12 @@ declare interface SalerModel {
     name: string,
     email: string,
     avatar: string,
+}
+
+declare enum PremiumPeriods {
+    Week = 1,
+    Month = 2,
+    ThreeMonth = 3,
+    HalfYear = 4,
+    Year = 5
 }

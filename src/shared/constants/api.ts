@@ -48,3 +48,7 @@ export enum ProductRoutes {
     SEARCH = 'product/search',
     SEARCH_FEED = 'product/get_search_feed',
 }
+
+export enum PremiumRoutes {
+    ADD = 'premium/add',
+}
