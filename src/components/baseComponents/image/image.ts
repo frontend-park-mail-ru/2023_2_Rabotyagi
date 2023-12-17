@@ -21,15 +21,25 @@ export class Image extends Component<ImageProps, never> {
             this.props.src = getResourceUrl(this.props.src) as string;
         }
 
-        const {width, height, ...etc} = this.props;
+        const {width, height, src, ...etc} = this.props;
+
+        if (src) {
+            return createElement(
+                'img',
+                {
+                    style: `width: ${width}; height: ${height}`,
+                    src: src,
+                    ...etc,
+                },
+            );
+        }
 
         return createElement(
-            'img',
-            {
-                style: `width: ${width}; height: ${height}`,
-                ...etc,
-                // href: this.props.href,
-            },
-        );
+                'img',
+                {
+                    style: `width: ${width}; height: ${height}`,
+                    ...etc,
+                },
+            );
     }
 }
