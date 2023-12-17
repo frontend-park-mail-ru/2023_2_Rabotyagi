@@ -58,8 +58,16 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
         });
     };
 
-    createList() {
+    createContainer() {
         const products: VDomComponent[] = [];
+
+        // @BUG тут баг с переключением с profile -> profile/products, почему то дифф неправильно вычисляется/применяется
+        if (this.state.loading) {
+            return [createComponent(
+                Loader,
+                {},
+            )];
+        }
 
         if (this.state.products && this.state.products.length > 0) {
             this.state.products.forEach((product: ProductModelResponse) => products.push(
@@ -85,28 +93,13 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
 
     public render() {
 
-        if (this.state.loading) {
-            return createElement(
-                'div',
-                {class: 'products'},
-                createElement(
-                    'container',
-                    {class: 'products-container'},
-                    createComponent(
-                        Loader,
-                        {},
-                    ),
-                ),
-            );
-        }
-
         return createElement(
             'div',
             {class: 'products'},
             createElement(
                 'container',
                 {class: 'products-container'},
-                ...this.createList(),
+                ...this.createContainer(),
             ),
         );
 

@@ -21,6 +21,7 @@ export class Header extends Component<never, never>{
     routeToSignup = () => Navigate.navigateTo('/signup');
     routeToCart = () => { Navigate.navigateTo('/cart'); };
     routeToMain = () => Navigate.navigateTo('/');
+    routeToProfile = () => Navigate.navigateTo('/profile/products');
     routeToProductNew = () => {
         if (UserStore.isAuth()){
             Navigate.navigateTo('/product/new');
@@ -157,7 +158,7 @@ export class Header extends Component<never, never>{
                         text: 'Профиль',
                         variant: 'neutral',
                         subvariant: 'tertiary',
-                        onclick: () => Navigate.navigateTo('/profile'),
+                        onclick: this.routeToProfile,
                     },
                 ),
                 createComponent(
