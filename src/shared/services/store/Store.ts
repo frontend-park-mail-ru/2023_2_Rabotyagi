@@ -1,6 +1,6 @@
 import Dispatcher from './Dispatcher';
 
-export type StoreOperation = (action: ActionInterface) => void;
+export type StoreOperation = (payload: any) => void;
 export type StoreListener = () => void;
 
 export interface InnerActionInterface {

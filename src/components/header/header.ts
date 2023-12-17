@@ -5,6 +5,7 @@ import { VDomComponent, VDomElement, createComponent, createElement } from '../b
 
 import { Button, Dropdown, TextInput, ButtonImage } from '../baseComponents/index';
 
+import CartStore from '../../shared/store/cart';
 import Navigate from '../../shared/services/router/Navigate';
 
 import UserStore from '../../shared/store/user';
@@ -13,10 +14,12 @@ import { logout } from '../../shared/store/commonActions/auth';
 import logo from '../../assets/icons/logo.svg';
 import { ProductApi } from '../../shared/api/product';
 import { ResponseStatusChecker } from '../../shared/constants/response';
+import cart from '../../assets/icons/cart.svg';
 
 export class Header extends Component<never, never>{
     routeToSignin = () => Navigate.navigateTo('/signin');
     routeToSignup = () => Navigate.navigateTo('/signup');
+    routeToCart = () => { Navigate.navigateTo('/cart'); };
     routeToMain = () => Navigate.navigateTo('/');
     routeToProductNew = () => {
         if (UserStore.isAuth()){
@@ -88,7 +91,7 @@ export class Header extends Component<never, never>{
                     (searchDropdown.instance as Dropdown).switchHidden();
                 }
 
-return;
+                return;
             }
         };
 
@@ -112,11 +115,15 @@ return;
         );
     }
 
+    public componentDidMount() {
+        CartStore.addStoreUpdater(() => { this.applyComponentChanges(); });
+    }
+
     render() {
-        let tail;
+        let tail = [];
 
         if (!UserStore.isAuth()){
-            tail = createElement(
+            tail = [ createElement(
                 'div',
                 {
                     class: 'header-auth-box',
@@ -138,7 +145,7 @@ return;
                         onclick: this.routeToSignup,
                     },
                 ),
-            );
+            ) ];
         }
         else {
             const dropdown = createComponent(
@@ -166,20 +173,35 @@ return;
                     },
                 ),
             );
-            tail = createComponent(
-                ButtonImage,
-                {
-                    variant: 'neutral',
-                    subvariant: 'primary',
-                    height: 36,
-                    width: 36,
-                    src: this.avatar ? this.avatar : undefined,
-                    onclick: () => {
-                        (dropdown.instance as Dropdown).switchHidden();
+            tail = [
+                createComponent(
+                    Button,
+                    {
+                        variant: 'neutral',
+                        leftIcon: {
+                            content: cart,
+                            height: 28,
+                            width: 28,
+                        },
+                        textvariant: 'regular',
+                        text: CartStore.getCount().toString(),
+                        onclick: () => { this.routeToCart(); },
                     },
-                },
-                dropdown,
-            );
+                ),
+                createComponent(
+                    ButtonImage,
+                    {
+                        variant: 'neutral',
+                        subvariant: 'primary',
+                        height: 36,
+                        width: 36,
+                        onclick: () => {
+                            (dropdown.instance as Dropdown).switchHidden();
+                        },
+                    },
+                    dropdown,
+                ),
+            ];
         }
 
         return createElement(
@@ -210,7 +232,7 @@ return;
                     onclick: this.routeToProductNew,
                 },
             ),
-            tail,
+            ...tail,
         );
     }
 }

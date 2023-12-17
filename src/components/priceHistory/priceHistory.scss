@@ -1,0 +1,33 @@
+@use '../../assets/css/vars.scss';
+
+.price-history {
+    .price-history-current-price {
+        margin-bottom: 0.5rem;
+    }
+    
+    .price-history-svg {
+        box-sizing: border-box;
+        width: 100%;
+        height: 40px;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    
+        svg {
+            width: 100%;
+            height: 100%;
+    
+            polyline {
+                fill: none;
+                stroke: vars.$palette-primary;
+                stroke-width: 2;
+            }
+        }
+    }
+    
+    .price-history-xtitle {
+        box-sizing: border-box;
+        width: 300px;
+        display: flex;
+        justify-content: space-between;
+    }
+}

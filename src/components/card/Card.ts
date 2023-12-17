@@ -20,6 +20,32 @@ export interface ImageProps {
     url: string
 }
 
+export interface BaseCardProps {
+    id: number,
+    class?: string,
+    name?: string,
+    style?: string,
+    variant?: CardVariants,
+    images?: Array<ImageProps>,
+    title: string,
+    price: number,
+    delivery?: boolean,
+    safe_deal?: boolean,
+    city?: string,
+    is_active?: boolean,
+    in_favourites?: boolean,
+}
+
+export interface FavouriteCardProps extends BaseCardProps {
+    favouriteInfluence?: (index: number) => void,    
+}
+
+export interface CartCardProps extends BaseCardProps {
+    product_id: number,
+    saler_id: number,
+    owner_id: number,   
+}
+
 export interface CardProps {
     id: number,
     class?: string,

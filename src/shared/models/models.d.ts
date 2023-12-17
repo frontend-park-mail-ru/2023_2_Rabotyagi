@@ -69,3 +69,26 @@ declare interface CategoryModel {
     name: string,
     parent_id: number | null
 }
+
+declare interface OrderModel {
+    id: number,
+    owner_id: number,
+    saler_id: number,
+    city_id: number,
+    product_id: number,
+    title: string,
+    count: number,
+    price: number,
+    available_count: number,
+    images: Array<{ url: string }> | null | undefined,
+    delivery: boolean,
+    safe_deal: boolean,
+    in_favourites: boolean,
+}
+
+declare interface SalerModel {
+    id: number,
+    name: string,
+    email: string,
+    avatar: string,
+}

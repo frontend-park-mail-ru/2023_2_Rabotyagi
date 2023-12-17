@@ -6,6 +6,7 @@ import { Router, Route } from './shared/services/router/Routing';
 import { SigninPage } from './pages/signin/SigninPage';
 import { SignupPage } from './pages/signup/SignupPage';
 import { MainPage } from './pages/main/Main';
+import { CartPage } from './pages/cart/CartPage';
 
 import { login } from './shared/store/commonActions/auth';
 import { Loader } from './components/loader/Loader';
@@ -81,6 +82,13 @@ export class App extends Component<never, AppState> {
                     { path: new RegExp('^/profile.*') },
                     createComponent(
                         Profile, { },
+                    ),
+                ),
+                createComponent(
+                    Route,
+                    { path: new RegExp('^/cart$') },
+                    createComponent(
+                        CartPage, { },
                     ),
                 ),
             ),

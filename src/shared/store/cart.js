@@ -50,7 +50,7 @@ class Cart {
         try {
             const resp = await Order.getCart();
             const body = resp.body;
-            if (resp.status != 200) {
+            if (resp.status != 2000) {
                 throw body.error;
             }
 

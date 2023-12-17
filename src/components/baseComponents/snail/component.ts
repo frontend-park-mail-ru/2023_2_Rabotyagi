@@ -8,7 +8,7 @@ export abstract class Component<PropsType, StateType> {
     protected children: Array<VDomNode> = [];
 
     private node: VDomNode | undefined;
-    private _domElement: HTMLElement | Text | undefined;
+    private _domElement: HTMLElement | SVGSVGElement | Text | undefined;
 
     protected applyComponentChanges() {
         if (!this._domElement) {
@@ -57,7 +57,7 @@ export abstract class Component<PropsType, StateType> {
         return this.node;
     }
 
-    public notifyMounted(element: HTMLElement | Text) {
+    public notifyMounted(element: HTMLElement | SVGSVGElement | Text) {
         this._domElement = element;
         // необходимо для асинхронного выполнения
         setTimeout(() => {
