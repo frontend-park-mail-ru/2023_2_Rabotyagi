@@ -39,7 +39,6 @@ export enum OrderRoutes {
 export enum ProductRoutes {
     LIST = 'product/get_list',
     GET = 'product/get',
-    GET_MY = 'product/get_my',
     POST = 'product/add',
     DELETE = 'product/delete',
     PATCH = 'product/update',
