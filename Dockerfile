@@ -19,7 +19,7 @@ RUN npm ci
 RUN npm run preprod
 
 
-FROM nginx:stable as prod
+FROM nginx:stable-alpine3.17-slim as prod
 COPY --from=build /var/frontend/app/public/ /var/www/
 COPY --from=build /var/frontend/app/server/nginx.conf /etc/nginx/nginx.conf
 
