@@ -5,8 +5,6 @@ import { ResponseStatusChecker } from '../../constants/response';
 import { CartStoreAction } from '../cart';
 import Dispatcher from '../../services/store/Dispatcher';
 
-import { getResourceUrl } from '../../utils/getResource';
-
 export async function getOrders() {
     try {
         const resp = await OrderApi.getCart();
@@ -22,15 +20,14 @@ export async function getOrders() {
                 if (!ResponseStatusChecker.IsSuccessfulRequest(respUser)) {
                     throw bodyUser.error;
                 }
-                bodyUser.avatar = getResourceUrl(bodyUser.avatar);
 
-                Dispatcher.dispatch({ 
-                    name: CartStoreAction.FULL_CART, 
+                Dispatcher.dispatch({
+                    name: CartStoreAction.FULL_CART,
                     payload: { goods: body || [], saler: bodyUser },
                 });
             }
         }
     } catch(err) {
-        console.log(err);
+        console.error(err);
     }
 }

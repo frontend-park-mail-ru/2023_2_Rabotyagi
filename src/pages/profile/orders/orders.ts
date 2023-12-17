@@ -2,11 +2,8 @@ import { Component } from '../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 
 import { ProfilePlaceholder } from '../placeholder';
-import { Card } from '../../../components/card/Card';
-import { Button } from '../../../components/baseComponents/index';
 
 import CartStore from '../../../shared/store/cart';
-import { OrderModel } from '../../../shared/models/order';
 
 export interface ProfileORdersState {
     goods: Array<OrderModel>,
@@ -16,7 +13,7 @@ export class ProfileOrders extends Component<never, ProfileORdersState> {
 
     state = {
         goods: CartStore.getGoods(),
-    }
+    };
 
     public render() {
 

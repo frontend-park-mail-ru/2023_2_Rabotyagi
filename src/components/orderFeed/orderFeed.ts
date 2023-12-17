@@ -1,7 +1,7 @@
 import './orderFeed.scss';
 
 import { Component } from '../baseComponents/snail/component';
-import { createElement, createComponent, createText, VDomNode } from '../baseComponents/snail/vdom/VirtualDOM';
+import { createElement, createComponent, createText, VDomComponent } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { UserCard } from '../userCard/usercard';
 import { OrderCard } from '../orderCard/orderCard';
@@ -17,17 +17,28 @@ import Dispatcher from '../../shared/services/store/Dispatcher';
 export interface OrderFeedState {
     loading: boolean,
     error: boolean,
+    orders: Array<OrderModel>
 }
 
 export class OrderFeed extends Component<never, OrderFeedState> {
-
     state = {
         loading: true,
         error: false,
+        orders: [],
     };
 
-    componentDidMount() {
-        CartStore.addStoreUpdater(() => { this.applyComponentChanges(); });    
+    public componentDidMount() {
+        CartStore.addStoreUpdater(() => {
+            this.setState({
+                loading: false,
+                error: false,
+                orders: CartStore.getGoods(),
+            });
+        });
+
+        Dispatcher.dispatch({
+            name: CartStoreAction.REFRESH,
+        });
     }
 
     async buyAll() {
@@ -45,32 +56,38 @@ export class OrderFeed extends Component<never, OrderFeedState> {
                     throw body.error;
                 }
             }
-            Dispatcher.dispatch({ name: CartStoreAction.BUY_ALL, });
+            Dispatcher.dispatch({ name: CartStoreAction.BUY_ALL });
         } catch(err) {
-            // console.log(err);
+            console.error(err);
         }
+    }
+
+    createOrders() {
+        const objs: Array<VDomComponent> = [];
+
+        if (this.state.orders.length > 0) {
+            this.state.orders.forEach((good) => objs.push(
+                createComponent(
+                    OrderCard,
+                    good,
+                ),
+            ));
+        }
+
+        return objs;
     }
 
     render() {
 
-        const orders: Array<VDomNode> = [];
-
-        CartStore.getGoods().forEach((good) => {
-            orders.push(createComponent(
-                OrderCard,
-                { ...good },
-            ));
-        });
-
         return createElement(
             'div',
-            { class: 'order-feed', },
+            { class: 'order-feed' },
             createElement(
                 'div',
-                { class: 'order-feed-header', },
+                { class: 'order-feed-header' },
                 createElement(
                     'div',
-                    { class: 'order-feed-price', },
+                    { class: 'order-feed-price' },
                     createComponent(
                         Text,
                         {
@@ -93,15 +110,21 @@ export class OrderFeed extends Component<never, OrderFeedState> {
                 (CartStore.hasUser()) ?
                     createComponent(
                         UserCard,
-                        { ...CartStore.getSaler(), },
+                        { ...CartStore.getSaler() },
                     ) :
                     createText(''),
             ),
+            (this.state.loading) ?
+            createComponent(
+                Loader,
+                {},
+            )
+            :
             createElement(
                 'div',
-                { class: 'order-feed-content', },
-                ...orders,
-            )
+                { class: 'order-feed-content' },
+                ...this.createOrders(),
+            ),
         );
     }
 }

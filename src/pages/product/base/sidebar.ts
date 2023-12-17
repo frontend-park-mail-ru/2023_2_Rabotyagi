@@ -8,17 +8,13 @@ import { PriceHistory } from '../../../components/priceHistory/priceHistory';
 import { Button, Svg, Text, ErrorMessageBox } from '../../../components/baseComponents/index';
 
 import { OrderApi } from '../../../shared/api/order';
-import { UserModel } from '../../../shared/models/user';
-import { OrderModel, SalerModel } from '../../../shared/models/order';
-import { ResponseStatus, ResponseStatusChecker } from '../../../shared/constants/response';
+import { ResponseStatusChecker } from '../../../shared/constants/response';
 
 import Navigate from '../../../shared/services/router/Navigate';
 import Dispatcher from '../../../shared/services/store/Dispatcher';
 
 import CartStore, { CartStoreAction } from '../../../shared/store/cart';
 import UserStore from '../../../shared/store/user';
-
-import { productPriceUnit } from '../../../shared/models/product';
 
 import star from '../../../assets/icons/star.svg';
 import delivery from '../../../assets/icons/badges/delivery.svg';
@@ -43,7 +39,7 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
     };
 
     public componentDidMount() {
-        CartStore.addStoreUpdater(() => { console.log('CHANGE CART STORE'); this.applyComponentChanges(); });
+        CartStore.addStoreUpdater(() => { console.info('CHANGE CART STORE'); this.applyComponentChanges(); });
     }
 
     setError(newError: string) {
@@ -65,6 +61,7 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
         }
 
         try {
+            // debugger;
             if (!CartStore.sameUser(this.props.id)) {
                 throw new Error('В корзину можно добавлять продукты только с одинаковым пользователем');
             }

@@ -3,8 +3,6 @@ import './priceHistory.scss';
 import { Component } from '../baseComponents/snail/component';
 import { createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
 
-import { productPriceUnit } from '../../shared/models/product';
-
 import { Text } from '../baseComponents/index';
 
 import { getRuFormat } from '../../shared/utils/dateConverter';

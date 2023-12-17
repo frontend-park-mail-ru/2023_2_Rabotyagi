@@ -89,8 +89,8 @@ export const renderVDomNode = (rootNode: VDomNode): HTMLElement | SVGSVGElement 
             return svgElement.documentElement;
         }
 
-        const element = (!checkTagLikeSvgTag(rootNode.tag)) ? 
-                            document.createElement(rootNode.tag) 
+        const element = (!checkTagLikeSvgTag(rootNode.tag)) ?
+                            document.createElement(rootNode.tag)
                             : document.createElementNS(getXMLNS(rootNode.props), rootNode.tag) as SVGSVGElement;
 
         Object.keys(rootNode.props || {}).forEach((prop) => {

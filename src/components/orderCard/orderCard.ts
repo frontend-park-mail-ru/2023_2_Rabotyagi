@@ -4,13 +4,10 @@ import { Component } from '../baseComponents/snail/component';
 import { createElement, createComponent } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Counter } from '../counter/counter';
-import { Text, Button } from '../baseComponents/index';
+import { Text, Button, Image } from '../baseComponents/index';
 
-import { OrderModel } from '../../shared/models/order';
 import { OrderApi } from '../../shared/api/order';
 import { ResponseStatusChecker, ResponseMessage } from '../../shared/constants/response';
-
-import { getResourceUrl } from '../../shared/utils/getResource';
 
 import { CartStoreAction } from '../../shared/store/cart';
 import Dispatcher from '../../shared/services/store/Dispatcher';
@@ -82,28 +79,35 @@ export class OrderCard extends Component<OrderModel, never> {
 
         return createElement(
             'div',
-            { class: 'order-card', },
+            { class: 'order-card' },
             createElement(
                 'div',
-                { class: 'left-content', },
+                { class: 'left-content' },
                 (this.props.images) ?
-                    createElement(
-                        'img',
-                        { 
-                            class: 'img',
-                            src: getResourceUrl(this.props.images[0].url),
+                    createComponent(
+                        Image,
+                        {
+                            src: this.props.images[0].url,
                         },
-                    ) :
+                    )
+                    // createElement(
+                    //     'img',
+                    //     {
+                    //         class: 'img',
+                    //         src: getResourceUrl(this.props.images[0].url),
+                    //     },
+                    // )
+                    :
                     createElement(
                         'div',
-                        { class: 'img', },
-                    )
+                        { class: 'img' },
+                    ),
             ),
             createElement(
                 'div',
-                { class: 'center-content', },
+                { class: 'center-content' },
                 createComponent(
-                    Text, 
+                    Text,
                     {
                         tag: 'div',
                         variant: 'subheader',
@@ -122,7 +126,7 @@ export class OrderCard extends Component<OrderModel, never> {
             ),
             createElement(
                 'div',
-                { class: 'right-content', },
+                { class: 'right-content' },
                 createComponent(
                     Counter,
                     {
@@ -135,12 +139,12 @@ export class OrderCard extends Component<OrderModel, never> {
                 ),
                 createComponent(
                     Button,
-                    { 
+                    {
                         variant: 'accent',
                         text: 'Удалить',
                         onclick: () => { this.deleteOrder(); },
                     },
-                )
+                ),
             ),
         );
     }

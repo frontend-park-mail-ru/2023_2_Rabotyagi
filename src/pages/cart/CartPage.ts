@@ -26,24 +26,24 @@ export class CartPage extends Component<never, never> {
             ),
             createElement(
                 'div',
-                { class: 'wrapper-cart', },
+                { class: 'wrapper-cart' },
                 createElement(
                     'div',
-                    { class: 'cart', },
+                    { class: 'cart' },
                     createElement(
                         'div',
-                        { class: 'cart-header', },
+                        { class: 'cart-header' },
                         createComponent(
                             Text,
                             {
                                 variant: 'header',
                                 text: 'Корзина',
-                            }
+                            },
                         ),
                     ),
                     createElement(
                         'div',
-                        { class: 'wrapper', },
+                        { class: 'wrapper' },
                         createComponent(
                             OrderFeed, {},
                         ),

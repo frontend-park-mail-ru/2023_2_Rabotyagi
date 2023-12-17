@@ -140,9 +140,9 @@ export class ProductBase extends Component<never, ProductBaseState> {
                 ProductSidebar,
                 {
                     ...this.state.saler,
-                    product_id: this.state.product?.id ? this.state.product.id : 0,
+                    'product_id': this.state.product?.id ? this.state.product.id : 0,
                     price: this.state.product?.price ? this.state.product.price : 0,
-                    price_history: this.state.product?.price_history,
+                    'price_history': this.state.product?.price_history,
                     parent: this,
                     // callbacks: {
                     //     switchEditMode: this.switchEditMode,

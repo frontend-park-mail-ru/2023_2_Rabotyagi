@@ -19,6 +19,11 @@ declare interface productImageUrl {
     url: string
 }
 
+declare interface productPriceUnit {
+    created_at: string,
+    price: number,
+}
+
 declare interface ProductModel {
     title?: string,
     description?: string,
@@ -52,7 +57,9 @@ declare interface ProductModelResponse extends ProductModelPut {
     created_at: string,
     favourites: number,
     in_favourites: boolean,
-    views: number
+    views: number,
+    price_history?: Array<productPriceUnit> | null,
+
 }
 
 declare interface FavouriteModel {

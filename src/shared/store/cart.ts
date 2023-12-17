@@ -1,4 +1,5 @@
 import { Store } from '../services/store/Store';
+import { getOrders } from './commonActions/getOrders';
 
 export enum CartStoreAction {
     ADD_GOOD = 'ADD_GOOD',
@@ -8,6 +9,7 @@ export enum CartStoreAction {
     UPDATE_ORDER_COUNT = 'UPDATE_ORDER_COUNT',
     BUY_ALL = 'BUY_ALL',
     CLEAR_CART = 'CLEAR_CART',
+    REFRESH = 'CART_STORE_REFRESH'
 }
 
 interface CartStoreState {
@@ -29,37 +31,35 @@ class CartStore extends Store<CartStoreState> {
     public addActions(): void {
         this.addAction({
             name: CartStoreAction.ADD_GOOD,
-            operation: (payload: {good: OrderModel, saler: SalerModel}) => {
-                this.addInCart(payload.good, payload.saler);
-            },
+            operation: ({payload}: {payload: {good: OrderModel, saler: SalerModel}}) => this.addInCart(payload.good, payload.saler),
         });
         this.addAction({
             name: CartStoreAction.DELETE_GOOD,
-            operation: (payload: number) => { this.deleteFromCart(payload); },
+            operation: ({payload}: {payload: number}) => this.deleteFromCart(payload),
         });
         this.addAction({
             name: CartStoreAction.ADD_SALER,
-            operation: (payload: SalerModel) => { this.updateUser(payload); },
+            operation: ({payload}: {payload: SalerModel}) => this.updateUser(payload),
         });
         this.addAction({
             name: CartStoreAction.FULL_CART,
-            operation: (payload: { goods: Array<OrderModel>, saler: SalerModel }) => {
-                this.fullCart(payload.goods, payload.saler);
-            },
+            operation: ({payload}: {payload: { goods: Array<OrderModel>, saler: SalerModel }}) => this.fullCart(payload.goods, payload.saler),
         });
         this.addAction({
             name: CartStoreAction.UPDATE_ORDER_COUNT,
-            operation: (payload: { orderId: number, count: number }) => {
-                this.updateOrderCount(payload.orderId, payload.count);
-            },
+            operation: ({payload}: {payload: { orderId: number, count: number }}) => this.updateOrderCount(payload.orderId, payload.count),
         });
         this.addAction({
             name: CartStoreAction.BUY_ALL,
-            operation: () => { this.clear(); },
+            operation: () => this.clear(),
         });
         this.addAction({
             name: CartStoreAction.CLEAR_CART,
-            operation: () => { this.clear(); },
+            operation: () => this.clear(),
+        });
+        this.addAction({
+            name: CartStoreAction.REFRESH,
+            operation: async() => await this.refresh(),
         });
     }
 
@@ -131,7 +131,7 @@ class CartStore extends Store<CartStoreState> {
                 this.clearSaler();
             }
         } else {
-            console.log('Error when deleting from cart');
+            console.error(new Error('Error when deleting from cart'));
         }
     }
 
@@ -151,6 +151,10 @@ class CartStore extends Store<CartStoreState> {
         });
 
         return result;
+    }
+
+    public async refresh() {
+        await getOrders();
     }
 
     public getGoods() {

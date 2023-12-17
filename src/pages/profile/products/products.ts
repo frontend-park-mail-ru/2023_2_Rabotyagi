@@ -49,6 +49,13 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
         });
     }
 
+    removeProduct(id: number) {
+        debugger;
+        this.setState({
+            products: this.state.products.filter((product) => product.id !== id),
+        });
+    }
+
     public render() {
         const products: VDomComponent[] = [];
 
@@ -56,7 +63,7 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
             this.state.products.forEach((product: ProductModelResponse) => products.push(
                 createComponent(
                     Card,
-                    {variant: 'profile', ...product},
+                    {variant: 'profile', ...product, removeCallback: this.removeProduct},
                 )),
             );
         }

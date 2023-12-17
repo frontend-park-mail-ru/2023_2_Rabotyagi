@@ -13,6 +13,7 @@ import { Loader } from './components/loader/Loader';
 import { Product } from './pages/product/product';
 import { Profile } from './pages/profile/profile';
 import CityStore from './shared/store/city'; // eslint-disable-line @typescript-eslint/no-unused-vars
+import { getOrders } from './shared/store/commonActions/getOrders';
 
 interface AppState {
     loading: boolean
@@ -25,6 +26,8 @@ export class App extends Component<never, AppState> {
 
     async loader() {
         await login();
+        await getOrders();
+
         this.setState({
             loading: false,
         });

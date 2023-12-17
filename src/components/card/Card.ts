@@ -37,13 +37,13 @@ export interface BaseCardProps {
 }
 
 export interface FavouriteCardProps extends BaseCardProps {
-    favouriteInfluence?: (index: number) => void,    
+    favouriteInfluence?: (index: number) => void,
 }
 
 export interface CartCardProps extends BaseCardProps {
     product_id: number,
     saler_id: number,
-    owner_id: number,   
+    owner_id: number,
 }
 
 export interface CardProps {
@@ -60,6 +60,7 @@ export interface CardProps {
     city?: string,
     is_active?: boolean,
     favouriteInfluence?: (index: number) => void,
+    removeCallback?: (id: number) => void
 }
 
 enum MouseButtons {
@@ -192,7 +193,7 @@ export class Card extends Component<CardProps, CardState> {
             throw new Error('Card props are undefined');
         }
 
-        const cp = this;
+        const cp = this; // eslint-disable-line
 
         const changeActiveStatus = async(e: Event) => {
             e.stopPropagation();
@@ -248,7 +249,11 @@ export class Card extends Component<CardProps, CardState> {
                 return;
             }
 
+            // debugger;
             // this.props.favouriteInfluence(this.props.id);
+            if (this.props.removeCallback){
+                this.props.removeCallback(this.props.id);
+            }
         }
     };
 
