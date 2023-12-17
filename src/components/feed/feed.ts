@@ -26,6 +26,9 @@ export class Feed extends Component<FeedProps, FeedState> {
         super();
 
         Navigate.addCallback(this.updateEvent);
+    }
+
+    public componentDidMount(): void {
         this.updateEvent();
     }
 
