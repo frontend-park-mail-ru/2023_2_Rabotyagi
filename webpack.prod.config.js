@@ -8,9 +8,9 @@ require('dotenv').config( {
 } );
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: path.join(__dirname, 'src', 'index'),
-  watch: true,
+  watch: false,
   // mode: 'production',
   optimization: {
     minimize: true,

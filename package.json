@@ -4,21 +4,15 @@
   "description": "Simple Text",
   "main": "index.js",
   "scripts": {
-    "\n============Run dev=======================\n": "",
     "dev-win": "start npm run build-dev && start npm run server",
     "dev-linux": "npm run build-dev & npm run server",
-    "\n============Run prod======================\n": "",
     "preprod": "webpack --node-env production --mode production --no-watch",
     "prod": "NODE_ENV=production npm run server",
-    "\n============Start server==================\n": "",
     "server": "node server/index.js",
-    "\n============Build bundles=================\n": "",
-    "build-dev": "webpack --node-env development --mode development",
-    "build-prod": "webpack --node-env production --mode production",
-    "\n============Build Docs====================\n": "",
+    "build-dev": "webpack --config ./webpack.dev.config.js",
+    "build-prod": "webpack --config ./webpack.prod.config.js",
     "predocs": "rmdir -r -f ./docs",
     "docs": "jsdoc .\\src\\ --recurse -d .\\docs -c .\\jsdoc.json",
-    "\n============Linting=======================\n": "",
     "lint": "npx eslint src"
   },
   "repository": {
