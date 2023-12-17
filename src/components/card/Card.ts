@@ -4,13 +4,12 @@ import { Component } from '../baseComponents/snail/component';
 import { VDomNode, createComponent, createElement, createText } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Badge } from './badge/Badge';
-import { Text, Button } from '../baseComponents/index';
+import { Text, Button, Image } from '../baseComponents/index';
 
 import Navigate from '../../shared/services/router/Navigate';
 
 import delivery from '../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../assets/icons/badges/safe_deal.svg';
-import { getResourceUrl } from '../../shared/utils/getResource/src/getResource';
 import { UserApi } from '../../shared/api/user';
 import { ResponseStatusChecker } from '../../shared/constants/response';
 import { Product } from '../../shared/api/product';
@@ -122,10 +121,18 @@ export class Card extends Component<CardProps, {}> {
                 'div',
                 { class: 'body-base' },
                 (this.props.images) ?
-                    createElement(
-                        'img',
-                        { class: 'image-base', src: getResourceUrl(this.props.images[0].url) as string },
-                    ) :
+                    createComponent(
+                        Image,
+                        {
+                            class: 'image-base',
+                            src: this.props.images[0].url,
+                        },
+                    )
+                    // createElement(
+                    //     'img',
+                    //     { class: 'image-base', src: getResourceUrl(this.props.images[0].url) as string },
+                    // )
+                    :
                     createElement(
                         'div',
                         { class: 'image-base' },

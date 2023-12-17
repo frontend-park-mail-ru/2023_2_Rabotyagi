@@ -1,3 +1,6 @@
+@use '../../assets/css/vars.scss';
+@use '../../assets/css/sizes.scss';
+
 .signup {
     margin-top: auto;
     margin-bottom: auto;
@@ -11,6 +14,13 @@
     flex-shrink: 0;
     border-radius: 12px;
     border: 1px solid var(--text-tertiary, rgba(41, 44, 47, 0.25));
+
+    @media screen and (max-width: sizes.$mobile) {
+        width: sizes.$mobile;
+        margin-top: 50px;
+        margin-bottom: none;
+        padding: 4px 0px;
+    }
     
     &_content {
         display: flex;

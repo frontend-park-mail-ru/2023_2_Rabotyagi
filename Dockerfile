@@ -5,8 +5,9 @@ COPY public public
 COPY src src
 COPY server server
 COPY package*.json . 
-COPY webpack.config.js .
-RUN npm install
+COPY webpack.* .
+COPY tsconfig.json .
+RUN npm ci
 
 ENV NODE_ENV=development
 ENV API_URL=localhost
