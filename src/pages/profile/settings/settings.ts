@@ -6,7 +6,7 @@ import user, { UserStoreAction } from '../../../shared/store/user';
 import Dispatcher from '../../../shared/services/store/Dispatcher';
 import { UserApi } from '../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
-import { Files } from '../../../shared/api/file';
+import { FileApi } from '../../../shared/api/file';
 
 type inputFields = UserModelPatch & {
     forUpload?: File,
@@ -80,7 +80,7 @@ export class ProfileSettings extends Component<never, ProfileSettingsState> {
             let res;
 
             try {
-                res = await Files.images(this.state.inputFields.forUpload);
+                res = await FileApi.images(this.state.inputFields.forUpload);
             }
             catch(err) {
                 console.error(err);

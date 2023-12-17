@@ -12,7 +12,7 @@ import delivery from '../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../assets/icons/badges/safe_deal.svg';
 import { UserApi } from '../../shared/api/user';
 import { ResponseStatusChecker } from '../../shared/constants/response';
-import { Product } from '../../shared/api/product';
+import { ProductApi } from '../../shared/api/product';
 
 export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite' | 'cart';
 
@@ -32,7 +32,7 @@ export interface CardProps {
     delivery?: boolean,
     safe_deal?: boolean,
     city?: string,
-    isActive?: boolean,
+    is_active?: boolean,
     favouriteInfluence?: (index: number) => void,
 }
 
@@ -42,7 +42,20 @@ enum MouseButtons {
     RIGHT = 2
 }
 
-export class Card extends Component<CardProps, {}> {
+interface CardState {
+    isActive: boolean
+}
+
+export class Card extends Component<CardProps, CardState> {
+    protected state: CardState = {
+        isActive: false,
+    };
+
+    public componentDidMount(): void {
+        this.setState({
+            isActive: this.props?.is_active || false,
+        });
+    }
 
     navigateToProduct = (e: MouseEvent) => {
         switch (e.button) {
@@ -110,7 +123,7 @@ export class Card extends Component<CardProps, {}> {
             'button',
             {
                 class: 'card-base',
-                onmouseup: this.navigateToProduct,
+                onclick: this.navigateToProduct,
             },
             createElement(
                 'div',
@@ -128,10 +141,6 @@ export class Card extends Component<CardProps, {}> {
                             src: this.props.images[0].url,
                         },
                     )
-                    // createElement(
-                    //     'img',
-                    //     { class: 'image-base', src: getResourceUrl(this.props.images[0].url) as string },
-                    // )
                     :
                     createElement(
                         'div',
@@ -151,24 +160,45 @@ export class Card extends Component<CardProps, {}> {
         );
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    changeActiveStatus = (e: Event) => {
-        e.stopPropagation();
-    };
 
     renderActiveButton() {
         if (!this.props) {
             throw new Error('Card props are undefined');
         }
 
-        const isActive = this.props.isActive || false;
+        const cp = this;
+
+        const changeActiveStatus = async(e: Event) => {
+            e.stopPropagation();
+
+            if (this.props) {
+                let res;
+
+                try {
+                    res = await ProductApi.changeActive(this.props.id, !this.state.isActive);
+                }
+                catch (err) {
+                    console.error(err);
+                }
+
+                if (!ResponseStatusChecker.IsRedirectResponse(res)) {
+                    return;
+                }
+
+                cp.setState({
+                    isActive: !this.state.isActive,
+                });
+            }
+
+        };
 
         return createComponent(
             Button,
             {
                 variant: 'primary',
-                text: (isActive) ? 'Деактивировать' : 'Активировать',
+                text: (this.state.isActive) ? 'Деактивировать' : 'Активировать',
                 style: 'width: 100%;',
-                onclick: this.changeActiveStatus,
+                onclick: changeActiveStatus,
             },
         );
     }
@@ -180,7 +210,7 @@ export class Card extends Component<CardProps, {}> {
             let res;
 
             try {
-                res = await Product.delete(this.props.id);
+                res = await ProductApi.delete(this.props.id);
             }
             catch(err) {
                 console.error(err);
@@ -221,13 +251,6 @@ export class Card extends Component<CardProps, {}> {
             }
 
             this.props.favouriteInfluence(this.props.id);
-
-            /*Dispatcher.dispatch({
-                name: 'FAVOURITE_REMOVE',
-                payload: this.props.id,
-            });*/
-
-            //this.unmount();
         }
     };
 
@@ -262,7 +285,7 @@ export class Card extends Component<CardProps, {}> {
             'button',
             {
                 class: 'card-profile',
-                onmouseup: this.navigateToProduct,
+                onclick: this.navigateToProduct,
             },
             (this.props.images) ?
                 createElement(
@@ -302,7 +325,7 @@ export class Card extends Component<CardProps, {}> {
                             variant: 'outlined',
                             text: 'Удалить',
                             style: 'width: 100%;',
-                            onmouseup: this.deleteFunction,
+                            onclick: this.deleteFunction,
                         },
                     ) : createText(''),
             ),

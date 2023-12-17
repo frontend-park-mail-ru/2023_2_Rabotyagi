@@ -5,7 +5,7 @@ import { VDomNode, createComponent, createElement } from '../baseComponents/snai
 import { Text } from '../baseComponents/index';
 import { Card, CardProps } from '../card/Card';
 import { Loader } from '../loader/Loader';
-import { Product } from '../../shared/api/product';
+import { ProductApi } from '../../shared/api/product';
 import { ResponseStatusChecker } from '../../shared/constants/response';
 import Navigate from '../../shared/services/router/Navigate';
 
@@ -47,7 +47,7 @@ export class Feed extends Component<FeedProps, FeedState> {
         let resp;
 
         try {
-            resp = await Product.feed();
+            resp = await ProductApi.feed();
         } catch (err) {
             console.error(err);
 

@@ -1,7 +1,7 @@
 import { ProductRoutes } from '../constants/api';
 import { Ajax } from '../services/ajax';
 
-export class Product {
+export class ProductApi {
     static async feed() {
         return await Ajax.getInstance().get({
             url: ProductRoutes.LIST,
@@ -47,6 +47,19 @@ export class Product {
                 'id': id,
             },
             body: data,
+            credentials: 'include',
+        });
+    }
+
+    static async changeActive(id: number, status: boolean) {
+        return await Ajax.getInstance().patch({
+            url: ProductRoutes.PATCH,
+            params: {
+                'id': id,
+            },
+            body: {
+                'is_active': status,
+            },
             credentials: 'include',
         });
     }

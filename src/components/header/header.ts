@@ -11,7 +11,7 @@ import UserStore from '../../shared/store/user';
 import { logout } from '../../shared/store/commonActions/auth';
 
 import logo from '../../assets/icons/logo.svg';
-import { Product } from '../../shared/api/product';
+import { ProductApi } from '../../shared/api/product';
 import { ResponseStatusChecker } from '../../shared/constants/response';
 
 export class Header extends Component<never, never>{
@@ -41,7 +41,7 @@ export class Header extends Component<never, never>{
     }
 
     private createSearchForm(): VDomElement {
-        const cp = this;
+        const cp = this; // eslint-disable-line
 
         const searchDropdown = createComponent(
             Dropdown,
@@ -50,12 +50,11 @@ export class Header extends Component<never, never>{
 
         const submitEvent = async(e: SubmitEvent) => {
             e.preventDefault();
-            debugger;
 
             const search = (e.currentTarget as HTMLFormElement).elements[0] as HTMLInputElement;
             const value = search.value;
 
-            const res = await Product.searchFeed(this.currentSearch ? this.currentSearch : value);
+            const res = await ProductApi.searchFeed(this.currentSearch ? this.currentSearch : value);
             search.value = '';
             Navigate.navigateTo('/', {
                 products: res.body,
@@ -65,7 +64,7 @@ export class Header extends Component<never, never>{
         const inputEvent = async(e: InputEvent) => {
             const input = e.currentTarget as HTMLInputElement;
             if (input.value && (e.data || e.inputType === 'deleteContentBackward')) {
-                const res = await Product.search(input.value);
+                const res = await ProductApi.search(input.value);
 
                 if (!ResponseStatusChecker.IsSuccessfulRequest(res)){
                     return;

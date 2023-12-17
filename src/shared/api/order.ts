@@ -1,7 +1,7 @@
 import { OrderRoutes } from '../constants/api';
 import { Ajax } from '../services/ajax';
 
-export class Order {
+export class OrderApi {
     static async create(product: any) {
         return await Ajax.getInstance().post({
             url: OrderRoutes.ADD,

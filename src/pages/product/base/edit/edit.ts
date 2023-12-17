@@ -2,8 +2,8 @@ import { BooleanInput, Button, FileInput, NumberInput, Select, Text, TextArea, T
 import { Component } from '../../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 import { Carousel } from '../../../../components/carousel/Carousel';
-import { Files } from '../../../../shared/api/file';
-import { Product } from '../../../../shared/api/product';
+import { FileApi } from '../../../../shared/api/file';
+import { ProductApi } from '../../../../shared/api/product';
 import { ResponseStatusChecker } from '../../../../shared/constants/response';
 import Navigate from '../../../../shared/services/router/Navigate';
 // import UserStore from '../../../../shared/store/UserStore';
@@ -85,7 +85,7 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
 
     async uploadImages() {
         if (this.state.imagesForUpload) {
-            const res = await Files.images(this.state.imagesForUpload);
+            const res = await FileApi.images(this.state.imagesForUpload);
 
             if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
                 // this.errorBox.innerHTML = '';
@@ -138,7 +138,7 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
             return;
         }
 
-        const res = await Product.patch(productId, {
+        const res = await ProductApi.patch(productId, {
             ...this.state,
         } as ProductModel);
 

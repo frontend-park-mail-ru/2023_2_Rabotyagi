@@ -4,9 +4,9 @@ import { FileInput, NumberInput, Text, TextArea, TextInput, BooleanInput, Button
 import { Component } from '../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 import { Select } from '../../../components/baseComponents/select/select';
-import { Files } from '../../../shared/api/file';
+import { FileApi } from '../../../shared/api/file';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
-import { Product } from '../../../shared/api/product';
+import { ProductApi } from '../../../shared/api/product';
 import UserStore from '../../../shared/store/user';
 import Navigate from '../../../shared/services/router/Navigate';
 import CategoryStore from '../../../shared/store/category';
@@ -71,7 +71,7 @@ export class ProductNew extends Component<never,ProductNewState> {
 
     async uploadImages() {
         if (this.state.imagesForUpload) {
-            const res = await Files.images(this.state.imagesForUpload);
+            const res = await FileApi.images(this.state.imagesForUpload);
 
             if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
                 // this.errorBox.innerHTML = '';
@@ -124,7 +124,7 @@ export class ProductNew extends Component<never,ProductNewState> {
             return;
         }
 
-        const res = await Product.create({
+        const res = await ProductApi.create({
             'title': this.state.title,
             'description': this.state.description,
             'available_count': this.state.availableCount,
