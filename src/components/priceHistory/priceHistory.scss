@@ -1,6 +1,9 @@
 @use '../../assets/css/vars.scss';
 
 .price-history {
+    box-sizing: border-box;
+    width: 100%;
+
     .price-history-current-price {
         margin-bottom: 0.5rem;
     }
@@ -26,7 +29,7 @@
     
     .price-history-xtitle {
         box-sizing: border-box;
-        width: 300px;
+        width: 100%;
         display: flex;
         justify-content: space-between;
     }

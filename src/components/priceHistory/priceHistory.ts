@@ -21,7 +21,7 @@ export type PriceHistoryGrowingClass = 'up' | 'down' | 'line';
 export class PriceHistory extends Component<PriceHistoryProps, PriceHistoryState> {
 
     state = {
-        graphicPadding: 5,
+        graphicPadding: 2,
     };
 
     currentPrice() {
@@ -74,7 +74,7 @@ export class PriceHistory extends Component<PriceHistoryProps, PriceHistoryState
             return 'up';
         }
 
-return 'down';
+        return 'down';
     }
 
     getYCoor(price: number, minPrice: number, priceLength: number): number {
@@ -87,8 +87,8 @@ return 'down';
             result += this.state.graphicPadding;
         if (result == 100)
             result -= this.state.graphicPadding;
-
-return result;
+        
+        return result;
     }
 
     getDayDifference(fDate: string, lDate?: string) {
@@ -109,7 +109,7 @@ return result;
         if (result == 100)
             result -= this.state.graphicPadding;
 
-return result;
+        return result;
     }
 
     pointsToString(): string {
@@ -121,10 +121,10 @@ return result;
         const minPrice = this.minPrice();
         const priceLength = this.maxPrice() - this.minPrice();
 
-        const firstDate = this.props.points[0].created_at;
+        const firstDate = this.props.points[this.props.points.length - 1].created_at;
         const dateLength = this.getDayDifference(firstDate);
 
-        this.props.points.forEach((point) => {
+        this.props.points.reverse().forEach((point) => {
             const xCoor = this.getXCoor(point.created_at, firstDate, dateLength).toString();
             const yCoor = this.getYCoor(point.price, minPrice, priceLength).toString();
             result.push([xCoor, yCoor].join(','));
@@ -150,11 +150,9 @@ return result;
             throw new Error('PriceHistory settings are undefined');
         }
 
-        /*if (this.props.points.length == 0) {
+        if (this.props.points.length == 0) {
             throw new Error('Points must have at least one point');
-        }*/
-
-        console.log(this.props);
+        }
 
         return createElement(
             'div',

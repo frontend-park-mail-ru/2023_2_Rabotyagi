@@ -1,3 +1,5 @@
+@use '../../../assets/css/vars.scss';
+
 .product-menu {
     // position: sticky;
     display: flex;
@@ -6,6 +8,14 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+
+    .up {
+        color: vars.$text-accent;
+    }
+
+    .down {
+        color: vars.$palette-secondary;
+    }
 
     &-saler {
         display: flex;
