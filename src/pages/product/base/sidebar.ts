@@ -44,7 +44,7 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
     };
 
     public componentDidMount() {
-        CartStore.addStoreUpdater(() => { console.info('CHANGE CART STORE'); this.applyComponentChanges(); });
+        CartStore.addStoreUpdater(() => { this.applyComponentChanges(); });
     }
 
     setError(newError: string) {
@@ -221,37 +221,41 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
             {
                 class: 'product-menu',
             },
-            createComponent(
-                Text,
-                {
-                    text: this.getPriceText(this.getPriceClass(this.props.price_history, this.props.price), this.props.price),
-                    variant: 'subheader',
-                    className: this.getPriceClass(this.props.price_history, this.props.price),
-                },
-            ),
-            (this.props.price_history) ?
+            createElement(
+                'div',
+                { class: 'product-menu-price', },
                 createComponent(
-                    Button,
+                    Text,
                     {
-                        variant: 'outlined',
-                        text: 'Посмотреть историю цены',
-                        onclick: () => {
-                            if (this.props && !MessageStore.getVisible()) {
-                                Dispatcher.dispatch({
-                                    name: MessageStoreAction.SHOW_MESSAGE,
-                                    payload: createComponent(
-                                        PriceHistory,
-                                        {
-                                            price: this.props.price,
-                                            points: this.props.price_history,
-                                        },
-                                    )
-                                });
-                            }
-                        },
-                    }
-                ) :
-                createText(''),
+                        text: this.getPriceText(this.getPriceClass(this.props.price_history, this.props.price), this.props.price),
+                        variant: 'subheader',
+                        className: this.getPriceClass(this.props.price_history, this.props.price),
+                    },
+                ),
+                (this.props.price_history) ?
+                    createComponent(
+                        Button,
+                        {
+                            variant: 'outlined',
+                            text: 'История цены',
+                            onclick: () => {
+                                if (this.props && !MessageStore.getVisible()) {
+                                    Dispatcher.dispatch({
+                                        name: MessageStoreAction.SHOW_MESSAGE,
+                                        payload: createComponent(
+                                            PriceHistory,
+                                            {
+                                                price: this.props.price,
+                                                points: this.props.price_history,
+                                            },
+                                        )
+                                    });
+                                }
+                            },
+                        }
+                    ) :
+                    createText(''),
+            ),
             createElement(
                 'div',
                 {

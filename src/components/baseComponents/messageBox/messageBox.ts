@@ -19,20 +19,27 @@ export class MessageBox extends Component<never, never> {
             'div',
             {
                 class: 'message-box',
-                hidden: !MessageStore.getVisible(),
+                style: 'display: ' + (MessageStore.getVisible() ? 'flex;' : 'none;'),
             },
-            MessageStore.getMessage(),
-            createComponent(
-                Button,
-                {
-                    variant: 'primary',
-                    text: 'Закрыть',
-                    onclick: () => {
-                        Dispatcher.dispatch({ name: MessageStoreAction.HIDE_MESSAGE, });
-                    },
-                }
-            )
-
+            createElement(
+                'div',
+                { class: 'message-box-content', },
+                MessageStore.getMessage(),
+            ),
+            createElement(
+                'div',
+                { class: 'message-box-menu', },
+                createComponent(
+                    Button,
+                    {
+                        variant: 'primary',
+                        text: 'Закрыть',
+                        onclick: () => {
+                            Dispatcher.dispatch({ name: MessageStoreAction.HIDE_MESSAGE, });
+                        },
+                    }
+                )
+            ),
         )
     }
 }
