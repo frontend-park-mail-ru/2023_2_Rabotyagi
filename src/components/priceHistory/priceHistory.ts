@@ -25,26 +25,14 @@ export class PriceHistory extends Component<PriceHistoryProps, PriceHistoryState
     };
 
     maxPrice() {
-        if (!this.props) {
-            throw new Error('PriceHistory settings are undefined');
-        }
-
         return Math.max(...this.props.points.map(element => element.price), this.props.price);
     }
 
     minPrice() {
-        if (!this.props) {
-            throw new Error('PriceHistory settings are undefined');
-        }
-
         return Math.min(...this.props.points.map(element => element.price), this.props.price);
     }
 
     graphicYLength() {
-        if (!this.props) {
-            throw new Error('PriceHistory settings are undefined');
-        }
-
         return this.maxPrice() - this.minPrice();
     }
 
@@ -106,10 +94,6 @@ export class PriceHistory extends Component<PriceHistoryProps, PriceHistoryState
     }
 
     pointsToString(): string {
-        if (!this.props || !this.props.price) {
-            throw new Error('PriceHistory settings are undefined');
-        }
-
         const result: Array<string> = [];
         const minPrice = this.minPrice();
         const priceLength = this.maxPrice() - this.minPrice();
@@ -139,10 +123,6 @@ export class PriceHistory extends Component<PriceHistoryProps, PriceHistoryState
     }
 
     render() {
-        if (!this.props) {
-            throw new Error('PriceHistory settings are undefined');
-        }
-
         if (this.props.points.length == 0) {
             throw new Error('Points must have at least one point');
         }

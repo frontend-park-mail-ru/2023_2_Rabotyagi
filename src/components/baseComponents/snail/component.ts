@@ -3,16 +3,16 @@ import { VDomNode } from './vdom/VirtualDOM';
 
 export abstract class Component<PropsType, StateType> {
 
-    protected props: PropsType | undefined;
+    protected props: PropsType;
     protected state: StateType | undefined;
     protected children: Array<VDomNode> = [];
 
     private node: VDomNode | undefined;
     private _domElement: HTMLElement | SVGSVGElement | Text | undefined;
 
-    // constructor(props: PropsType) {
-    //     this.props = props;
-    // }
+    constructor(props: PropsType = {} as PropsType) {
+         this.props = props;
+    }
 
     protected applyComponentChanges() {
         if (!this._domElement) {
@@ -54,7 +54,7 @@ export abstract class Component<PropsType, StateType> {
         this.applyComponentChanges();
     }
 
-    public initProps(props: PropsType | undefined): VDomNode {
+    public initProps(props: PropsType): VDomNode {
         this.props = props;
         this.node = this.render();
 

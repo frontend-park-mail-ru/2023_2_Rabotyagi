@@ -55,11 +55,11 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
     }
 
     routeToSaler = () => {
-        if (this.props?.id === UserStore.getFields()?.id) {
+        if (this.props.id === UserStore.getFields()?.id) {
             Navigate.navigateTo('/profile');
         }
         else {
-            Navigate.navigateTo(`/profile/saler?id=${this.props?.id}`, {salerId: this.props?.id});
+            Navigate.navigateTo(`/profile/saler?id=${this.props.id}`, {salerId: this.props.id});
         }
     };
 
@@ -67,16 +67,13 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
         if (!points) {
             return 'line';
         }
-
-        const reversePoints = points.reverse();
-        const nextUnequalElement = reversePoints.find((element) => element.price !== price);
-        if (!nextUnequalElement) {
+        if (points.length < 2) {
             return 'line';
         }
-        if (nextUnequalElement.price == price) {
+        if (points[points.length - 1].price == points[points.length - 2].price) {
             return 'line';
         }
-        if (nextUnequalElement.price < price) {
+        if (points[points.length - 1].price > points[points.length - 2].price) {
             return 'up';
         }
 
@@ -144,10 +141,6 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
 
     renderEditButton = (): Array<VDomComponent> => {
         let content: Array<VDomComponent> = [];
-
-        if (!this.props) {
-            throw new Error('ProductSidebar props undefined');
-        }
 
         if(UserStore.isSameUser(this.props.id)){
             content = [
