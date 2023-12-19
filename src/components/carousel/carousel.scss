@@ -41,10 +41,12 @@
     &--left {
         @extend .carousel-button;
         left: 0;
+        border-radius: 0 !important;
     }
 
     &--right {
         @extend .carousel-button;
         right: 0;
+        border-radius: 0 !important;
     }
 }
