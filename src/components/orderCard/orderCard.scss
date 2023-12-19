@@ -1,6 +1,7 @@
 @use '../../assets/css/vars.scss';
 
 $order-height: 180px;
+$order-width: 180px;
 
 .order-card {
     display: flex;
@@ -13,9 +14,11 @@ $order-height: 180px;
     width: 100%;
 
     .left-content {
-        flex: 0 0 180px;
+        width: $order-width;
         height: $order-height;
-        >.img {
+        display: flex;
+        align-items: center;
+        >.img, >img {
             width: -webkit-fill-available;
             height: $order-height;
             object-fit: cover;

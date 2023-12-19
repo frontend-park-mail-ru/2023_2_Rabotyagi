@@ -17,6 +17,8 @@ import CartStore, { CartStoreAction } from '../../../shared/store/cart';
 import MessageStore, { MessageStoreAction } from '../../../shared/store/message';
 import UserStore from '../../../shared/store/user';
 
+import { getRuDayFormat } from '../../../shared/utils/dateConverter';
+
 import star from '../../../assets/icons/star.svg';
 import delivery from '../../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../../assets/icons/badges/safe_deal.svg';
@@ -240,7 +242,7 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                 createComponent(
                     Text,
                     {
-                        text: this.props.price,
+                        text: this.props.price.toString() + ' ₽',
                         variant: 'subheader',
                     },
                 ),
@@ -312,21 +314,7 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                         {class: 'product-menu-saler-info-additional'},
                         createComponent(
                             Text,
-                            {text: 'на Юле с 09 окт 2021'},
-                        ),
-                        createElement(
-                            'div',
-                            {class: 'product-menu-saler-info-additional-rating'},
-                            ...Array.from({ length: 5 }, () =>
-                                createComponent(
-                                    Svg,
-                                    {
-                                        content: star,
-                                        width: 24,
-                                        height: 24,
-                                    },
-                                ),
-                            ),
+                            {text: 'на Юле с ' + getRuDayFormat(this.props.created_at) },
                         ),
                     ),
                 ),
