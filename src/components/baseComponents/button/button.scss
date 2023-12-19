@@ -46,7 +46,7 @@
 
     &:hover {
         background: var(--primary-hover, rgba(157, 141, 241, 0.80));
-        color: vars.$text-primary;
+        color: #fff;
     }
 
     &.primary {
@@ -64,7 +64,7 @@
 
     &.tertiary {
         &:hover, &.active {
-            color: vars.$primary-active;
+            color: #fff;
         }
     }
 

@@ -19,7 +19,6 @@ import UserStore from '../../../shared/store/user';
 
 import { getRuDayFormat } from '../../../shared/utils/dateConverter';
 
-import star from '../../../assets/icons/star.svg';
 import delivery from '../../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../../assets/icons/badges/safe_deal.svg';
 
