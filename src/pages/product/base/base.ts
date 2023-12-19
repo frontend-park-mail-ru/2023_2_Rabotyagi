@@ -144,6 +144,8 @@ export class ProductBase extends Component<never, ProductBaseState> {
                     price: this.state.product?.price ? this.state.product.price : 0,
                     'price_history': this.state.product?.price_history,
                     parent: this,
+                    safe_deal: this.state.product?.safe_deal || false,
+                    delivery: this.state.product?.delivery || false,
                     // callbacks: {
                     //     switchEditMode: this.switchEditMode,
                     //     isEditMode: this.isEditMode,
