@@ -171,162 +171,166 @@ export class ProductNew extends Component<never,ProductNewState> {
     public render() {
 
         return createElement(
-            'form',
-            {
-                class: 'content-add',
-                onsubmit: this.formSubmit,
-            },
+            'wrapper',
+            {},
             createElement(
-                'div',
+                'form',
                 {
-                    class: 'content-add-body',
+                    class: 'content-add',
                     onsubmit: this.formSubmit,
                 },
-                createComponent(
-                    Text,
+                createElement(
+                    'div',
                     {
-                        text: 'Название',
+                        class: 'content-add-body',
+                        onsubmit: this.formSubmit,
                     },
-                ),
-                createComponent(
-                    TextInput,
-                    {
-                        oninput: (e: Event) => this.state.title = (e.target as HTMLInputElement).value,
-                    },
-                ),
-                createComponent(
-                    Text,
-                    {
-                        text: 'Изображения',
-                    },
-                ),
-                createComponent(
-                FileInput,
-                    {
-                        text: 'Выбрать файлики',
-                        accept: '.png, .jpg, .jpeg',
-                        multiple: true,
-                        oninput: this.fileInputEvent,
-                    },
-                ),
-                createComponent(
-                    Text,
-                    {
-                        text: 'Город',
-                    },
-                ),
-                createComponent(
-                    Select,
-                    {
-                        items: CityStore.getList(),
-                        key: 'id',
-                        value: 'name',
-                        events: {
-                            onchange: (e: Event) => this.state.city = Number((e.target as HTMLInputElement).value),
+                    createComponent(
+                        Text,
+                        {
+                            text: 'Название',
                         },
-                    },
-                ),
-                createComponent(
-                    Text,
-                    {
-                        text: 'Описание',
-                    },
-                ),
-                createComponent(
-                    TextArea,
-                    {
-                        oninput: (e: Event) => this.state.description = (e.target as HTMLInputElement).value,
-                    },
-                ),
-                createComponent(
-                    Text,
-                    {
-                        text: 'Категория',
-                    },
-                ),
-                createComponent(
-                    Select,
-                    {
-                        items: CategoryStore.getList(),
-                        key: 'id',
-                        value: 'name',
-                        events: {
-                            onchange: (e: Event) => this.state.category = Number((e.target as HTMLInputElement).value),
+                    ),
+                    createComponent(
+                        TextInput,
+                        {
+                            oninput: (e: Event) => this.state.title = (e.target as HTMLInputElement).value,
                         },
-                    },
+                    ),
+                    createComponent(
+                        Text,
+                        {
+                            text: 'Изображения',
+                        },
+                    ),
+                    createComponent(
+                    FileInput,
+                        {
+                            text: 'Выбрать файлики',
+                            accept: '.png, .jpg, .jpeg',
+                            multiple: true,
+                            oninput: this.fileInputEvent,
+                        },
+                    ),
+                    createComponent(
+                        Text,
+                        {
+                            text: 'Город',
+                        },
+                    ),
+                    createComponent(
+                        Select,
+                        {
+                            items: CityStore.getList(),
+                            key: 'id',
+                            value: 'name',
+                            events: {
+                                onchange: (e: Event) => this.state.city = Number((e.target as HTMLInputElement).value),
+                            },
+                        },
+                    ),
+                    createComponent(
+                        Text,
+                        {
+                            text: 'Описание',
+                        },
+                    ),
+                    createComponent(
+                        TextArea,
+                        {
+                            oninput: (e: Event) => this.state.description = (e.target as HTMLInputElement).value,
+                        },
+                    ),
+                    createComponent(
+                        Text,
+                        {
+                            text: 'Категория',
+                        },
+                    ),
+                    createComponent(
+                        Select,
+                        {
+                            items: CategoryStore.getList(),
+                            key: 'id',
+                            value: 'name',
+                            events: {
+                                onchange: (e: Event) => this.state.category = Number((e.target as HTMLInputElement).value),
+                            },
+                        },
+                    ),
+                    createComponent(
+                        Text,
+                        {
+                            text: 'Цена',
+                        },
+                    ),
+                    createComponent(
+                        NumberInput,
+                        {
+                            oninput: (e: Event) => this.state.price = Number((e.target as HTMLInputElement).value),
+                        },
+                    ),
+                    createComponent(
+                        Text,
+                        {
+                            text: 'Доступное кол-во товара',
+                        },
+                    ),
+                    createComponent(
+                        NumberInput,
+                        {
+                            oninput: (e: Event) => this.state.availableCount = Number((e.target as HTMLInputElement).value),
+                        },
+                    ),
+                    createComponent(
+                        Text,
+                        {
+                            text: 'Безопасная сделка',
+                        },
+                    ),
+                    createComponent(
+                        BooleanInput,
+                        {
+                            oninput: (e: Event) => this.state.safeDeal = Boolean((e.target as HTMLInputElement).value),
+                        },
+                    ),
+                    createComponent(
+                        Text,
+                        {
+                            text: 'Доставка',
+                        },
+                    ),
+                    createComponent(
+                        BooleanInput,
+                        {
+                            oninput: (e: Event) => this.state.delivery = Boolean((e.target as HTMLInputElement).value),
+                        },
+                    ),
                 ),
-                createComponent(
-                    Text,
+                createElement(
+                    'div',
                     {
-                        text: 'Цена',
+                        class: 'content-add-btn-group',
                     },
+                    createComponent(
+                        Button,
+                        {
+                            text: 'Создать',
+                            variant: 'primary',
+                            style: 'width: 100%',
+                        },
+                    ),
+                    // createComponent(
+                    //     Button,
+                    //     {
+                    //         text: 'Очистить',
+                    //         variant: 'neutral',
+                    //         subvariant: 'primary',
+                    //         style: 'width: 100%',
+                    //         onclick: this.clear,
+                    //     },
+                    // ),
                 ),
-                createComponent(
-                    NumberInput,
-                    {
-                        oninput: (e: Event) => this.state.price = Number((e.target as HTMLInputElement).value),
-                    },
-                ),
-                createComponent(
-                    Text,
-                    {
-                        text: 'Доступное кол-во товара',
-                    },
-                ),
-                createComponent(
-                    NumberInput,
-                    {
-                        oninput: (e: Event) => this.state.availableCount = Number((e.target as HTMLInputElement).value),
-                    },
-                ),
-                createComponent(
-                    Text,
-                    {
-                        text: 'Безопасная сделка',
-                    },
-                ),
-                createComponent(
-                    BooleanInput,
-                    {
-                        oninput: (e: Event) => this.state.safeDeal = Boolean((e.target as HTMLInputElement).value),
-                    },
-                ),
-                createComponent(
-                    Text,
-                    {
-                        text: 'Доставка',
-                    },
-                ),
-                createComponent(
-                    BooleanInput,
-                    {
-                        oninput: (e: Event) => this.state.delivery = Boolean((e.target as HTMLInputElement).value),
-                    },
-                ),
-            ),
-            createElement(
-                'div',
-                {
-                    class: 'content-add-btn-group',
-                },
-                createComponent(
-                    Button,
-                    {
-                        text: 'Создать',
-                        variant: 'primary',
-                        style: 'width: 100%',
-                    },
-                ),
-                // createComponent(
-                //     Button,
-                //     {
-                //         text: 'Очистить',
-                //         variant: 'neutral',
-                //         subvariant: 'primary',
-                //         style: 'width: 100%',
-                //         onclick: this.clear,
-                //     },
-                // ),
             ),
         );
     }

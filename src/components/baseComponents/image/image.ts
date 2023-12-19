@@ -8,6 +8,7 @@ export interface ImageProps {
     width?: number,
     height?: number,
     class?: string,
+    style?: string,
 }
 
 export class Image extends Component<ImageProps, never> {
@@ -21,13 +22,13 @@ export class Image extends Component<ImageProps, never> {
             this.props.src = getResourceUrl(this.props.src) as string;
         }
 
-        const {width, height, src, ...etc} = this.props;
+        const {width, height, src, style, ...etc} = this.props;
 
         if (src) {
             return createElement(
                 'img',
                 {
-                    style: `width: ${width}; height: ${height}`,
+                    style: `width: ${width}; height: ${height}; ${style}`,
                     src: src,
                     ...etc,
                 },

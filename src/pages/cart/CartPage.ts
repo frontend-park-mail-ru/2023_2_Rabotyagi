@@ -24,31 +24,31 @@ export class CartPage extends Component<never, never> {
 
     render() {
 
-        let cartContent = [];
+        const cartContent = [];
         if (CartStore.getGoods().length !== 0) {
             cartContent.push(
                 createElement(
                     'div',
-                    { class: 'cart-content', },
+                    { class: 'cart-content' },
                     createComponent(
                         OrderFeed, {},
                     ),
                     createComponent(
                         Check, {},
-                    )
-                )
+                    ),
+                ),
             );
         } else {
             cartContent.push(
                 createElement(
-                    'div', { class: 'cart-empty-content', },
+                    'div', { class: 'cart-empty-content' },
                     createComponent(
-                        Text, 
+                        Text,
                         {
                             tag: 'div',
                             variant: 'subheader',
                             text: 'Пока что в корзине нет товаров',
-                        }
+                        },
                     ),
                     createComponent(
                         Button,
@@ -56,10 +56,10 @@ export class CartPage extends Component<never, never> {
                             variant: 'primary',
                             text: 'Перейти на главную страницу',
                             onclick: () => { Navigate.navigateTo('/'); },
-                        }
+                        },
                     ),
-                )
-            )
+                ),
+            );
         }
 
         return createElement(
@@ -86,8 +86,8 @@ export class CartPage extends Component<never, never> {
                                 variant: 'subheader',
                                 text: CartStore.getCount(),
                                 className: 'cart-count',
-                            }
-                        )
+                            },
+                        ),
                     ),
                     createElement(
                         'div',

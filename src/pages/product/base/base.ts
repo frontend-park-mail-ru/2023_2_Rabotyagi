@@ -124,38 +124,40 @@ export class ProductBase extends Component<never, ProductBaseState> {
         }
 
         return createElement(
-            'view',
+            'wrapper',
             {
-                class: 'product',
+                class: 'wrapper-product',
             },
-            (this.state.product) ?
-            content
-            :
             createElement(
-                'div1',
-                {},
-            ),
-            (this.state.saler) ?
-            createComponent(
-                ProductSidebar,
+                'view',
                 {
-                    ...this.state.saler,
-                    'product_id': this.state.product?.id ? this.state.product.id : 0,
-                    price: this.state.product?.price ? this.state.product.price : 0,
-                    'price_history': this.state.product?.price_history,
-                    parent: this,
-                    safe_deal: this.state.product?.safe_deal || false,
-                    delivery: this.state.product?.delivery || false,
-                    // callbacks: {
-                    //     switchEditMode: this.switchEditMode,
-                    //     isEditMode: this.isEditMode,
-                    // },
+                    class: 'product',
                 },
-            )
-            :
-            createElement(
-                'div2',
-                {},
+                (this.state.product) ?
+                content
+                :
+                createElement(
+                    'div1',
+                    {},
+                ),
+                (this.state.saler) ?
+                createComponent(
+                    ProductSidebar,
+                    {
+                        ...this.state.saler,
+                        'product_id': this.state.product?.id ? this.state.product.id : 0,
+                        price: this.state.product?.price ? this.state.product.price : 0,
+                        'price_history': this.state.product?.price_history,
+                        parent: this,
+                        'safe_deal': this.state.product?.safe_deal || false,
+                        delivery: this.state.product?.delivery || false,
+                    },
+                )
+                :
+                createElement(
+                    'div2',
+                    {},
+                ),
             ),
         );
     }

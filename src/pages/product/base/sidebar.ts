@@ -113,10 +113,10 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                 variant: 'outlined',
                 text: 'Перейти в корзину',
                 onclick: () => {
-                    Dispatcher.dispatch({ name: MessageStoreAction.HIDE_MESSAGE, }); 
-                    Navigate.navigateTo('/cart');  
+                    Dispatcher.dispatch({ name: MessageStoreAction.HIDE_MESSAGE });
+                    Navigate.navigateTo('/cart');
                 },
-            }
+            },
         );
 
         try {

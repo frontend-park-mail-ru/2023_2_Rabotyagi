@@ -196,36 +196,38 @@ export class Sidebar extends Component<never, SidebarState> {
                         variant: 'subheader',
                     },
                 ),
+                (this.state.avatar) ?
+                createComponent(
+                    Image,
+                    {
+                        width: 80,
+                        height: 80,
+                        style: 'align-self: center;',
+                        src: this.state.avatar,
+                    },
+                )
+                :
                 createElement(
                     'div',
                     {
-                        style: 'align-self: stretch; justify-content: flex-start; align-items: center; gap: 16px; display: inline-flex',
+                        style: 'width: 80px; height: 80px; position: relative; background: rgba(41, 44, 47, 0.25)',
                     },
-                    (this.state.avatar) ?
-                    createComponent(
-                        Image,
-                        {
-                            width: 80,
-                            height: 80,
-                            src: this.state.avatar,
-                        },
-                    )
-                    :
-                    createElement(
-                        'div',
-                        {
-                            style: 'width: 80px; height: 80px; position: relative; background: rgba(41, 44, 47, 0.25)',
-                        },
-                    ),
-                    createComponent(
-                        Button,
-                        {
-                            text: 'Обзор',
-                            variant: 'outlined',
-                            onclick: this.routeToProfile,
-                        },
-                    ),
                 ),
+                // createElement(
+                //     'div',
+                //     {
+                //         style: 'align-self: stretch; justify-content: flex-start; align-items: center; gap: 16px; display: inline-flex',
+                //     },
+
+                //     createComponent(
+                //         Button,
+                //         {
+                //             text: 'Обзор',
+                //             variant: 'outlined',
+                //             onclick: this.routeToProfile,
+                //         },
+                //     ),
+                // ),
                 ...btnGroup,
             );
         }
