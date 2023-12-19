@@ -37,14 +37,14 @@ export class CartPage extends Component<never, never> {
                         createComponent(
                             Text,
                             {
-                                variant: 'header',
+                                variant: 'subheader',
                                 text: 'Корзина ',
                             },
                         ),
                         createComponent(
                             Text,
                             {
-                                variant: 'header',
+                                variant: 'subheader',
                                 text: CartStore.getCount(),
                                 className: 'cart-count',
                             }
@@ -68,7 +68,6 @@ export class CartPage extends Component<never, never> {
                                 Text, 
                                 {
                                     tag: 'div',
-                                    variant: 'subheader',
                                     text: 'Пока что в корзине нет товаров',
                                 }
                             ),

@@ -14,10 +14,6 @@ import Dispatcher from '../../shared/services/store/Dispatcher';
 
 export class OrderCard extends Component<OrderModel, never> {
 
-    public componentDidMount(): void {
-        CartStore.addStoreUpdater(() => { this.applyComponentChanges(); });
-    }
-
     async updateCount(count: number) {
         try {
 
