@@ -38,19 +38,13 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
     constructor() {
         super();
         // this.hidden = useState(this, [true]);
-
-        function foo() {
-            debugger;
-        }
-
-        foo();
     }
 
     switchHidden() {
-        this.setState({
-            hidden: !this.state.hidden,
-        });
-        // this.hidden.set(!this.hidden.get);
+        // this.setState({
+        //     hidden: !this.state.hidden,
+        // });
+        this.hidden.set(!this.hidden.get);
     }
 
     public render(): VDomNode {
@@ -63,7 +57,7 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
             {
                 class: 'dropdown-container',
                 style: 'top: 44px;',
-                hidden: this.state.hidden,
+                hidden: this.hidden.get,
             },
             (this.props.search) ?
             createElement(
@@ -76,7 +70,7 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
                     TextInput, {},
                 ),
             ) : createText(''),
-            (!this.state.hidden && this.children && this.children.length !== 0) ?
+            (!this.hidden.get && this.children && this.children.length !== 0) ?
             createElement(
                 'div',
                 { class: 'dropdown-content' },

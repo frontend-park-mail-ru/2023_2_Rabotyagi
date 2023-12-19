@@ -1,12 +1,12 @@
 import { Component } from '../component';
 
 interface IUseState {
-    get: () => any,
+    get: any,
     set: (newState: any) => void
 }
 
 export function useState(this: Component<any, any>, initState: any): IUseState {
-    // debugger;
+    debugger;
     // if (!this) {
     //     throw new Error('useState must be inside of Component');
     // }
@@ -16,8 +16,9 @@ export function useState(this: Component<any, any>, initState: any): IUseState {
 
     const state = initState;
 
-    const getState = () => state;
+    const getState = state;
     const setState = (newState: any) => {
+        debugger;
         this.setState(newState);
     };
 

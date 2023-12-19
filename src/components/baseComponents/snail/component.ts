@@ -7,15 +7,15 @@ export abstract class Component<PropsType, StateType> {
     protected props: PropsType;
     protected state: StateType | undefined;
     protected children: Array<VDomNode> = [];
+    protected useState;
 
     private node: VDomNode | undefined;
     private _domElement: HTMLElement | SVGSVGElement | Text | undefined;
 
     constructor(props: PropsType = {} as PropsType) {
         this.props = props;
+        this.useState = (initState: any) => useState.apply(this, [initState]);
     }
-
-    protected useState = useState(initState);
 
     protected applyComponentChanges() {
         if (!this._domElement) {
