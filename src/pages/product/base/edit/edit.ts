@@ -131,6 +131,9 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
             throw new Error('ProductBaseEdit props undefined');
         }
 
+        this.state['safe_deal'] = this.props.safe_deal;
+        this.state['delivery'] = this.props.delivery;
+
         return createElement(
             'form',
             {
@@ -263,8 +266,8 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
                     BooleanInput,
                     {
                         checked: this.props.safe_deal,
-                        oninput: (e: Event) => this.state['safe_deal'] = Boolean((e.target as HTMLInputElement).value),
-                    },
+                        // value: this.props.safe_deal ? 'on' : 'off',
+                        oninput: (e: Event) => this.state['safe_deal'] = Boolean((e.target as HTMLInputElement).checked)},
                 ),
                 createComponent(
                     Text,
@@ -276,7 +279,7 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
                     BooleanInput,
                     {
                         checked: this.props.delivery,
-                        oninput: (e: Event) => this.state.delivery = Boolean((e.target as HTMLInputElement).value),
+                        oninput: (e: Event) => this.state.delivery = Boolean((e.target as HTMLInputElement).checked),
                     },
                 ),
             ),

@@ -5,6 +5,7 @@ import { VDomComponent, VDomElement, createComponent, createElement, createText 
 
 import { ProductBase } from './base';
 import { PriceHistory } from '../../../components/priceHistory/priceHistory';
+import { AlertMessage } from '../../../components/alertMessage/alertMessage';
 import { Button, Svg, Text, ErrorMessageBox } from '../../../components/baseComponents/index';
 
 import { OrderApi } from '../../../shared/api/order';
@@ -106,13 +107,34 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
     }
 
     async addInCart() {
-        if (!this.props) {
-            throw new Error('ProductSidebar props undefined');
-        }
+        const errorButton = createComponent(
+            Button,
+            {
+                variant: 'outlined',
+                text: 'Перейти в корзину',
+                onclick: () => {
+                    Dispatcher.dispatch({ name: MessageStoreAction.HIDE_MESSAGE, }); 
+                    Navigate.navigateTo('/cart');  
+                },
+            }
+        );
 
         try {
             if (!CartStore.sameUser(this.props.id)) {
-                throw new Error('В корзину можно добавлять продукты только с одинаковым пользователем');
+                if (!MessageStore.getVisible()) {
+                    Dispatcher.dispatch({
+                        name: MessageStoreAction.SHOW_MESSAGE,
+                        payload: createComponent(
+                            AlertMessage,
+                            {
+                                title: 'Внимание!',
+                                text: 'В корзину можно добавлять продукты только с одинаковым пользователем',
+                            },
+                            errorButton,
+                        ),
+                    });
+                }
+                throw new Error('Ошибка');
             }
             if (CartStore.hasProduct(this.props.product_id)) {
                 throw new Error('Данный продукт уже есть в корзине');
@@ -263,7 +285,7 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                             variant: 'outlined',
                             text: 'История цены',
                             onclick: () => {
-                                if (this.props && !MessageStore.getVisible()) {
+                                if (!MessageStore.getVisible()) {
                                     Dispatcher.dispatch({
                                         name: MessageStoreAction.SHOW_MESSAGE,
                                         payload: createComponent(
@@ -313,7 +335,7 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                         {class: 'product-menu-saler-info-additional'},
                         createComponent(
                             Text,
-                            {text: 'на Юле с ' + getRuDayFormat(this.props.created_at) },
+                            {text: 'на Goods Galaxy с ' + getRuDayFormat(this.props.created_at) },
                         ),
                     ),
                 ),

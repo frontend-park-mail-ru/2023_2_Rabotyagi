@@ -70,7 +70,7 @@ export class ProductNew extends Component<never,ProductNewState> {
     };
 
     async uploadImages() {
-        if (this.state.imagesForUpload) {
+        if (this.state.imagesForUpload && this.state.imagesForUpload.length > 0) {
             const res = await FileApi.images(this.state.imagesForUpload);
 
             if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
@@ -96,6 +96,8 @@ export class ProductNew extends Component<never,ProductNewState> {
 
             return true;
         }
+
+        return true;
     }
 
     fileInputEvent = (e: Event) => {
