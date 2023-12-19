@@ -1,0 +1,14 @@
+@use '../text/Text.scss';
+
+select {
+    @extend .text-regular;
+    display: flex;
+    // width: 328px;
+    height: 36px;
+    padding-left: 12px;
+    align-items: center;
+
+    border-radius: var(--Number, 8px);
+    border: 0.5px solid var(--vkui-color-Stroke-FieldBorderAlpha, rgba(0, 16, 61, 0.12));
+    background: var(--vkui-color-Background-FieldBackground, #FFF);
+}

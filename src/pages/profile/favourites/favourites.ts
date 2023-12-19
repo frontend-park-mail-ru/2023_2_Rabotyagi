@@ -58,7 +58,6 @@ export class ProfileFavourites extends Component<never, ProfileFavouritesState> 
     }
 
     createFavs() {
-        //debugger;
         if (this.state.isLoading) {
 
             return [

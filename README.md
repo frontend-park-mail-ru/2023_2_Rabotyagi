@@ -1,37 +1,45 @@
 # 2023_2_Rabotyagi
 Frontend репозиторий команды Работяги  
-### Приложение
-https://goods-galaxy.ru/
-### Наши контакты:
 
-Владислав Ильинский: https://github.com/Vilinvil и тг https://t.me/Vilin0
+## Приложение
+- [Prod](https://goods-galaxy.ru/)
+- [Dev](http://dev.goods-galaxy.ru/)
 
-Никита Демирев: 'https://github.com/NickDemiman' и тг https://t.me/NikDemiman
+## Наши контакты:
 
-Алексей Красноперов: 'https://github.com/SanExpett' и тг https://t.me/SanExpet
+- Владислав Ильинский: 
+    - [git](https://github.com/Vilinvil)
+    - [telegram](https://t.me/Vilin0)
 
-Таня Емельянова: 'https://github.com/TanyaEmka' и тг https://t.me/jupi_abri
+- Никита Демирев:
+    - [git](https://github.com/NickDemiman)
+    - [telegram](https://t.me/NikDemiman)
 
-### Репа бек
-https://github.com/go-park-mail-ru/2023_2_Rabotyagi
+- Алексей Красноперов:
+    - [git](https://github.com/SanExpett)
+    - [telegram](https://t.me/SanExpet)
 
-### Фигма
-https://www.figma.com/file/YLSZ9uY9gVn6bMDJchrEzD?node-id=23:2127&mode=design#567544444
+- Таня Емельянова:
+    - [git](https://github.com/TanyaEmka)
+    - [telegram](https://t.me/jupi_abri)
 
-### Запуск локально
+## [Репа бек](https://github.com/go-park-mail-ru/2023_2_Rabotyagi)
 
-`npm run server`
+## [Фигма](https://www.figma.com/file/YLSZ9uY9gVn6bMDJchrEzD?node-id=23:2127&mode=design#567544444)
 
-## Документация
+## Запуск локально
+```bash
+    npm run build-[dev|prod]
+    npm run server
+```
 
+# Docker image build
 
-## Docker image build
-
-### Local
+## Local
 
 Из корня проекта прописываем
 ```shell
-docker build -t nikdemi/rabotyagi-backend:rk1-test .
+docker build -t nikdemi/rabotyagi-backend:latest .
 ```
 
 Далее, чтобы убедиться что image забилдился, прописываем:
@@ -40,12 +48,12 @@ docker images
 ```
 
 Должны увидеть следующее:
-```shell
-REPOSITORY          TAG       IMAGE ID       CREATED          SIZE
-nikdemi/rabotyagi-backend:rk1-test   latest    25dbaeeef1af   50 seconds ago   307MB
+```d
+REPOSITORY                  TAG       IMAGE ID       CREATED          SIZE
+nikdemi/rabotyagi-backend   latest    25dbaeeef1af   50 seconds ago   307MB
 ```
 
-### Запуск контейнера
+## Запуск контейнера
 
 `docker run -p 3000:3000 nikdemi/rabotyagi-backend:rk1-test`
 

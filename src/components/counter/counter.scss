@@ -1,31 +1,39 @@
 @use '../../assets/css/vars.scss';
 
-$counter-width: 55px;
-$counter-height: 55px;
+$counter-width: 20px;
+$counter-height: 20px;
 
 .counter {
-    .counter-count {
-        color: vars.$palette-primary;
-        width: $counter-width;
-        height: $counter-height;
-        background-color: vars.$background-primary;
-        border-radius: 50%;
-        text-align: center;
-        vertical-align: center;
-    }
+    display: flex;
+    justify-content: center;
 
     .counter-result {
-        color: vars.$background-primary;
         text-align: center;
+        color: vars.$text-primary;
+        vertical-align: middle;
     }   
-
-    .counter-full-price {
-        color: vars.$background-primary;
-    }
 
     .counter-manager {
         display: flex;
         justify-content: space-between;
         align-content: center;
+        background-color: vars.$palette-primary;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .counter-count {
+            color: vars.$background-primary;
+            background-color: vars.$palette-primary;
+            text-align: center;
+            display: flex;
+            flex: 1;
+            border-radius: none;
+            height: $counter-height;
+            width: $counter-width;
+            justify-content: center;
+            align-items: center;
+        }
     }
 }

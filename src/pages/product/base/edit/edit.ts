@@ -2,27 +2,17 @@ import { BooleanInput, Button, FileInput, NumberInput, Select, Text, TextArea, T
 import { Component } from '../../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 import { Carousel } from '../../../../components/carousel/Carousel';
-import { Files } from '../../../../shared/api/file';
-import { Product } from '../../../../shared/api/product';
+import { FileApi } from '../../../../shared/api/file';
+import { ProductApi } from '../../../../shared/api/product';
 import { ResponseStatusChecker } from '../../../../shared/constants/response';
 import Navigate from '../../../../shared/services/router/Navigate';
 // import UserStore from '../../../../shared/store/UserStore';
 import CategoryStore from '../../../../shared/store/category';
 import CityStore from '../../../../shared/store/city';
-import { Validate } from '../../../../shared/utils/validation';
 
 interface ProductBaseEditProps extends ProductModel {}
 
 interface ProductBaseEditState {
-    // title?: string,
-    // description?: string,
-    // city?: number,
-    // category?: number,
-    // price?: number,
-    // availableCount?: number,
-    // safeDeal?: boolean,
-    // delivery?: boolean,
-
     [key: string]: any
 }
 
@@ -32,49 +22,20 @@ interface ProductBaseEditImages {
 }
 
 export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBaseEditState> {
-    // state: ProductBaseEditState = {
-    //     title: '',
-    //     description: '',
-    //     city: -1,
-    //     category: -1,
-    //     price: -1,
-    //     availableCount: -1,
-    //     safeDeal: false,
-    //     delivery: false,
-    // };
     state: ProductBaseEditState = {};
 
     images: ProductBaseEditImages = {
         imagesForUpload: [],
-        uploadedImages: [],
     };
 
     validate = () => {
         if (this.state.title?.trim() === '') {
             delete this.state.title;
-            // return 'Title must be not empty string';
         }
 
         if (this.state.description?.trim() === '') {
             delete this.state.description;
-            // return 'Desc must be not empty string';
         }
-
-        // if (this.state.city === -1) {
-        //     return 'City must be chosen';
-        // }
-
-        // if (this.state.category === -1) {
-        //     return 'Category must be chosen';
-        // }
-
-        // if (this.state.price === -1) {
-        //     return 'Price must be chosen';
-        // }
-
-        // if (this.state.availableCount === -1) {
-        //     return 'available count must be chosen';
-        // }
 
         if (!this.state) {
             return false;
@@ -84,8 +45,8 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
     };
 
     async uploadImages() {
-        if (this.state.imagesForUpload) {
-            const res = await Files.images(this.state.imagesForUpload);
+        if (this.images.imagesForUpload) {
+            const res = await FileApi.images(this.images.imagesForUpload);
 
             if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
                 // this.errorBox.innerHTML = '';
@@ -106,27 +67,25 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
                 return;
             }
 
-            this.state.uploadedImages = res.body.urls;
+            // this.state.
+            this.state.images = res.body.urls.map((url: string) => {
+                return {
+                    url: url,
+                };
+            });
         }
     }
 
     fileInputEvent = (e: Event) => {
         const input = e.target as HTMLInputElement;
 
-        const allowedFormats = input.accept;
         if (!input.files) {
             return;
         }
 
         const files = Array.from(input.files);
 
-        const validation = Validate.allowedFormats(allowedFormats, files);
-
-        if (validation) {
-            return;
-        }
-
-        this.state.imagesForUpload = files;
+        this.images.imagesForUpload = files;
     };
 
     formSubmit = async(e: Event) => {
@@ -138,7 +97,9 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
             return;
         }
 
-        const res = await Product.patch(productId, {
+        await this.uploadImages();
+
+        const res = await ProductApi.patch(productId, {
             ...this.state,
         } as ProductModel);
 
@@ -161,8 +122,8 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
             return;
         }
 
+        Navigate.navigateTo('/profile');
         Navigate.navigateTo(`/product?id=${res.body.id}`, { productId: res.body.id });
-
     };
 
     public render() {

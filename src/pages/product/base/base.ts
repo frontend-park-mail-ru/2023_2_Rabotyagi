@@ -3,7 +3,7 @@ import { Component } from '../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 import { ProductSidebar } from './sidebar';
 import { ProductBaseView } from './view/view';
-import { Product } from '../../../shared/api/product';
+import { ProductApi } from '../../../shared/api/product';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
 import { UserApi } from '../../../shared/api/user';
 import { ProductBaseEdit } from './edit/edit';
@@ -70,7 +70,7 @@ export class ProductBase extends Component<never, ProductBaseState> {
         let respPost;
 
         try {
-            respPost = await Product.get(productId);
+            respPost = await ProductApi.get(productId);
 
         } catch (err) {
 
@@ -140,8 +140,12 @@ export class ProductBase extends Component<never, ProductBaseState> {
                 ProductSidebar,
                 {
                     ...this.state.saler,
+                    'product_id': this.state.product?.id ? this.state.product.id : 0,
                     price: this.state.product?.price ? this.state.product.price : 0,
+                    'price_history': this.state.product?.price_history,
                     parent: this,
+                    safe_deal: this.state.product?.safe_deal || false,
+                    delivery: this.state.product?.delivery || false,
                     // callbacks: {
                     //     switchEditMode: this.switchEditMode,
                     //     isEditMode: this.isEditMode,

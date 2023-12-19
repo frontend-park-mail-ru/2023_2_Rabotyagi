@@ -1,24 +1,53 @@
 import './cardStyles/card.scss';
 
 import { Component } from '../baseComponents/snail/component';
-import { VDomNode, createComponent, createElement, createText } from '../baseComponents/snail/vdom/VirtualDOM';
+import { VDomComponent, VDomNode, createComponent, createElement, createText } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Badge } from './badge/Badge';
-import { Text, Button } from '../baseComponents/index';
+import { Text, Button, Image, Select } from '../baseComponents/index';
 
 import Navigate from '../../shared/services/router/Navigate';
 
 import delivery from '../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../assets/icons/badges/safe_deal.svg';
-import { getResourceUrl } from '../../shared/utils/getResource/src/getResource';
 import { UserApi } from '../../shared/api/user';
 import { ResponseStatusChecker } from '../../shared/constants/response';
-import { Product } from '../../shared/api/product';
+import { ProductApi } from '../../shared/api/product';
+import { Modal } from '../modal/modal';
+import { PremiumPeriods, premiumPeriodsList } from '../../shared/models/premium';
+import { PremiumApi } from '../../shared/api/premium';
 
 export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite' | 'cart';
 
 export interface ImageProps {
     url: string
+}
+
+export interface BaseCardProps {
+    id: number,
+    class?: string,
+    name?: string,
+    style?: string,
+    variant?: CardVariants,
+    images?: Array<ImageProps>,
+    title: string,
+    price: number,
+    delivery?: boolean,
+    safe_deal?: boolean,
+    city?: string,
+    is_active?: boolean,
+    in_favourites?: boolean,
+    premium: boolean,
+}
+
+export interface FavouriteCardProps extends BaseCardProps {
+    favouriteInfluence?: (index: number) => void,
+}
+
+export interface CartCardProps extends BaseCardProps {
+    product_id: number,
+    saler_id: number,
+    owner_id: number,
 }
 
 export interface CardProps {
@@ -33,8 +62,10 @@ export interface CardProps {
     delivery?: boolean,
     safe_deal?: boolean,
     city?: string,
-    isActive?: boolean,
+    is_active?: boolean,
+    premium: boolean,
     favouriteInfluence?: (index: number) => void,
+    removeCallback?: (id: number) => void
 }
 
 enum MouseButtons {
@@ -43,7 +74,21 @@ enum MouseButtons {
     RIGHT = 2
 }
 
-export class Card extends Component<CardProps, {}> {
+interface CardState {
+    isActive?: boolean,
+    modalActive?: VDomComponent,
+}
+
+export class Card extends Component<CardProps, CardState> {
+    protected state: CardState = {
+        isActive: false,
+    };
+
+    public componentDidMount(): void {
+        this.setState({
+            isActive: this.props?.is_active || false,
+        });
+    }
 
     navigateToProduct = (e: MouseEvent) => {
         switch (e.button) {
@@ -63,19 +108,9 @@ export class Card extends Component<CardProps, {}> {
         }
     };
 
-    thisHaveBadges() {
-        if (!this.props) {
-            throw new Error('Card props are undefined');
-        }
-
-        return this.props.delivery || this.props.safe_deal || this.props.city;
-    }
+    thisHaveBadges = () => this.props.delivery || this.props.safe_deal || this.props.city;
 
     renderBadges(badgeClass: string) {
-        if (!this.props) {
-            throw new Error('Card props are undefined');
-        }
-
         const badges: Array<VDomNode> = [];
 
         if (this.props.delivery) {
@@ -101,17 +136,11 @@ export class Card extends Component<CardProps, {}> {
     }
 
     renderBase() {
-        if (!this.props) {
-            throw new Error('Card props are undefined');
-        }
-
-        // const id = this.props.id;
-
         return createElement(
             'button',
             {
-                class: 'card-base',
-                onmouseup: this.navigateToProduct,
+                class: `card-base${(this.props.premium ? '--premium' : '')}`,
+                onclick: this.navigateToProduct,
             },
             createElement(
                 'div',
@@ -122,10 +151,14 @@ export class Card extends Component<CardProps, {}> {
                 'div',
                 { class: 'body-base' },
                 (this.props.images) ?
-                    createElement(
-                        'img',
-                        { class: 'image-base', src: getResourceUrl(this.props.images[0].url) as string },
-                    ) :
+                    createComponent(
+                        Image,
+                        {
+                            class: 'image-base',
+                            src: this.props.images[0].url,
+                        },
+                    )
+                    :
                     createElement(
                         'div',
                         { class: 'image-base' },
@@ -143,25 +176,127 @@ export class Card extends Component<CardProps, {}> {
             ),
         );
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    changeActiveStatus = (e: Event) => {
-        e.stopPropagation();
-    };
 
     renderActiveButton() {
-        if (!this.props) {
-            throw new Error('Card props are undefined');
-        }
+        const cp = this; // eslint-disable-line
 
-        const isActive = this.props.isActive || false;
+        const changeActiveStatus = async(e: Event) => {
+            e.stopPropagation();
+
+            let res;
+
+            try {
+                res = await ProductApi.changeActive(this.props.id, !this.state.isActive);
+            }
+            catch (err) {
+                console.error(err);
+            }
+
+            if (!ResponseStatusChecker.IsRedirectResponse(res)) {
+                return;
+            }
+
+            cp.setState({
+                isActive: !this.state.isActive,
+            });
+
+        };
 
         return createComponent(
             Button,
             {
                 variant: 'primary',
-                text: (isActive) ? 'Деактивировать' : 'Активировать',
+                text: (this.state.isActive) ? 'Деактивировать' : 'Активировать',
                 style: 'width: 100%;',
-                onclick: this.changeActiveStatus,
+                onclick: changeActiveStatus,
+            },
+        );
+    }
+
+    renderPromoteButton() {
+        // if (!this.props) {
+        //     throw new Error('Card props are undefined');
+        // }
+        const cp = this; // eslint-disable-line
+
+        const promoteEvent = (e: Event) => {
+            e.stopPropagation();
+            let period: PremiumPeriods = PremiumPeriods.Year;
+
+            if (this.state.modalActive) {
+                return;
+            }
+
+            const accept = async() => {
+                if (cp.props) {
+                    let res;
+
+                    try {
+                        res = await PremiumApi.add(cp.props.id, period);
+                    }
+                    catch(err){
+                        console.error(err);
+
+                        return;
+                    }
+
+                    if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
+                        return;
+                    }
+
+                    // @FIX Это оч жесткий костыль, за который мне стыдно, но пока diff работает плохо, будет так
+                    // Navigate.navigateTo('/profile/orders');
+                    // Navigate.navigateTo('/profile/products');
+                    cp.setProps({
+                        ...cp.props,
+                        premium: true,
+                    });
+
+                    cp.setState({
+                        modalActive: undefined,
+                    });
+                }
+
+            };
+
+            const deny = () => this.setState({modalActive: undefined});
+
+            const chooseValue = (e: Event) => {
+                const select = (e.currentTarget as HTMLSelectElement);
+                period = Number(select.value);
+            };
+
+            const modal = createComponent(
+                Modal,
+                {
+                    onAccept: accept,
+                    onDeny: deny,
+                },
+                createComponent(
+                    Select,
+                    {
+                        items: premiumPeriodsList,
+                        key: 'value',
+                        value: 'name',
+                        events: {
+                            onchange: chooseValue,
+                        },
+                    },
+                ),
+            );
+            this.setState({
+                modalActive: modal,
+            });
+        };
+
+        return createComponent(
+            Button,
+            {
+                variant: (this.props.premium) ? 'secondary' : 'primary',
+                text: (this.props.premium) ? 'Продвижение активно' : 'Платное продвижение',
+                style: 'width: 100%;',
+                disabled: this.props.premium,
+                onclick: promoteEvent,
             },
         );
     }
@@ -173,7 +308,7 @@ export class Card extends Component<CardProps, {}> {
             let res;
 
             try {
-                res = await Product.delete(this.props.id);
+                res = await ProductApi.delete(this.props.id);
             }
             catch(err) {
                 console.error(err);
@@ -185,7 +320,9 @@ export class Card extends Component<CardProps, {}> {
                 return;
             }
 
-            // this.props.favouriteInfluence(this.props.id);
+            if (this.props.removeCallback){
+                this.props.removeCallback(this.props.id);
+            }
         }
     };
 
@@ -214,13 +351,6 @@ export class Card extends Component<CardProps, {}> {
             }
 
             this.props.favouriteInfluence(this.props.id);
-
-            /*Dispatcher.dispatch({
-                name: 'FAVOURITE_REMOVE',
-                payload: this.props.id,
-            });*/
-
-            //this.unmount();
         }
     };
 
@@ -249,55 +379,77 @@ export class Card extends Component<CardProps, {}> {
             throw new Error('Card props are undefined');
         }
 
+        const modal: Array<VDomComponent> = [];
+
+        if (this.state.modalActive) {
+            modal.push(this.state.modalActive);
+        }
+
         const variant = this.props.variant || 'profile';
 
         return createElement(
-            'button',
-            {
-                class: 'card-profile',
-                onmouseup: this.navigateToProduct,
-            },
-            (this.props.images) ?
-                createElement(
-                    'img',
-                    { class: 'image-profile', src: this.props.images[0].url },
-                ) :
-                createElement(
-                    'div',
-                    { class: 'image-profile' },
-                ),
+            'card',
+            {},
+            ...modal,
             createElement(
-                'div',
-                { class: 'content-profile' },
-                createComponent(
-                    Text, { text: this.props.price.toString() + ' ₽' },
-                ),
-                createComponent(
-                    Text, { text: this.props.title, className: 'title-profile' },
-                ),
-                createElement(
-                    'div',
-                    { class: 'divider' },
-                ),
-                (this.thisHaveBadges()) ?
+                'button',
+                {
+                    class: `card-profile${this.props.premium ? '--premium' : ''}`,
+                    onclick: this.navigateToProduct,
+                },
+                (this.props.images) ?
+                    createComponent(
+                        Image,
+                        {
+                            class: 'image-profile',
+                            src: this.props.images[0].url,
+                        },
+                    )
+                    // createElement(
+                    //     'img',
+                    //     { class: 'image-profile', src: this.props.images[0].url },
+                    // )
+                    :
                     createElement(
                         'div',
-                        { class: 'badges-profile' },
-                        ...this.renderBadges('badge-profile'),
-                    ) : createText(''),
-                (variant == 'profile') ?
-                    this.renderActiveButton()
-                    : createText(''),
-                (variant == 'profile' || variant == 'favourite') ?
+                        { class: 'image-profile' },
+                    ),
+                createElement(
+                    'div',
+                    { class: 'content-profile' },
                     createComponent(
-                        Button,
-                        {
-                            variant: 'outlined',
-                            text: 'Удалить',
-                            style: 'width: 100%;',
-                            onmouseup: this.deleteFunction,
-                        },
-                    ) : createText(''),
+                        Text, { text: this.props.price.toString() + ' ₽' },
+                    ),
+                    createComponent(
+                        Text, { text: this.props.title, className: 'title-profile' },
+                    ),
+                    createElement(
+                        'div',
+                        { class: 'divider' },
+                    ),
+                    (this.thisHaveBadges()) ?
+                        createElement(
+                            'div',
+                            { class: 'badges-profile' },
+                            ...this.renderBadges('badge-profile'),
+                        ) : createText(''),
+                    (variant == 'profile') ?
+                        this.renderActiveButton()
+                        : createText(''),
+                    (variant == 'profile') ?
+                        this.renderPromoteButton()
+                        : createText(''),
+                    (variant == 'profile' || variant == 'favourite') ?
+                        createComponent(
+                            Button,
+                            {
+                                variant: 'outlined',
+                                text: 'Удалить',
+                                style: 'width: 100%;',
+                                onclick: this.deleteFunction,
+                            },
+                        ) : createText(''),
+                ),
             ),
         );
     }

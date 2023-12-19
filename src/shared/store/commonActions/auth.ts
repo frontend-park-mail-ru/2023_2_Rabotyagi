@@ -1,10 +1,13 @@
-import Dispatcher from '../../services/store/Dispatcher';
+import { UserApi } from '../../api/user';
+import { getOrders } from './getOrders';
 import { ResponseStatus } from '../../constants/response';
+
+import { UserStoreAction } from '../user';
+import { CartStoreAction } from '../cart';
+import Dispatcher from '../../services/store/Dispatcher';
 
 import jwtDecode from '../../utils/jwt-decode';
 import { cookieParser } from '../../utils/cookie';
-
-import { UserApi } from '../../api/user';
 
 export async function fillUserByToken(accessToken: string) {
     const id = jwtDecode(accessToken).userID;
@@ -13,10 +16,10 @@ export async function fillUserByToken(accessToken: string) {
         const res = await UserApi.getProfile(id);
         switch (res.status){
             case ResponseStatus.RESPONSE_SUCCESSFUL:
-                Dispatcher.dispatch({ name: 'USER_STORE_UPDATE', payload: res.body });
+                Dispatcher.dispatch({ name: UserStoreAction.UPDATE, payload: res.body });
                 break;
             case ResponseStatus.INTERNAL_SERVER:
-                Dispatcher.dispatch({ name: 'USER_STORE_LOGOUT' });
+                Dispatcher.dispatch({ name: UserStoreAction.LOGOUT });
                 break;
         }
     }
@@ -29,9 +32,11 @@ export async function login() {
         return;
     }
     await fillUserByToken(accessToken);
+    await getOrders();
 }
 
 export async function logout() {
-    Dispatcher.dispatch({ name: 'USER_STORE_LOGOUT' });
+    Dispatcher.dispatch({ name: UserStoreAction.LOGOUT });
+    Dispatcher.dispatch({ name: CartStoreAction.CLEAR_CART });
 }
 

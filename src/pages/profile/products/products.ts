@@ -5,19 +5,20 @@ import { Card } from '../../../components/card/Card';
 import { UserApi } from '../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
 import { ProfilePlaceholder } from '../placeholder';
+import { Loader } from '../../../components/loader/Loader';
 
 interface ProfileProductsState {
+    loading: boolean,
     products: Array<ProductModelResponse>
 }
 
 export class ProfileProducts extends Component<never, ProfileProductsState> {
     state: ProfileProductsState = {
+        loading: true,
         products: [],
     };
 
-    constructor() {
-        super();
-
+    public componentDidMount(): void {
         this.getProducts();
     }
 
@@ -45,18 +46,34 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
         }
 
         this.setState({
+            loading: false,
             products: resp.body,
         });
     }
 
-    public render() {
+    removeProduct = (id: number) => {
+        this.setState({
+            loading: false,
+            products: this.state.products.filter((product) => product.id !== id),
+        });
+    };
+
+    createContainer() {
         const products: VDomComponent[] = [];
 
-        if (this.state.products && this.state.products.length !== 0) {
+        // @BUG тут баг с переключением с profile -> profile/products, почему то дифф неправильно вычисляется/применяется
+        if (this.state.loading) {
+            return [createComponent(
+                Loader,
+                {},
+            )];
+        }
+
+        if (this.state.products && this.state.products.length > 0) {
             this.state.products.forEach((product: ProductModelResponse) => products.push(
                 createComponent(
                     Card,
-                    {variant: 'profile', ...product},
+                    {variant: 'profile', ...product, removeCallback: this.removeProduct},
                 )),
             );
         }
@@ -71,14 +88,20 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
             );
         }
 
+        return products;
+    }
+
+    public render() {
+
         return createElement(
             'div',
             {class: 'products'},
             createElement(
                 'container',
                 {class: 'products-container'},
-                ...products,
+                ...this.createContainer(),
             ),
         );
+
     }
 }

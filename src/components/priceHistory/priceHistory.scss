@@ -1,0 +1,45 @@
+@use '../../assets/css/vars.scss';
+
+.price-history {
+    box-sizing: border-box;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+
+    .price-history-other-text {
+        color: vars.$text-secondary;
+    }
+
+    .price-history-current-price {
+        margin-bottom: 0.5rem;
+    }
+    
+    .price-history-svg {
+        box-sizing: border-box;
+        width: 100%;
+        height: 50px;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        position: relative;
+    
+        svg {
+            width: 100%;
+            height: 100%;
+    
+            polyline {
+                fill: none;
+                stroke: vars.$palette-primary;
+                stroke-width: 2;
+            }
+        }
+    }
+    
+    .price-history-xtitle {
+        box-sizing: border-box;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+}

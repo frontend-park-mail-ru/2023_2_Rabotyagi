@@ -1,4 +1,4 @@
-import { getResourceUrl } from '../../../shared/utils/getResource/src/getResource';
+import { getResourceUrl } from '../../../shared/utils/getResource';
 import { Component } from '../snail/component';
 import { createElement } from '../snail/vdom/VirtualDOM';
 
@@ -21,12 +21,25 @@ export class Image extends Component<ImageProps, never> {
             this.props.src = getResourceUrl(this.props.src) as string;
         }
 
+        const {width, height, src, ...etc} = this.props;
+
+        if (src) {
+            return createElement(
+                'img',
+                {
+                    style: `width: ${width}; height: ${height}`,
+                    src: src,
+                    ...etc,
+                },
+            );
+        }
+
         return createElement(
-            'img',
-            {
-                ...this.props,
-                // href: this.props.href,
-            },
-        );
+                'img',
+                {
+                    style: `width: ${width}; height: ${height}`,
+                    ...etc,
+                },
+            );
     }
 }

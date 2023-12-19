@@ -5,30 +5,13 @@
     align-items: flex-start;
     gap: 24px;
     align-self: stretch;
-    width: 1000px;
-    padding-top: 42px;
-}
+    width: 70%;
 
-.order-feed-header {
-    width: 100%;
-
-    .order-feed-price {
+    .order-feed-content {
+        width: 100%;
         display: flex;
-        align-content: center;
-        align-items: center;
-        margin-bottom: 2vh;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px 0;
     }
-}
-
-.order-full-price {
-    display: flex;
-    align-items: center;
-}
-
-.order-feed-content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 24px 0;
 }

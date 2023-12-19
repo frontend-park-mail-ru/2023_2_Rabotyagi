@@ -26,49 +26,13 @@ interface DropDownState {
 export class Dropdown extends Component<DropdownProps, DropDownState> {
     protected state: DropDownState = {
         hidden: true,
-        // buf: true,
     };
 
-    // switchHiddenDOMEvent = (e: Event) => {
-    //     debugger;
-    //     if ((e.target as HTMLElement) != (this.domElement?.parentElement || this.domElement) && !this.state.hidden){
-    //         this.switchHidden();
-    //     }
-
-    // };
-
-    // public componentWillRecieveProps(props: DropdownProps, state: DropDownState | undefined): DropDownState | undefined {
-    //     if (props.hidden){
-    //         this.state.hidden = props.hidden;
-    //     }
-
-    //     return this.state;
-    // }
-
     switchHidden() {
-        // this.state.buf = !this.state.buf;
         this.setState({
             hidden: !this.state.hidden,
         });
     }
-
-    // clickEvent = () => {
-    //     debugger;
-    //     if (!this.state.buf) {
-    //         this.switchHidden();
-    //     }
-    //     else {
-    //         this.state.buf = false;
-    //     }
-    // };
-
-    // public componentDidMount(): void {
-    //     document.body.addEventListener('click', this.switchHiddenDOMEvent);
-    // }
-
-    // public componentWillUnmount(): void {
-    //     document.body.removeEventListener('click', this.switchHiddenDOMEvent);
-    // }
 
     public render(): VDomNode {
         if (!this.props) {

@@ -1,3 +1,4 @@
+import { checkTagLikeSvgTag } from './SVGRender';
 import { VDomElement, VDomNode, VDomPropsType, renderVDomNode } from './VirtualDOM';
 
 type PropsUpdater = {
@@ -23,7 +24,7 @@ interface UpdateFunction {
 interface ReplaceFunction {
     kind: 'replace',
     newNode: VDomNode,
-    callback?: (element: HTMLElement | Text) => void // callback необходим для компонентов
+    callback?: (element: HTMLElement | SVGSVGElement | Text) => void // callback необходим для компонентов
 }
 
 interface PassFunction {
@@ -232,7 +233,7 @@ export const getChildrenDifference = (children: Array<VDomNode>, newChildren: Ar
     return functions;
 };
 
-export const applyChanges = (element: HTMLElement | Text, difference: VDomNodeUpdater): HTMLElement | Text => {
+export const applyChanges = (element: HTMLElement | SVGSVGElement | Text, difference: VDomNodeUpdater): HTMLElement | SVGSVGElement | Text => {
 
     if (difference.kind == 'pass') {
         return element;
@@ -257,7 +258,7 @@ export const applyChanges = (element: HTMLElement | Text, difference: VDomNodeUp
             if (prop == 'class') {
                 element.removeAttribute('class');
                 if (difference.props.set[prop] !== '') {
-                    difference.props.set[prop].toString().split(' ').forEach((className) => {
+                    difference.props.set[prop].toString().trim().split(' ').forEach((className) => {
                         element.classList.add(className);
                     });
                 }
@@ -272,7 +273,14 @@ export const applyChanges = (element: HTMLElement | Text, difference: VDomNodeUp
                 }
                 element.addEventListener(eventName, eventFunc);
             } else {
-                (element as any)[prop] = difference.props.set[prop];
+                //element.setAttribute(prop, difference.props.set[prop].toString());
+                // (element as any)[prop] = difference.props.set[prop];
+
+                if (checkTagLikeSvgTag(element.tagName)) {
+                    element.setAttribute(prop, difference.props.set[prop].toString());
+                } else {
+                    (element as any)[prop] = difference.props.set[prop];
+                }
             }
         });
     }
@@ -306,7 +314,7 @@ export const applyChildrenChanges = (element: HTMLElement, functions: Array<Chil
             return;
         }
 
-        if (element.childNodes) {
+        if (element?.childNodes) {
             const childElement = element.childNodes[index + childIndex];
 
             if (func.kind == 'remove') {

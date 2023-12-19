@@ -1,4 +1,5 @@
 import { Component } from '../component';
+import { checkTagLikeSvgTag, getXMLNS } from './SVGRender';
 
 export type VDomPropType = string | number | boolean | Function;
 
@@ -73,7 +74,7 @@ export const createComponent = <PropsType extends object>(
     });
 };
 
-export const renderVDomNode = (rootNode: VDomNode): HTMLElement | Text => {
+export const renderVDomNode = (rootNode: VDomNode): HTMLElement | SVGSVGElement | Text => {
     if (rootNode.kind == 'text') {
         return document.createTextNode(rootNode.value.toString());
     }
@@ -88,12 +89,14 @@ export const renderVDomNode = (rootNode: VDomNode): HTMLElement | Text => {
             return svgElement.documentElement;
         }
 
-        const element = document.createElement(rootNode.tag);
+        const element = (!checkTagLikeSvgTag(rootNode.tag)) ?
+                            document.createElement(rootNode.tag)
+                            : document.createElementNS(getXMLNS(rootNode.props), rootNode.tag) as SVGSVGElement;
 
         Object.keys(rootNode.props || {}).forEach((prop) => {
             if (rootNode.props) {
                 if (prop == 'class') {
-                    rootNode.props[prop].toString().split(' ').forEach((elementClass) => {
+                    rootNode.props[prop].toString().trim().split(' ').forEach((elementClass) => {
                         if (elementClass !== '') {
                             element.classList.add(elementClass);
                         }
@@ -109,7 +112,11 @@ export const renderVDomNode = (rootNode: VDomNode): HTMLElement | Text => {
                     }
                     element.addEventListener(eventName, eventFunc);
                 } else {
-                    (element as any)[prop] = rootNode.props[prop];
+                    if (checkTagLikeSvgTag(rootNode.tag)) {
+                        element.setAttribute(prop, rootNode.props[prop].toString());
+                    } else {
+                        (element as any)[prop] = rootNode.props[prop];
+                    }
                 }
             }
         });

@@ -38,6 +38,7 @@ export interface ButtonProps extends ButtonEvents {
     name?: string,
     type?: string,
     className?: string,
+    disabled?: boolean
 }
 
 export interface ButtonImageProps extends ButtonEvents {
@@ -73,7 +74,7 @@ export class Button extends Component<ButtonProps, never> {
             'button',
             {
                 ...buttonProps,
-                class: className ? className : '' + 'button-' + (variant || 'base') + ' ' + (subvariant || ''),
+                class: (className ? className : '') + ' button-' + (variant || 'base') + ' ' + (subvariant || ''),
             },
             ...this.children,
 

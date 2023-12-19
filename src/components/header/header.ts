@@ -5,19 +5,24 @@ import { VDomComponent, VDomElement, createComponent, createElement } from '../b
 
 import { Button, Dropdown, TextInput, ButtonImage } from '../baseComponents/index';
 
+import CartStore from '../../shared/store/cart';
 import Navigate from '../../shared/services/router/Navigate';
 
 import UserStore from '../../shared/store/user';
 import { logout } from '../../shared/store/commonActions/auth';
 
 import logo from '../../assets/icons/logo.svg';
-import { Product } from '../../shared/api/product';
+import { ProductApi } from '../../shared/api/product';
 import { ResponseStatusChecker } from '../../shared/constants/response';
+import cart from '../../assets/icons/cart.svg';
+import { useDebounce } from '../baseComponents/snail/use/debounce';
 
 export class Header extends Component<never, never>{
     routeToSignin = () => Navigate.navigateTo('/signin');
     routeToSignup = () => Navigate.navigateTo('/signup');
+    routeToCart = () => { Navigate.navigateTo('/cart'); };
     routeToMain = () => Navigate.navigateTo('/');
+    routeToProfile = () => Navigate.navigateTo('/profile/products');
     routeToProductNew = () => {
         if (UserStore.isAuth()){
             Navigate.navigateTo('/product/new');
@@ -41,7 +46,7 @@ export class Header extends Component<never, never>{
     }
 
     private createSearchForm(): VDomElement {
-        const cp = this; // eslint-disable-line @typescript-eslint/no-this-alias
+        const cp = this; // eslint-disable-line
 
         const searchDropdown = createComponent(
             Dropdown,
@@ -54,16 +59,17 @@ export class Header extends Component<never, never>{
             const search = (e.currentTarget as HTMLFormElement).elements[0] as HTMLInputElement;
             const value = search.value;
 
-            const res = await Product.searchFeed(this.currentSearch ? this.currentSearch : value);
+            const res = await ProductApi.searchFeed(this.currentSearch ? this.currentSearch : value);
+            search.value = '';
             Navigate.navigateTo('/', {
                 products: res.body,
             });
         };
 
         const inputEvent = async(e: InputEvent) => {
-            const input = e.currentTarget as HTMLInputElement;
+            const input = e.target as HTMLInputElement;
             if (input.value && (e.data || e.inputType === 'deleteContentBackward')) {
-                const res = await Product.search(input.value);
+                const res = await ProductApi.search(input.value);
 
                 if (!ResponseStatusChecker.IsSuccessfulRequest(res)){
                     return;
@@ -91,18 +97,21 @@ export class Header extends Component<never, never>{
             }
         };
 
+        const debounced = useDebounce<InputEvent, void>(inputEvent, 500);
+
         const searchInput = createComponent(
             TextInput,
             {
-                class: 'header-search-box',
+                class: 'header-search-field-input',
                 required: true,
-                oninput: inputEvent,
+                oninput: debounced,
             },
         );
 
         return createElement(
             'form',
             {
+                class: 'header-search-box',
                 onsubmit: submitEvent,
             },
             searchInput,
@@ -110,11 +119,15 @@ export class Header extends Component<never, never>{
         );
     }
 
+    public componentDidMount() {
+        CartStore.addStoreUpdater(() => { this.applyComponentChanges(); });
+    }
+
     render() {
-        let tail;
+        let tail = [];
 
         if (!UserStore.isAuth()){
-            tail = createElement(
+            tail = [ createElement(
                 'div',
                 {
                     class: 'header-auth-box',
@@ -136,7 +149,7 @@ export class Header extends Component<never, never>{
                         onclick: this.routeToSignup,
                     },
                 ),
-            );
+            ) ];
         }
         else {
             const dropdown = createComponent(
@@ -148,7 +161,7 @@ export class Header extends Component<never, never>{
                         text: 'Профиль',
                         variant: 'neutral',
                         subvariant: 'tertiary',
-                        onclick: () => Navigate.navigateTo('/profile'),
+                        onclick: this.routeToProfile,
                     },
                 ),
                 createComponent(
@@ -164,20 +177,35 @@ export class Header extends Component<never, never>{
                     },
                 ),
             );
-            tail = createComponent(
-                ButtonImage,
-                {
-                    variant: 'neutral',
-                    subvariant: 'primary',
-                    height: 36,
-                    width: 36,
-                    src: this.avatar ? this.avatar : undefined,
-                    onclick: () => {
-                        (dropdown.instance as Dropdown).switchHidden();
+            tail = [
+                createComponent(
+                    Button,
+                    {
+                        variant: 'neutral',
+                        leftIcon: {
+                            content: cart,
+                            height: 28,
+                            width: 28,
+                        },
+                        textvariant: 'regular',
+                        text: CartStore.getCount().toString(),
+                        onclick: () => { this.routeToCart(); },
                     },
-                },
-                dropdown,
-            );
+                ),
+                createComponent(
+                    ButtonImage,
+                    {
+                        variant: 'neutral',
+                        subvariant: 'primary',
+                        height: 36,
+                        width: 36,
+                        onclick: () => {
+                            (dropdown.instance as Dropdown).switchHidden();
+                        },
+                    },
+                    dropdown,
+                ),
+            ];
         }
 
         return createElement(
@@ -208,7 +236,7 @@ export class Header extends Component<never, never>{
                     onclick: this.routeToProductNew,
                 },
             ),
-            tail,
+            ...tail,
         );
     }
 }

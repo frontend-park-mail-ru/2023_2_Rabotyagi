@@ -1,6 +1,7 @@
 @use '../../assets/css/sizes.scss';
 
 .header-nav {
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -33,6 +34,10 @@
     padding-left: 30px;
 }
 
+.header-search-box {
+    width: 100%;
+}
+
 .header-search-field-input {
     color: var(--vkui-color-text-secondary, #87898f);
     font-feature-settings:
@@ -49,9 +54,5 @@
 
 #header-logo-button {
     height: auto;
-    padding: 0;
-}
-
-#header-cart-button {
     padding: 0;
 }

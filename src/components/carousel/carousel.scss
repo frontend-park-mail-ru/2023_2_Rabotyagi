@@ -8,28 +8,27 @@
     height: 400px;
     align-items: center;
     justify-content: center;
+    background-color: vars.$background-tertiary;
 
     &-item {
         display: flex;
         height: 100%;
-        width: 100%;
     }
 
     &-empty {
         display: flex; 
         width: 100%; 
         height: 100%; 
-        background-color: darkgrey;
+        background-color: vars.$background-tertiary;
     }
 }
 
 .carousel-button {
     position: absolute;
     height: 100%;
-    width: 10%;
+    width: 50%;
     
     z-index: 1;
-    background-color: black;
     opacity: 0;
     transition-property: opacity;
     transition-duration: 0.25s;
@@ -41,10 +40,14 @@
     &--left {
         @extend .carousel-button;
         left: 0;
+        border-radius: 0 !important;
+        background: linear-gradient(to right, black 0%,black 20%,#000000 20%, transparent 20%,transparent 100%);
     }
 
     &--right {
         @extend .carousel-button;
         right: 0;
+        border-radius: 0 !important;
+        background: linear-gradient(to left, black 0%,black 20%,#000000 20%,transparent 20%,transparent 100%);
     }
 }
