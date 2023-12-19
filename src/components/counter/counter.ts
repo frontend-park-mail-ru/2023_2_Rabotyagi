@@ -13,6 +13,7 @@ export interface CounterProps {
     minCount: number,
     maxCount: number,
     selectedCount: number,
+    orderId: number,
     counterInfluence: (count: number) => void,
 }
 
@@ -28,6 +29,16 @@ export interface CounterState {
 
 export class Counter extends Component<CounterProps, CounterState> {
 
+    public componentWillRecieveProps(props: CounterProps, state: CounterState | undefined): CounterState | undefined {
+        state = {
+            ...state,
+            currentCount: props.selectedCount,
+            price: props.unitPrice * props.selectedCount,
+        };
+        
+        return state;
+    }
+
     generateStyle(style: CounterButtonStyleType): string {
         let result = '';
         Object.entries(style).forEach(([ key, value ]) => {
@@ -38,7 +49,7 @@ export class Counter extends Component<CounterProps, CounterState> {
     }
 
     getVisibleStyle(param: number) {
-        if (!this.props || !this.state) {
+        if (!this.state) {
             throw new Error('Counter settings are undefined');
         }
 
@@ -46,11 +57,11 @@ export class Counter extends Component<CounterProps, CounterState> {
             return this.generateStyle({ pointerEvents: 'none', opacity: '0.5' });
         }
 
-return this.generateStyle({ pointerEvents: 'auto', opacity: '1' });
+        return this.generateStyle({ pointerEvents: 'auto', opacity: '1' });
     }
 
     decCount() {
-        if (!this.props || !this.state) {
+        if (!this.state) {
             throw new Error('Counter settings are undefined');
         }
 
@@ -63,7 +74,7 @@ return this.generateStyle({ pointerEvents: 'auto', opacity: '1' });
     }
 
     incCount() {
-        if (!this.props || !this.state) {
+        if (!this.state) {
             throw new Error('Counter settings are undefined');
         }
 
@@ -76,10 +87,6 @@ return this.generateStyle({ pointerEvents: 'auto', opacity: '1' });
     }
 
     render() {
-        if (!this.props) {
-            throw new Error('Counter settings are undefined');
-        }
-
         if (!this.state) {
             this.state = {
                 currentCount: this.props.selectedCount,
@@ -90,22 +97,12 @@ return this.generateStyle({ pointerEvents: 'auto', opacity: '1' });
         return createElement(
             'div', { class: 'counter' },
             createElement(
-                'div', { class: 'counter-result' },
-                createComponent(
-                    Text,
-                    {
-                        variant: 'header',
-                        text: this.state.price + ' ₽',
-                    },
-                ),
-            ),
-            createElement(
                 'div', { class: 'counter-manager' },
                 createComponent(
                     Button,
                     {
                         variant: 'neutral',
-                        leftIcon: { content: dec, width: 25, height: 25 },
+                        leftIcon: { content: dec, width: 20, height: 20 },
                         style: this.getVisibleStyle(this.props.minCount),
                         onclick: () => { this.decCount(); },
                     },
@@ -114,7 +111,7 @@ return this.generateStyle({ pointerEvents: 'auto', opacity: '1' });
                     Text,
                     {
                         tag: 'div',
-                        variant: 'header',
+                        variant: 'subheader',
                         text: this.state.currentCount,
                         className: 'counter-count',
                     },
@@ -123,7 +120,7 @@ return this.generateStyle({ pointerEvents: 'auto', opacity: '1' });
                     Button,
                     {
                         variant: 'neutral',
-                        leftIcon: { content: inc, width: 25, height: 25 },
+                        leftIcon: { content: inc, width: 20, height: 20 },
                         style: this.getVisibleStyle(this.props.maxCount),
                         onclick: () => { this.incCount(); },
                     },

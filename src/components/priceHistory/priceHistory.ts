@@ -5,7 +5,7 @@ import { createComponent, createElement } from '../baseComponents/snail/vdom/Vir
 
 import { Text } from '../baseComponents/index';
 
-import { getRuFormat } from '../../shared/utils/dateConverter';
+import { getRuFormat, getRuDayFormat } from '../../shared/utils/dateConverter';
 
 export interface PriceHistoryProps {
     points: Array<productPriceUnit>,
@@ -21,38 +21,18 @@ export type PriceHistoryGrowingClass = 'up' | 'down' | 'line';
 export class PriceHistory extends Component<PriceHistoryProps, PriceHistoryState> {
 
     state = {
-        graphicPadding: 5,
+        graphicPadding: 2,
     };
 
-    currentPrice() {
-        if (!this.props) {
-            throw new Error('PriceHistory settings are undefined');
-        }
-
-        return this.props.points[this.props.points.length - 1].price;
-    }
-
     maxPrice() {
-        if (!this.props) {
-            throw new Error('PriceHistory settings are undefined');
-        }
-
-        return Math.max(...this.props.points.map(element => element.price));
+        return Math.max(...this.props.points.map(element => element.price), this.props.price);
     }
 
     minPrice() {
-        if (!this.props) {
-            throw new Error('PriceHistory settings are undefined');
-        }
-
-        return Math.min(...this.props.points.map(element => element.price));
+        return Math.min(...this.props.points.map(element => element.price), this.props.price);
     }
 
     graphicYLength() {
-        if (!this.props) {
-            throw new Error('PriceHistory settings are undefined');
-        }
-
         return this.maxPrice() - this.minPrice();
     }
 
@@ -60,8 +40,9 @@ export class PriceHistory extends Component<PriceHistoryProps, PriceHistoryState
         return points[0].created_at;
     }
 
-    endTime(points: Array<productPriceUnit>) {
-        return points[points.length - 1].created_at;
+    endTime() {
+        const nowDate = new Date();
+        return nowDate.toString();
     }
 
     getGrowingClass(points: Array<productPriceUnit>): PriceHistoryGrowingClass {
@@ -74,47 +55,51 @@ export class PriceHistory extends Component<PriceHistoryProps, PriceHistoryState
             return 'up';
         }
 
-return 'down';
+        return 'down';
     }
 
     getYCoor(price: number, minPrice: number, priceLength: number): number {
-        let result = 100 - (price - minPrice) / priceLength * 100;
-        if (result == 0)
-            result += this.state.graphicPadding;
-        if (result == 100)
-            result -= this.state.graphicPadding;
+        if (priceLength === 0) {
+            return this.state.graphicPadding;
+        }
 
-return result;
+        let result = 100 - (price - minPrice) / priceLength * 100;
+        if (result < 50)
+            result += this.state.graphicPadding;
+        if (result > 50)
+            result -= this.state.graphicPadding;
+        
+        return result;
     }
 
-    getDayDifference(fDate: string, lDate?: string) {
+    getTimeDifference(fDate: string, lDate?: string) {
         const firstDate = new Date(fDate);
         const lastDate = lDate ? new Date(lDate) : new Date();
 
-        return Math.ceil(Math.abs(lastDate.getTime() - firstDate.getTime()) / (1000 * 3600 * 24));
+        return Math.abs(lastDate.getTime() - firstDate.getTime()) / (1000 * 3600);
     }
 
     getXCoor(date: string, minDate: string, dateLength: number): number {
-        let result = this.getDayDifference(minDate, date) / dateLength * 100;
-        if (result == 0)
+        if (dateLength == 0) {
+            return 100 - this.state.graphicPadding;
+        }
+
+        let result = this.getTimeDifference(minDate, date) / dateLength * 100;
+        if (result < 50)
             result += this.state.graphicPadding;
-        if (result == 100)
+        if (result > 50)
             result -= this.state.graphicPadding;
 
-return result;
+        return result;
     }
 
     pointsToString(): string {
-        if (!this.props || !this.props.price) {
-            throw new Error('PriceHistory settings are undefined');
-        }
-
         const result: Array<string> = [];
         const minPrice = this.minPrice();
         const priceLength = this.maxPrice() - this.minPrice();
 
         const firstDate = this.props.points[0].created_at;
-        const dateLength = this.getDayDifference(firstDate);
+        const dateLength = this.getTimeDifference(firstDate);
 
         this.props.points.forEach((point) => {
             const xCoor = this.getXCoor(point.created_at, firstDate, dateLength).toString();
@@ -122,21 +107,33 @@ return result;
             result.push([xCoor, yCoor].join(','));
         });
 
-        const lastXCoor = 100;
+        const lastXCoor = 100 - this.state.graphicPadding;
         const lastYCoor = this.getYCoor(this.props.price, minPrice, priceLength);
         result.push([lastXCoor, lastYCoor].join(','));
 
         return result.join(' ');
     }
 
+    getDifferenceTitle(minPrice: number, maxPrice: number) {
+        if (maxPrice !== minPrice) {
+            return 'Цена менялась от ' + this.minPrice() + ' ₽ до ' + this.maxPrice() + ' ₽'
+        }   
+
+        return minPrice.toString() + ' ₽'; 
+    }
+
     render() {
-        if (!this.props) {
-            throw new Error('PriceHistory settings are undefined');
+        if (this.props.points.length == 0) {
+            throw new Error('Points must have at least one point');
         }
 
-        /*if (this.props.points.length == 0) {
-            throw new Error('Points must have at least one point');
-        }*/
+        let date1 = getRuDayFormat(this.props.points[0].created_at);
+        let date2 = getRuDayFormat(new Date().toString());
+
+        if (date1 === date2) {
+            date1 = getRuFormat(this.props.points[0].created_at);
+            date2 = getRuFormat(new Date().toString());
+        }
 
         return createElement(
             'div',
@@ -155,7 +152,7 @@ return result;
                 {
                     tag: 'p',
                     variant: 'regular',
-                    text: 'Цена менялась от ' + this.minPrice() + ' ₽ до ' + this.maxPrice() + ' ₽',
+                    text: this.getDifferenceTitle(this.minPrice(), this.maxPrice()),
                 },
             ),
             createElement(
@@ -187,7 +184,8 @@ return result;
                     {
                         tag: 'div',
                         variant: 'regular',
-                        text: getRuFormat(this.props.points[0].created_at),
+                        text: date1,
+                        className: 'price-history-other-text',
                     },
                 ),
                 createComponent(
@@ -195,7 +193,8 @@ return result;
                     {
                         tag: 'div',
                         variant: 'regular',
-                        text: getRuFormat(this.props.points[this.props.points.length - 1].created_at),
+                        text: date2,
+                        className: 'price-history-other-text',
                     },
                 ),
             ),

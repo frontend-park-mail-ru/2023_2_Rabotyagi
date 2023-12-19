@@ -108,19 +108,9 @@ export class Card extends Component<CardProps, CardState> {
         }
     };
 
-    thisHaveBadges() {
-        if (!this.props) {
-            throw new Error('Card props are undefined');
-        }
-
-        return this.props.delivery || this.props.safe_deal || this.props.city;
-    }
+    thisHaveBadges = () => this.props.delivery || this.props.safe_deal || this.props.city;
 
     renderBadges(badgeClass: string) {
-        if (!this.props) {
-            throw new Error('Card props are undefined');
-        }
-
         const badges: Array<VDomNode> = [];
 
         if (this.props.delivery) {
@@ -146,10 +136,6 @@ export class Card extends Component<CardProps, CardState> {
     }
 
     renderBase() {
-        if (!this.props) {
-            throw new Error('Card props are undefined');
-        }
-
         return createElement(
             'button',
             {
@@ -192,33 +178,27 @@ export class Card extends Component<CardProps, CardState> {
     }
 
     renderActiveButton() {
-        if (!this.props) {
-            throw new Error('Card props are undefined');
-        }
-
         const cp = this; // eslint-disable-line
 
         const changeActiveStatus = async(e: Event) => {
             e.stopPropagation();
 
-            if (this.props) {
-                let res;
+            let res;
 
-                try {
-                    res = await ProductApi.changeActive(this.props.id, !this.state.isActive);
-                }
-                catch (err) {
-                    console.error(err);
-                }
-
-                if (!ResponseStatusChecker.IsRedirectResponse(res)) {
-                    return;
-                }
-
-                cp.setState({
-                    isActive: !this.state.isActive,
-                });
+            try {
+                res = await ProductApi.changeActive(this.props.id, !this.state.isActive);
             }
+            catch (err) {
+                console.error(err);
+            }
+
+            if (!ResponseStatusChecker.IsRedirectResponse(res)) {
+                return;
+            }
+
+            cp.setState({
+                isActive: !this.state.isActive,
+            });
 
         };
 
@@ -234,10 +214,9 @@ export class Card extends Component<CardProps, CardState> {
     }
 
     renderPromoteButton() {
-        if (!this.props) {
-            throw new Error('Card props are undefined');
-        }
-
+        // if (!this.props) {
+        //     throw new Error('Card props are undefined');
+        // }
         const cp = this; // eslint-disable-line
 
         const promoteEvent = (e: Event) => {
@@ -266,16 +245,16 @@ export class Card extends Component<CardProps, CardState> {
                     }
 
                     // @FIX Это оч жесткий костыль, за который мне стыдно, но пока diff работает плохо, будет так
-                    Navigate.navigateTo('/profile/orders');
-                    Navigate.navigateTo('/profile/products');
-                    // cp.setProps({
-                    //     ...cp.props,
-                    //     premium: true,
-                    // });
+                    // Navigate.navigateTo('/profile/orders');
+                    // Navigate.navigateTo('/profile/products');
+                    cp.setProps({
+                        ...cp.props,
+                        premium: true,
+                    });
 
-                    // cp.setState({
-                    //     modalActive: undefined,
-                    // });
+                    cp.setState({
+                        modalActive: undefined,
+                    });
                 }
 
             };

@@ -82,38 +82,6 @@ export class OrderFeed extends Component<never, OrderFeedState> {
         return createElement(
             'div',
             { class: 'order-feed' },
-            createElement(
-                'div',
-                { class: 'order-feed-header' },
-                createElement(
-                    'div',
-                    { class: 'order-feed-price' },
-                    createComponent(
-                        Text,
-                        {
-                            tag: 'div',
-                            variant: 'header',
-                            text: CartStore.getPrice().toString() + ' ₽',
-                        },
-                    ),
-                    createComponent(
-                        Button,
-                        {
-                            variant: 'primary',
-                            subvariant: 'primary',
-                            style: 'margin-left: 24px;',
-                            text: 'Оплатить',
-                            onclick: () => { this.buyAll(); },
-                        },
-                    ),
-                ),
-                (CartStore.hasUser()) ?
-                    createComponent(
-                        UserCard,
-                        { ...CartStore.getSaler() },
-                    ) :
-                    createText(''),
-            ),
             (this.state.loading) ?
             createComponent(
                 Loader,

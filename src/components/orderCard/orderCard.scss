@@ -1,20 +1,23 @@
 @use '../../assets/css/vars.scss';
 
+$order-height: 180px;
+
 .order-card {
     display: flex;
     justify-content: start;
-    height: 218px;
-    width: 70%;
+    height: $order-height;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
+    position: relative;
+    width: 100%;
 
     .left-content {
-        flex: 0 0 200px;
-        height: 218px;
+        flex: 0 0 180px;
+        height: $order-height;
         >.img {
             width: -webkit-fill-available;
-            height: 218px;
+            height: $order-height;
             object-fit: cover;
             background-color: vars.$background-tertiary;
             flex-shrink: 0;
@@ -25,6 +28,7 @@
         padding: 16px;
         flex-grow: 1;
         background-color: vars.$background-primary;
+        //width: 50%;
 
         .product-title {
             display: -webkit-box;
@@ -39,17 +43,29 @@
         }
     }
 
-    .right-content {
+    .counter-content {
         margin: 0 auto;
-        flex: 0 0 200px;
         padding: 16px;
-        background-color: vars.$palette-primary;
+        background-color: vars.$background-primary;
         display: flex;
-        align-content: space-between;
         flex-direction: column;
-        align-items: center;
         flex-wrap: nowrap;
         align-self: stretch;
-        justify-content: space-around;
+        justify-content: start;
+        width: 150px;
+    }
+
+    .price-content {
+        background-color: vars.$background-primary;
+        width: 150px;
+        display: flex;
+        justify-content: center;
+        padding: 16px;
+    }
+
+    .order-card-deleting-button {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
     }
 }

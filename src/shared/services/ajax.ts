@@ -38,11 +38,15 @@ export class Ajax {
     private static instance: Ajax;
 
     private constructor() {
-        if (!SCHEMA || !API_URL) {
-            throw new Error('SCHEMA or API_URL are undefined');
+        if (!SCHEMA) {
+            throw new Error('SCHEMA are undefined');
         }
 
-            this.ADRESS_BACKEND = SCHEMA + API_URL + '/api/v1/';
+        if (!API_URL) {
+            throw new Error('API_URL are undefined');
+        }
+
+        this.ADRESS_BACKEND = SCHEMA + API_URL + '/api/v1/';
     }
 
     public static getInstance(): Ajax {

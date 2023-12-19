@@ -1,5 +1,5 @@
 import { Component } from './components/baseComponents/snail/component';
-import { createComponent, createElement } from './components/baseComponents/snail/vdom/VirtualDOM';
+import { createComponent, createElement, createText } from './components/baseComponents/snail/vdom/VirtualDOM';
 
 import { Router, Route } from './shared/services/router/Routing';
 
@@ -14,6 +14,9 @@ import { Product } from './pages/product/product';
 import { Profile } from './pages/profile/profile';
 import CityStore from './shared/store/city'; // eslint-disable-line @typescript-eslint/no-unused-vars
 import { getOrders } from './shared/store/commonActions/getOrders';
+
+import MessageStore from './shared/store/message';
+import { MessageBox } from './components/baseComponents';
 
 interface AppState {
     loading: boolean
@@ -42,6 +45,9 @@ export class App extends Component<never, AppState> {
         return createElement(
             'div',
             {id: 'root'},
+            createComponent(
+                MessageBox, {},
+            ),
             (this.state?.loading) ?
             createComponent(
                 Loader,

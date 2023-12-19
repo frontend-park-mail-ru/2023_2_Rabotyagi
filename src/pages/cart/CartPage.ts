@@ -5,9 +5,11 @@ import { createComponent, createElement } from '../../components/baseComponents/
 
 import { Header } from '../../components/header/header';
 import { OrderFeed } from '../../components/orderFeed/orderFeed';
-import { Text } from '../../components/baseComponents/index';
+import { Check } from './check/check';
+import { Text, Button } from '../../components/baseComponents/index';
 
 import UserStore from '../../shared/store/user';
+import CartStore from '../../shared/store/cart';
 import Navigate from '../../shared/services/router/Navigate';
 
 export class CartPage extends Component<never, never> {
@@ -16,37 +18,59 @@ export class CartPage extends Component<never, never> {
         if (!UserStore.isAuth()) {
             Navigate.navigateTo('/signin');
         }
+
+        CartStore.addStoreUpdater(() => { this.applyComponentChanges(); });
     }
 
     render() {
         return createElement(
-            'div', { },
+            'div', { class: 'wrapper-cartpage' },
             createComponent(
                 Header, { },
             ),
             createElement(
-                'div',
-                { class: 'wrapper-cart' },
+                'div', { class: 'wrapper-cart' },
                 createElement(
-                    'div',
-                    { class: 'cart' },
+                    'div', { class: 'cart' },
                     createElement(
-                        'div',
-                        { class: 'cart-header' },
+                        'div', { class: 'cart-header' },
                         createComponent(
                             Text,
                             {
-                                variant: 'header',
-                                text: 'Корзина',
+                                variant: 'subheader',
+                                text: 'Корзина ',
                             },
                         ),
+                        createComponent(
+                            Text,
+                            {
+                                variant: 'subheader',
+                                text: CartStore.getCount(),
+                                className: 'cart-count',
+                            }
+                        )
                     ),
                     createElement(
                         'div',
                         { class: 'wrapper' },
-                        createComponent(
-                            OrderFeed, {},
-                        ),
+                        (CartStore.getGoods().length !== 0) ?
+                            createElement(
+                                'div',
+                                { class: 'cart-content', },
+                                createComponent(
+                                    OrderFeed, {},
+                                ),
+                                createComponent(
+                                    Check, {},
+                                )
+                            ) :
+                            createComponent(
+                                Text, 
+                                {
+                                    tag: 'div',
+                                    text: 'Пока что в корзине нет товаров',
+                                }
+                            ),
                     ),
                 ),
             ),

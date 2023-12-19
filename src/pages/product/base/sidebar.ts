@@ -14,6 +14,7 @@ import Navigate from '../../../shared/services/router/Navigate';
 import Dispatcher from '../../../shared/services/store/Dispatcher';
 
 import CartStore, { CartStoreAction } from '../../../shared/store/cart';
+import MessageStore, { MessageStoreAction } from '../../../shared/store/message';
 import UserStore from '../../../shared/store/user';
 
 import star from '../../../assets/icons/star.svg';
@@ -30,30 +31,65 @@ interface ProductSidebarProps extends UserModel {
 
 interface ProductSidebarState {
     error: string,
+    priceHistoryVisible: boolean,
 }
+
+export type PriceGrowingClass = 'up' | 'down' | 'line';
 
 export class ProductSidebar extends Component<ProductSidebarProps, ProductSidebarState> {
 
     state = {
         error: '',
+        priceHistoryVisible: false,
     };
 
     public componentDidMount() {
-        CartStore.addStoreUpdater(() => { console.info('CHANGE CART STORE'); this.applyComponentChanges(); });
+        CartStore.addStoreUpdater(() => { this.applyComponentChanges(); });
     }
 
     setError(newError: string) {
-        this.setState({ error: newError });
+        this.setState({ 
+            ...this.state,
+            error: newError, 
+        });
     }
 
     routeToSaler = () => {
-        if (this.props?.id === UserStore.getFields()?.id) {
+        if (this.props.id === UserStore.getFields()?.id) {
             Navigate.navigateTo('/profile');
         }
         else {
-            Navigate.navigateTo(`/profile/saler?id=${this.props?.id}`, {salerId: this.props?.id});
+            Navigate.navigateTo(`/profile/saler?id=${this.props.id}`, {salerId: this.props.id});
         }
     };
+
+    getPriceClass(points: Array<productPriceUnit> | null | undefined, price: number): PriceGrowingClass {
+        if (!points) {
+            return 'line';
+        }
+        if (points.length < 2) {
+            return 'line';
+        }
+        if (points[points.length - 1].price == points[points.length - 2].price) {
+            return 'line';
+        }
+        if (points[points.length - 1].price > points[points.length - 2].price) {
+            return 'up';
+        }
+
+        return 'down';
+    }
+
+    getPriceText(className: PriceGrowingClass, price: number): string {
+        if (className == 'up') {
+            return price.toString() + ' ₽ ↑';
+        }
+        if (className == 'down') {
+            return price.toString() + ' ₽ ↓';
+        }
+
+        return price.toString() + ' ₽';
+    }
 
     async addInCart() {
         if (!this.props) {
@@ -105,10 +141,6 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
 
     renderEditButton = (): Array<VDomComponent> => {
         let content: Array<VDomComponent> = [];
-
-        if (!this.props) {
-            throw new Error('ProductSidebar props undefined');
-        }
 
         if(UserStore.isSameUser(this.props.id)){
             content = [
@@ -182,12 +214,40 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
             {
                 class: 'product-menu',
             },
-            createComponent(
-                Text,
-                {
-                    text: this.props.price,
-                    variant: 'subheader',
-                },
+            createElement(
+                'div',
+                { class: 'product-menu-price', },
+                createComponent(
+                    Text,
+                    {
+                        text: this.getPriceText(this.getPriceClass(this.props.price_history, this.props.price), this.props.price),
+                        variant: 'subheader',
+                        className: this.getPriceClass(this.props.price_history, this.props.price),
+                    },
+                ),
+                (this.props.price_history) ?
+                    createComponent(
+                        Button,
+                        {
+                            variant: 'outlined',
+                            text: 'История цены',
+                            onclick: () => {
+                                if (this.props && !MessageStore.getVisible()) {
+                                    Dispatcher.dispatch({
+                                        name: MessageStoreAction.SHOW_MESSAGE,
+                                        payload: createComponent(
+                                            PriceHistory,
+                                            {
+                                                price: this.props.price,
+                                                points: this.props.price_history,
+                                            },
+                                        )
+                                    });
+                                }
+                            },
+                        }
+                    ) :
+                    createText(''),
             ),
             createElement(
                 'div',
@@ -271,16 +331,6 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
             ...this.renderEditButton(),
 
             ...badges,
-
-            (this.props.price_history) ?
-                createComponent(
-                    PriceHistory,
-                    {
-                        price: this.props.price,
-                        points: this.props.price_history,
-                    },
-                ) :
-                createText(''),
 
             (this.state.error !== '') ?
                 createComponent(
