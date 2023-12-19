@@ -121,7 +121,20 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
 
         try {
             if (!CartStore.sameUser(this.props.id)) {
-                throw new Error('В корзину можно добавлять продукты только с одинаковым пользователем');
+                if (!MessageStore.getVisible()) {
+                    Dispatcher.dispatch({
+                        name: MessageStoreAction.SHOW_MESSAGE,
+                        payload: createComponent(
+                            AlertMessage,
+                            {
+                                title: 'Внимание!',
+                                text: 'В корзину можно добавлять продукты только с одинаковым пользователем',
+                            },
+                            errorButton,
+                        ),
+                    });
+                }
+                throw new Error('Ошибка');
             }
             if (CartStore.hasProduct(this.props.product_id)) {
                 throw new Error('Данный продукт уже есть в корзине');
@@ -158,19 +171,6 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                 this.setError('');
             }
         } catch(error: any) {
-            if (!MessageStore.getVisible()) {
-                Dispatcher.dispatch({
-                    name: MessageStoreAction.SHOW_MESSAGE,
-                    payload: createComponent(
-                        AlertMessage,
-                        {
-                            title: 'Внимание!',
-                            text: error.toString(),
-                        },
-                        errorButton,
-                    ),
-                });
-            }
             this.setError(error.toString());
         }
     }
