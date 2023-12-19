@@ -27,6 +27,8 @@ interface ProductSidebarProps extends UserModel {
     price_history?: Array<productPriceUnit> | null,
     // callbacks: Callbacks,
     parent: ProductBase,
+    safe_deal: boolean,
+    delivery: boolean,
 }
 
 interface ProductSidebarState {
@@ -63,7 +65,18 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
         }
     };
 
-    getPriceClass(points: Array<productPriceUnit> | null | undefined, price: number): PriceGrowingClass {
+    getPriceDiffernce(points: Array<productPriceUnit> | null | undefined): number {
+        if (!points) {
+            return 0;
+        }
+        if (points.length < 2) {
+            return points[0].price;
+        }
+
+        return Math.abs(points[points.length - 1].price - points[points.length - 2].price);
+    }
+ 
+    getPriceClass(points: Array<productPriceUnit> | null | undefined): PriceGrowingClass {
         if (!points) {
             return 'line';
         }
@@ -82,13 +95,13 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
 
     getPriceText(className: PriceGrowingClass, price: number): string {
         if (className == 'up') {
-            return price.toString() + ' ₽ ↑';
+            return '(↑ ' + price.toString() + ' ₽)';
         }
         if (className == 'down') {
-            return price.toString() + ' ₽ ↓';
+            return '(↓ ' + price.toString() + ' ₽)';
         }
 
-        return price.toString() + ' ₽';
+        return '';
     }
 
     async addInCart() {
@@ -169,26 +182,8 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
 
         let badges: VDomElement[] = [];
         if (!this.props.parent.isEditMode()) {
-            badges = [
-                createElement(
-                    'div',
-                    {class: 'product-menu-badges'},
-                    createElement(
-                        'div',
-                        {class: 'product-menu-badges-badge'},
-                        createComponent(
-                            Svg,
-                            {
-                                content: delivery,
-                                width: 24,
-                                height: 24,
-                            },
-                        ),
-                        createComponent(
-                            Text,
-                            {text: 'Возможна доставка'},
-                        ),
-                    ),
+            if (this.props.safe_deal) {
+                badges.push(
                     createElement(
                         'div',
                         {class: 'product-menu-badges-badge'},
@@ -205,8 +200,33 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                             {text: 'Безопасная сделка'},
                         ),
                     ),
-                ),
-            ];
+                );
+            }
+
+            if (this.props.delivery) {
+                badges.push(
+                    createElement(
+                        'div',
+                        {class: 'product-menu-badges'},
+                        createElement(
+                            'div',
+                            {class: 'product-menu-badges-badge'},
+                            createComponent(
+                                Svg,
+                                {
+                                    content: delivery,
+                                    width: 24,
+                                    height: 24,
+                                },
+                            ),
+                            createComponent(
+                                Text,
+                                {text: 'Возможна доставка'},
+                            ),
+                        ),
+                    ),
+                );
+            }
         }
 
         return createElement(
@@ -220,9 +240,19 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                 createComponent(
                     Text,
                     {
-                        text: this.getPriceText(this.getPriceClass(this.props.price_history, this.props.price), this.props.price),
+                        text: this.props.price,
                         variant: 'subheader',
-                        className: this.getPriceClass(this.props.price_history, this.props.price),
+                    },
+                ),
+                createComponent(
+                    Text,
+                    {
+                        text: this.getPriceText(
+                            this.getPriceClass(this.props.price_history), 
+                            this.getPriceDiffernce(this.props.price_history)
+                        ),
+                        variant: 'subheader',
+                        className: this.getPriceClass(this.props.price_history),
                     },
                 ),
                 (this.props.price_history) ?
