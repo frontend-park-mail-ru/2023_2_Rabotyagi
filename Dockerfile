@@ -28,5 +28,5 @@ ENV SCHEMA=$SCHEMA
 # ENV API_URL=localhost
 # ENV SCHEMA=http://
 
-EXPOSE 80
+EXPOSE 3000
 ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
