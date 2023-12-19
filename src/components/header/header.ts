@@ -15,6 +15,7 @@ import logo from '../../assets/icons/logo.svg';
 import { ProductApi } from '../../shared/api/product';
 import { ResponseStatusChecker } from '../../shared/constants/response';
 import cart from '../../assets/icons/cart.svg';
+import { useDebounce } from '../baseComponents/snail/use/debounce';
 
 export class Header extends Component<never, never>{
     routeToSignin = () => Navigate.navigateTo('/signin');
@@ -66,7 +67,7 @@ export class Header extends Component<never, never>{
         };
 
         const inputEvent = async(e: InputEvent) => {
-            const input = e.currentTarget as HTMLInputElement;
+            const input = e.target as HTMLInputElement;
             if (input.value && (e.data || e.inputType === 'deleteContentBackward')) {
                 const res = await ProductApi.search(input.value);
 
@@ -96,12 +97,14 @@ export class Header extends Component<never, never>{
             }
         };
 
+        const debounced = useDebounce<InputEvent, void>(inputEvent, 500);
+
         const searchInput = createComponent(
             TextInput,
             {
                 class: 'header-search-field-input',
                 required: true,
-                oninput: inputEvent,
+                oninput: debounced,
             },
         );
 

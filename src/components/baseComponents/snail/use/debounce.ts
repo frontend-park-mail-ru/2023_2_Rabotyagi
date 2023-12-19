@@ -1,5 +1,5 @@
 // На самом деле тут Return не нужен, но если писать либу - обязателен
-export function debounce<Args, Return>(
+export function useDebounce<Args, Return>(
     func: (args: Args) => Return,
     timeoutMs: number,
 ) {
