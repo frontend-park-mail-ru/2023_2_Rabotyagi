@@ -1,5 +1,13 @@
 @use '../../../assets/css/vars.scss';
 
+.alert-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+}
+
 .product-menu {
     position: sticky;
     top: 24px;
