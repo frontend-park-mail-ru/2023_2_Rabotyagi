@@ -3,7 +3,7 @@ import { Component } from '../snail/component';
 import { createElement } from '../snail/vdom/VirtualDOM';
 
 export interface ImageProps {
-    src?: string,
+    src?: string | null,
     id?: string,
     width?: number,
     height?: number,

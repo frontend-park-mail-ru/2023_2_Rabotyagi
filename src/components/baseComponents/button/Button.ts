@@ -42,7 +42,7 @@ export interface ButtonProps extends ButtonEvents {
 }
 
 export interface ButtonImageProps extends ButtonEvents {
-    src?: string,
+    src?: string | null,
     width?: number,
     height?: number,
     id?: string,

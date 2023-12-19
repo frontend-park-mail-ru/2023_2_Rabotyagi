@@ -17,7 +17,12 @@ import { ResponseStatusChecker } from '../../shared/constants/response';
 import cart from '../../assets/icons/cart.svg';
 import { useDebounce } from '../baseComponents/snail/use/debounce';
 
-export class Header extends Component<never, never>{
+interface HeaderState {
+    avatar: string | null,
+    currentSearch?: string
+}
+
+export class Header extends Component<never, HeaderState>{
     routeToSignin = () => Navigate.navigateTo('/signin');
     routeToSignup = () => Navigate.navigateTo('/signup');
     routeToCart = () => { Navigate.navigateTo('/cart'); };
@@ -32,16 +37,22 @@ export class Header extends Component<never, never>{
         }
     };
 
-    avatar: string | null;
-    currentSearch?: string;
+    protected state: HeaderState = {
+        avatar: null,
+    };
+
+    listener = () => {
+        this.setState({
+            avatar: UserStore.getFields()?.avatar || null,
+        });
+    };
 
     constructor() {
         super();
 
         const fields = UserStore.getFields();
-        this.avatar = null;
         if (fields) {
-            this.avatar = fields.avatar;
+            this.state.avatar = fields.avatar;
         }
     }
 
@@ -59,7 +70,7 @@ export class Header extends Component<never, never>{
             const search = (e.currentTarget as HTMLFormElement).elements[0] as HTMLInputElement;
             const value = search.value;
 
-            const res = await ProductApi.searchFeed(this.currentSearch ? this.currentSearch : value);
+            const res = await ProductApi.searchFeed(this.state.currentSearch ? this.state.currentSearch : value);
             search.value = '';
             Navigate.navigateTo('/', {
                 products: res.body,
@@ -84,7 +95,7 @@ export class Header extends Component<never, never>{
                                 text: item,
                                 variant: 'neutral',
                                 style: 'width: 100%; justify-content: start;',
-                                onclick: () => cp.currentSearch = item,
+                                onclick: () => cp.state.currentSearch = item,
                             },
                         ),
                     ));
@@ -199,6 +210,7 @@ export class Header extends Component<never, never>{
                         subvariant: 'primary',
                         height: 36,
                         width: 36,
+                        src: this.state.avatar,
                         onclick: () => {
                             (dropdown.instance as Dropdown).switchHidden();
                         },
