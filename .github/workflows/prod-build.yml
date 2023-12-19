@@ -40,6 +40,7 @@ jobs:
                   build-args: |
                       SCHEMA=https://
                       API_URL=goods-galaxy.ru
+
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
@@ -50,6 +51,7 @@ jobs:
               with:
                   to: ${{ secrets.TELEGRAM_CHAT }}
                   token: ${{ secrets.TELEGRAM_TOKEN }}
+
                   message: |
                       Билд образа
                         - ${{ github.repository }}:${{github.ref_name}}
