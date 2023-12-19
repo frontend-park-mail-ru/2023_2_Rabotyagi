@@ -7,6 +7,7 @@ import { Svg } from '../svg/Svg';
 import { TextInput } from '../input/Input';
 
 import searchIcon from '../../../assets/icons/search.svg';
+import { useState } from '../snail/use/state';
 
 // примечания к решению:
 // прдеполагается, что dropdown всегда будет привязан к компоненту выше
@@ -28,10 +29,18 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
         hidden: true,
     };
 
+    public hidden;
+
+    constructor() {
+        super();
+        this.hidden = useState(this, [true]);
+    }
+
     switchHidden() {
         this.setState({
             hidden: !this.state.hidden,
         });
+        // this.hidden.set(!this.hidden.get);
     }
 
     public render(): VDomNode {
