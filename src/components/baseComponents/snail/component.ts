@@ -1,3 +1,4 @@
+import { useState } from './use/state';
 import { VDomNodeUpdater, applyChanges, getDifference } from './vdom/Difference';
 import { VDomNode } from './vdom/VirtualDOM';
 
@@ -13,6 +14,8 @@ export abstract class Component<PropsType, StateType> {
     constructor(props: PropsType = {} as PropsType) {
         this.props = props;
     }
+
+    protected useState = useState(initState);
 
     protected applyComponentChanges() {
         if (!this._domElement) {

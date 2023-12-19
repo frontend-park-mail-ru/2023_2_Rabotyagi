@@ -1,12 +1,12 @@
 import { Component } from '../component';
 
-interface IUseState<StateType> {
-    get: () => StateType,
-    set: (newState: StateType) => void
+interface IUseState {
+    get: () => any,
+    set: (newState: any) => void
 }
 
-export function foo<StateType>(this: Component<any, any>, initState: StateType): IUseState<StateType> {
-    debugger;
+export function useState(this: Component<any, any>, initState: any): IUseState {
+    // debugger;
     // if (!this) {
     //     throw new Error('useState must be inside of Component');
     // }
@@ -17,7 +17,7 @@ export function foo<StateType>(this: Component<any, any>, initState: StateType):
     const state = initState;
 
     const getState = () => state;
-    const setState = (newState: StateType) => {
+    const setState = (newState: any) => {
         this.setState(newState);
     };
 
@@ -26,6 +26,3 @@ export function foo<StateType>(this: Component<any, any>, initState: StateType):
         set: setState,
     };
 }
-
-export const useState = <StateType>(parent: Component<any,any>, state: StateType) => foo.apply(parent, [state]);
-// export const useState = (state: any) => foo.bind();
