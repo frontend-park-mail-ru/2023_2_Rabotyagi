@@ -18,6 +18,9 @@ interface SidebarState extends UserModel {
 }
 
 export class Sidebar extends Component<never, SidebarState> {
+    private userStoreListener = () => {
+        this.setState({...(UserStore.getFields() as SidebarState), variant: 'default'});
+    };
 
     constructor() {
         super();
@@ -30,13 +33,21 @@ export class Sidebar extends Component<never, SidebarState> {
         else {
             this.state = {...(UserStore.getFields() as SidebarState), variant: 'default'};
         }
+    }
 
-        // if (!this.props || !this.props.variant || this.props.variant === 'default') {
-        //     this.state = UserStore.getFields() as SidebarState;
-        // }
-        // else if (this.props.variant === 'saler') {
-        //     this.fetchSalerProfile();
-        // }
+    public componentDidMount(): void {
+        if (this.state?.variant === 'default') {
+            this;
+            UserStore.addStoreUpdater(this.userStoreListener);
+        }
+
+    }
+
+    public componentWillUnmount(): void {
+        if (this.state?.variant === 'default') {
+            this;
+            UserStore.removeStoreUpdater(this.userStoreListener);
+        }
     }
 
     async fetchSalerProfile() {

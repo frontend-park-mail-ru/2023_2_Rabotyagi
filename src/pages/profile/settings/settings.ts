@@ -78,7 +78,6 @@ export class ProfileSettings extends Component<never, ProfileSettingsState> {
         if (this.state.inputFields?.forUpload) {
 
             let res;
-
             try {
                 res = await FileApi.images(this.state.inputFields.forUpload);
             }
@@ -123,6 +122,7 @@ export class ProfileSettings extends Component<never, ProfileSettingsState> {
             name: UserStoreAction.UPDATE,
             payload: res.body as UserModel,
         });
+
     };
 
     setAvatar = (e: Event) => {
