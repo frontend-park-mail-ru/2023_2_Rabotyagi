@@ -161,6 +161,15 @@ class CartStore extends Store<CartStoreState> {
         return [ ...this.state.goods ];
     }
 
+    public getGood(orderId: number) {
+        const index = this.state.goods.map((element) => element.id).indexOf(orderId);
+
+        if (index !== -1) {
+            return this.state.goods[index];
+        }
+        return this.state.goods[0];
+    }
+
     public getSaler() {
         return { ...this.state.saler };
     }

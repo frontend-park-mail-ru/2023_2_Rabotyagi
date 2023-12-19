@@ -11,7 +11,7 @@ export abstract class Component<PropsType, StateType> {
     private _domElement: HTMLElement | SVGSVGElement | Text | undefined;
 
     constructor(props: PropsType = {} as PropsType) {
-         this.props = props;
+        this.props = props;
     }
 
     protected applyComponentChanges() {

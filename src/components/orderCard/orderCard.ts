@@ -9,16 +9,17 @@ import { Text, Button, Image } from '../baseComponents/index';
 import { OrderApi } from '../../shared/api/order';
 import { ResponseStatusChecker, ResponseMessage } from '../../shared/constants/response';
 
-import { CartStoreAction } from '../../shared/store/cart';
+import CartStore, { CartStoreAction } from '../../shared/store/cart';
 import Dispatcher from '../../shared/services/store/Dispatcher';
 
 export class OrderCard extends Component<OrderModel, never> {
 
+    public componentDidMount(): void {
+        CartStore.addStoreUpdater(() => { this.applyComponentChanges(); });
+    }
+
     async updateCount(count: number) {
         try {
-            if (!this.props) {
-                throw new Error('OrderCard settings are undefined');
-            }
 
             const resp = await OrderApi.updateCount({
                 id: this.props.id,
@@ -73,10 +74,6 @@ export class OrderCard extends Component<OrderModel, never> {
     }
 
     render() {
-        if (!this.props) {
-            throw new Error('OrderCard settings are undefined');
-        }
-
         return createElement(
             'div',
             { class: 'order-card' },
@@ -90,13 +87,6 @@ export class OrderCard extends Component<OrderModel, never> {
                             src: this.props.images[0].url,
                         },
                     )
-                    // createElement(
-                    //     'img',
-                    //     {
-                    //         class: 'img',
-                    //         src: getResourceUrl(this.props.images[0].url),
-                    //     },
-                    // )
                     :
                     createElement(
                         'div',
@@ -111,8 +101,7 @@ export class OrderCard extends Component<OrderModel, never> {
                     {
                         tag: 'div',
                         variant: 'subheader',
-                        className: 'product-price',
-                        text: this.props.price + ' ₽ за 1 шт.',
+                        text: this.props.title,
                     },
                 ),
                 createComponent(
@@ -120,31 +109,43 @@ export class OrderCard extends Component<OrderModel, never> {
                     {
                         tag: 'div',
                         className: 'product-title',
-                        text: this.props.title,
+                        text: CartStore.getSaler().name,
                     },
                 ),
             ),
             createElement(
                 'div',
-                { class: 'right-content' },
+                { class: 'counter-content' },
                 createComponent(
                     Counter,
                     {
                         unitPrice: this.props.price,
                         minCount: 1,
                         maxCount: this.props.available_count,
-                        selectedCount: this.props.count,
+                        selectedCount: CartStore.getGood(this.props.id).count,
+                        orderId: this.props.id,
                         counterInfluence: (count: number) => { this.updateCount(count); },
                     },
                 ),
+            ),
+            createElement(
+                'div', { class: 'price-content' },
                 createComponent(
-                    Button,
+                    Text,
                     {
-                        variant: 'accent',
-                        text: 'Удалить',
-                        onclick: () => { this.deleteOrder(); },
+                        variant: 'subheader',
+                        text: this.props.price * this.props.count + ' ₽',
                     },
                 ),
+            ),
+            createComponent(
+                Button,
+                {
+                    variant: 'primary',
+                    text: 'Удалить',
+                    onclick: () => { this.deleteOrder(); },
+                    className: 'order-card-deleting-button',
+                },
             ),
         );
     }
