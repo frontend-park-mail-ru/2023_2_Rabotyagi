@@ -23,6 +23,45 @@ export class CartPage extends Component<never, never> {
     }
 
     render() {
+
+        let cartContent = [];
+        if (CartStore.getGoods().length !== 0) {
+            cartContent.push(
+                createElement(
+                    'div',
+                    { class: 'cart-content', },
+                    createComponent(
+                        OrderFeed, {},
+                    ),
+                    createComponent(
+                        Check, {},
+                    )
+                )
+            );
+        } else {
+            cartContent.push(
+                createElement(
+                    'div', { class: 'cart-empty-content', },
+                    createComponent(
+                        Text, 
+                        {
+                            tag: 'div',
+                            variant: 'subheader',
+                            text: 'Пока что в корзине нет товаров',
+                        }
+                    ),
+                    createComponent(
+                        Button,
+                        {
+                            variant: 'primary',
+                            text: 'Перейти на главную страницу',
+                            onclick: () => { Navigate.navigateTo('/'); },
+                        }
+                    ),
+                )
+            )
+        }
+
         return createElement(
             'div', { class: 'wrapper-cartpage' },
             createComponent(
@@ -53,24 +92,7 @@ export class CartPage extends Component<never, never> {
                     createElement(
                         'div',
                         { class: 'wrapper' },
-                        (CartStore.getGoods().length !== 0) ?
-                            createElement(
-                                'div',
-                                { class: 'cart-content', },
-                                createComponent(
-                                    OrderFeed, {},
-                                ),
-                                createComponent(
-                                    Check, {},
-                                )
-                            ) :
-                            createComponent(
-                                Text, 
-                                {
-                                    tag: 'div',
-                                    text: 'Пока что в корзине нет товаров',
-                                }
-                            ),
+                        ...cartContent,
                     ),
                 ),
             ),

@@ -12,7 +12,33 @@ import { ResponseStatusChecker, ResponseMessage } from '../../shared/constants/r
 import CartStore, { CartStoreAction } from '../../shared/store/cart';
 import Dispatcher from '../../shared/services/store/Dispatcher';
 
+import Navigate from '../../shared/services/router/Navigate';
+
+enum MouseButtons {
+    LEFT = 0,
+    WHEEL = 1,
+    RIGHT = 2
+}
+
 export class OrderCard extends Component<OrderModel, never> {
+
+    navigateToProduct = (e: MouseEvent) => {
+        switch (e.button) {
+            case MouseButtons.LEFT:
+                if (e.ctrlKey){
+                    window.open(`/product?id=${this.props.product_id}`, '_blank');
+
+                    return;
+                }
+
+                Navigate.navigateTo(`/product?id=${this.props.product_id}`, { productId: this.props.product_id });
+                break;
+
+            case MouseButtons.WHEEL:
+                window.open(`/product?id=${this.props.product_id}`, '_blank');
+                break;
+        }
+    };
 
     async updateCount(count: number) {
         try {
@@ -75,7 +101,10 @@ export class OrderCard extends Component<OrderModel, never> {
             { class: 'order-card' },
             createElement(
                 'div',
-                { class: 'left-content' },
+                { 
+                    class: 'left-content',
+                    onclick: this.navigateToProduct, 
+                },
                 (this.props.images) ?
                     createComponent(
                         Image,
@@ -137,7 +166,7 @@ export class OrderCard extends Component<OrderModel, never> {
             createComponent(
                 Button,
                 {
-                    variant: 'primary',
+                    variant: 'accent',
                     text: 'Удалить',
                     onclick: () => { this.deleteOrder(); },
                     className: 'order-card-deleting-button',

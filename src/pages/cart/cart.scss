@@ -34,5 +34,12 @@
             gap: 40px;
             justify-content: space-between;
         }
+
+        .cart-empty-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
     }
 }
