@@ -52,9 +52,9 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
     }
 
     setError(newError: string) {
-        this.setState({ 
+        this.setState({
             ...this.state,
-            error: newError, 
+            error: newError,
         });
     }
 
@@ -63,7 +63,7 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
             Navigate.navigateTo('/profile');
         }
         else {
-            Navigate.navigateTo(`/profile/saler?id=${this.props.id}`, {salerId: this.props.id});
+            Navigate.navigateTo('/profile/saler/products', {salerId: this.props.id});
         }
     };
 
@@ -77,7 +77,7 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
 
         return Math.abs(points[points.length - 1].price - points[points.length - 2].price);
     }
- 
+
     getPriceClass(points: Array<productPriceUnit> | null | undefined): PriceGrowingClass {
         if (!points) {
             return 'line';
@@ -182,7 +182,7 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
             throw new Error('ProductSidebar state undefined');
         }
 
-        let badges: VDomElement[] = [];
+        const badges: VDomElement[] = [];
         if (!this.props.parent.isEditMode()) {
             if (this.props.safe_deal) {
                 badges.push(
@@ -238,7 +238,7 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
             },
             createElement(
                 'div',
-                { class: 'product-menu-price', },
+                { class: 'product-menu-price' },
                 createComponent(
                     Text,
                     {
@@ -250,8 +250,8 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                     Text,
                     {
                         text: this.getPriceText(
-                            this.getPriceClass(this.props.price_history), 
-                            this.getPriceDiffernce(this.props.price_history)
+                            this.getPriceClass(this.props.price_history),
+                            this.getPriceDiffernce(this.props.price_history),
                         ),
                         variant: 'subheader',
                         className: this.getPriceClass(this.props.price_history),
@@ -273,11 +273,11 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                                                 price: this.props.price,
                                                 points: this.props.price_history,
                                             },
-                                        )
+                                        ),
                                     });
                                 }
                             },
-                        }
+                        },
                     ) :
                     createText(''),
             ),
