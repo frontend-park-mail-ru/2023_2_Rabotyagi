@@ -45,7 +45,7 @@ jobs:
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
 
-    notify-good:
+    notify-build-good:
         runs-on: ubuntu-latest
         if: ${{ always() && needs.build.result == 'success' }}
         needs: [build]
@@ -62,7 +62,7 @@ jobs:
                       Закончился с ✅
                       https://github.com/frontend-park-mail-ru/2023_2_Rabotyagi/commit/${{github.sha}}
 
-    notify-bad:
+    notify-build-bad:
         runs-on: ubuntu-latest
         if: ${{ always() && needs.build.result == 'failure' }}
         needs: [build]
@@ -82,7 +82,7 @@ jobs:
     deploy:
         runs-on: ubuntu-latest
         if: ${{ always() && needs.build.result == 'success' }}
-        needs: [notify-good, build]
+        needs: [notify-build-good, build]
         steps:
             - name: Deploy to dev
               uses: appleboy/ssh-action@v1.0.0
@@ -96,6 +96,7 @@ jobs:
                       cd /var/share/rabotyagi
                       docker compose pull frontend
                       docker compose up -d --force-recreate frontend
+
             - name: Notify deploy
               uses: appleboy/telegram-action@master
               with:
@@ -104,4 +105,34 @@ jobs:
                   # format: markdown
                   message: |
                       Деплой на goods-galaxy состоялся, господа
+                      http://goods-galaxy.ru
+
+    notify-deploy-good:
+        runs-on: ubuntu-latest
+        if: ${{ always() && needs.deploy.result == 'failure' }}
+        needs: [deploy]
+        steps:
+            - name: Send Bad Notification
+              uses: appleboy/telegram-action@master
+              with:
+                  to: ${{ secrets.TELEGRAM_CHAT }}
+                  token: ${{ secrets.TELEGRAM_TOKEN }}
+                  # format: markdown
+                  message: |
+                      Деплой на goods-galaxy состоялся, господа
+                      http://goods-galaxy.ru
+
+    notify-deploy-bad:
+        runs-on: ubuntu-latest
+        if: ${{ always() && needs.deploy.result == 'failure' }}
+        needs: [deploy]
+        steps:
+            - name: Send Bad Notification
+              uses: appleboy/telegram-action@master
+              with:
+                  to: ${{ secrets.TELEGRAM_CHAT }}
+                  token: ${{ secrets.TELEGRAM_TOKEN }}
+                  # format: markdown
+                  message: |
+                      Деплой на goods-galaxy кринжанул и вышел в окно, товарищи
                       http://goods-galaxy.ru
