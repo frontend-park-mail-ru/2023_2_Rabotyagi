@@ -56,7 +56,7 @@ jobs:
                   token: ${{ secrets.TELEGRAM_TOKEN }}
                   # format: markdown
                   message: |
-                      Билд образа
+                      Билд dev образа
                         - ${{ github.repository }}:${{github.ref_name}}
                       Закончился с ✅
                       https://github.com/frontend-park-mail-ru/2023_2_Rabotyagi/commit/${{github.sha}}
@@ -73,7 +73,7 @@ jobs:
                   token: ${{ secrets.TELEGRAM_TOKEN }}
                   # format: markdown
                   message: |
-                      Билд образа
+                      Билд dev образа
                         - ${{ github.repository }}:${{github.ref_name}}
                       Закончился с ❌
                       https://github.com/frontend-park-mail-ru/2023_2_Rabotyagi/actions/runs/${{github.run_id}}
@@ -90,7 +90,17 @@ jobs:
                   username: ${{ secrets.BOT_USERNAME }}
                   password: ${{ secrets.BOT_PASSWORD }}
                   script_stop: true
+
                   script: |
                       cd /var/share/rabotyagi-dev
                       docker compose pull frontend
                       docker compose up -d --force-recreate frontend
+            - name: Notify deploy
+              uses: appleboy/telegram-action@master
+              with:
+                  to: ${{ secrets.TELEGRAM_CHAT }}
+                  token: ${{ secrets.TELEGRAM_TOKEN }}
+                  # format: markdown
+                  message: |
+                      Деплой на dev.goods-galaxy состоялся, господа
+                      http://dev.goods-galaxy.ru
