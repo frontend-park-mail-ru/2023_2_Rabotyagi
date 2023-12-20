@@ -55,7 +55,6 @@ jobs:
               with:
                   to: ${{ secrets.TELEGRAM_CHAT }}
                   token: ${{ secrets.TELEGRAM_TOKEN }}
-                  # format: markdown
                   message: |
                       Билд prod образа
                         - ${{ github.repository }}:${{github.ref_name}}
@@ -72,7 +71,6 @@ jobs:
               with:
                   to: ${{ secrets.TELEGRAM_CHAT }}
                   token: ${{ secrets.TELEGRAM_TOKEN }}
-                  # format: markdown
                   message: |
                       Билд prod образа
                         - ${{ github.repository }}:${{github.ref_name}}
@@ -97,19 +95,9 @@ jobs:
                       docker compose pull frontend
                       docker compose up -d --force-recreate frontend
 
-            - name: Notify deploy
-              uses: appleboy/telegram-action@master
-              with:
-                  to: ${{ secrets.TELEGRAM_CHAT }}
-                  token: ${{ secrets.TELEGRAM_TOKEN }}
-                  # format: markdown
-                  message: |
-                      Деплой на goods-galaxy состоялся, господа
-                      http://goods-galaxy.ru
-
     notify-deploy-good:
         runs-on: ubuntu-latest
-        if: ${{ always() && needs.deploy.result == 'failure' }}
+        if: ${{ always() && needs.deploy.result == 'success' }}
         needs: [deploy]
         steps:
             - name: Send Bad Notification
@@ -117,7 +105,6 @@ jobs:
               with:
                   to: ${{ secrets.TELEGRAM_CHAT }}
                   token: ${{ secrets.TELEGRAM_TOKEN }}
-                  # format: markdown
                   message: |
                       Деплой на goods-galaxy состоялся, господа
                       http://goods-galaxy.ru
@@ -132,7 +119,6 @@ jobs:
               with:
                   to: ${{ secrets.TELEGRAM_CHAT }}
                   token: ${{ secrets.TELEGRAM_TOKEN }}
-                  # format: markdown
                   message: |
                       Деплой на goods-galaxy кринжанул и вышел в окно, товарищи
                       http://goods-galaxy.ru
