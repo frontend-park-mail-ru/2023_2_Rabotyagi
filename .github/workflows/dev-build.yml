@@ -44,10 +44,13 @@ jobs:
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
-
+    notify-good:
+        runs-on: ubuntu-latest
+        if: ${{ always() && needs.build.result == 'success' }}
+        needs: [build]
+        steps:
             - name: Send Good Notification
               uses: appleboy/telegram-action@master
-              if: success()
               with:
                   to: ${{ secrets.TELEGRAM_CHAT }}
                   token: ${{ secrets.TELEGRAM_TOKEN }}
@@ -58,9 +61,13 @@ jobs:
                       Закончился с ✅
                       https://github.com/frontend-park-mail-ru/2023_2_Rabotyagi/commit/${{github.sha}}
 
+    notify-bad:
+        runs-on: ubuntu-latest
+        if: ${{ always() && needs.build.result == 'failure' }}
+        needs: [build]
+        steps:
             - name: Send Bad Notification
               uses: appleboy/telegram-action@master
-              if: failure() && steps.build.outcome == 'failure'
               with:
                   to: ${{ secrets.TELEGRAM_CHAT }}
                   token: ${{ secrets.TELEGRAM_TOKEN }}
@@ -70,3 +77,20 @@ jobs:
                         - ${{ github.repository }}:${{github.ref_name}}
                       Закончился с ❌
                       https://github.com/frontend-park-mail-ru/2023_2_Rabotyagi/actions/runs/${{github.run_id}}
+
+    deploy:
+        runs-on: ubuntu-latest
+        if: ${{ always() && needs.build.result == 'success' }}
+        needs: [notify-good, build]
+        steps:
+            - name: Deploy to dev
+              uses: appleboy/ssh-action@v1.0.0
+              with:
+                  host: goods-galaxy.ru
+                  username: ${{ secrets.BOT_USERNAME }}
+                  password: ${{ secrets.BOT_PASSWORD }}
+                  script_stop: true
+                  script: |
+                      cd /var/share/rabotyagi-dev
+                      docker compose pull frontend
+                      docker compose up -d --force-recreate frontend
