@@ -3,7 +3,7 @@ import './button.scss';
 import { Component } from '../snail/component';
 import { createElement, createComponent, createText, VDomNode } from '../snail/vdom/VirtualDOM';
 
-import { Text, TextTypes } from '../text/Text';
+import { Text, TextVariants } from '../text/Text';
 import { Svg } from '../svg/Svg';
 import { Image } from '../image/image';
 
@@ -31,7 +31,7 @@ export interface ButtonProps extends ButtonEvents {
     variant?: ButtonTypes,
     subvariant?: ButtonSubVariantTypes,
     text?: string | number,
-    textvariant?: TextTypes,
+    textvariant?: TextVariants,
     leftIcon?: ButtonIconProps,
     rightIcon?: ButtonIconProps,
     style?: string,

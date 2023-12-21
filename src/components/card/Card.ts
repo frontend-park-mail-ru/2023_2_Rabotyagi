@@ -167,7 +167,7 @@ export class Card extends Component<CardProps, CardState> {
                     'div',
                     { class: 'info-base' },
                     createComponent(
-                        Text, { text: this.props.price.toString() + ' ₽' },
+                        Text, { text: this.props.price, type: 'price' },
                     ),
                     createComponent(
                         Text, { text: this.props.title, className: 'title-base' },
@@ -214,9 +214,6 @@ export class Card extends Component<CardProps, CardState> {
     }
 
     renderPromoteButton() {
-        // if (!this.props) {
-        //     throw new Error('Card props are undefined');
-        // }
         const cp = this; // eslint-disable-line
 
         const promoteEvent = (e: Event) => {
@@ -245,16 +242,16 @@ export class Card extends Component<CardProps, CardState> {
                     }
 
                     // @FIX Это оч жесткий костыль, за который мне стыдно, но пока diff работает плохо, будет так
-                    // Navigate.navigateTo('/profile/orders');
-                    // Navigate.navigateTo('/profile/products');
-                    cp.setProps({
-                        ...cp.props,
-                        premium: true,
-                    });
+                    Navigate.navigateTo('/profile/orders');
+                    Navigate.navigateTo('/profile/products');
+                    // cp.setProps({
+                    //     ...cp.props,
+                    //     premium: true,
+                    // });
 
-                    cp.setState({
-                        modalActive: undefined,
-                    });
+                    // cp.setState({
+                    //     modalActive: undefined,
+                    // });
                 }
 
             };
@@ -405,10 +402,6 @@ export class Card extends Component<CardProps, CardState> {
                             src: this.props.images[0].url,
                         },
                     )
-                    // createElement(
-                    //     'img',
-                    //     { class: 'image-profile', src: this.props.images[0].url },
-                    // )
                     :
                     createElement(
                         'div',
@@ -418,7 +411,7 @@ export class Card extends Component<CardProps, CardState> {
                     'div',
                     { class: 'content-profile' },
                     createComponent(
-                        Text, { text: this.props.price.toString() + ' ₽' },
+                        Text, { text: this.props.price, type: 'price' },
                     ),
                     createComponent(
                         Text, { text: this.props.title, className: 'title-profile' },

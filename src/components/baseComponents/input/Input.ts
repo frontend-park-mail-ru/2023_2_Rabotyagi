@@ -3,7 +3,7 @@ import './Input.scss';
 import { Component } from '../snail/component';
 import { VDomComponent, createComponent, createElement } from '../snail/vdom/VirtualDOM';
 
-import { Text, TextTypes, getTextClass } from '../text/Text';
+import { Text, TextVariants, getTextClass } from '../text/Text';
 import { ErrorMessageBox } from '../index';
 import { Validate } from '../../../shared/utils/validation';
 
@@ -12,7 +12,7 @@ import { Validate } from '../../../shared/utils/validation';
 export interface BaseInputProps {
     id?: string,
     name?: string,
-    textType?: TextTypes,
+    textType?: TextVariants,
     value?: string,
     onchange?: (e?: any) => void,
     onkeypress?: (e?: any) => void,
