@@ -1,9 +1,9 @@
 import './checkNote.scss';
 
-import { Component } from "../../../../components/baseComponents/snail/component";
-import { createElement, createComponent } from "../../../../components/baseComponents/snail/vdom/VirtualDOM";
+import { Component } from '../../../../components/baseComponents/snail/component';
+import { createElement, createComponent } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Text } from "../../../../components/baseComponents";
+import { Text } from '../../../../components/baseComponents';
 
 export type CheckNoteType = 'header' | 'subheader';
 
@@ -15,12 +15,12 @@ export interface CheckNoteProps {
 
 export class CheckNote extends Component<CheckNoteProps, never> {
 
-    getTextVariant = () => this.props.variant == 'header' ? 'subheader' : 'regular'
+    getTextVariant = () => this.props.variant == 'header' ? 'subheader' : 'regular';
 
     render() {
         return createElement(
             'div',
-            { class: 'check-note', },
+            { class: 'check-note' },
             createComponent(
                 Text,
                 {
@@ -34,7 +34,8 @@ export class CheckNote extends Component<CheckNoteProps, never> {
                 {
                     tag: 'div',
                     variant: this.getTextVariant(),
-                    text: this.props.price.toString() + ' ₽',
+                    text: this.props.price,
+                    type: 'price',
                 },
             ),
         );

@@ -101,9 +101,9 @@ export class OrderCard extends Component<OrderModel, never> {
             { class: 'order-card' },
             createElement(
                 'div',
-                { 
+                {
                     class: 'left-content',
-                    onclick: this.navigateToProduct, 
+                    onclick: this.navigateToProduct,
                 },
                 (this.props.images) ?
                     createComponent(
@@ -159,7 +159,8 @@ export class OrderCard extends Component<OrderModel, never> {
                     Text,
                     {
                         variant: 'subheader',
-                        text: this.props.price * this.props.count + ' ₽',
+                        text: this.props.price,
+                        type: 'price',
                     },
                 ),
             ),

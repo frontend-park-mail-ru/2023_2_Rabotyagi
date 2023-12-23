@@ -263,8 +263,9 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                 createComponent(
                     Text,
                     {
-                        text: this.props.price.toString() + ' ₽',
                         variant: 'subheader',
+                        text: this.props.price,
+                        type: 'price',
                     },
                 ),
                 createComponent(
