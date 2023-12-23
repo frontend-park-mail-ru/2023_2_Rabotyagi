@@ -1,16 +1,20 @@
 import './productNew.scss';
 
-import { FileInput, NumberInput, Text, TextArea, TextInput, BooleanInput, Button } from '../../../components/baseComponents/index';
 import { Component } from '../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+
 import { Select } from '../../../components/baseComponents/select/select';
+import { FileInput, NumberInput, Text, TextArea, TextInput, BooleanInput, Button } from '../../../components/baseComponents/index';
+
 import { FileApi } from '../../../shared/api/file';
-import { ResponseStatusChecker } from '../../../shared/constants/response';
 import { ProductApi } from '../../../shared/api/product';
+import { ResponseStatusChecker } from '../../../shared/constants/response';
+
 import UserStore from '../../../shared/store/user';
-import Navigate from '../../../shared/services/router/Navigate';
 import CategoryStore from '../../../shared/store/category';
 import CityStore from '../../../shared/store/city';
+
+import Navigate from '../../../shared/services/router/Navigate';
 
 interface ProductNewState {
     title: string,
@@ -163,11 +167,6 @@ export class ProductNew extends Component<never,ProductNewState> {
 
     };
 
-    // clear() {
-    //     this.setState(initState);
-    //     this.children
-    // }
-
     public render() {
 
         return createElement(
@@ -204,9 +203,9 @@ export class ProductNew extends Component<never,ProductNewState> {
                         },
                     ),
                     createComponent(
-                    FileInput,
+                        FileInput,
                         {
-                            text: 'Выбрать файлики',
+                            text: 'Выбрать файлы',
                             accept: '.png, .jpg, .jpeg',
                             multiple: true,
                             oninput: this.fileInputEvent,
@@ -238,6 +237,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                     createComponent(
                         TextArea,
                         {
+                            height: '150px',
                             oninput: (e: Event) => this.state.description = (e.target as HTMLInputElement).value,
                         },
                     ),

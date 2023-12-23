@@ -8,27 +8,6 @@
     // height: 100%;
 }
 
-.textArea {
-    height: 150px;
-    resize: none;
-}
-
-textarea {
-    display: flex;
-    width: 100%;
-    padding: 8px 12px;
-    align-items: center;
-    align-self: stretch;
-    border-radius: 8px;
-    border: 0.5px solid var(--vkui-color-stroke-field-border-alpha, rgba(0, 16, 61, 0.12));
-    background: vars.$background-primary;
-    outline: none;
-}
-
-textarea:focus-visible {
-    border: 0.5px solid vars.$palette-primary;
-}
-
 .searchFieldInput {
     color: var(--vkui-color-text-secondary, #87898f);
     font-feature-settings:
