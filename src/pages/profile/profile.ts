@@ -19,82 +19,86 @@ export class Profile extends Component<never, never> {
 
         return createElement(
             'div',
-            {},
+            { class: 'wrapper-profile-page', },
             createComponent(
                 Header,
                 {},
             ),
             createElement(
                 'profile',
-                {},
-                createComponent(
-                    Sidebar,
-                    {},
+                { class: 'wrapper-profile', },
+                createElement(
+                    'div',
+                    { class: 'profile-info', },
+                    createComponent(
+                        Sidebar,
+                        {},
+                    ),
+                    createComponent(
+                       Router,
+                       {},
+                       createComponent(
+                           Route,
+                           {
+                               path: new RegExp('/profile$'),
+                           },
+                           createElement(
+                               'dashboard',
+                               {},
+                           ),
+                       ),
+                       createComponent(
+                           Route,
+                           {
+                               path: new RegExp('/profile/settings$'),
+                           },
+                           createComponent(
+                               ProfileSettings,
+                               {},
+                           ),
+                       ),
+                       createComponent(
+                           Route,
+                           {
+                               path: new RegExp('/profile/favourites$'),
+                           },
+                           createComponent(
+                               ProfileFavourites,
+                               {},
+                           ),
+                       ),
+                       createComponent(
+                           Route,
+                           {
+                               path: new RegExp('/profile/products$'),
+                           },
+                           createComponent(
+                               ProfileProducts,
+                               {},
+                           ),
+                       ),
+                       createComponent(
+                           Route,
+                           {
+                               path: new RegExp('/profile/orders$'),
+                           },
+                           createComponent(
+                               ProfileOrders,
+                               {},
+                           ),
+                       ),
+                       createComponent(
+                           Route,
+                           {
+                               path: new RegExp('/profile/saler.+'),
+                           },
+                           createComponent(
+                               ProfileSaler,
+                               {},
+                           ),
+                       ),
+                   ),
                 ),
-                createComponent(
-                   Router,
-                   {},
-                   createComponent(
-                       Route,
-                       {
-                           path: new RegExp('/profile$'),
-                       },
-                       createElement(
-                           'dashboard',
-                           {},
-                       ),
-                   ),
-                   createComponent(
-                       Route,
-                       {
-                           path: new RegExp('/profile/settings$'),
-                       },
-                       createComponent(
-                           ProfileSettings,
-                           {},
-                       ),
-                   ),
-                   createComponent(
-                       Route,
-                       {
-                           path: new RegExp('/profile/favourites$'),
-                       },
-                       createComponent(
-                           ProfileFavourites,
-                           {},
-                       ),
-                   ),
-                   createComponent(
-                       Route,
-                       {
-                           path: new RegExp('/profile/products$'),
-                       },
-                       createComponent(
-                           ProfileProducts,
-                           {},
-                       ),
-                   ),
-                   createComponent(
-                       Route,
-                       {
-                           path: new RegExp('/profile/orders$'),
-                       },
-                       createComponent(
-                           ProfileOrders,
-                           {},
-                       ),
-                   ),
-                   createComponent(
-                       Route,
-                       {
-                           path: new RegExp('/profile/saler.+'),
-                       },
-                       createComponent(
-                           ProfileSaler,
-                           {},
-                       ),
-                   ),
-               ),
             ),
         );
     }
