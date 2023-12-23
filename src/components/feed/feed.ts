@@ -15,14 +15,14 @@ interface FeedProps {
 
 interface FeedState {
     products: Array<CardProps>,
-    addLoading?: boolean,
 }
 
 export class Feed extends Component<FeedProps, FeedState> {
     state: FeedState = {
         products: [],
-        addLoading: false,
     };
+
+    endOfProducts = false;
 
     constructor(){
         super();
@@ -44,18 +44,23 @@ export class Feed extends Component<FeedProps, FeedState> {
             return;
         }
 
-        if (!res.body || res.body.length < 1){
+        if (!res.body){
+            return;
+        }
+
+        if (res.body.length < 1) {
+            this.endOfProducts = true;
+
             return;
         }
 
         this.setState({
             products: [...this.state.products, ...res.body],
-            addLoading: false,
         });
     }
 
     scrollEndEvent = () => {
-        if (this.state.addLoading) {
+        if (this.endOfProducts) {
             return;
         }
 
@@ -63,7 +68,6 @@ export class Feed extends Component<FeedProps, FeedState> {
             document.body.offsetHeight;
             this.setState({
                 products: this.state.products,
-                addLoading: true,
             });
             this.addLoading();
         }
@@ -159,13 +163,6 @@ export class Feed extends Component<FeedProps, FeedState> {
                 },
                 ...this.createCards(),
             ),
-            (this.state.addLoading) ?
-            createComponent(
-                Loader,
-                {},
-            )
-            :
-            createText(''),
         );
     }
 }
