@@ -7,7 +7,7 @@ import { Card, CardProps } from '../../../components/card/Card';
 
 import { UserApi } from '../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
-import { ProfilePlaceholder } from '../placeholder';
+import { ProfilePlaceholder } from '../placeholder/placeholder';
 import { Loader } from '../../../components/loader/Loader';
 
 interface ProfileFavouritesState {

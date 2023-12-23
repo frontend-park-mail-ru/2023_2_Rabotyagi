@@ -1,11 +1,18 @@
 import './products.scss';
+
 import { Component } from '../../../components/baseComponents/snail/component';
-import { VDomComponent, createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { VDomComponent, VDomNode, createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+
 import { Card } from '../../../components/card/Card';
+import { Loader } from '../../../components/loader/Loader';
+import { ProfilePlaceholder } from '../placeholder/placeholder';
+import { Button } from '../../../components/baseComponents';
+
 import { UserApi } from '../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
-import { ProfilePlaceholder } from '../placeholder';
-import { Loader } from '../../../components/loader/Loader';
+
+import UserStore from '../../../shared/store/user';
+import Navigate from '../../../shared/services/router/Navigate';
 
 interface ProfileProductsState {
     loading: boolean,
@@ -21,6 +28,15 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
     public componentDidMount(): void {
         this.getProducts();
     }
+
+    routeToProductNew = () => {
+        if (UserStore.isAuth()){
+            Navigate.navigateTo('/product/new');
+        }
+        else {
+            Navigate.navigateTo('/signin');
+        }
+    };
 
     async getProducts() {
         let resp;
@@ -59,34 +75,14 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
     };
 
     createContainer() {
-        const products: VDomComponent[] = [];
+        const products: VDomNode[] = [];
 
-        // @BUG тут баг с переключением с profile -> profile/products, почему то дифф неправильно вычисляется/применяется
-        if (this.state.loading) {
-            return [createComponent(
-                Loader,
-                {},
-            )];
-        }
-
-        if (this.state.products && this.state.products.length > 0) {
-            this.state.products.forEach((product: ProductModelResponse) => products.push(
-                createComponent(
-                    Card,
-                    {variant: 'profile', ...product, removeCallback: this.removeProduct},
-                )),
-            );
-        }
-        else {
-            products.push(
-                createComponent(
-                    ProfilePlaceholder,
-                    {
-                        text: 'Все созданные вами объявления будут на этой вкладке',
-                    },
-                ),
-            );
-        }
+        this.state.products.forEach((product: ProductModelResponse) => products.push(
+            createComponent(
+                Card,
+                {variant: 'profile', ...product, removeCallback: this.removeProduct},
+            )),
+        );
 
         return products;
     }
@@ -95,12 +91,35 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
 
         return createElement(
             'div',
-            {class: 'products'},
-            createElement(
-                'container',
-                {class: 'products-container'},
-                ...this.createContainer(),
-            ),
+            { class: 'products' },
+            (this.state.loading) ?
+                createComponent(
+                    Loader, { },
+                ) :
+            (this.state.products && this.state.products.length > 0) ?
+                createElement(
+                    'container',
+                    { class: 'products-container' },
+                    ...this.createContainer(),
+                ) :
+                createElement(
+                    'div', 
+                    { class: 'empty-box', },
+                    createComponent(
+                        ProfilePlaceholder,
+                        {
+                            text: 'У вас пока нет объявлений.\nВсе созданные вами объявления будут на этой вкладке',
+                        },
+                    ),
+                    createComponent(
+                        Button,
+                        {
+                            text: 'Разместить объявление',
+                            variant: 'primary',
+                            onclick: this.routeToProductNew,
+                        },
+                    ),
+                ),
         );
 
     }
