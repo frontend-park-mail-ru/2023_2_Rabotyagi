@@ -1,7 +1,7 @@
 import './feed.scss';
 
 import { Component } from '../baseComponents/snail/component';
-import { VDomNode, createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
+import { VDomNode, createComponent, createElement, createText } from '../baseComponents/snail/vdom/VirtualDOM';
 import { Text } from '../baseComponents/index';
 import { Card, CardProps } from '../card/Card';
 import { Loader } from '../loader/Loader';
@@ -14,12 +14,14 @@ interface FeedProps {
 }
 
 interface FeedState {
-    products: Array<CardProps>
+    products: Array<CardProps>,
+    addLoading?: boolean,
 }
 
 export class Feed extends Component<FeedProps, FeedState> {
     state: FeedState = {
         products: [],
+        addLoading: false,
     };
 
     constructor(){
@@ -28,8 +30,52 @@ export class Feed extends Component<FeedProps, FeedState> {
         Navigate.addCallback(this.updateEvent);
     }
 
+    async addLoading() {
+        let res;
+
+        try {
+            res = await ProductApi.feed(this.state.products.at(-1)?.id);
+        }
+        catch {
+            return;
+        }
+
+        if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
+            return;
+        }
+
+        if (!res.body || res.body.length < 1){
+            return;
+        }
+
+        this.setState({
+            products: [...this.state.products, ...res.body],
+            addLoading: false,
+        });
+    }
+
+    scrollEndEvent = () => {
+        if (this.state.addLoading) {
+            return;
+        }
+
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight){
+            document.body.offsetHeight;
+            this.setState({
+                products: this.state.products,
+                addLoading: true,
+            });
+            this.addLoading();
+        }
+    };
+
     public componentDidMount(): void {
         this.updateEvent();
+        window.addEventListener('scroll', this.scrollEndEvent);
+    }
+
+    public componentWillUnmount(): void {
+        window.removeEventListener('scroll', this.scrollEndEvent);
     }
 
     updateEvent = () => {
@@ -95,7 +141,7 @@ export class Feed extends Component<FeedProps, FeedState> {
     public render(): VDomNode {
 
         return createElement(
-            'div',
+            'feed',
             {
                 class: 'feed',
             },
@@ -113,6 +159,13 @@ export class Feed extends Component<FeedProps, FeedState> {
                 },
                 ...this.createCards(),
             ),
+            (this.state.addLoading) ?
+            createComponent(
+                Loader,
+                {},
+            )
+            :
+            createText(''),
         );
     }
 }

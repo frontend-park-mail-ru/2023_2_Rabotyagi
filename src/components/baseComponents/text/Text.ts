@@ -34,7 +34,7 @@ export class Text extends Component<TextProps, {}> {
 
         let newText = text;
 
-        if (type === 'price') {
+        if (type === 'price' && newText !== undefined) {
             newText = this.priceSplit(newText as number);
         }
 

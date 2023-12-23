@@ -1,18 +1,11 @@
 @use 'vars';
 
-body {
-    background-color: vars.$background-primary;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 #root {
     display: flex;
     flex-direction: column;
     width: 100%;
     align-items: center;
-    height: -webkit-fill-available;
+    // height: 100%;
 }
 
 .textArea {
