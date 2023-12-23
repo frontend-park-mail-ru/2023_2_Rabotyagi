@@ -1,11 +1,11 @@
 import './placeholder.scss';
 
 import { Component } from '../../../components/baseComponents/snail/component';
-import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { createElement, createComponent } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Svg, Text } from '../../../components/baseComponents/index';
+import { Svg, Text } from '../../../components/baseComponents';
 
-import placeholder from '../../assets/icons/placeholder.svg';
+import placeholder from '../../../assets/icons/placeholder.svg';
 
 interface ProfilePlaceholderProps {
     text: string

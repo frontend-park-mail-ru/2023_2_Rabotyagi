@@ -22,7 +22,7 @@ export interface TextProps {
     className?: string,
 }
 
-export class Text extends Component<TextProps, {}> {
+export class Text extends Component<TextProps, never> {
     private priceSplit(price: number): string {
         const str = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
 

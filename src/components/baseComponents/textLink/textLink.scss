@@ -1,0 +1,31 @@
+@use '../../../assets/css/vars.scss';
+
+.textlink-default {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 12px;
+    gap: 8px;
+    height: 36px;
+    flex-shrink: 0;
+}
+
+.textlink-default:hover, .textlink-underline:hover {
+    cursor: pointer;
+}
+
+.text-selected, .textlink-default:hover {
+    color: vars.$palette-primary;
+}
+
+.textlink-underline {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 2px solid vars.$text-secondary;
+}
+
+.textlink-selected {
+    border-bottom: 2px solid vars.$palette-primary;
+}

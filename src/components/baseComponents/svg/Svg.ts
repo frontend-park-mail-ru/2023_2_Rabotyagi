@@ -7,20 +7,19 @@ export interface SvgProps {
     content: string,
     width?: number,
     height?: number,
+    color?: string,
     class?: string,
 }
 
 export class Svg extends Component<SvgProps, never> {
 
     render() {
-        if (!this.props) {
-            throw new Error('Svg props are undefined');
-        }
 
         const parser = new DOMParser();
         const svgElement = parser.parseFromString(this.props.content, 'image/svg+xml').documentElement;
         svgElement.setAttribute('height', (this.props.height || 60).toString() + 'px');
         svgElement.setAttribute('width', (this.props.width || 60).toString() + 'px');
+        svgElement.setAttribute('color', (this.props.color || 'black'));
 
         if (this.props.id) {
             svgElement.setAttribute('id', this.props.id);

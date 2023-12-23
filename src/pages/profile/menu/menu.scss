@@ -1,0 +1,16 @@
+@use '../../../assets/css/vars.scss';
+
+.menu-sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 8px;
+}
+
+.menu-page {
+    display: flex;
+    width: 100%;
+    justify-content: start;
+    gap: 16px;
+}

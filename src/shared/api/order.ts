@@ -55,4 +55,18 @@ export class OrderApi {
             credentials: 'include',
         });
     }
+
+    static async getSold() {
+        return await Ajax.getInstance().get({
+            url: OrderRoutes.SOLD,
+            credentials: 'include',
+        });
+    }
+
+    static async getOrdersNotInBasket() {
+        return await Ajax.getInstance().get({
+            url: OrderRoutes.STATUS_NOT_IN_BASKET,
+            credentials: 'include',
+        });
+    }
 }
