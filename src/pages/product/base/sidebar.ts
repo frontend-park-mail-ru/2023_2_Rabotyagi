@@ -256,22 +256,27 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                 createComponent(
                     Text,
                     {
-                        variant: 'subheader',
+                        variant: 'header',
                         text: this.props.price,
                         type: 'price',
                     },
                 ),
-                createComponent(
-                    Text,
-                    {
-                        text: this.getPriceText(
-                            this.getPriceClass(this.props.price_history),
-                            this.getPriceDiffernce(this.props.price_history),
-                        ),
-                        variant: 'subheader',
-                        className: this.getPriceClass(this.props.price_history),
-                    },
-                ),
+            ),
+            createElement(
+                'div',
+                { class: 'product-menu-price-history' },
+                (this.getPriceClass(this.props.price_history) !== 'line') ?
+                    createComponent(
+                        Text,
+                        {
+                            text: this.getPriceText(
+                                this.getPriceClass(this.props.price_history),
+                                this.getPriceDiffernce(this.props.price_history),
+                            ),
+                            variant: 'subheader',
+                            className: this.getPriceClass(this.props.price_history),
+                        },
+                    ) : createText(''),
                 (this.props.price_history) ?
                     createComponent(
                         Button,
@@ -301,10 +306,6 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                 {
                     class: 'product-menu-saler',
                 },
-                createElement(
-                    'image',
-                    {},
-                ),
                 createElement(
                     'div',
                     {class: 'product-menu-saler-info'},
