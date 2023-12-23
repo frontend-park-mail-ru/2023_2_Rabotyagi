@@ -1,14 +1,14 @@
 import './productNew.scss';
 
 import { Component } from '../../../components/baseComponents/snail/component';
-import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { createComponent, createElement, createText } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 
 import { Select } from '../../../components/baseComponents/select/select';
-import { FileInput, NumberInput, Text, TextArea, TextInput, BooleanInput, Button } from '../../../components/baseComponents/index';
+import { FileInput, NumberInput, Text, TextArea, TextInput, BooleanInput, Button, ErrorMessageBox } from '../../../components/baseComponents/index';
 
 import { FileApi } from '../../../shared/api/file';
 import { ProductApi } from '../../../shared/api/product';
-import { ResponseStatusChecker } from '../../../shared/constants/response';
+import { ResponseStatusChecker, ResponseMessage } from '../../../shared/constants/response';
 
 import UserStore from '../../../shared/store/user';
 import CategoryStore from '../../../shared/store/category';
@@ -26,7 +26,8 @@ interface ProductNewState {
     safeDeal: boolean,
     delivery: boolean,
     imagesForUpload?: Array<File>,
-    uploadedImages?: Array<productImageUrl>
+    uploadedImages?: Array<productImageUrl>,
+    error: string,
 }
 
 const initState: ProductNewState = {
@@ -40,6 +41,7 @@ const initState: ProductNewState = {
     delivery: false,
     imagesForUpload: [],
     uploadedImages: [],
+    error: '',
 };
 
 export class ProductNew extends Component<never,ProductNewState> {
@@ -47,27 +49,27 @@ export class ProductNew extends Component<never,ProductNewState> {
 
     validate = () => {
         if (this.state.title.trim() === '') {
-            return 'Title must be not empty string';
+            return 'Название не должно быть пустым';
         }
 
         if (this.state.description.trim() === '') {
-            return 'Desc must be not empty string';
+            return 'Описание не должно быть пустым';
         }
 
         if (this.state.city === -1) {
-            return 'City must be chosen';
+            return 'Выберите город перед созданием';
         }
 
         if (this.state.category === -1) {
-            return 'Category must be chosen';
+            return 'Выберите категорию перед созданием';
         }
 
         if (this.state.price === -1) {
-            return 'Price must be chosen';
+            return 'Укажите цену перед созданием';
         }
 
         if (this.state.availableCount === -1) {
-            return 'available count must be chosen';
+            return 'Укажите количество товара';
         }
 
         return null;
@@ -78,18 +80,26 @@ export class ProductNew extends Component<never,ProductNewState> {
             const res = await FileApi.images(this.state.imagesForUpload);
 
             if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
-                // this.errorBox.innerHTML = '';
 
                 if (ResponseStatusChecker.IsBadFormatRequest(res)) {
-                    // this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
+                    this.setState({
+                        ...this.state,
+                        error: ResponseMessage.USER_MESSAGE,
+                    });
                     return false;
                 }
                 else if (ResponseStatusChecker.IsInternalServerError(res)) {
-                    // this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
+                    this.setState({
+                        ...this.state,
+                        error: ResponseMessage.SERVER_MESSAGE,
+                    });
                     return false;
                 }
                 else if (ResponseStatusChecker.IsUserError(res)) {
-                    // this.errorBox.append(ErrorMessageBox(res.body.error));
+                    this.setState({
+                        ...this.state,
+                        error: res.body.error,
+                    });
                     return false;
                 }
 
@@ -119,7 +129,10 @@ export class ProductNew extends Component<never,ProductNewState> {
 
         const validation = this.validate();
         if (validation) {
-            console.error(new Error(validation));
+            this.setState({
+                ...this.state,
+                error: validation,
+            });
 
             return;
         }
@@ -127,6 +140,10 @@ export class ProductNew extends Component<never,ProductNewState> {
         const successful = await this.uploadImages();
 
         if (!successful){
+            this.setState({
+                ...this.state,
+                error: 'Ошибка при загрузке файлов',
+            });
             return;
         }
 
@@ -145,18 +162,26 @@ export class ProductNew extends Component<never,ProductNewState> {
         } as ProductModelPut);
 
         if (!ResponseStatusChecker.IsRedirectResponse(res)) {
-            // this.errorBox.innerHTML = '';
 
             if (ResponseStatusChecker.IsBadFormatRequest(res)) {
-                // this.errorBox.append(ErrorMessageBox(statuses.USER_MESSAGE));
+                this.setState({
+                    ...this.state,
+                    error: ResponseMessage.USER_MESSAGE,
+                });
                 return;
             }
             else if (ResponseStatusChecker.IsInternalServerError(res)) {
-                // this.errorBox.append(ErrorMessageBox(statuses.SERVER_MESSAGE));
+                this.setState({
+                    ...this.state,
+                    error: ResponseMessage.SERVER_MESSAGE,
+                });
                 return;
             }
             else if (ResponseStatusChecker.IsUserError(res)) {
-                // this.errorBox.append(ErrorMessageBox(res.body.error));
+                this.setState({
+                    ...this.state,
+                    error: res.body.error,
+                });
                 return;
             }
 
@@ -170,8 +195,8 @@ export class ProductNew extends Component<never,ProductNewState> {
     public render() {
 
         return createElement(
-            'wrapper',
-            {},
+            'div',
+            { class: 'wrapper-product-new', },
             createElement(
                 'form',
                 {
@@ -237,7 +262,6 @@ export class ProductNew extends Component<never,ProductNewState> {
                     createComponent(
                         TextArea,
                         {
-                            height: '150px',
                             oninput: (e: Event) => this.state.description = (e.target as HTMLInputElement).value,
                         },
                     ),
@@ -307,6 +331,18 @@ export class ProductNew extends Component<never,ProductNewState> {
                         },
                     ),
                 ),
+                (this.state.error !== '') ?
+                    createElement(
+                        'div',
+                        {
+                            class: 'content-add-error',
+                        },
+                        createComponent(
+                            ErrorMessageBox,
+                            { text: this.state.error, },
+                        )
+                    ) :
+                    createText(''),
                 createElement(
                     'div',
                     {
