@@ -213,21 +213,6 @@ export class Sidebar extends Component<never, SidebarState> {
                         style: 'width: 80px; height: 80px; position: relative; background: rgba(41, 44, 47, 0.25)',
                     },
                 ),
-                // createElement(
-                //     'div',
-                //     {
-                //         style: 'align-self: stretch; justify-content: flex-start; align-items: center; gap: 16px; display: inline-flex',
-                //     },
-
-                //     createComponent(
-                //         Button,
-                //         {
-                //             text: 'Обзор',
-                //             variant: 'outlined',
-                //             onclick: this.routeToProfile,
-                //         },
-                //     ),
-                // ),
                 ...btnGroup,
             );
         }

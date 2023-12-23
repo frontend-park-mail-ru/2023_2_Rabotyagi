@@ -214,7 +214,6 @@ export class Card extends Component<CardProps, CardState> {
     }
 
     renderPromoteButton() {
-        const cp = this; // eslint-disable-line
 
         const promoteEvent = (e: Event) => {
             e.stopPropagation();
@@ -225,11 +224,11 @@ export class Card extends Component<CardProps, CardState> {
             }
 
             const accept = async() => {
-                if (cp.props) {
+                if (this.props) {
                     let res;
 
                     try {
-                        res = await PremiumApi.add(cp.props.id, period);
+                        res = await PremiumApi.add(this.props.id, period);
                     }
                     catch(err){
                         console.error(err);
@@ -372,9 +371,6 @@ export class Card extends Component<CardProps, CardState> {
     };
 
     renderProfile() {
-        if (!this.props) {
-            throw new Error('Card props are undefined');
-        }
 
         const modal: Array<VDomComponent> = [];
 
@@ -425,7 +421,11 @@ export class Card extends Component<CardProps, CardState> {
                             'div',
                             { class: 'badges-profile' },
                             ...this.renderBadges('badge-profile'),
-                        ) : createText(''),
+                        ) : 
+                        createElement(
+                            'div',
+                            { class: 'badges-profile', },
+                        ),
                     (variant == 'profile') ?
                         this.renderActiveButton()
                         : createText(''),
@@ -436,7 +436,7 @@ export class Card extends Component<CardProps, CardState> {
                         createComponent(
                             Button,
                             {
-                                variant: 'outlined',
+                                variant: 'accent',
                                 text: 'Удалить',
                                 style: 'width: 100%;',
                                 onclick: this.deleteFunction,
