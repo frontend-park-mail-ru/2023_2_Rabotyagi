@@ -5,7 +5,7 @@ import { createComponent, createElement } from '../../../components/baseComponen
 
 import { Svg, Text } from '../../../components/baseComponents/index';
 
-import placeholder from '../../assets/icons/placeholder.svg';
+import placeholder from '../../../assets/icons/placeholder.svg';
 
 interface ProfilePlaceholderProps {
     text: string

@@ -2,12 +2,12 @@ import { ProductRoutes } from '../constants/api';
 import { Ajax } from '../services/ajax';
 
 export class ProductApi {
-    static async feed(lastId = 0, count = 20) {
+    static async feed(offset = 0, count = 20) {
         return await Ajax.getInstance().get({
             url: ProductRoutes.LIST,
             params: {
                 'count': count,
-                'last_id': lastId,
+                'offset': offset,
             },
         });
     }
