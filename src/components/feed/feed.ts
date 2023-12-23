@@ -34,7 +34,7 @@ export class Feed extends Component<FeedProps, FeedState> {
         let res;
 
         try {
-            res = await ProductApi.feed(this.state.products.at(-1)?.id);
+            res = await ProductApi.feed(this.state.products.length);
         }
         catch {
             return;
@@ -45,6 +45,8 @@ export class Feed extends Component<FeedProps, FeedState> {
         }
 
         if (!res.body){
+            this.endOfProducts = true;
+
             return;
         }
 
@@ -63,9 +65,8 @@ export class Feed extends Component<FeedProps, FeedState> {
         if (this.endOfProducts) {
             return;
         }
-
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight){
-            document.body.offsetHeight;
+        if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight){
+            document.body.clientHeight;
             this.setState({
                 products: this.state.products,
             });
