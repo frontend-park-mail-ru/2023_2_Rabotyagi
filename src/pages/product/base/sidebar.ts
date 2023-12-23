@@ -9,7 +9,7 @@ import { AlertMessage } from '../../../components/alertMessage/alertMessage';
 import { Button, Svg, Text, ErrorMessageBox } from '../../../components/baseComponents/index';
 
 import { OrderApi } from '../../../shared/api/order';
-import { ResponseStatusChecker } from '../../../shared/constants/response';
+import { ResponseStatusChecker, ResponseMessage } from '../../../shared/constants/response';
 
 import Navigate from '../../../shared/services/router/Navigate';
 import Dispatcher from '../../../shared/services/store/Dispatcher';
@@ -27,7 +27,6 @@ interface ProductSidebarProps extends UserModel {
     product_id: number,
     price: number,
     price_history?: Array<productPriceUnit> | null,
-    // callbacks: Callbacks,
     parent: ProductBase,
     safe_deal: boolean,
     delivery: boolean,
@@ -147,10 +146,10 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
 
             if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {
                 if (ResponseStatusChecker.IsBadFormatRequest(resp)) {
-                    throw new Error('Ошибка в запросе');
+                    throw ResponseMessage.USER_MESSAGE;
                 }
                 else if (ResponseStatusChecker.IsInternalServerError(resp)) {
-                    throw new Error('Ошибка на сервере');
+                    throw ResponseMessage.SERVER_MESSAGE;
                 }
                 else if (ResponseStatusChecker.IsUserError(resp)) {
                     throw body.error;
@@ -196,12 +195,6 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
     };
 
     public render() {
-        if (!this.props) {
-            throw new Error('ProductSidebar props undefined');
-        }
-        if (!this.state) {
-            throw new Error('ProductSidebar state undefined');
-        }
 
         const badges: VDomElement[] = [];
         if (!this.props.parent.isEditMode()) {
@@ -341,33 +334,37 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                     ),
                 ),
             ),
-            (!CartStore.hasProduct(this.props.product_id)) ?
+            (!UserStore.isSameUser(this.props.id)) ?
+                (!CartStore.hasProduct(this.props.product_id)) ?
+                    createComponent(
+                        Button,
+                        {
+                            text: 'В корзину ',
+                            variant: 'primary',
+                            style: 'width: 100%;',
+                            onclick: () => { this.addInCart(); },
+                        },
+                    ) :
+                    createComponent(
+                        Button,
+                        {
+                            text: 'Данный товар уже в корзине',
+                            variant: 'secondary',
+                            style: 'width: 100%;',
+                            onclick: () => { Navigate.navigateTo('/cart'); },
+                        },
+                    )
+                : createText(''),
+            (!UserStore.isSameUser(this.props.id)) ?
                 createComponent(
                     Button,
                     {
-                        text: 'В корзину ',
-                        variant: 'primary',
+                        text: 'К продавцу',
+                        variant: 'outlined',
                         style: 'width: 100%;',
-                        onclick: () => { this.addInCart(); },
+                        onclick: this.routeToSaler,
                     },
-                ) :
-                createComponent(
-                    Button,
-                    {
-                        text: 'Данный товар уже в корзине',
-                        variant: 'secondary',
-                        style: 'width: 100%;',
-                    },
-                ),
-            createComponent(
-                Button,
-                {
-                    text: 'К продавцу',
-                    variant: 'outlined',
-                    style: 'width: 100%;',
-                    onclick: this.routeToSaler,
-                },
-            ),
+                ) : createText(''),
             ...this.renderEditButton(),
 
             ...badges,

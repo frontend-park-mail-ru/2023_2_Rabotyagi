@@ -1,5 +1,5 @@
 import { Component } from '../../../../components/baseComponents/snail/component';
-import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { createComponent, createElement, createText } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 
 import { Carousel } from '../../../../components/carousel/Carousel';
 import { Button, Text } from '../../../../components/baseComponents/index';
@@ -12,6 +12,7 @@ import { getRuFormat } from '../../../../shared/utils/dateConverter';
 import CityStore from '../../../../shared/store/city';
 import CategoryStore from '../../../../shared/store/category';
 import FavouriteStore from '../../../../shared/store/favourite';
+import UserStore from '../../../../shared/store/user';
 import Dispatcher from '../../../../shared/services/store/Dispatcher';
 
 import fav from '../../../../assets/icons/heart.svg';
@@ -135,19 +136,20 @@ export class ProductBaseView extends Component<ProductBaseViewProps, ProductBase
                         variant: 'subheader',
                     },
                 ),
-                createComponent(
-                    Button,
-                    {
-                        text: this.state?.inFav ? 'В избранном' : 'Добавить в избранное',
-                        leftIcon: {
-                            width: 24,
-                            height: 24,
-                            content: fav,
+                (!UserStore.isSameUser(this.props.saler_id)) ?
+                    createComponent(
+                        Button,
+                        {
+                            text: this.state?.inFav ? 'В избранном' : 'Добавить в избранное',
+                            leftIcon: {
+                                width: 24,
+                                height: 24,
+                                content: fav,
+                            },
+                            onclick: this.state?.inFav ? this.removeFromFav : this.addToFav,
+                            variant: 'outlined',
                         },
-                        onclick: this.state?.inFav ? this.removeFromFav : this.addToFav,
-                        variant: 'outlined',
-                    },
-                ),
+                    ) : createText(''),
             ),
             createElement(
                 'div',

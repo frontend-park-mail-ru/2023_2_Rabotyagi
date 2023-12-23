@@ -127,9 +127,6 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
     };
 
     public render() {
-        if (!this.props){
-            throw new Error('ProductBaseEdit props undefined');
-        }
 
         this.state['safe_deal'] = this.props.safe_deal;
         this.state['delivery'] = this.props.delivery;
