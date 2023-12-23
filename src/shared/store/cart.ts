@@ -70,7 +70,7 @@ class CartStore extends Store<CartStoreState> {
     }
 
     public clear() {
-        this.state = { ...initState };
+        this.state = structuredClone(initState);
         this.state.goods = [];
         this.state.loading = false;
     }
