@@ -1,7 +1,7 @@
 import './products.scss';
 
 import { Component } from '../../../components/baseComponents/snail/component';
-import { VDomComponent, VDomNode, createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { VDomNode, createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 
 import { Card } from '../../../components/card/Card';
 import { Loader } from '../../../components/loader/Loader';
@@ -13,20 +13,32 @@ import { ResponseStatusChecker } from '../../../shared/constants/response';
 
 import UserStore from '../../../shared/store/user';
 import Navigate from '../../../shared/services/router/Navigate';
+import { Menu } from '../menu/menu';
+
+type TabVariant = 'all' | 'active' | 'not active';
 
 interface ProfileProductsState {
     loading: boolean,
-    products: Array<ProductModelResponse>
+    products: Array<ProductModelResponse>,
+    page?: TabVariant
 }
 
 export class ProfileProducts extends Component<never, ProfileProductsState> {
     state: ProfileProductsState = {
         loading: true,
         products: [],
+        page: 'all',
     };
 
+    private setLoading(loading: boolean) {
+        this.setState({
+            loading: loading,
+            products: this.state.products,
+        });
+    }
+
     public componentDidMount(): void {
-        this.getProducts();
+        this.getAllProducts();
     }
 
     routeToProductNew = () => {
@@ -38,7 +50,7 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
         }
     };
 
-    async getProducts() {
+    async fetchProducts() {
         let resp;
         try {
             resp = await UserApi.getProducts();
@@ -61,9 +73,35 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
             }
         }
 
+        return resp.body;
+    }
+
+    async getAllProducts() {
+        const products = await this.fetchProducts();
+
         this.setState({
             loading: false,
-            products: resp.body,
+            products: products,
+        });
+    }
+
+    async getActiveProducts() {
+        const products: Array<ProductModelResponse> = await this.fetchProducts();
+        const active = products.filter(prod => prod.is_active === true);
+
+        this.setState({
+            loading: false,
+            products: active,
+        });
+    }
+
+    async getNotActiveProducts() {
+        const products: Array<ProductModelResponse> = await this.fetchProducts();
+        const notActive = products.filter(prod => prod.is_active === false);
+
+        this.setState({
+            loading: false,
+            products: notActive,
         });
     }
 
@@ -84,7 +122,11 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
             )),
         );
 
-        return products;
+        return createElement(
+            'container',
+            { class: 'products-container' },
+            ...products,
+        );
     }
 
     public render() {
@@ -92,34 +134,60 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
         return createElement(
             'div',
             { class: 'products' },
+            createComponent(
+                Menu,
+                {
+                    variant: 'page',
+                    options: [
+                        {
+                            text: 'Все',
+                            onclick: () => {
+                                this.setLoading(true);
+                                this.getAllProducts();
+                            },
+                        },
+                        {
+                            text: 'Активные',
+                            onclick: () => {
+                                this.setLoading(true);
+                                this.getActiveProducts();
+                            },
+                        },
+                        {
+                            text: 'Неактивные',
+                            onclick: () => {
+                                this.setLoading(true);
+                                this.getNotActiveProducts();
+                            },
+                        },
+                    ],
+                },
+            ),
             (this.state.loading) ?
-                createComponent(
-                    Loader, { },
-                ) :
+            createComponent(
+                Loader, { },
+            ) :
             (this.state.products && this.state.products.length > 0) ?
-                createElement(
-                    'container',
-                    { class: 'products-container' },
-                    ...this.createContainer(),
-                ) :
-                createElement(
-                    'div', 
-                    { class: 'empty-box', },
-                    createComponent(
-                        ProfilePlaceholder,
-                        {
-                            text: 'У вас пока нет объявлений.\nВсе созданные вами объявления будут на этой вкладке',
-                        },
-                    ),
-                    createComponent(
-                        Button,
-                        {
-                            text: 'Разместить объявление',
-                            variant: 'primary',
-                            onclick: this.routeToProductNew,
-                        },
-                    ),
+            this.createContainer()
+            :
+            createElement(
+                'div',
+                { class: 'empty-box' },
+                createComponent(
+                    ProfilePlaceholder,
+                    {
+                        text: 'У вас пока нет объявлений.\nВсе созданные вами объявления будут на этой вкладке',
+                    },
                 ),
+                createComponent(
+                    Button,
+                    {
+                        text: 'Разместить объявление',
+                        variant: 'primary',
+                        onclick: this.routeToProductNew,
+                    },
+                ),
+            ),
         );
 
     }

@@ -119,28 +119,16 @@ export class ProductBase extends Component<never, ProductBaseState> {
         else {
             content = createComponent(
                 ProductBaseEdit,
-                {...this.state.product},
+                {
+                    ...this.state.product,
+                    parent: this,
+                },
             );
         }
 
-        return createElement(
-            'wrapper',
-            {
-                class: 'wrapper-product',
-            },
-            createElement(
-                'view',
-                {
-                    class: 'product',
-                },
-                (this.state.product) ?
-                content
-                :
-                createElement(
-                    'div1',
-                    {},
-                ),
-                (this.state.saler) ?
+        const sidebar = [];
+        if (this.state.saler && !this.state.editMode) {
+            sidebar.push(
                 createComponent(
                     ProductSidebar,
                     {
@@ -152,12 +140,28 @@ export class ProductBase extends Component<never, ProductBaseState> {
                         'safe_deal': this.state.product?.safe_deal || false,
                         delivery: this.state.product?.delivery || false,
                     },
-                )
+                ),
+            );
+        }
+
+        return createElement(
+            'wrapper',
+            {
+                class: 'wrapper-product',
+            },
+            createElement(
+                'div',
+                {
+                    class: 'product',
+                },
+                (this.state.product) ?
+                content
                 :
                 createElement(
-                    'div2',
+                    'div1',
                     {},
                 ),
+                ...sidebar,
             ),
         );
     }

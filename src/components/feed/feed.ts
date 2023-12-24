@@ -2,7 +2,6 @@ import './feed.scss';
 
 import { Component } from '../baseComponents/snail/component';
 import { VDomNode, createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
-
 import { Text } from '../baseComponents/index';
 import { Card, CardProps } from '../card/Card';
 import { Loader } from '../loader/Loader';
@@ -11,6 +10,7 @@ import { ProductApi } from '../../shared/api/product';
 import { ResponseStatusChecker } from '../../shared/constants/response';
 
 import Navigate from '../../shared/services/router/Navigate';
+import { useDebounce } from '../baseComponents/snail/use/debounce';
 
 interface FeedProps {
 
@@ -84,6 +84,7 @@ export class Feed extends Component<FeedProps, FeedState> {
 
     public componentWillUnmount(): void {
         window.removeEventListener('scroll', this.scrollEndEvent);
+        Navigate.removeCallback(this.updateEvent);
     }
 
     updateEvent = () => {
@@ -97,7 +98,7 @@ export class Feed extends Component<FeedProps, FeedState> {
         }
     };
 
-    async getProductList() {
+    getProductList = useDebounce<void, void>(async() => {
         let resp;
 
         try {
@@ -126,7 +127,7 @@ export class Feed extends Component<FeedProps, FeedState> {
         this.setState({
             products: resp.body ? resp.body : [],
         });
-    }
+    }, 500);
 
     createCards = () => {
         console.log(this.state);
@@ -150,7 +151,7 @@ export class Feed extends Component<FeedProps, FeedState> {
     public render(): VDomNode {
 
         return createElement(
-            'feed',
+            'div',
             {
                 class: 'feed',
             },

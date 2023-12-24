@@ -421,10 +421,10 @@ export class Card extends Component<CardProps, CardState> {
                             'div',
                             { class: 'badges-profile' },
                             ...this.renderBadges('badge-profile'),
-                        ) : 
+                        ) :
                         createElement(
                             'div',
-                            { class: 'badges-profile', },
+                            { class: 'badges-profile' },
                         ),
                     (variant == 'profile') ?
                         this.renderActiveButton()

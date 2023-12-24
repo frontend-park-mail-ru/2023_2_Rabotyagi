@@ -188,7 +188,7 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                     Menu,
                     {
                         variant: 'page',
-                        selected_index: this.getSelectedIndex(),
+                        selectedIndex: this.getSelectedIndex(),
                         options: this.getMenuOptions(),
                     },
                 ) : createText(''),

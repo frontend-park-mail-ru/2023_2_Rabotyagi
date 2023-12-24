@@ -5,12 +5,12 @@ import { createElement } from '../snail/vdom/VirtualDOM';
 
 export interface TextAreaProps {
     placeholder?: string,
+    required?: boolean,
     oninput?: (e?: any) => void,
 }
 
 export class TextArea extends Component<TextAreaProps, {}> {
     render() {
-        console.log(this.props);
         return createElement(
             'textarea',
             {

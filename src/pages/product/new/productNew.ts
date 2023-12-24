@@ -33,8 +33,8 @@ interface ProductNewState {
 const initState: ProductNewState = {
     title: '',
     description: '',
-    city: 1,
-    category: 1,
+    city: -1,
+    category: -1,
     price: -1,
     availableCount: -1,
     safeDeal: false,
@@ -56,22 +56,6 @@ export class ProductNew extends Component<never,ProductNewState> {
             return 'Описание не должно быть пустым';
         }
 
-        if (this.state.city === -1) {
-            return 'Выберите город перед созданием';
-        }
-
-        if (this.state.category === -1) {
-            return 'Выберите категорию перед созданием';
-        }
-
-        if (this.state.price === -1) {
-            return 'Укажите цену перед созданием';
-        }
-
-        if (this.state.availableCount === -1) {
-            return 'Укажите количество товара';
-        }
-
         return null;
     };
 
@@ -86,6 +70,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                         ...this.state,
                         error: ResponseMessage.USER_MESSAGE,
                     });
+
                     return false;
                 }
                 else if (ResponseStatusChecker.IsInternalServerError(res)) {
@@ -93,6 +78,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                         ...this.state,
                         error: ResponseMessage.SERVER_MESSAGE,
                     });
+
                     return false;
                 }
                 else if (ResponseStatusChecker.IsUserError(res)) {
@@ -100,6 +86,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                         ...this.state,
                         error: res.body.error,
                     });
+
                     return false;
                 }
 
@@ -137,6 +124,14 @@ export class ProductNew extends Component<never,ProductNewState> {
             return;
         }
 
+        if (this.state.category === -1) {
+            this.state.category = CategoryStore.getFirst();
+        }
+
+        if (this.state.city === -1) {
+            this.state.city = CityStore.getFirst();
+        }
+
         const successful = await this.uploadImages();
 
         if (!successful){
@@ -144,6 +139,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                 ...this.state,
                 error: 'Ошибка при загрузке файлов',
             });
+
             return;
         }
 
@@ -168,6 +164,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                     ...this.state,
                     error: ResponseMessage.USER_MESSAGE,
                 });
+
                 return;
             }
             else if (ResponseStatusChecker.IsInternalServerError(res)) {
@@ -175,6 +172,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                     ...this.state,
                     error: ResponseMessage.SERVER_MESSAGE,
                 });
+
                 return;
             }
             else if (ResponseStatusChecker.IsUserError(res)) {
@@ -182,6 +180,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                     ...this.state,
                     error: res.body.error,
                 });
+
                 return;
             }
 
@@ -193,10 +192,9 @@ export class ProductNew extends Component<never,ProductNewState> {
     };
 
     public render() {
-
         return createElement(
             'div',
-            { class: 'wrapper-product-new', },
+            { class: 'wrapper-product-new' },
             createElement(
                 'form',
                 {
@@ -219,6 +217,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                         TextInput,
                         {
                             oninput: (e: Event) => this.state.title = (e.target as HTMLInputElement).value,
+                            required: true,
                         },
                     ),
                     createComponent(
@@ -234,6 +233,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                             accept: '.png, .jpg, .jpeg',
                             multiple: true,
                             oninput: this.fileInputEvent,
+                            required: true,
                         },
                     ),
                     createComponent(
@@ -263,6 +263,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                         TextArea,
                         {
                             oninput: (e: Event) => this.state.description = (e.target as HTMLInputElement).value,
+                            required: true,
                         },
                     ),
                     createComponent(
@@ -292,6 +293,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                         NumberInput,
                         {
                             oninput: (e: Event) => this.state.price = Number((e.target as HTMLInputElement).value),
+                            required: true,
                         },
                     ),
                     createComponent(
@@ -304,6 +306,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                         NumberInput,
                         {
                             oninput: (e: Event) => this.state.availableCount = Number((e.target as HTMLInputElement).value),
+                            required: true,
                         },
                     ),
                     createComponent(
@@ -339,8 +342,8 @@ export class ProductNew extends Component<never,ProductNewState> {
                         },
                         createComponent(
                             ErrorMessageBox,
-                            { text: this.state.error, },
-                        )
+                            { text: this.state.error },
+                        ),
                     ) :
                     createText(''),
                 createElement(

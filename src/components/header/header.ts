@@ -206,8 +206,6 @@ export class Header extends Component<never, HeaderState>{
                 createComponent(
                     ButtonImage,
                     {
-                        variant: 'neutral',
-                        subvariant: 'primary',
                         height: 36,
                         width: 36,
                         src: this.state.avatar,

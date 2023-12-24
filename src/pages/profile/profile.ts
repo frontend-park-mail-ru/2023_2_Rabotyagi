@@ -22,17 +22,17 @@ export class Profile extends Component<never, never> {
 
         return createElement(
             'div',
-            { class: 'wrapper-profile-page', },
+            { class: 'wrapper-profile-page' },
             createComponent(
                 Header,
                 {},
             ),
             createElement(
                 'profile',
-                { class: 'wrapper-profile', },
+                { class: 'wrapper-profile' },
                 createElement(
                     'div',
-                    { class: 'profile-info', },
+                    { class: 'profile-info' },
                     createComponent(
                         Sidebar,
                         {},
@@ -96,7 +96,7 @@ export class Profile extends Component<never, never> {
                                         empty_message: 'Вы пока ничего не купили.\nВсе купленные вами товары будут отображаться на этой вкладке',
                                         empty_button_text: 'В корзину',
                                         empty_button_onclick: () => { Navigate.navigateTo('/cart'); },
-                                        api_function: OrderApi.getOrdersNotInBasket,
+                                        api_function: OrderApi.getBuyed,
                                     },
                                     {
                                         name: 'Продажи',

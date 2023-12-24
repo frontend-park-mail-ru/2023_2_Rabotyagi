@@ -63,7 +63,7 @@ export class OrderApi {
         });
     }
 
-    static async getOrdersNotInBasket() {
+    static async getBuyed() {
         return await Ajax.getInstance().get({
             url: OrderRoutes.STATUS_NOT_IN_BASKET,
             credentials: 'include',

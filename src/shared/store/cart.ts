@@ -105,7 +105,8 @@ class CartStore extends Store<CartStoreState> {
         this.state.goods = [ ...goods ];
         this.updateUser(saler);
         this.state.loading = false;
-        return true;
+
+return true;
     }
 
     private addInCart(good: OrderModel, saler: SalerModel) {
@@ -115,10 +116,12 @@ class CartStore extends Store<CartStoreState> {
                 this.updateUser(saler);
             }
             this.state.loading = false;
-            return true;
+
+return true;
         }
         this.state.loading = false;
-        return false;
+
+return false;
     }
 
     private updateOrderCount(orderId: number, count: number) {
@@ -175,7 +178,8 @@ class CartStore extends Store<CartStoreState> {
         if (index !== -1) {
             return this.state.goods[index];
         }
-        return this.state.goods[0];
+
+return this.state.goods[0];
     }
 
     public getSaler() {

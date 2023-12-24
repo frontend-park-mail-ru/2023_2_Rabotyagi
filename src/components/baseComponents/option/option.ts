@@ -16,11 +16,28 @@ export class Option extends Component<OptionProps, never> {
             throw new Error('Option props must be set');
         }
 
+        const {selected} = this.props;
+
+        if (selected) {
+            return createElement(
+                'option',
+                {
+                    value: this.props.key,
+                    selected: 'selected',
+                },
+                createComponent(
+                    Text,
+                    {
+                        text: this.props.value,
+                    },
+                ),
+            );
+        }
+
         return createElement(
             'option',
             {
                 value: this.props.key,
-                'selected': 'selected',
             },
             createComponent(
                 Text,
@@ -29,6 +46,7 @@ export class Option extends Component<OptionProps, never> {
                 },
             ),
         );
+
     }
 }
 
