@@ -98,7 +98,6 @@ export class ProfileOrders extends Component<never, ProfileORdersState> {
     createContainer() {
         const products: VDomNode[] = [];
 
-        debugger;
         this.state.products.forEach((order: OrderModel) => products.push(
             createComponent(
                 OrderCard,
