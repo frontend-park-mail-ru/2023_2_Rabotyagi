@@ -103,10 +103,6 @@ export class OrderCard extends Component<OrderCardProps, never> {
 
     async deleteOrder() {
         try {
-            if (!this.props) {
-                throw new Error('OrderCard settings are undefined');
-            }
-
             const resp = await OrderApi.deleteOrder(this.props.id);
             const body = resp.body;
             if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {

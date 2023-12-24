@@ -1,0 +1,39 @@
+@use '../../assets/css/vars.scss';
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+
+    &-title {
+        text-align: center;
+    }
+
+    &-saler, &-create {
+        display: flex;
+        padding: 8px;
+        background-color: vars.$background-secondary;
+        border-radius: 8px;
+    }
+
+    &-saler {
+        &-avatar {
+            width: 28px;
+            height: 28px;
+        }
+
+        &-info {
+            flex-grow: 1;
+
+            &-name {
+                font-weight: bold;
+            }
+        }
+    }
+
+    &-create {
+        flex-direction: column;
+        gap: 8px;
+    }
+}

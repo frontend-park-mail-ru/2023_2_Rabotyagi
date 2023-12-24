@@ -22,6 +22,7 @@ import { getRuDayFormat } from '../../../shared/utils/dateConverter';
 
 import delivery from '../../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../../assets/icons/badges/safe_deal.svg';
+import { CommentForm } from '../../../components/commentForm/commentForm';
 
 interface ProductSidebarProps extends UserModel {
     product_id: number,
@@ -315,6 +316,7 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                         createComponent(
                             Text,
                             {
+                                variant: 'subheader',
                                 text: this.props.name,
                             },
                         ),
@@ -335,6 +337,26 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                     ),
                 ),
             ),
+            (!UserStore.isSameUser(this.props.id) && UserStore.isAuth()) ?
+                createComponent(
+                    Button,
+                    {
+                        text: 'Оставить отзыв',
+                        variant: 'outlined',
+                        style: 'width: 100%;',
+                        onclick: () => {
+                            if (!MessageStore.getVisible()) {
+                                Dispatcher.dispatch({
+                                    name: MessageStoreAction.SHOW_MESSAGE,
+                                    payload: createComponent(
+                                        CommentForm,
+                                        { saler: this.props, },
+                                    ),
+                                });
+                            }
+                        },
+                    }
+                ) : createText(''),
             (!UserStore.isSameUser(this.props.id)) ?
                 (!CartStore.hasProduct(this.props.product_id)) ?
                     createComponent(

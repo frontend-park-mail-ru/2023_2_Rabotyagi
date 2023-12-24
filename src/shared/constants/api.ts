@@ -38,6 +38,13 @@ export enum OrderRoutes {
     DELETE = 'order/delete',
 }
 
+export enum CommentRoutes {
+    ADD = 'comment/add',
+    DELETE = 'comment/delete',
+    GET_LIST = 'comment/get_list',
+    UPDATE = 'comment/update',
+}
+
 export enum ProductRoutes {
     LIST = 'product/get_list',
     GET = 'product/get',
