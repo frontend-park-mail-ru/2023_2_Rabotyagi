@@ -29,7 +29,7 @@ export class Select extends Component<SelectProps, never> {
                 {
                     key: item[key],
                     value: item[value],
-                    selected: item[key] === select ? true : false,
+                    selected: item[key] == select ? true : false,
                 },
             );
         });
