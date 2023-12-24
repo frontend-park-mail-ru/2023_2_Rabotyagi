@@ -3,6 +3,7 @@ import { Component } from '../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 import { Route, Router } from '../../../shared/services/router/Routing';
 import { SalerProducts } from './products/products';
+import { SalerComments } from './comments/comments';
 
 export class ProfileSaler extends Component<never, never> {
 
@@ -34,6 +35,16 @@ export class ProfileSaler extends Component<never, never> {
                     },
                     createComponent(
                         SalerProducts,
+                        {},
+                    ),
+                ),
+                createComponent(
+                    Route,
+                    {
+                        path: /\/profile\/saler\/comments/,
+                    },
+                    createComponent(
+                        SalerComments,
                         {},
                     ),
                 ),

@@ -126,11 +126,11 @@ export class Sidebar extends Component<never, SidebarState> {
         switch (path[2]) {
             case 'products':
                 return 0;
-            case 'orders':
-                return 1;
-            case 'favourites':
-                return 2;
             case 'comments':
+                return 1;
+            case 'orders':
+                return 2;
+            case 'favourites':
                 return 3;
             case 'settings':
                 return 4;
@@ -159,6 +159,15 @@ export class Sidebar extends Component<never, SidebarState> {
                     },
                     onclick: this.routeToProducts,
                 },
+                {
+                    text: 'Отзывы',
+                    icon: {
+                        content: comment,
+                        width: 24,
+                        height: 24,
+                    },
+                    onclick: this.routeToComments,
+                },
             ];
             if (this.state.variant === 'default') {
                 btnGroup = [
@@ -180,15 +189,6 @@ export class Sidebar extends Component<never, SidebarState> {
                             height: 24,
                         },
                         onclick: this.routeToFavourites,
-                    },
-                    {
-                        text: 'Отзывы',
-                        icon: {
-                            content: comment,
-                            width: 24,
-                            height: 24,
-                        },
-                        onclick: this.routeToComments,
                     },
                     {
                         text: 'Настройки',
