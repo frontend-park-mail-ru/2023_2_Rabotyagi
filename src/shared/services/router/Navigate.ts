@@ -15,6 +15,12 @@ export class Navigate {
         this.callbacks.push(newCallback);
     }
 
+    public removeCallback(callback: NavigateCallback): void {
+        this.callbacks = this.callbacks.filter((element) => {
+            return element !== callback;
+        });
+    }
+
     navigateTo(url: string, state: any = {}) {
         history.pushState(state, '', url);
         this.callbacks.forEach((callback) => {

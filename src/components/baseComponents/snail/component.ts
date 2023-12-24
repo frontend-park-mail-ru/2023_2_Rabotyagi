@@ -89,6 +89,7 @@ export abstract class Component<PropsType, StateType> {
     }
 
     private getComponentDifference(): VDomNodeUpdater {
+        //console.log('get difference');
         if (!this.node) {
             this.node = this.initProps(this.props);
         }
@@ -104,9 +105,10 @@ export abstract class Component<PropsType, StateType> {
         }
         this.node = newNode;
         // необходимо для асинхронного выполнения
-        setTimeout(() => {
+        this.componentDidUpdate();
+        /*setTimeout(() => {
             this.componentDidUpdate();
-        });
+        });*/
 
         return difference;
     }

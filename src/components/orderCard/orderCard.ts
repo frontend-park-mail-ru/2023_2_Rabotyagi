@@ -1,7 +1,8 @@
 import './orderCard.scss';
+import './orderCardSold.scss';
 
 import { Component } from '../baseComponents/snail/component';
-import { createElement, createComponent } from '../baseComponents/snail/vdom/VirtualDOM';
+import { createElement, createComponent, VDomNode } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Counter } from '../counter/counter';
 import { Text, Button, Image } from '../baseComponents/index';
@@ -20,7 +21,38 @@ enum MouseButtons {
     RIGHT = 2
 }
 
-export class OrderCard extends Component<OrderModel, never> {
+enum OrderCardStatus {
+    OrderStatusInBasket = 0,
+    OrderStatusInProcessing = 1,
+    OrderStatusPaid = 2,
+    OrderStatusClosed = 3,
+    OrderStatusError = 255,
+}
+
+const getStatusName = (status: number) => {
+    switch(status) {
+        case OrderCardStatus.OrderStatusInBasket:
+            return 'В корзине';
+        case OrderCardStatus.OrderStatusInProcessing:
+            return 'Ждёт оплаты';
+        case OrderCardStatus.OrderStatusPaid:
+            return 'Оплачен';
+        case OrderCardStatus.OrderStatusClosed:
+            return 'Оплачен и доставлен';
+        case OrderCardStatus.OrderStatusError:
+            return 'Ошибка';
+        default:
+            return 'В корзине';
+    }
+}
+
+export type OrderCardType = 'default' | 'sold' | 'myorder';
+
+export interface OrderCardProps extends OrderModel {
+    variant?: OrderCardType,
+}
+
+export class OrderCard extends Component<OrderCardProps, never> {
 
     navigateToProduct = (e: MouseEvent) => {
         switch (e.button) {
@@ -95,7 +127,7 @@ export class OrderCard extends Component<OrderModel, never> {
         }
     }
 
-    render() {
+    renderDefault() {
         return createElement(
             'div',
             { class: 'order-card' },
@@ -174,5 +206,64 @@ export class OrderCard extends Component<OrderModel, never> {
                 },
             ),
         );
+    }
+
+    renderSold() {
+        let variant = this.props.variant || 'sold';
+
+        return createElement(
+            'order-card-sold',
+            {},
+            createElement(
+                'button',
+                {
+                    class: 'order-card-sold-button',
+                    onclick: this.navigateToProduct,
+                },
+                (this.props.images) ?
+                    createComponent(
+                        Image,
+                        {
+                            class: 'image-sold',
+                            src: this.props.images[0].url,
+                        },
+                    )
+                    :
+                    createElement(
+                        'div',
+                        { class: 'image-sold' },
+                    ),
+                createElement(
+                    'div',
+                    { class: 'order-card-sold-button-content' },
+                    createComponent(
+                        Text, { text: this.props.price, type: 'price' },
+                    ),
+                    createComponent(
+                        Text, { text: this.props.title, className: 'title-sold' },
+                    ),
+                    createElement(
+                        'div',
+                        { class: 'divider' },
+                    ),
+                    createComponent(
+                        Text,
+                        { text: 'Количество: ' + this.props.count.toString(), },
+                    ),
+                    createComponent(
+                        Text,
+                        { text: getStatusName(this.props.status || 0), },
+                    ) 
+                ),
+            ),
+        );
+    }
+
+    render() {
+        if (!this.props.variant || this.props.variant == 'default') {
+            return this.renderDefault();
+        }
+
+        return this.renderSold();
     }
 }

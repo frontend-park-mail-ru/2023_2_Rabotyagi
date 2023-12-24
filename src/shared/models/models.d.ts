@@ -92,6 +92,7 @@ declare interface OrderModel {
     delivery: boolean,
     safe_deal: boolean,
     in_favourites: boolean,
+    status?: number,
 }
 
 declare interface SalerModel {

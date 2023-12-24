@@ -118,7 +118,7 @@ export class Sidebar extends Component<never, SidebarState> {
 
     getSelectedOption() {
         let path = location.pathname.split('/');
-        if (path.length !== 3) {
+        if (path.length < 3) {
             return 0;
         }
         switch (path[2]) {

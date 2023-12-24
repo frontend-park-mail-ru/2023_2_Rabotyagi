@@ -1,12 +1,15 @@
 import './feed.scss';
 
 import { Component } from '../baseComponents/snail/component';
-import { VDomNode, createComponent, createElement, createText } from '../baseComponents/snail/vdom/VirtualDOM';
+import { VDomNode, createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
+
 import { Text } from '../baseComponents/index';
 import { Card, CardProps } from '../card/Card';
 import { Loader } from '../loader/Loader';
+
 import { ProductApi } from '../../shared/api/product';
 import { ResponseStatusChecker } from '../../shared/constants/response';
+
 import Navigate from '../../shared/services/router/Navigate';
 
 interface FeedProps {
@@ -126,6 +129,7 @@ export class Feed extends Component<FeedProps, FeedState> {
     }
 
     createCards = () => {
+        console.log(this.state);
         if (this.state.products.length === 0) {
             return [createComponent(
                 Loader,
