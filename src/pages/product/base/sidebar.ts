@@ -182,7 +182,7 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                 createComponent(
                     Button,
                     {
-                        text: !this.props.parent.isEditMode() ? 'Редактировать' : 'Просмотреть',
+                        text: 'Редактировать',
                         variant: 'outlined',
                         style: 'width: 100%;',
                         onclick: this.props.parent.switchEditMode,

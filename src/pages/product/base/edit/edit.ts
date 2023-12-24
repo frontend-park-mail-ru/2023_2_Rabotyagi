@@ -9,8 +9,11 @@ import { ResponseStatusChecker } from '../../../../shared/constants/response';
 import Navigate from '../../../../shared/services/router/Navigate';
 import CategoryStore from '../../../../shared/store/category';
 import CityStore from '../../../../shared/store/city';
+import { ProductBase } from '../base';
 
-interface ProductBaseEditProps extends ProductModel {}
+interface ProductBaseEditProps extends ProductModel {
+    parent: ProductBase
+}
 
 interface ProductBaseEditState {
     [key: string]: any
@@ -263,7 +266,6 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
                     BooleanInput,
                     {
                         checked: this.props.safe_deal,
-                        // value: this.props.safe_deal ? 'on' : 'off',
                         oninput: (e: Event) => this.state['safe_deal'] = Boolean((e.target as HTMLInputElement).checked)},
                 ),
                 createComponent(
@@ -293,16 +295,16 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
                         style: 'width: 100%',
                     },
                 ),
-                // createComponent(
-                //     Button,
-                //     {
-                //         text: 'Очистить',
-                //         variant: 'neutral',
-                //         subvariant: 'primary',
-                //         style: 'width: 100%',
-                //         onclick: this.clear,
-                //     },
-                // ),
+                createComponent(
+                    Button,
+                    {
+                        text: 'Отмена',
+                        variant: 'neutral',
+                        subvariant: 'primary',
+                        style: 'width: 100%',
+                        onclick: this.props.parent.switchEditMode,
+                    },
+                ),
             ),
         );
     }
