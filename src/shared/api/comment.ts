@@ -10,9 +10,14 @@ export class CommentApi {
         });
     }
 
-    static async getComments() {
+    static async getComments(userId: number, offset = 0, count = 20, ) {
         return await Ajax.getInstance().get({
             url: CommentRoutes.GET_LIST,
+            params: {
+                'count': count,
+                'offset': offset,
+                'user_id': userId,
+            },
             credentials: 'include',
         });
     }

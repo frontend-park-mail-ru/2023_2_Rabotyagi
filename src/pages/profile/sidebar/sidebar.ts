@@ -16,6 +16,7 @@ import list from '../../../assets/icons/list.svg';
 import heart from '../../../assets/icons/heart.svg';
 import settings from '../../../assets/icons/settings.svg';
 import cart from '../../../assets/icons/cart.svg';
+import comment from '../../../assets/icons/comment.svg';
 
 type SidebarTypes = 'default' | 'saler';
 
@@ -112,8 +113,9 @@ export class Sidebar extends Component<never, SidebarState> {
         }
         Navigate.navigateTo('/profile/products');
     };
-    routeToOrders = () => Navigate.navigateTo(`/profile/${this.state?.variant === 'saler' ? 'saler/' : '' }orders`);
+    routeToOrders = () => Navigate.navigateTo(`/profile/${this.state?.variant === 'saler' ? 'saler/' : '' }orders/buy`);
     routeToFavourites = () => Navigate.navigateTo(`/profile/${this.state?.variant === 'saler' ? 'saler/' : '' }favourites`);
+    routeToComments = () => Navigate.navigateTo(`/profile/${this.state?.variant === 'saler' ? 'saler/' : '' }comments`);
     routeToSettings = () => Navigate.navigateTo(`/profile/${this.state?.variant === 'saler' ? 'saler/' : '' }settings`);
 
     getSelectedOption() {
@@ -128,8 +130,10 @@ export class Sidebar extends Component<never, SidebarState> {
                 return 1;
             case 'favourites':
                 return 2;
-            case 'settings':
+            case 'comments':
                 return 3;
+            case 'settings':
+                return 4;
             default:
                 return 0;
         }
@@ -176,6 +180,15 @@ export class Sidebar extends Component<never, SidebarState> {
                             height: 24,
                         },
                         onclick: this.routeToFavourites,
+                    },
+                    {
+                        text: 'Отзывы',
+                        icon: {
+                            content: comment,
+                            width: 24,
+                            height: 24,
+                        },
+                        onclick: this.routeToComments,
                     },
                     {
                         text: 'Настройки',

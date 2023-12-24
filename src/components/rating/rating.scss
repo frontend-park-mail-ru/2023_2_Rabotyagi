@@ -17,3 +17,25 @@
         }
     }
 }
+
+.rating-box-show {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: row-reverse;
+    gap: 8px;
+
+    &-stars {
+        display: flex;
+        justify-content: start;
+
+        &-star {
+            padding: 0 4px;
+
+            img {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+}

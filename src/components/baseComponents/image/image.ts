@@ -14,10 +14,6 @@ export interface ImageProps {
 export class Image extends Component<ImageProps, never> {
 
     render() {
-        if (!this.props) {
-            throw new Error('Image props are undefined');
-        }
-
         if (this.props.src) {
             this.props.src = getResourceUrl(this.props.src) as string;
         }

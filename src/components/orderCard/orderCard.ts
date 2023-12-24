@@ -244,7 +244,7 @@ export class OrderCard extends Component<OrderCardProps, never> {
                     ),
                     createComponent(
                         Text,
-                        { text: 'Количество: ' + this.props.count.toString(), },
+                        { text: 'Количество: ' + (this.props.count || 0).toString(), },
                     ),
                     createComponent(
                         Text,

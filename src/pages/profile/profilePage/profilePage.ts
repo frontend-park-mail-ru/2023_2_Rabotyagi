@@ -11,8 +11,9 @@ import { Text, Button, TextLinkProps } from '../../../components/baseComponents'
 import { ResponseMessage, ResponseStatusChecker } from '../../../shared/constants/response';
 import { OrderCard, OrderCardProps, OrderCardType } from '../../../components/orderCard/orderCard';
 import { Card, CardProps, CardVariants } from '../../../components/card/Card';
+import { CommentCard, CommentCardProps } from '../../../components/commentCard/commentCard';
 
-export type ProfileCardType = 'profile' | 'profile-saler' | 'favourite' | 'sold';
+export type ProfileCardType = 'profile' | 'profile-saler' | 'favourite' | 'sold' | 'comment';
 
 export type ProfileMenuUnit = {
     name: string,
@@ -20,13 +21,15 @@ export type ProfileMenuUnit = {
     empty_message: string,
     empty_button_text?: string,
     empty_button_onclick?: (e?: any) => void,
-    api_function: () => Promise<any>, 
+    api_function: (...e: any) => Promise<any>, 
+    api_params?: any,
 }
 
 export interface ProfilePageProps {
     title: string,
     options: Array<ProfileMenuUnit>,
     card_variant?: ProfileCardType,
+    grid_x_repeat?: 1 | 2 | 3,
 }
 
 export interface ProfilePageState {
@@ -84,9 +87,8 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
         let resp;
         let option = this.props.options[selected_index];
         try {
-            resp = await option.api_function();
+            resp = await option.api_function(option.api_params);
         } catch (err: any) {
-            console.log(err);
             this.setState({
                 ...this.state,
                 loading: false,
@@ -103,7 +105,6 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                     error: ResponseMessage.USER_MESSAGE,
                     selected_page: selected_index,
                 });
-                console.log(ResponseMessage.USER_MESSAGE);
                 return;
             }
             else if (ResponseStatusChecker.IsInternalServerError(resp)) {
@@ -113,7 +114,6 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                     error: ResponseMessage.SERVER_MESSAGE,
                     selected_page: selected_index,
                 });
-                console.log(ResponseMessage.SERVER_MESSAGE);
                 return;
             }
             else if (ResponseStatusChecker.IsUserError(resp)) {
@@ -123,12 +123,10 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                     error: resp.body.error,
                     selected_page: selected_index,
                 });
-                console.log(resp.body.error);
                 return;
             }
         }
 
-        console.log(resp.body);
         this.setState({
             ...this.state,
             loading: false,
@@ -146,22 +144,31 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
             variant = 'profile';
         }
 
-        if (variant !== 'sold') {
+        if (variant !== 'sold' && variant !== 'comment') {
             this.state.contentBlocks.forEach((block) => {
                 result.push(createComponent(
                     Card,
                     { 
                         variant: variant as CardVariants,
-                        ...block as CardProps, },
+                        ...block as CardProps, 
+                    },
                 ));
             });            
-        } else {
+        } else if (variant == 'sold') {
             this.state.contentBlocks.forEach((block) => {
                 result.push(createComponent(
                     OrderCard,
                     { 
                         variant: variant as OrderCardType,
-                        ...block as OrderCardProps, },
+                        ...block as OrderCardProps, 
+                    },
+                ));
+            });
+        } else if (variant == 'comment') {
+            this.state.contentBlocks.forEach((block) => {
+                result.push(createComponent(
+                    CommentCard,
+                    { ...block as CommentCardProps, },
                 ));
             });
         }
@@ -202,7 +209,7 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                 (this.state.contentBlocks && this.state.contentBlocks.length > 0) ?
                     createElement(
                         'div',
-                        { class: 'profile-content-block-full', },
+                        { class: 'profile-content-block-full' + (this.props.grid_x_repeat || 3).toString(), },
                         ...this.createContainer(),
                     ) :
                     createElement(
@@ -211,7 +218,7 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                         createComponent(
                             ProfilePlaceholder,
                             {
-                                text: option.empty_message,
+                                text: option.empty_message ? option.empty_message : '',
                             },
                         ),
                         (option.empty_button_text) ?

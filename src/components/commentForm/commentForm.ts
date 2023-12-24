@@ -43,7 +43,7 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
                 text: this.state.text,
             });
             const body = resp.body;
-            console.log(resp, body);
+            console.log(resp, body, this.props.saler);
             if (!ResponseStatusChecker.IsRedirectResponse(resp)) {
                 if (ResponseStatusChecker.IsBadFormatRequest(resp)) {
                     throw ResponseMessage.USER_MESSAGE;
@@ -61,15 +61,12 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
                 error: '',
                 status: 'success',
             });
-
-            //Dispatcher.dispatch({ name: CartStoreAction.DELETE_GOOD, payload: this.props.id });
         } catch(err: any) {
             this.setState({
                 ...this.state,
                 error: err.toString(),
                 status: 'error',
             });
-            // console.log(err);
         }
     }
 

@@ -5,6 +5,8 @@ import { createElement, createComponent, VDomNode } from '../baseComponents/snai
 
 import { Text } from '../baseComponents';
 
+export type RatingVariant = 'edit' | 'show';
+
 const ratingToString = (rating: number) => {
     switch(rating) {
         case 0:
@@ -25,7 +27,9 @@ const ratingToString = (rating: number) => {
 }
 
 export interface RatingProps {
-    influenceFunc: (rating: number) => void,
+    variant?: RatingVariant,
+    rating?: number,
+    influenceFunc?: (rating: number) => void,
 }
 
 export interface RatingState {
@@ -39,19 +43,25 @@ export class Rating extends Component<RatingProps, RatingState> {
     }
 
     getStarState(index: number) {
+        let rating = this.state.rating;
+        if (this.props.rating) {
+            rating = Number(this.props.rating);
+        }
         return createElement(
             'div',
             { 
                 class: 'rating-box-stars-star', 
                 onclick: () => {
                     this.setState({ rating: index, });
-                    this.props.influenceFunc(index);
+                    if (this.props.influenceFunc) {
+                        this.props.influenceFunc(index);
+                    }
                 },
             },
             createElement(
                 'img',
                 {
-                    src: (index <= this.state.rating) ? 
+                    src: (index <= rating) ? 
                         '../../assets/icons/fillstar.svg' 
                         : '../../assets/icons/star.svg',
                 },
@@ -69,15 +79,20 @@ export class Rating extends Component<RatingProps, RatingState> {
     }
 
     render() {
+        const variantClass = this.props.variant ? 
+            this.props.variant == 'show' ? '-show' : ''
+            : '';
+
         return createElement(
             'div',
-            { class: 'rating-box', },
+            { class: 'rating-box' + variantClass, },
             createComponent(
                 Text,
                 {
                     tag: 'div',
-                    text: ratingToString(this.state.rating),
-                    className: 'rating-box-title',
+                    variant: (variantClass == '') ? 'regular' : 'subheader',
+                    text: (variantClass == '') ? ratingToString(this.state.rating) : (this.props.rating || 0.0).toString(),
+                    className: 'rating-box-title' + variantClass,
                 }
             ),
             createElement(

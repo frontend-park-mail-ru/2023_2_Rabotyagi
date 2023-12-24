@@ -13,8 +13,11 @@ import { ProfileFavourites } from './favourites/favourites';
 import { ProfileSaler } from './saler/saler';
 import { Sidebar } from './sidebar/sidebar';
 
+import UserStore from '../../shared/store/user';
+
 import Navigate from '../../shared/services/router/Navigate';
 import { OrderApi } from '../../shared/api/order';
+import { CommentApi } from '../../shared/api/comment';
 
 export class Profile extends Component<never, never> {
 
@@ -88,7 +91,7 @@ export class Profile extends Component<never, never> {
                            createComponent(
                                ProfilePage,
                                {
-                                  title: 'Мои заказы',
+                                  title: 'Заказы',
                                   options: [
                                     {
                                         name: 'Покупки',
@@ -111,6 +114,29 @@ export class Profile extends Component<never, never> {
                                }
                            ),
                        ),
+                       createComponent(
+                        Route,
+                        { 
+                            path: new RegExp('/profile/comments.*'),
+                        },
+                        createComponent(
+                            ProfilePage,
+                            {
+                                title: 'Отзывы',
+                                grid_x_repeat: 1,
+                                card_variant: 'comment',
+                                options: [
+                                    {
+                                        name: 'Отзывы',
+                                        link: '/profile/comments',
+                                        empty_message: 'Никто пока не оставил вам отзыв.\nВсе оставленные вам отзывы будут отображаться на этой вкладке',
+                                        api_function: CommentApi.getComments,
+                                        api_params: UserStore.getFields()?.id,
+                                    },
+                                ],
+                            }
+                        ),
+                    ),
                        createComponent(
                            Route,
                            {

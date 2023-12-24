@@ -101,3 +101,12 @@ declare interface SalerModel {
     email: string,
     avatar: string,
 }
+
+declare interface CommentModel {
+    id: number,
+    sender_name: string,
+    avatar: { url?: string, },
+    text: string,
+    rating: number,
+    created_at: string,
+}
