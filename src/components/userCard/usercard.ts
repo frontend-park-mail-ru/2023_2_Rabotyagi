@@ -21,29 +21,29 @@ export class UserCard extends Component<UserCardProps, never> {
 
         return createElement(
             'div',
-            { class: 'user-card', },
+            { class: 'user-card' },
             createElement(
                 'div',
-                { class: 'user-avatar', },
+                { class: 'user-avatar' },
                 (this.props.avatar) ?
                     createElement(
                         'img',
-                        { 
+                        {
                             class: 'img',
-                            src: this.props.avatar, 
+                            src: this.props.avatar,
                         },
                     ) :
                     createElement(
                         'div',
-                        { class: 'img', },
+                        { class: 'img' },
                     ),
             ),
             createElement(
                 'div',
-                { class: 'user-info', },
+                { class: 'user-info' },
                 createElement(
                     'div',
-                    { class: 'top-user-info', },
+                    { class: 'top-user-info' },
                     createComponent(
                         Text,
                         {
@@ -63,9 +63,9 @@ export class UserCard extends Component<UserCardProps, never> {
                 ),
                 createElement(
                     'div',
-                    { class: 'bottom-user-info', },
+                    { class: 'bottom-user-info' },
                     createComponent(
-                        Button, 
+                        Button,
                         {
                             variant: 'secondary',
                             text: 'Посмотреть профиль',

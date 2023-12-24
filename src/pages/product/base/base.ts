@@ -129,7 +129,7 @@ export class ProductBase extends Component<never, ProductBaseState> {
                 class: 'wrapper-product',
             },
             createElement(
-                'view',
+                'div',
                 {
                     class: 'product',
                 },

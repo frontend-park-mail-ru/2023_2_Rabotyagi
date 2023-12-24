@@ -10,7 +10,6 @@ export interface TextAreaProps {
 
 export class TextArea extends Component<TextAreaProps, {}> {
     render() {
-        console.log(this.props);
         return createElement(
             'textarea',
             {

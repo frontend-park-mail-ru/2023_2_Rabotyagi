@@ -14,7 +14,7 @@ export interface TextLinkIconProps {
     color?: string,
 }
 
-export interface TextLinkProps { 
+export interface TextLinkProps {
     variant?: TextLinkType,
     selected?: boolean,
     icon?: TextLinkIconProps,
@@ -46,16 +46,16 @@ export class TextLink extends Component<TextLinkProps, never> {
             (this.props.icon) ?
                 createComponent(
                     Svg,
-                    { ...this.props.icon, },
+                    { ...this.props.icon },
                 ) :
                 createText(''),
             createComponent(
-                Text, 
+                Text,
                 {
                     text: this.props.text,
                     className: this.props.selected ? 'text-selected' : '',
-                }
+                },
             ),
-        )
+        );
     }
 }

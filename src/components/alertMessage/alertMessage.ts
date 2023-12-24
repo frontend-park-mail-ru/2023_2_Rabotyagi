@@ -15,7 +15,7 @@ export class AlertMessage extends Component<AlertMessageProps, never> {
     render() {
         return createElement(
             'div',
-            { class: 'alert-message', },
+            { class: 'alert-message' },
             createComponent(
                 Text,
                 {

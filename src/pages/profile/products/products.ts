@@ -1,7 +1,7 @@
 import './products.scss';
 
 import { Component } from '../../../components/baseComponents/snail/component';
-import { VDomComponent, VDomNode, createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { VDomNode, createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 
 import { Card } from '../../../components/card/Card';
 import { Loader } from '../../../components/loader/Loader';
@@ -103,8 +103,8 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
                     ...this.createContainer(),
                 ) :
                 createElement(
-                    'div', 
-                    { class: 'empty-box', },
+                    'div',
+                    { class: 'empty-box' },
                     createComponent(
                         ProfilePlaceholder,
                         {

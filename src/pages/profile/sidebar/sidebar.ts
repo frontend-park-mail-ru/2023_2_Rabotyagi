@@ -1,9 +1,9 @@
 import { Component } from '../../../components/baseComponents/snail/component';
-import { VDomComponent, createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 
 import { Loader } from '../../../components/loader/Loader';
 import { Menu } from '../menu/menu';
-import { Button, Image, Text, TextLink, TextLinkProps } from '../../../components/baseComponents/index';
+import { Image, Text, TextLinkProps } from '../../../components/baseComponents/index';
 
 import UserStore from '../../../shared/store/user';
 
@@ -117,7 +117,7 @@ export class Sidebar extends Component<never, SidebarState> {
     routeToSettings = () => Navigate.navigateTo(`/profile/${this.state?.variant === 'saler' ? 'saler/' : '' }settings`);
 
     getSelectedOption() {
-        let path = location.pathname.split('/');
+        const path = location.pathname.split('/');
         if (path.length !== 3) {
             return 0;
         }
@@ -220,9 +220,9 @@ export class Sidebar extends Component<never, SidebarState> {
                 ),
                 createComponent(
                     Menu,
-                    { 
-                        selected_index: this.getSelectedOption(),
-                        options: btnGroup, 
+                    {
+                        selectedIndex: this.getSelectedOption(),
+                        options: btnGroup,
                     },
                 ),
             );

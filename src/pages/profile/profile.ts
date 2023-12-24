@@ -19,17 +19,17 @@ export class Profile extends Component<never, never> {
 
         return createElement(
             'div',
-            { class: 'wrapper-profile-page', },
+            { class: 'wrapper-profile-page' },
             createComponent(
                 Header,
                 {},
             ),
             createElement(
                 'profile',
-                { class: 'wrapper-profile', },
+                { class: 'wrapper-profile' },
                 createElement(
                     'div',
-                    { class: 'profile-info', },
+                    { class: 'profile-info' },
                     createComponent(
                         Sidebar,
                         {},

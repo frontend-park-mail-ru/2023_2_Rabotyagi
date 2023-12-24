@@ -86,6 +86,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                         ...this.state,
                         error: ResponseMessage.USER_MESSAGE,
                     });
+
                     return false;
                 }
                 else if (ResponseStatusChecker.IsInternalServerError(res)) {
@@ -93,6 +94,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                         ...this.state,
                         error: ResponseMessage.SERVER_MESSAGE,
                     });
+
                     return false;
                 }
                 else if (ResponseStatusChecker.IsUserError(res)) {
@@ -100,6 +102,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                         ...this.state,
                         error: res.body.error,
                     });
+
                     return false;
                 }
 
@@ -144,6 +147,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                 ...this.state,
                 error: 'Ошибка при загрузке файлов',
             });
+
             return;
         }
 
@@ -168,6 +172,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                     ...this.state,
                     error: ResponseMessage.USER_MESSAGE,
                 });
+
                 return;
             }
             else if (ResponseStatusChecker.IsInternalServerError(res)) {
@@ -175,6 +180,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                     ...this.state,
                     error: ResponseMessage.SERVER_MESSAGE,
                 });
+
                 return;
             }
             else if (ResponseStatusChecker.IsUserError(res)) {
@@ -182,6 +188,7 @@ export class ProductNew extends Component<never,ProductNewState> {
                     ...this.state,
                     error: res.body.error,
                 });
+
                 return;
             }
 
@@ -196,7 +203,7 @@ export class ProductNew extends Component<never,ProductNewState> {
 
         return createElement(
             'div',
-            { class: 'wrapper-product-new', },
+            { class: 'wrapper-product-new' },
             createElement(
                 'form',
                 {
@@ -339,8 +346,8 @@ export class ProductNew extends Component<never,ProductNewState> {
                         },
                         createComponent(
                             ErrorMessageBox,
-                            { text: this.state.error, },
-                        )
+                            { text: this.state.error },
+                        ),
                     ) :
                     createText(''),
                 createElement(

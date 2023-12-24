@@ -6,11 +6,9 @@ import { Menu } from '../menu/menu';
 import { ProfilePlaceholder } from '../placeholder/placeholder';
 
 import { OrderApi } from '../../../shared/api/order';
-import { ResponseStatusChecker, ResponseMessage } from '../../../shared/constants/response';
+import { ResponseStatusChecker } from '../../../shared/constants/response';
 
 import CartStore from '../../../shared/store/cart';
-import UserStore from '../../../shared/store/user';
-import { Card } from '../../../components/card/Card';
 import { OrderCard } from '../../../components/orderCard/orderCard';
 import { Button } from '../../../components/baseComponents/button/Button';
 import Navigate from '../../../shared/services/router/Navigate';
@@ -95,7 +93,7 @@ export class ProfileOrders extends Component<never, ProfileORdersState> {
             ),
             createElement(
                 'div',
-                { class: 'profile-content', },
+                { class: 'profile-content' },
                 (this.state.loading) ?
                     createComponent(
                         Loader, { },
@@ -107,8 +105,8 @@ export class ProfileOrders extends Component<never, ProfileORdersState> {
                         ...this.createContainer(),
                     ) :
                     createElement(
-                        'div', 
-                        { class: 'empty-box', },
+                        'div',
+                        { class: 'empty-box' },
                         createComponent(
                             ProfilePlaceholder,
                             {

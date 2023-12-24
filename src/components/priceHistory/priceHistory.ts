@@ -42,7 +42,8 @@ export class PriceHistory extends Component<PriceHistoryProps, PriceHistoryState
 
     endTime() {
         const nowDate = new Date();
-        return nowDate.toString();
+
+return nowDate.toString();
     }
 
     getGrowingClass(points: Array<productPriceUnit>): PriceHistoryGrowingClass {
@@ -68,7 +69,7 @@ export class PriceHistory extends Component<PriceHistoryProps, PriceHistoryState
             result += this.state.graphicPadding;
         if (result > 50)
             result -= this.state.graphicPadding;
-        
+
         return result;
     }
 
@@ -116,10 +117,10 @@ export class PriceHistory extends Component<PriceHistoryProps, PriceHistoryState
 
     getDifferenceTitle(minPrice: number, maxPrice: number) {
         if (maxPrice !== minPrice) {
-            return 'Цена менялась от ' + this.minPrice() + ' ₽ до ' + this.maxPrice() + ' ₽'
-        }   
+            return 'Цена менялась от ' + this.minPrice() + ' ₽ до ' + this.maxPrice() + ' ₽';
+        }
 
-        return minPrice.toString() + ' ₽'; 
+        return minPrice.toString() + ' ₽';
     }
 
     render() {

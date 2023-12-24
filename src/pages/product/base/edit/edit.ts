@@ -1,3 +1,4 @@
+import './edit.scss';
 import { BooleanInput, Button, FileInput, NumberInput, Select, Text, TextArea, TextInput } from '../../../../components/baseComponents/index';
 import { Component } from '../../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
@@ -6,7 +7,6 @@ import { FileApi } from '../../../../shared/api/file';
 import { ProductApi } from '../../../../shared/api/product';
 import { ResponseStatusChecker } from '../../../../shared/constants/response';
 import Navigate from '../../../../shared/services/router/Navigate';
-// import UserStore from '../../../../shared/store/UserStore';
 import CategoryStore from '../../../../shared/store/category';
 import CityStore from '../../../../shared/store/city';
 
@@ -134,13 +134,13 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
         return createElement(
             'form',
             {
-                class: 'content-add',
+                class: 'edit-container',
                 onsubmit: this.formSubmit,
             },
             createElement(
                 'div',
                 {
-                    class: 'content-add-body',
+                    class: 'edit-container-body',
                     onsubmit: this.formSubmit,
                 },
                 createComponent(
@@ -283,7 +283,7 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
             createElement(
                 'div',
                 {
-                    class: 'content-add-btn-group',
+                    class: 'edit-container-btn-group',
                 },
                 createComponent(
                     Button,

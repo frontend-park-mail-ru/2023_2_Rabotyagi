@@ -25,7 +25,7 @@ export class CartPage extends Component<never, CartPageState> {
 
     state = {
         loading: false,
-    }
+    };
 
     public componentDidMount(): void {
         if (!UserStore.isAuth()) {
@@ -37,7 +37,7 @@ export class CartPage extends Component<never, CartPageState> {
 
     async buyAll() {
         try {
-            this.setState({ loading: true, });
+            this.setState({ loading: true });
             const resp = await OrderApi.buyAll();
             const body = resp.body;
             if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {
@@ -55,7 +55,7 @@ export class CartPage extends Component<never, CartPageState> {
         } catch(err) {
             console.error(err);
         }
-        this.setState({ loading: false, });
+        this.setState({ loading: false });
     }
 
     render() {
@@ -66,7 +66,7 @@ export class CartPage extends Component<never, CartPageState> {
             cartContent.push(
                 createComponent(
                     Loader, {},
-                )
+                ),
             );
         } else if (CartStore.getGoods().length !== 0) {
             cartContent.push(
@@ -77,7 +77,7 @@ export class CartPage extends Component<never, CartPageState> {
                         OrderFeed, {},
                     ),
                     createComponent(
-                        Check, { buyFunction: () => { this.buyAll(); }, },
+                        Check, { buyFunction: () => { this.buyAll(); } },
                     ),
                 ),
             );

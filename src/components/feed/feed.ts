@@ -1,7 +1,7 @@
 import './feed.scss';
 
 import { Component } from '../baseComponents/snail/component';
-import { VDomNode, createComponent, createElement, createText } from '../baseComponents/snail/vdom/VirtualDOM';
+import { VDomNode, createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
 import { Text } from '../baseComponents/index';
 import { Card, CardProps } from '../card/Card';
 import { Loader } from '../loader/Loader';

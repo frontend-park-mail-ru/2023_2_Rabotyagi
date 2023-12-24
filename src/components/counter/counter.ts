@@ -35,7 +35,7 @@ export class Counter extends Component<CounterProps, CounterState> {
             currentCount: props.selectedCount,
             price: props.unitPrice * props.selectedCount,
         };
-        
+
         return state;
     }
 
