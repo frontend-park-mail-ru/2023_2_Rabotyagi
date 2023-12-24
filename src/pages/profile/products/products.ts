@@ -73,7 +73,7 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
             }
         }
 
-        return resp.body;
+        return resp.body ? resp.body : [];
     }
 
     async getAllProducts() {
