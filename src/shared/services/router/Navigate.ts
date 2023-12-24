@@ -15,6 +15,10 @@ export class Navigate {
         this.callbacks.push(newCallback);
     }
 
+    removeCallback(oldCallback: NavigateCallback) {
+        this.callbacks = this.callbacks.filter(callback => callback !== oldCallback);
+    }
+
     navigateTo(url: string, state: any = {}) {
         history.pushState(state, '', url);
         this.callbacks.forEach((callback) => {
