@@ -125,7 +125,7 @@ export class Feed extends Component<FeedProps, FeedState> {
         this.setState({
             products: resp.body ? resp.body : [],
         });
-    }, 400);
+    }, 500);
 
     createCards = () => {
         if (this.state.products.length === 0) {
