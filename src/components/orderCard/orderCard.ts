@@ -147,7 +147,7 @@ export class OrderCard extends Component<OrderModel, never> {
                         unitPrice: this.props.price,
                         minCount: 1,
                         maxCount: this.props.available_count,
-                        selectedCount: CartStore.getGood(this.props.id).count,
+                        selectedCount: CartStore.getGood(this.props.id)?.count,
                         orderId: this.props.id,
                         counterInfluence: (count: number) => { this.updateCount(count); },
                     },

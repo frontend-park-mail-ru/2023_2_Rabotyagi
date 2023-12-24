@@ -15,18 +15,25 @@ import Navigate from '../../../shared/services/router/Navigate';
 
 export interface ProfileORdersState {
     loading: boolean,
-    soldGoods: Array<OrderModel>,
+    products: Array<OrderModel>,
 }
 
 export class ProfileOrders extends Component<never, ProfileORdersState> {
 
     state = {
         loading: true,
-        soldGoods: CartStore.getGoods(),
+        products: [],
     };
 
+    private setLoading(loading: boolean) {
+        this.setState({
+            loading: loading,
+            products: this.state.products,
+        });
+    }
+
     public componentDidMount(): void {
-        this.getSold();
+        this.getBuyed();
     }
 
     async getSold() {
@@ -54,21 +61,57 @@ export class ProfileOrders extends Component<never, ProfileORdersState> {
 
         this.setState({
             loading: false,
-            soldGoods: resp.body,
+            products: resp.body,
+        });
+    }
+
+    async getBuyed() {
+        let resp;
+        try {
+            resp = await OrderApi.getBuyed();
+
+        } catch (err) {
+            console.error(err);
+        }
+
+        if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {
+            if (ResponseStatusChecker.IsBadFormatRequest(resp)) {
+                // throw statuses.USER_MESSAGE;
+                return;
+            }
+            else if (ResponseStatusChecker.IsInternalServerError(resp)) {
+                // throw statuses.SERVER_MESSAGE;
+                return;
+            }
+            else if (ResponseStatusChecker.IsUserError(resp)) {
+                // throw body.error;
+                return;
+            }
+        }
+
+        this.setState({
+            loading: false,
+            products: resp.body,
         });
     }
 
     createContainer() {
         const products: VDomNode[] = [];
 
-        this.state.soldGoods.forEach((order) => products.push(
+        debugger;
+        this.state.products.forEach((order: OrderModel) => products.push(
             createComponent(
                 OrderCard,
                 { ...order },
             )),
         );
 
-        return products;
+        return createElement(
+            'container',
+            { class: 'orders-container' },
+            ...products,
+        );
+
     }
 
     public render() {
@@ -82,11 +125,17 @@ export class ProfileOrders extends Component<never, ProfileORdersState> {
                     options: [
                         {
                             text: 'Покупки',
-                            onclick: () => {},
+                            onclick: () => {
+                                this.setLoading(true);
+                                this.getBuyed();
+                            },
                         },
                         {
                             text: 'Продажи',
-                            onclick: () => {},
+                            onclick: () => {
+                                this.setLoading(true);
+                                this.getSold();
+                            },
                         },
                     ],
                 },
@@ -98,12 +147,9 @@ export class ProfileOrders extends Component<never, ProfileORdersState> {
                     createComponent(
                         Loader, { },
                     ) :
-                (this.state.soldGoods && this.state.soldGoods.length > 0) ?
-                    createElement(
-                        'container',
-                        { class: 'orders-container' },
-                        ...this.createContainer(),
-                    ) :
+                (this.state.products && this.state.products.length > 0) ?
+                    this.createContainer()
+                    :
                     createElement(
                         'div',
                         { class: 'empty-box' },
