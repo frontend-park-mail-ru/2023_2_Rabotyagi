@@ -130,7 +130,6 @@ export class Feed extends Component<FeedProps, FeedState> {
     }, 500);
 
     createCards = () => {
-        console.log(this.state);
         if (this.state.products.length === 0) {
             return [createComponent(
                 Loader,

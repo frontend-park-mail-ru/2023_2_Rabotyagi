@@ -54,6 +54,8 @@ export class Header extends Component<never, HeaderState>{
         if (fields) {
             this.state.avatar = fields.avatar;
         }
+
+        UserStore.addStoreUpdater(this.listener);
     }
 
     private createSearchForm(): VDomElement {

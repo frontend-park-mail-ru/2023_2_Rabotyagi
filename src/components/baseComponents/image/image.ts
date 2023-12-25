@@ -5,8 +5,8 @@ import { createElement } from '../snail/vdom/VirtualDOM';
 export interface ImageProps {
     src?: string | null,
     id?: string,
-    width?: number,
-    height?: number,
+    width?: number | string,
+    height?: number | string,
     class?: string,
     style?: string,
 }

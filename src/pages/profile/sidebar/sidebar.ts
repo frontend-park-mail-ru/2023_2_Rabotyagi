@@ -119,7 +119,7 @@ export class Sidebar extends Component<never, SidebarState> {
     routeToSettings = () => Navigate.navigateTo(`/profile/${this.state?.variant === 'saler' ? 'saler/' : '' }settings`);
 
     getSelectedOption() {
-        let path = location.pathname.split('/');
+        const path = location.pathname.split('/');
         if (path.length < 3) {
             return 0;
         }
@@ -228,7 +228,7 @@ export class Sidebar extends Component<never, SidebarState> {
                 createElement(
                     'div',
                     {
-                        style: 'width: 80px; height: 80px; position: relative; background: rgba(41, 44, 47, 0.25)',
+                        style: 'width: -webkit-fill-available; height: 80px; position: relative; background: rgba(41, 44, 47, 0.25)',
                     },
                 ),
                 createComponent(
