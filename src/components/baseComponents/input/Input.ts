@@ -1,11 +1,11 @@
-import './input.scss';
+import './Input.scss';
 
 import { Component } from '../snail/component';
 import { VDomComponent, createComponent, createElement } from '../snail/vdom/VirtualDOM';
 
-import { Text, TextVariants, getTextClass } from '../text/text';
-import { ErrorMessageBox } from '../index';
+import { ErrorMessageBox, Text } from '../index';
 import { Validate } from '../../../shared/utils/validation';
+import { TextVariants, getTextClass } from '../text/Text';
 
 export interface BaseInputProps {
     id?: string,

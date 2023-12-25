@@ -1,7 +1,6 @@
 import { Component } from '../../../../components/baseComponents/snail/component';
 import { createComponent, createElement, createText } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Carousel } from '../../../../components/carousel/carousel';
 import { Button, Text } from '../../../../components/baseComponents/index';
 
 import { UserApi } from '../../../../shared/api/user';
@@ -16,6 +15,7 @@ import UserStore from '../../../../shared/store/user';
 import Dispatcher from '../../../../shared/services/store/Dispatcher';
 
 import fav from '../../../../assets/icons/heart.svg';
+import { Carousel } from '../../../../components/carousel/Carousel';
 
 interface ProductBaseViewProps extends ProductModelResponse { }
 

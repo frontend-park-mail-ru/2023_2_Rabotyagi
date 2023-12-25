@@ -1,4 +1,4 @@
-import './caption.scss';
+import './Caption.scss';
 
 import { Component } from '../baseComponents/snail/component';
 import { createComponent } from '../baseComponents/snail/vdom/VirtualDOM';

@@ -3,7 +3,6 @@ import './cardStyles/card.scss';
 import { Component } from '../baseComponents/snail/component';
 import { VDomComponent, VDomNode, createComponent, createElement, createText } from '../baseComponents/snail/vdom/VirtualDOM';
 
-import { Badge } from './badge/badge';
 import { Text, Button, Image, Select } from '../baseComponents/index';
 
 import Navigate from '../../shared/services/router/Navigate';
@@ -19,6 +18,7 @@ import { PremiumPeriods, premiumPeriodsList } from '../../shared/models/premium'
 
 import delivery from '../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../assets/icons/badges/safe_deal.svg';
+import { Badge } from './badge/Badge';
 
 export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite';
 

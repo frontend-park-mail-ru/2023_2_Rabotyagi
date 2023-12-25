@@ -4,14 +4,14 @@ import { Component } from '../../../components/baseComponents/snail/component';
 import { createElement, createComponent, VDomNode, createText } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 
 import { Menu } from '../menu/menu';
-import { Loader } from '../../../components/loader/loader';
 import { ProfilePlaceholder } from '../placeholder/placeholder';
 import { Text, Button, TextLinkProps } from '../../../components/baseComponents';
 
 import { ResponseMessage, ResponseStatusChecker } from '../../../shared/constants/response';
 import { OrderCard, OrderCardProps, OrderCardType } from '../../../components/orderCard/orderCard';
-import { Card, CardProps, CardVariants } from '../../../components/card/card';
 import { CommentCard, CommentCardProps } from '../../../components/commentCard/commentCard';
+import { Card, CardProps, CardVariants } from '../../../components/card/Card';
+import { Loader } from '../../../components/loader/Loader';
 
 export type ProfileCardType = 'profile' | 'profile-saler' | 'favourite' | 'sold' | 'comment';
 
@@ -71,14 +71,12 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
 
     getMenuOptions() {
         const result: Array<TextLinkProps> = [];
-        const result: Array<TextLinkProps> = [];
         this.props.options.forEach((option, index) => {
             result.push({
                 text: option.name,
                 onclick: () => {
                     this.profileNavigate(option.link, index);
                 },
-            });
             });
         });
 
@@ -143,7 +141,6 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
 
     createContainer() {
         const result: Array<VDomNode> = [];
-        const result: Array<VDomNode> = [];
 
         let variant = this.props.cardVariant;
         if (!variant) {
@@ -155,19 +152,16 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                 result.push(createComponent(
                     Card,
                     {
-                    {
                         variant: variant as CardVariants,
                         ...block as CardProps,
                         ...block as CardProps,
                     },
                 ));
             });
-            });
         } else if (variant == 'sold') {
             this.state.contentBlocks.forEach((block) => {
                 result.push(createComponent(
                     OrderCard,
-                    {
                     {
                         variant: variant as OrderCardType,
                         ...block as OrderCardProps,
@@ -179,7 +173,6 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
             this.state.contentBlocks.forEach((block) => {
                 result.push(createComponent(
                     CommentCard,
-                    { ...block as CommentCardProps },
                     { ...block as CommentCardProps },
                 ));
             });
@@ -193,7 +186,6 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
 
         return createElement(
             'div',
-            { class: 'profile-page' },
             { class: 'profile-page' },
             createComponent(
                 Text,
@@ -215,7 +207,6 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
             createElement(
                 'div',
                 { class: 'profile-content-block' },
-                { class: 'profile-content-block' },
                 (this.state.loading) ?
                     createComponent(
                         Loader, { },
@@ -227,8 +218,6 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                         ...this.createContainer(),
                     ) :
                     createElement(
-                        'div',
-                        { class: 'profile-content-block-empty' },
                         'div',
                         { class: 'profile-content-block-empty' },
                         createComponent(
@@ -251,8 +240,6 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                                 },
                             ) : createText(''),
                     ),
-            ),
-        );
             ),
         );
     }

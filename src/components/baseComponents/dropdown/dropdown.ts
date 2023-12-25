@@ -3,8 +3,8 @@ import './dropdown.scss';
 import { Component } from '../snail/component';
 import { VDomNode, createElement, createComponent, createText } from '../snail/vdom/VirtualDOM';
 
-import { Svg } from '../svg/svg';
-import { TextInput } from '../input/input';
+import { Svg } from '../index';
+import { TextInput } from '../index';
 
 import searchIcon from '../../../assets/icons/search.svg';
 

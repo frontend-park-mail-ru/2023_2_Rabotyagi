@@ -1,6 +1,6 @@
 import { Component } from '../../../../components/baseComponents/snail/component';
 import { VDomComponent, createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
-import { Card } from '../../../../components/card/card';
+import { Card } from '../../../../components/card/Card';
 import { UserApi } from '../../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../../shared/constants/response';
 import { ProfilePlaceholder } from '../../placeholder/placeholder';

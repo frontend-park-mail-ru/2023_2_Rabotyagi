@@ -3,8 +3,7 @@ import './feed.scss';
 import { Component } from '../baseComponents/snail/component';
 import { VDomNode, createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
 
-import { Card, CardProps } from '../card/card';
-import { Loader } from '../loader/loader';
+import { Loader } from '../loader/Loader';
 import { Text } from '../baseComponents/index';
 
 import { ProductApi } from '../../shared/api/product';
@@ -12,6 +11,7 @@ import { ResponseStatusChecker } from '../../shared/constants/response';
 
 import Navigate from '../../shared/services/router/Navigate';
 import { useDebounce } from '../baseComponents/snail/use/debounce';
+import { Card, CardProps } from '../card/Card';
 
 interface FeedState {
     products: Array<CardProps>,

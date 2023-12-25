@@ -1,9 +1,9 @@
-import './errorMessageBox.scss';
+import './ErrorMessageBox.scss';
 
 import { Component } from '../snail/component';
 import { createComponent, createElement } from '../snail/vdom/VirtualDOM';
 
-import { Text } from '../text/text';
+import { Text } from '../index';
 
 export interface ErrorMessageBoxProps {
     id?: string,

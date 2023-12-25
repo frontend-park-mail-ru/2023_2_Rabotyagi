@@ -6,7 +6,6 @@ import { VDomNode, createComponent, createElement } from '../../components/baseC
 import { Header } from '../../components/header/header';
 import { OrderFeed } from '../../components/orderFeed/orderFeed';
 import { Check } from './check/check';
-import { Loader } from '../../components/loader/loader';
 import { Text, Button } from '../../components/baseComponents/index';
 
 import { OrderApi } from '../../shared/api/order';
@@ -16,6 +15,7 @@ import UserStore from '../../shared/store/user';
 import CartStore, { CartStoreAction } from '../../shared/store/cart';
 import Navigate from '../../shared/services/router/Navigate';
 import Dispatcher from '../../shared/services/store/Dispatcher';
+import { Loader } from '../../components/loader/Loader';
 
 export interface CartPageState {
     loading: boolean,

@@ -4,10 +4,10 @@ import { Component } from '../baseComponents/snail/component';
 import { createElement, createComponent, VDomComponent } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { OrderCard } from '../orderCard/orderCard';
-import { Loader } from '../loader/loader';
 
 import CartStore, { CartStoreAction } from '../../shared/store/cart';
 import Dispatcher from '../../shared/services/store/Dispatcher';
+import { Loader } from '../loader/Loader';
 
 export interface OrderFeedState {
     loading: boolean,

@@ -18,7 +18,7 @@ export class SalerComments extends Component<never, never> {
                 options: [
                     {
                         name: 'Отзывы',
-                        link: '/profile/saler/comments',
+                        link: '/saler/comments',
                         emptyMessage: 'Никто пока не оставил вам отзыв.\nВсе оставленные вам отзывы будут отображаться на этой вкладке',
                         apiFunction: CommentApi.getComments,
                         apiParams: history.state.salerId,
