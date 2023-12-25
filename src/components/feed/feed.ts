@@ -3,7 +3,7 @@ import './feed.scss';
 import { Component } from '../baseComponents/snail/component';
 import { VDomNode, createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
 
-import { Loader } from '../loader/loader';
+import { Loader } from '../loader/Loader';
 import { Text } from '../baseComponents/index';
 
 import { ProductApi } from '../../shared/api/product';

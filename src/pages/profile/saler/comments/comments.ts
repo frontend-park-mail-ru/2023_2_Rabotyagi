@@ -1,7 +1,7 @@
 import { Component } from '../../../../components/baseComponents/snail/component';
 import { VDomNode, createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Loader } from '../../../../components/loader/loader';
+import { Loader } from '../../../../components/loader/Loader';
 import { Text } from '../../../../components/baseComponents';
 import { ProfilePlaceholder } from '../../placeholder/placeholder';
 

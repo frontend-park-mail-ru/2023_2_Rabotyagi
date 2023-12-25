@@ -18,7 +18,7 @@ import { PremiumPeriods, premiumPeriodsList } from '../../shared/models/premium'
 
 import delivery from '../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../assets/icons/badges/safe_deal.svg';
-import { Badge } from './badge/badge';
+import { Badge } from './badge/Badge';
 
 export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite';
 
