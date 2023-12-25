@@ -36,7 +36,6 @@ jobs:
               id: build
               with:
                   context: .
-                  file: Dockerfile.prod
                   build-args: |
                       SCHEMA=https://
                       API_URL=goods-galaxy.ru
