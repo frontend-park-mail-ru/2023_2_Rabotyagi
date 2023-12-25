@@ -31,6 +31,7 @@ interface ProductSidebarProps extends UserModel {
     parent: ProductBase,
     safe_deal: boolean,
     delivery: boolean,
+    comment_id: number | null,
 }
 
 interface ProductSidebarState {
@@ -341,18 +342,22 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                 createComponent(
                     Button,
                     {
-                        text: 'Оставить отзыв',
+                        text: (!this.props.comment_id) ? 'Оставить отзыв' : 'Посмотреть свой отзыв',
                         variant: 'outlined',
                         style: 'width: 100%;',
                         onclick: () => {
-                            if (!MessageStore.getVisible()) {
-                                Dispatcher.dispatch({
-                                    name: MessageStoreAction.SHOW_MESSAGE,
-                                    payload: createComponent(
-                                        CommentForm,
-                                        { saler: this.props },
-                                    ),
-                                });
+                            if (!this.props.comment_id) {
+                                if (!MessageStore.getVisible()) {
+                                    Dispatcher.dispatch({
+                                        name: MessageStoreAction.SHOW_MESSAGE,
+                                        payload: createComponent(
+                                            CommentForm,
+                                            { saler: this.props },
+                                        ),
+                                    });
+                                }
+                            } else {
+                                Navigate.navigateTo('saler/comments', { salerId: this.props.id, });
                             }
                         },
                     },

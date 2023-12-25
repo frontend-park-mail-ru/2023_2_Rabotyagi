@@ -60,7 +60,7 @@ declare interface ProductModelResponse extends ProductModelPut {
     views: number,
     premium: boolean,
     price_history?: Array<productPriceUnit> | null,
-
+    comment_id: number | null,
 }
 
 declare interface FavouriteModel {
