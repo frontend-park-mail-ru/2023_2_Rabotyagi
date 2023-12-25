@@ -67,8 +67,10 @@ export class CommentCard extends Component<CommentCardProps, never> {
                     },
                 ),
                 createComponent(
-                    TextArea,
+                    Text,
                     {
+                        tag: 'div',
+                        text: this.props.text,
                         className: 'comment-card-info-text',
                     },
                 ),
@@ -127,10 +129,8 @@ export class CommentCard extends Component<CommentCardProps, never> {
                     },
                 ),
                 createComponent(
-                    Text,
+                    TextArea,
                     {
-                        tag: 'div',
-                        text: this.props.text,
                         className: 'comment-card-info-text',
                     },
                 ),
@@ -145,6 +145,8 @@ export class CommentCard extends Component<CommentCardProps, never> {
                 return this.renderView();
             case 'own':
                 return this.renderOwn();
+            default: 
+                return this.renderView();
         }
     }
 }

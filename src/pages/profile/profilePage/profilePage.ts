@@ -93,7 +93,6 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
         try {
             resp = await option.apiFunction(option.apiParams);
         } catch (err: any) {
-            console.log(err);
             this.setState({
                 ...this.state,
                 loading: false,
@@ -101,8 +100,6 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                 selectedPage: selectedIndex,
             });
         }
-
-        console.log(resp);
 
         if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {
             if (ResponseStatusChecker.IsBadFormatRequest(resp)) {
