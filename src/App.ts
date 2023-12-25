@@ -9,7 +9,7 @@ import { MainPage } from './pages/main/Main';
 import { CartPage } from './pages/cart/CartPage';
 
 import { login } from './shared/store/commonActions/auth';
-import { Loader } from './components/loader/Loader';
+import { Loader } from './components/loader/loader';
 import { Product } from './pages/product/product';
 import { Profile } from './pages/profile/profile';
 import CityStore from './shared/store/city'; // eslint-disable-line @typescript-eslint/no-unused-vars

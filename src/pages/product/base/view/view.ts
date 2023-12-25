@@ -1,7 +1,7 @@
 import { Component } from '../../../../components/baseComponents/snail/component';
 import { createComponent, createElement, createText } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Carousel } from '../../../../components/carousel/Carousel';
+import { Carousel } from '../../../../components/carousel/carousel';
 import { Button, Text } from '../../../../components/baseComponents/index';
 
 import { UserApi } from '../../../../shared/api/user';

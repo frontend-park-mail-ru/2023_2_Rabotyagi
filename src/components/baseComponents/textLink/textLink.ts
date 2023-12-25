@@ -37,6 +37,7 @@ export class TextLink extends Component<TextLinkProps, never> {
     }
 
     render() {
+        
         return createElement(
             'div',
             {

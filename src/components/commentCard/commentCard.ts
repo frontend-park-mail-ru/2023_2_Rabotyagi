@@ -4,8 +4,9 @@ import { Component } from '../baseComponents/snail/component';
 import { createElement, createComponent } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Text, Image } from '../baseComponents';
-import { getRuDayFormat } from '../../shared/utils/dateConverter';
 import { Rating } from '../rating/rating';
+
+import { getRuDayFormat } from '../../shared/utils/dateConverter';
 
 export type CommentCardType = 'view' | 'own';
 

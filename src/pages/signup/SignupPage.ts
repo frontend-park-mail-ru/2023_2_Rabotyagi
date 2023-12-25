@@ -3,7 +3,7 @@ import './signup.scss';
 import { Component } from '../../components/baseComponents/snail/component';
 import { createComponent, createElement, createText } from '../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Caption } from '../../components/caption/Caption';
+import { Caption } from '../../components/caption/caption';
 import { Text, Button, TextInput, ErrorMessageBox, PasswordField } from '../../components/baseComponents/index';
 
 import Navigate from '../../shared/services/router/Navigate';

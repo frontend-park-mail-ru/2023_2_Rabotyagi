@@ -3,12 +3,12 @@ import './favourite.scss';
 import { Component } from '../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Card, CardProps } from '../../../components/card/Card';
+import { Card, CardProps } from '../../../components/card/card';
 
 import { UserApi } from '../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../shared/constants/response';
 import { ProfilePlaceholder } from '../placeholder/placeholder';
-import { Loader } from '../../../components/loader/Loader';
+import { Loader } from '../../../components/loader/loader';
 
 interface ProfileFavouritesState {
     items: Array<CardProps>,

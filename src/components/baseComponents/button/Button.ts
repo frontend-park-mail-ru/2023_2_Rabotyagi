@@ -3,8 +3,8 @@ import './button.scss';
 import { Component } from '../snail/component';
 import { createElement, createComponent, createText, VDomNode } from '../snail/vdom/VirtualDOM';
 
-import { Text, TextVariants } from '../text/Text';
-import { Svg } from '../svg/Svg';
+import { Text, TextVariants } from '../text/text';
+import { Svg } from '../svg/svg';
 import { Image } from '../image/image';
 
 export type ButtonTypes = 'primary' | 'neutral' | 'secondary' | 'accent' | 'outlined' | 'base' | 'image';
@@ -57,11 +57,10 @@ export interface ButtonImageProps extends ButtonEvents {
 export class Button extends Component<ButtonProps, never> {
 
     render() {
-        if (!this.props || !this.children) {
+        if (!this.children) {
             throw new Error('Button settings are undefined');
         }
 
-        // отделение параметров для тега и пользовательских параметров
         const {
             variant, subvariant,
             text, textvariant,
@@ -89,7 +88,6 @@ export class Button extends Component<ButtonProps, never> {
                 Text,
                 {
                     variant: textvariant || 'regular',
-                    // проверка на undefined через !== не теряет при передаче число 0 (и другие подобные значения)
                     text: text,
                     style: 'text-align: center; text-wrap: nowrap;',
                 },
@@ -106,11 +104,8 @@ export class Button extends Component<ButtonProps, never> {
 }
 
 export class ButtonImage extends Component<ButtonImageProps, never> {
-    public render(): VDomNode {
-        if (!this.props){
-            throw new Error('ButtonImageProps undefined');
-        }
 
+    render() {
         const {
             src,
             variant,

@@ -55,7 +55,7 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
                 errorText: errorText,
             });
 
-return;
+            return;
         }
 
         try {
@@ -97,6 +97,7 @@ return;
     }
 
     renderEdit() {
+        
         return createElement(
             'div',
             { class: 'comment-form' },

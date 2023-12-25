@@ -10,8 +10,9 @@ export interface TextAreaProps {
     oninput?: (e?: any) => void,
 }
 
-export class TextArea extends Component<TextAreaProps, {}> {
+export class TextArea extends Component<TextAreaProps, never> {
     render() {
+
         return createElement(
             'textarea',
             {

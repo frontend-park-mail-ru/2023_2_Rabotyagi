@@ -1,4 +1,4 @@
-import '../cardStyles/card.scss';
+import './badge.scss';
 
 import { Component } from '../../baseComponents/snail/component';
 import { createComponent, createElement, createText } from '../../baseComponents/snail/vdom/VirtualDOM';

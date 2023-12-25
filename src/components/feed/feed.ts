@@ -2,9 +2,10 @@ import './feed.scss';
 
 import { Component } from '../baseComponents/snail/component';
 import { VDomNode, createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
+
+import { Card, CardProps } from '../card/card';
+import { Loader } from '../loader/loader';
 import { Text } from '../baseComponents/index';
-import { Card, CardProps } from '../card/Card';
-import { Loader } from '../loader/Loader';
 
 import { ProductApi } from '../../shared/api/product';
 import { ResponseStatusChecker } from '../../shared/constants/response';
@@ -12,15 +13,12 @@ import { ResponseStatusChecker } from '../../shared/constants/response';
 import Navigate from '../../shared/services/router/Navigate';
 import { useDebounce } from '../baseComponents/snail/use/debounce';
 
-interface FeedProps {
-
-}
-
 interface FeedState {
     products: Array<CardProps>,
 }
 
-export class Feed extends Component<FeedProps, FeedState> {
+export class Feed extends Component<never, FeedState> {
+
     state: FeedState = {
         products: [],
     };
@@ -66,6 +64,7 @@ export class Feed extends Component<FeedProps, FeedState> {
 
     scrollEndEvent = () => {
         if (this.endOfProducts) {
+
             return;
         }
         if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight){
@@ -171,11 +170,3 @@ export class Feed extends Component<FeedProps, FeedState> {
         );
     }
 }
-
-// <div class="feed">
-//     <div class="feed-header">
-//         <span class="text-header">{{this.feedName}}</span>
-//         {{!-- <button class="btn-primary"><span class="text-regular">Выбор города</span></button> --}}
-//     </div>
-//     <div class="feed-content"></div>
-// </div>

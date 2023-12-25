@@ -4,7 +4,7 @@ import { Component } from '../../components/baseComponents/snail/component';
 import { createComponent, createElement, createText } from '../../components/baseComponents/snail/vdom/VirtualDOM';
 
 import { Cell } from './cell/Cell';
-import { Caption } from '../../components/caption/Caption';
+import { Caption } from '../../components/caption/caption';
 import { Text, Button, TextInput, Password, ErrorMessageBox } from '../../components/baseComponents/index';
 
 import Navigate from '../../shared/services/router/Navigate';

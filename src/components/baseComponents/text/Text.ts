@@ -1,4 +1,4 @@
-import './Text.scss';
+import './text.scss';
 
 import { Component } from '../snail/component';
 import { createElement, createText } from '../snail/vdom/VirtualDOM';

@@ -3,21 +3,24 @@ import './cardStyles/card.scss';
 import { Component } from '../baseComponents/snail/component';
 import { VDomComponent, VDomNode, createComponent, createElement, createText } from '../baseComponents/snail/vdom/VirtualDOM';
 
-import { Badge } from './badge/Badge';
+import { Badge } from './badge/badge';
 import { Text, Button, Image, Select } from '../baseComponents/index';
 
 import Navigate from '../../shared/services/router/Navigate';
 
+import { UserApi } from '../../shared/api/user';
+import { ProductApi } from '../../shared/api/product';
+import { PremiumApi } from '../../shared/api/premium';
+import { ResponseStatusChecker } from '../../shared/constants/response';
+
+import { Modal } from '../modal/modal';
+
+import { PremiumPeriods, premiumPeriodsList } from '../../shared/models/premium';
+
 import delivery from '../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../assets/icons/badges/safe_deal.svg';
-import { UserApi } from '../../shared/api/user';
-import { ResponseStatusChecker } from '../../shared/constants/response';
-import { ProductApi } from '../../shared/api/product';
-import { Modal } from '../modal/modal';
-import { PremiumPeriods, premiumPeriodsList } from '../../shared/models/premium';
-import { PremiumApi } from '../../shared/api/premium';
 
-export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite' | 'cart';
+export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite';
 
 export interface ImageProps {
     url: string
@@ -136,6 +139,7 @@ export class Card extends Component<CardProps, CardState> {
     }
 
     renderBase() {
+
         return createElement(
             'button',
             {
@@ -178,6 +182,7 @@ export class Card extends Component<CardProps, CardState> {
     }
 
     renderActiveButton() {
+
         const cp = this; // eslint-disable-line
 
         const changeActiveStatus = async(e: Event) => {
@@ -240,17 +245,9 @@ export class Card extends Component<CardProps, CardState> {
                         return;
                     }
 
-                    // @FIX Это оч жесткий костыль, за который мне стыдно, но пока diff работает плохо, будет так
+                    // @FIX
                     Navigate.navigateTo('/profile/orders');
                     Navigate.navigateTo('/profile/products');
-                    // cp.setProps({
-                    //     ...cp.props,
-                    //     premium: true,
-                    // });
-
-                    // cp.setState({
-                    //     modalActive: undefined,
-                    // });
                 }
 
             };
@@ -323,7 +320,7 @@ export class Card extends Component<CardProps, CardState> {
     };
 
     deleteFavourite = async(e: Event) => {
-        if (!this.props || !this.props.favouriteInfluence) {
+        if (!this.props.favouriteInfluence) {
             throw new Error('Favourite card props are undefined');
         }
 
@@ -355,9 +352,6 @@ export class Card extends Component<CardProps, CardState> {
 
         switch (this.props?.variant as CardVariants) {
             case 'base':
-                break;
-
-            case 'cart':
                 break;
 
             case 'favourite':
@@ -452,9 +446,6 @@ export class Card extends Component<CardProps, CardState> {
     }
 
     render() {
-        if (!this.props) {
-            throw new Error('Card props are undefined');
-        }
 
         switch(this.props.variant) {
             case 'base':

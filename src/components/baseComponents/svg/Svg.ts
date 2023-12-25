@@ -24,7 +24,6 @@ export class Svg extends Component<SvgProps, never> {
         if (this.props.id) {
             svgElement.setAttribute('id', this.props.id);
         }
-        // это необходимо исключительно для loader
         if (this.props.class) {
             this.props.class.split(' ').forEach((oneClass) => {
                 svgElement.classList.toggle(oneClass);

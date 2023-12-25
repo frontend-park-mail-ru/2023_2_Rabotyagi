@@ -2,7 +2,7 @@ import './edit.scss';
 import { BooleanInput, Button, FileInput, NumberInput, Select, Text, TextArea, TextInput } from '../../../../components/baseComponents/index';
 import { Component } from '../../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
-import { Carousel } from '../../../../components/carousel/Carousel';
+import { Carousel } from '../../../../components/carousel/carousel';
 import { FileApi } from '../../../../shared/api/file';
 import { ProductApi } from '../../../../shared/api/product';
 import { ResponseStatusChecker } from '../../../../shared/constants/response';

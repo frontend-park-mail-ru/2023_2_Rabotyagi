@@ -3,8 +3,8 @@ import './products.scss';
 import { Component } from '../../../components/baseComponents/snail/component';
 import { VDomNode, createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Card } from '../../../components/card/Card';
-import { Loader } from '../../../components/loader/Loader';
+import { Card } from '../../../components/card/card';
+import { Loader } from '../../../components/loader/loader';
 import { ProfilePlaceholder } from '../placeholder/placeholder';
 import { Button } from '../../../components/baseComponents';
 

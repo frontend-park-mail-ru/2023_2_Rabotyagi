@@ -6,16 +6,17 @@ import { VDomComponent, VDomElement, createComponent, createElement } from '../b
 import { Button, Dropdown, TextInput, ButtonImage } from '../baseComponents/index';
 
 import CartStore from '../../shared/store/cart';
-import Navigate from '../../shared/services/router/Navigate';
-
 import UserStore from '../../shared/store/user';
 import { logout } from '../../shared/store/commonActions/auth';
+import Navigate from '../../shared/services/router/Navigate';
 
-import logo from '../../assets/icons/logo.svg';
 import { ProductApi } from '../../shared/api/product';
 import { ResponseStatusChecker } from '../../shared/constants/response';
-import cart from '../../assets/icons/cart.svg';
+
 import { useDebounce } from '../baseComponents/snail/use/debounce';
+
+import logo from '../../assets/icons/logo.svg';
+import cart from '../../assets/icons/cart.svg';
 
 interface HeaderState {
     avatar: string | null,
@@ -137,6 +138,7 @@ export class Header extends Component<never, HeaderState>{
     }
 
     render() {
+        
         let tail = [];
 
         if (!UserStore.isAuth()){

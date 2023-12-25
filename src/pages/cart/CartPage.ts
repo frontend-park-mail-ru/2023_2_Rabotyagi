@@ -6,7 +6,7 @@ import { VDomNode, createComponent, createElement } from '../../components/baseC
 import { Header } from '../../components/header/header';
 import { OrderFeed } from '../../components/orderFeed/orderFeed';
 import { Check } from './check/check';
-import { Loader } from '../../components/loader/Loader';
+import { Loader } from '../../components/loader/loader';
 import { Text, Button } from '../../components/baseComponents/index';
 
 import { OrderApi } from '../../shared/api/order';

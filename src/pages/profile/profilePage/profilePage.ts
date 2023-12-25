@@ -4,13 +4,13 @@ import { Component } from '../../../components/baseComponents/snail/component';
 import { createElement, createComponent, VDomNode, createText } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 
 import { Menu } from '../menu/menu';
-import { Loader } from '../../../components/loader/Loader';
+import { Loader } from '../../../components/loader/loader';
 import { ProfilePlaceholder } from '../placeholder/placeholder';
 import { Text, Button, TextLinkProps } from '../../../components/baseComponents';
 
 import { ResponseMessage, ResponseStatusChecker } from '../../../shared/constants/response';
 import { OrderCard, OrderCardProps, OrderCardType } from '../../../components/orderCard/orderCard';
-import { Card, CardProps, CardVariants } from '../../../components/card/Card';
+import { Card, CardProps, CardVariants } from '../../../components/card/card';
 import { CommentCard, CommentCardProps } from '../../../components/commentCard/commentCard';
 
 export type ProfileCardType = 'profile' | 'profile-saler' | 'favourite' | 'sold' | 'comment';

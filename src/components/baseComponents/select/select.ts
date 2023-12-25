@@ -1,7 +1,9 @@
-import { Option } from '../option/option';
+import './select.scss';
+
 import { Component } from '../snail/component';
 import { createComponent, createElement } from '../snail/vdom/VirtualDOM';
-import './select.scss';
+
+import { Option } from '../option/option';
 
 interface SelectEvents {
     onchange?: (e: Event) => void,
@@ -17,10 +19,6 @@ interface SelectProps {
 
 export class Select extends Component<SelectProps, never> {
     createOptions = () => {
-        if (!this.props){
-            throw new Error('Select props must be set');
-        }
-
         const {key, value, select} = this.props;
 
         return this.props.items.map((item: any) => {
@@ -36,9 +34,6 @@ export class Select extends Component<SelectProps, never> {
     };
 
     public render() {
-        if (!this.props) {
-            throw new Error('Select props must be set');
-        }
 
         let props = {};
         if (this.props.events){
@@ -54,11 +49,3 @@ export class Select extends Component<SelectProps, never> {
         );
     }
 }
-
-// <select name="city_id">
-//     {{#each cities}}
-//     <option value="{{this.id}}">
-//         <span class="text-regular">{{this.name}}</span>
-//     </option>
-//     {{/each}}
-// </select>
