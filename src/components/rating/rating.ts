@@ -4,6 +4,8 @@ import { Component } from '../baseComponents/snail/component';
 import { createElement, createComponent, VDomNode } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Text } from '../baseComponents';
+import fillstar from '../../assets/icons/fillstar.svg';
+import star from '../../assets/icons/star.svg';
 
 export type RatingVariant = 'edit' | 'show';
 
@@ -64,8 +66,7 @@ return createElement(
                 'img',
                 {
                     src: (index <= rating) ?
-                        '../../assets/icons/fillstar.svg'
-                        : '../../assets/icons/star.svg',
+                        fillstar : star,
                 },
             ),
         );
