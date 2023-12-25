@@ -11,12 +11,13 @@ import { CartPage } from './pages/cart/CartPage';
 import { login } from './shared/store/commonActions/auth';
 import { Loader } from './components/loader/loader';
 import { Product } from './pages/product/product';
-import { Profile } from './pages/profile/profile';
+import { UserProfile } from './pages/profile/user/user';
 import CityStore from './shared/store/city'; // eslint-disable-line @typescript-eslint/no-unused-vars
 import { getOrders } from './shared/store/commonActions/getOrders';
 
 import MessageStore from './shared/store/message'; // eslint-disable-line @typescript-eslint/no-unused-vars
 import { MessageBox } from './components/baseComponents';
+import { SalerProfile } from './pages/profile/saler/saler';
 
 interface AppState {
     loading: boolean
@@ -90,7 +91,14 @@ export class App extends Component<never, AppState> {
                     Route,
                     { path: new RegExp('^/profile.*') },
                     createComponent(
-                        Profile, { },
+                        UserProfile, { },
+                    ),
+                ),
+                createComponent(
+                    Route,
+                    { path: new RegExp('^/saler.*') },
+                    createComponent(
+                        SalerProfile, { },
                     ),
                 ),
                 createComponent(

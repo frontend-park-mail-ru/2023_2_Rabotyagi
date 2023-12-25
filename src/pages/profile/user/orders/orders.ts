@@ -1,10 +1,10 @@
-import { Component } from '../../../components/baseComponents/snail/component';
-import { createComponent } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { Component } from '../../../../components/baseComponents/snail/component';
+import { createComponent } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { ProfilePage } from '../profilePage/profilePage';
+import { ProfilePage } from '../../profilePage/profilePage';
 
-import { OrderApi } from '../../../shared/api/order';
-import Navigate from '../../../shared/services/router/Navigate';
+import { OrderApi } from '../../../../shared/api/order';
+import Navigate from '../../../../shared/services/router/Navigate';
 
 export class ProfileOrders extends Component<never, never> {
 

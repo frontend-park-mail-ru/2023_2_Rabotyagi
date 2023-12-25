@@ -1,19 +1,26 @@
 import './products.scss';
 
-import { Component } from '../../../components/baseComponents/snail/component';
-import { VDomNode, createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { Component } from '../../../../components/baseComponents/snail/component';
+import { VDomNode, createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 
+<<<<<<< Updated upstream:src/pages/profile/products/products.ts
 import { Card } from '../../../components/card/card';
 import { Loader } from '../../../components/loader/loader';
 import { ProfilePlaceholder } from '../placeholder/placeholder';
 import { Button } from '../../../components/baseComponents';
+=======
+import { Card } from '../../../../components/card/Card';
+import { Loader } from '../../../../components/loader/Loader';
+import { ProfilePlaceholder } from '../../placeholder/placeholder';
+import { Button } from '../../../../components/baseComponents';
+>>>>>>> Stashed changes:src/pages/profile/user/products/products.ts
 
-import { UserApi } from '../../../shared/api/user';
-import { ResponseStatusChecker } from '../../../shared/constants/response';
+import { UserApi } from '../../../../shared/api/user';
+import { ResponseStatusChecker } from '../../../../shared/constants/response';
 
-import UserStore from '../../../shared/store/user';
-import Navigate from '../../../shared/services/router/Navigate';
-import { Menu } from '../menu/menu';
+import UserStore from '../../../../shared/store/user';
+import Navigate from '../../../../shared/services/router/Navigate';
+import { Menu } from '../../menu/menu';
 
 type TabVariant = 'all' | 'active' | 'not active';
 

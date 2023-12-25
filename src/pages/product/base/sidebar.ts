@@ -63,7 +63,7 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
             Navigate.navigateTo('/profile');
         }
         else {
-            Navigate.navigateTo('/profile/saler/products', {salerId: this.props.id});
+            Navigate.navigateTo('/saler/products', {salerId: this.props.id});
         }
     };
 

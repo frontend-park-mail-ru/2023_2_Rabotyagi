@@ -1,23 +1,21 @@
-import './profile.scss';
+import '../profile.scss';
 
-import { Component } from '../../components/baseComponents/snail/component';
-import { createComponent, createElement } from '../../components/baseComponents/snail/vdom/VirtualDOM';
+import { Component } from '../../../components/baseComponents/snail/component';
+import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Header } from '../../components/header/header';
-import { Route, Router } from '../../shared/services/router/Routing';
+import { Header } from '../../../components/header/header';
+import { Route, Router } from '../../../shared/services/router/Routing';
 
 import { ProfileProducts } from './products/products';
 import { ProfileSettings } from './settings/settings';
 import { ProfileFavourites } from './favourites/favourites';
 import { ProfileOrders } from './orders/orders';
-import { ProfileSaler } from './saler/saler';
-import { ProfileComments } from './comments/comments';
-import { Sidebar } from './sidebar/sidebar';
+import { ProfileComments } from '../comments/comments';
+import { UserSidebar } from './sidebar/sidebar';
 
-export class Profile extends Component<never, never> {
+export class UserProfile extends Component<never, never> {
 
     public render() {
-
         return createElement(
             'div',
             { class: 'wrapper-profile-page' },
@@ -32,7 +30,7 @@ export class Profile extends Component<never, never> {
                     'div',
                     { class: 'profile-info' },
                     createComponent(
-                        Sidebar,
+                        UserSidebar,
                         {},
                     ),
                     createComponent(
@@ -89,25 +87,15 @@ export class Profile extends Component<never, never> {
                            ),
                        ),
                        createComponent(
-                        Route,
-                        {
-                            path: new RegExp('/profile/comments.*'),
-                        },
-                        createComponent(
-                            ProfileComments,
-                            {},
+                            Route,
+                            {
+                                path: new RegExp('/profile/comments.*'),
+                            },
+                            createComponent(
+                                ProfileComments,
+                                {},
+                            ),
                         ),
-                    ),
-                       createComponent(
-                           Route,
-                           {
-                               path: new RegExp('/profile/saler.+'),
-                           },
-                           createComponent(
-                               ProfileSaler,
-                               {},
-                           ),
-                       ),
                    ),
                 ),
             ),

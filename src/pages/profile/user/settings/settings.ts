@@ -1,12 +1,12 @@
 import './settings.scss';
-import { Button, FileInput, Text, TextInput } from '../../../components/baseComponents/index';
-import { Component } from '../../../components/baseComponents/snail/component';
-import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
-import user, { UserStoreAction } from '../../../shared/store/user';
-import Dispatcher from '../../../shared/services/store/Dispatcher';
-import { UserApi } from '../../../shared/api/user';
-import { ResponseStatusChecker } from '../../../shared/constants/response';
-import { FileApi } from '../../../shared/api/file';
+import { Button, FileInput, Text, TextInput } from '../../../../components/baseComponents/index';
+import { Component } from '../../../../components/baseComponents/snail/component';
+import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
+import user, { UserStoreAction } from '../../../../shared/store/user';
+import Dispatcher from '../../../../shared/services/store/Dispatcher';
+import { UserApi } from '../../../../shared/api/user';
+import { ResponseStatusChecker } from '../../../../shared/constants/response';
+import { FileApi } from '../../../../shared/api/file';
 
 type inputFields = UserModelPatch & {
     forUpload?: File,

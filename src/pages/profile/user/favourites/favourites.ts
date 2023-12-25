@@ -1,14 +1,14 @@
 import './favourite.scss';
 
-import { Component } from '../../../components/baseComponents/snail/component';
-import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { Component } from '../../../../components/baseComponents/snail/component';
+import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Card, CardProps } from '../../../components/card/card';
+import { Card, CardProps } from '../../../../components/card/Card';
 
-import { UserApi } from '../../../shared/api/user';
-import { ResponseStatusChecker } from '../../../shared/constants/response';
-import { ProfilePlaceholder } from '../placeholder/placeholder';
-import { Loader } from '../../../components/loader/loader';
+import { UserApi } from '../../../../shared/api/user';
+import { ResponseStatusChecker } from '../../../../shared/constants/response';
+import { ProfilePlaceholder } from '../../placeholder/placeholder';
+import { Loader } from '../../../../components/loader/Loader';
 
 interface ProfileFavouritesState {
     items: Array<CardProps>,
