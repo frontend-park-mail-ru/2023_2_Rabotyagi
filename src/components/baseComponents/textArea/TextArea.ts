@@ -1,18 +1,23 @@
+import './textArea.scss';
+
 import { Component } from '../snail/component';
 import { createElement } from '../snail/vdom/VirtualDOM';
 
 export interface TextAreaProps {
-
+    placeholder?: string,
+    required?: boolean,
+    className?: string,
+    oninput?: (e?: any) => void,
 }
 
-export class TextArea extends Component<TextAreaProps, {}> {
+export class TextArea extends Component<TextAreaProps, never> {
     render() {
-        const { ...textAreaProps } = this.props;
 
         return createElement(
             'textarea',
             {
-                ...textAreaProps,
+                ...this.props,
+                class: 'text-regular' + ((this.props.className && this.props.className !== '') ? ' ' + this.props.className : ''),
             },
         );
     }

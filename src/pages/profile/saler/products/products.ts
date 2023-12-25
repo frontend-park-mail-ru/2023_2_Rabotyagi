@@ -3,7 +3,7 @@ import { VDomComponent, createComponent, createElement } from '../../../../compo
 import { Card } from '../../../../components/card/Card';
 import { UserApi } from '../../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../../shared/constants/response';
-import { ProfilePlaceholder } from '../../placeholder';
+import { ProfilePlaceholder } from '../../placeholder/placeholder';
 import './products.scss';
 
 interface SalerProductsState {

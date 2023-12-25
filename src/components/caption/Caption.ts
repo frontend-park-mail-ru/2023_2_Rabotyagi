@@ -11,9 +11,6 @@ export interface CaptionProps {
 
 export class Caption extends Component<CaptionProps, {}> {
     render() {
-        if (!this.props) {
-            throw new Error('Caption settings are undefined');
-        }
 
         return createComponent(
             Text,

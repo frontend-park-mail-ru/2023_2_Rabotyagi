@@ -33,7 +33,16 @@ export enum OrderRoutes {
     GET_BASKET = 'order/get_basket',
     UPDATE_COUNT = 'order/update_count',
     UPDATE_STATUS = 'order/update_status',
+    SOLD = 'order/sold',
+    STATUS_NOT_IN_BASKET = 'order/get_not_in_basket',
     DELETE = 'order/delete',
+}
+
+export enum CommentRoutes {
+    ADD = 'comment/add',
+    DELETE = 'comment/delete',
+    GET_LIST = 'comment/get_list',
+    UPDATE = 'comment/update',
 }
 
 export enum ProductRoutes {

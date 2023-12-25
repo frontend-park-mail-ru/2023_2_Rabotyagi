@@ -1,0 +1,55 @@
+@use '../../assets/css/vars.scss';
+
+.rating-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &-stars {
+        display: flex;
+        justify-content: start;
+
+        &-star {
+            padding: 0 4px;
+
+            img {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+
+    &-title {
+        font-weight: bold;
+    }
+}
+
+.rating-box-show {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: row-reverse;
+    gap: 8px;
+
+    &-stars {
+        display: flex;
+        justify-content: start;
+
+        &-star {
+            padding: 0 4px;
+
+            img {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+}
+
+.rating-error, .rating-bad {
+    color: vars.$text-accent;
+}
+
+.rating-good {
+    color: vars.$palette-secondary;
+}

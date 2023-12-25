@@ -1,13 +1,5 @@
 @use '../../../assets/css/vars.scss';
 
-.alert-message {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 16px;
-}
-
 .product-menu {
     position: sticky;
     top: 24px;
@@ -18,6 +10,12 @@
     gap: 10px;
     
     .product-menu-price {
+        display: flex;
+        justify-content: start;
+        gap: 10px;
+    }
+
+    .product-menu-price-history {
         display: flex;
         justify-content: start;
         gap: 10px;

@@ -1,0 +1,20 @@
+@use '../../../assets/css/vars.scss';
+@use '../cardStyles/cardConstants.scss';
+
+.badge-base {
+    position: absolute;
+    border-radius: cardConstants.$badge-radius cardConstants.$badge-radius 0 0;
+    background-color: vars.$background-secondary;
+    padding: 8px 9px;
+}
+
+.badge-profile {
+    display: flex;
+    padding: 4px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    border-radius: cardConstants.$badge-radius;
+    background: vars.$background-secondary;    
+}

@@ -15,6 +15,7 @@ export enum CartStoreAction {
 interface CartStoreState {
     goods: Array<OrderModel>,
     saler: SalerModel,
+    loading: boolean,
 }
 
 const initState: CartStoreState = {
@@ -25,6 +26,7 @@ const initState: CartStoreState = {
         email: '',
         avatar: '',
     },
+    loading: false,
 };
 
 class CartStore extends Store<CartStoreState> {
@@ -68,7 +70,9 @@ class CartStore extends Store<CartStoreState> {
     }
 
     public clear() {
-        this.state = { ...initState };
+        this.state = structuredClone(initState);
+        this.state.goods = [];
+        this.state.loading = false;
     }
 
     public init() {
@@ -88,6 +92,7 @@ class CartStore extends Store<CartStoreState> {
             ...this.state.saler,
             ...saler,
         };
+        this.state.loading = false;
     }
 
     public hasProduct(productId: number) {
@@ -99,8 +104,9 @@ class CartStore extends Store<CartStoreState> {
     private fullCart(goods: Array<OrderModel>, saler: SalerModel) {
         this.state.goods = [ ...goods ];
         this.updateUser(saler);
+        this.state.loading = false;
 
-        return true;
+return true;
     }
 
     private addInCart(good: OrderModel, saler: SalerModel) {
@@ -109,11 +115,13 @@ class CartStore extends Store<CartStoreState> {
             if (!this.hasUser()) {
                 this.updateUser(saler);
             }
+            this.state.loading = false;
 
-            return true;
+return true;
         }
+        this.state.loading = false;
 
-        return false;
+return false;
     }
 
     private updateOrderCount(orderId: number, count: number) {
@@ -121,6 +129,7 @@ class CartStore extends Store<CartStoreState> {
         if (index !== -1) {
             this.state.goods[ index ].count = count;
         }
+        this.state.loading = false;
     }
 
     private deleteFromCart(orderId: number) {
@@ -133,6 +142,7 @@ class CartStore extends Store<CartStoreState> {
         } else {
             console.error(new Error('Error when deleting from cart'));
         }
+        this.state.loading = false;
     }
 
     public getCount() {
@@ -155,6 +165,7 @@ class CartStore extends Store<CartStoreState> {
 
     public async refresh() {
         await getOrders();
+        this.state.loading = false;
     }
 
     public getGoods() {
@@ -167,7 +178,8 @@ class CartStore extends Store<CartStoreState> {
         if (index !== -1) {
             return this.state.goods[index];
         }
-        return this.state.goods[0];
+
+return this.state.goods[0];
     }
 
     public getSaler() {

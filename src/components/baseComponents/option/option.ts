@@ -1,7 +1,9 @@
 import './option.scss';
-import { Text } from '../index';
+
 import { Component } from '../snail/component';
 import { createComponent, createElement } from '../snail/vdom/VirtualDOM';
+
+import { Text } from '../index';
 
 export interface OptionProps {
     key: string,
@@ -12,15 +14,29 @@ export interface OptionProps {
 export class Option extends Component<OptionProps, never> {
 
     public render() {
-        if (!this.props) {
-            throw new Error('Option props must be set');
+
+        const {selected} = this.props;
+
+        if (selected) {
+            return createElement(
+                'option',
+                {
+                    value: this.props.key,
+                    selected: 'selected',
+                },
+                createComponent(
+                    Text,
+                    {
+                        text: this.props.value,
+                    },
+                ),
+            );
         }
 
         return createElement(
             'option',
             {
                 value: this.props.key,
-                'selected': 'selected',
             },
             createComponent(
                 Text,
@@ -29,9 +45,6 @@ export class Option extends Component<OptionProps, never> {
                 },
             ),
         );
+
     }
 }
-
-// <option value="{{this.id}}">
-//     <span class="text-regular">{{this.name}}</span>
-// </option>

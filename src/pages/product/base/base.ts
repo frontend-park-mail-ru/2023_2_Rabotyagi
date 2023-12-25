@@ -119,43 +119,49 @@ export class ProductBase extends Component<never, ProductBaseState> {
         else {
             content = createComponent(
                 ProductBaseEdit,
-                {...this.state.product},
+                {
+                    ...this.state.product,
+                    parent: this,
+                },
+            );
+        }
+
+        const sidebar = [];
+        if (this.state.saler && !this.state.editMode) {
+            sidebar.push(
+                createComponent(
+                    ProductSidebar,
+                    {
+                        ...this.state.saler,
+                        'product_id': this.state.product?.id ? this.state.product.id : 0,
+                        price: this.state.product?.price ? this.state.product.price : 0,
+                        'price_history': this.state.product?.price_history,
+                        parent: this,
+                        'safe_deal': this.state.product?.safe_deal || false,
+                        delivery: this.state.product?.delivery || false,
+                    },
+                ),
             );
         }
 
         return createElement(
-            'view',
+            'wrapper',
             {
-                class: 'product',
+                class: 'wrapper-product',
             },
-            (this.state.product) ?
-            content
-            :
             createElement(
-                'div1',
-                {},
-            ),
-            (this.state.saler) ?
-            createComponent(
-                ProductSidebar,
+                'div',
                 {
-                    ...this.state.saler,
-                    'product_id': this.state.product?.id ? this.state.product.id : 0,
-                    price: this.state.product?.price ? this.state.product.price : 0,
-                    'price_history': this.state.product?.price_history,
-                    parent: this,
-                    safe_deal: this.state.product?.safe_deal || false,
-                    delivery: this.state.product?.delivery || false,
-                    // callbacks: {
-                    //     switchEditMode: this.switchEditMode,
-                    //     isEditMode: this.isEditMode,
-                    // },
+                    class: 'product',
                 },
-            )
-            :
-            createElement(
-                'div2',
-                {},
+                (this.state.product) ?
+                content
+                :
+                createElement(
+                    'div1',
+                    {},
+                ),
+                ...sidebar,
             ),
         );
     }

@@ -23,23 +23,23 @@ export class MessageBox extends Component<never, never> {
             },
             createElement(
                 'div',
-                { class: 'message-box-content', },
+                { class: 'message-box-content' },
                 MessageStore.getMessage(),
             ),
             createElement(
                 'div',
-                { class: 'message-box-menu', },
+                { class: 'message-box-menu' },
                 createComponent(
                     Button,
                     {
                         variant: 'primary',
                         text: 'Закрыть',
                         onclick: () => {
-                            Dispatcher.dispatch({ name: MessageStoreAction.HIDE_MESSAGE, });
+                            Dispatcher.dispatch({ name: MessageStoreAction.HIDE_MESSAGE });
                         },
-                    }
-                )
+                    },
+                ),
             ),
-        )
+        );
     }
 }

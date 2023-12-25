@@ -1,27 +1,26 @@
 import './modal.scss';
+
 import { Component } from '../baseComponents/snail/component';
-import { VDomNode, createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
+import { createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
+
 import { Button, Text } from '../baseComponents';
 
 interface ModalProps {
     onAccept: () => void,
-    onDeny: () => void
+    onDeny: () => void,
 }
 
 export class Modal extends Component<ModalProps, never> {
 
-    public render(): VDomNode {
+    render() {
+        console.log(this.props);
 
         return createElement(
             'modal',
-            {
-                class: 'modal',
-            },
+            { class: 'modal', },
             createComponent(
                 Text,
-                {
-                    text: 'Длительность подписки',
-                },
+                { text: 'Длительность подписки', },
             ),
             ...this.children,
             createComponent(
@@ -29,7 +28,7 @@ export class Modal extends Component<ModalProps, never> {
                 {
                     text: 'Принять',
                     variant: 'primary',
-                    onclick: this.props?.onAccept,
+                    onclick: this.props.onAccept,
                 },
             ),
             createComponent(
@@ -37,7 +36,7 @@ export class Modal extends Component<ModalProps, never> {
                 {
                     text: 'Отмена',
                     variant: 'neutral',
-                    onclick: this.props?.onDeny,
+                    onclick: this.props.onDeny,
                 },
             ),
         );

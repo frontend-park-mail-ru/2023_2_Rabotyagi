@@ -3,14 +3,14 @@ import './ErrorMessageBox.scss';
 import { Component } from '../snail/component';
 import { createComponent, createElement } from '../snail/vdom/VirtualDOM';
 
-import { Text } from '../text/Text';
+import { Text } from '../index';
 
 export interface ErrorMessageBoxProps {
     id?: string,
     text: string
 }
 
-export class ErrorMessageBox extends Component<ErrorMessageBoxProps, {}> {
+export class ErrorMessageBox extends Component<ErrorMessageBoxProps, never> {
 
     render() {
         if (!this.props) {

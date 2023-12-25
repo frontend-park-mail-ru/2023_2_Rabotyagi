@@ -3,21 +3,24 @@ import './cardStyles/card.scss';
 import { Component } from '../baseComponents/snail/component';
 import { VDomComponent, VDomNode, createComponent, createElement, createText } from '../baseComponents/snail/vdom/VirtualDOM';
 
-import { Badge } from './badge/Badge';
 import { Text, Button, Image, Select } from '../baseComponents/index';
 
 import Navigate from '../../shared/services/router/Navigate';
 
+import { UserApi } from '../../shared/api/user';
+import { ProductApi } from '../../shared/api/product';
+import { PremiumApi } from '../../shared/api/premium';
+import { ResponseStatusChecker } from '../../shared/constants/response';
+
+import { Modal } from '../modal/modal';
+
+import { PremiumPeriods, premiumPeriodsList } from '../../shared/models/premium';
+
 import delivery from '../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../assets/icons/badges/safe_deal.svg';
-import { UserApi } from '../../shared/api/user';
-import { ResponseStatusChecker } from '../../shared/constants/response';
-import { ProductApi } from '../../shared/api/product';
-import { Modal } from '../modal/modal';
-import { PremiumPeriods, premiumPeriodsList } from '../../shared/models/premium';
-import { PremiumApi } from '../../shared/api/premium';
+import { Badge } from './badge/Badge';
 
-export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite' | 'cart';
+export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite';
 
 export interface ImageProps {
     url: string
@@ -136,6 +139,7 @@ export class Card extends Component<CardProps, CardState> {
     }
 
     renderBase() {
+
         return createElement(
             'button',
             {
@@ -167,7 +171,7 @@ export class Card extends Component<CardProps, CardState> {
                     'div',
                     { class: 'info-base' },
                     createComponent(
-                        Text, { text: this.props.price.toString() + ' ₽' },
+                        Text, { text: this.props.price, type: 'price' },
                     ),
                     createComponent(
                         Text, { text: this.props.title, className: 'title-base' },
@@ -178,6 +182,7 @@ export class Card extends Component<CardProps, CardState> {
     }
 
     renderActiveButton() {
+
         const cp = this; // eslint-disable-line
 
         const changeActiveStatus = async(e: Event) => {
@@ -214,10 +219,6 @@ export class Card extends Component<CardProps, CardState> {
     }
 
     renderPromoteButton() {
-        // if (!this.props) {
-        //     throw new Error('Card props are undefined');
-        // }
-        const cp = this; // eslint-disable-line
 
         const promoteEvent = (e: Event) => {
             e.stopPropagation();
@@ -228,11 +229,11 @@ export class Card extends Component<CardProps, CardState> {
             }
 
             const accept = async() => {
-                if (cp.props) {
+                if (this.props) {
                     let res;
 
                     try {
-                        res = await PremiumApi.add(cp.props.id, period);
+                        res = await PremiumApi.add(this.props.id, period);
                     }
                     catch(err){
                         console.error(err);
@@ -240,21 +241,16 @@ export class Card extends Component<CardProps, CardState> {
                         return;
                     }
 
-                    if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
+                    if (!ResponseStatusChecker.IsRedirectResponse(res)) {
                         return;
                     }
 
-                    // @FIX Это оч жесткий костыль, за который мне стыдно, но пока diff работает плохо, будет так
-                    // Navigate.navigateTo('/profile/orders');
-                    // Navigate.navigateTo('/profile/products');
-                    cp.setProps({
-                        ...cp.props,
-                        premium: true,
-                    });
+                    const url = res.body.redirect_url;
+                    Navigate.navigateTo(url, {}, true);
 
-                    cp.setState({
-                        modalActive: undefined,
-                    });
+                    // @FIX
+                    //Navigate.navigateTo('/profile/orders');
+                    //Navigate.navigateTo('/profile/products');
                 }
 
             };
@@ -327,7 +323,7 @@ export class Card extends Component<CardProps, CardState> {
     };
 
     deleteFavourite = async(e: Event) => {
-        if (!this.props || !this.props.favouriteInfluence) {
+        if (!this.props.favouriteInfluence) {
             throw new Error('Favourite card props are undefined');
         }
 
@@ -361,9 +357,6 @@ export class Card extends Component<CardProps, CardState> {
             case 'base':
                 break;
 
-            case 'cart':
-                break;
-
             case 'favourite':
                 this.deleteFavourite(e);
                 break;
@@ -375,9 +368,6 @@ export class Card extends Component<CardProps, CardState> {
     };
 
     renderProfile() {
-        if (!this.props) {
-            throw new Error('Card props are undefined');
-        }
 
         const modal: Array<VDomComponent> = [];
 
@@ -405,10 +395,6 @@ export class Card extends Component<CardProps, CardState> {
                             src: this.props.images[0].url,
                         },
                     )
-                    // createElement(
-                    //     'img',
-                    //     { class: 'image-profile', src: this.props.images[0].url },
-                    // )
                     :
                     createElement(
                         'div',
@@ -418,7 +404,7 @@ export class Card extends Component<CardProps, CardState> {
                     'div',
                     { class: 'content-profile' },
                     createComponent(
-                        Text, { text: this.props.price.toString() + ' ₽' },
+                        Text, { text: this.props.price, type: 'price' },
                     ),
                     createComponent(
                         Text, { text: this.props.title, className: 'title-profile' },
@@ -432,7 +418,11 @@ export class Card extends Component<CardProps, CardState> {
                             'div',
                             { class: 'badges-profile' },
                             ...this.renderBadges('badge-profile'),
-                        ) : createText(''),
+                        ) :
+                        createElement(
+                            'div',
+                            { class: 'badges-profile' },
+                        ),
                     (variant == 'profile') ?
                         this.renderActiveButton()
                         : createText(''),
@@ -443,7 +433,7 @@ export class Card extends Component<CardProps, CardState> {
                         createComponent(
                             Button,
                             {
-                                variant: 'outlined',
+                                variant: 'accent',
                                 text: 'Удалить',
                                 style: 'width: 100%;',
                                 onclick: this.deleteFunction,
@@ -454,14 +444,7 @@ export class Card extends Component<CardProps, CardState> {
         );
     }
 
-    renderCart() {
-
-    }
-
     render() {
-        if (!this.props) {
-            throw new Error('Card props are undefined');
-        }
 
         switch(this.props.variant) {
             case 'base':

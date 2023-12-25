@@ -3,15 +3,10 @@ import './dropdown.scss';
 import { Component } from '../snail/component';
 import { VDomNode, createElement, createComponent, createText } from '../snail/vdom/VirtualDOM';
 
-import { Svg } from '../svg/Svg';
-import { TextInput } from '../input/Input';
+import { Svg } from '../index';
+import { TextInput } from '../index';
 
 import searchIcon from '../../../assets/icons/search.svg';
-
-// примечания к решению:
-// прдеполагается, что dropdown всегда будет привязан к компоненту выше
-// то есть всегда есть кнопка или строка ввода, которая влияет на состояние компонента dropdown извне
-// внешнее воздействие на компонент осуществляется через его пропсы
 
 interface DropdownProps {
     search?: boolean,
@@ -20,7 +15,6 @@ interface DropdownProps {
 
 interface DropDownState {
     hidden: boolean,
-    // buf?: boolean,
 }
 
 export class Dropdown extends Component<DropdownProps, DropDownState> {
@@ -35,9 +29,6 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
     }
 
     public render(): VDomNode {
-        if (!this.props) {
-            throw new Error('Dropdown props are undefined');
-        }
 
         return createElement(
             'div',

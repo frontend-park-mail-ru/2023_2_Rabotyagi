@@ -15,11 +15,17 @@ export class Navigate {
         this.callbacks.push(newCallback);
     }
 
-    navigateTo(url: string, state: any = {}) {
+    removeCallback(oldCallback: NavigateCallback) {
+        this.callbacks = this.callbacks.filter(callback => callback !== oldCallback);
+    }
+
+    navigateTo(url: string, state: any = {}, out: boolean = false) {
         history.pushState(state, '', url);
-        this.callbacks.forEach((callback) => {
-            callback();
-        });
+        if (!out) {
+            this.callbacks.forEach((callback) => {
+                callback();
+            });
+        }
     }
 }
 

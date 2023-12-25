@@ -3,32 +3,40 @@ import './Text.scss';
 import { Component } from '../snail/component';
 import { createElement, createText } from '../snail/vdom/VirtualDOM';
 
-export type TextTypes = 'regular' | 'header' | 'subheader' | 'caption';
+export type TextVariants = 'regular' | 'header' | 'subheader' | 'caption';
+export type TextTypes = 'default' | 'price';
 
 export const TextPrefix = 'text-';
-export const getTextClass = (type: TextTypes | undefined): string => {
+export const getTextClass = (type: TextVariants | undefined): string => {
     return TextPrefix + (type || 'regular');
 };
 
 export interface TextProps {
     text: string | number | boolean | null,
     id?: string,
-    variant?: TextTypes,
+    variant?: TextVariants,
     tag?: 'div' | 'span' | 'p',
     style?: string,
+    type?: TextTypes,
     name?: string,
-    type?: string,
     className?: string,
 }
 
-export class Text extends Component<TextProps, {}> {
+export class Text extends Component<TextProps, never> {
+    private priceSplit(price: number): string {
+        const str = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₽';
+
+        return str;
+    }
 
     render() {
-        if (!this.props) {
-            throw new Error('Text settings are undefined');
-        }
+        const { variant, tag, text, className, type, ...textProps } = this.props;
 
-        const { variant, tag, text, className, ...textProps } = this.props;
+        let newText = text;
+
+        if (type === 'price' && newText !== undefined) {
+            newText = this.priceSplit(newText as number);
+        }
 
         return createElement(
             tag || 'span',
@@ -36,7 +44,8 @@ export class Text extends Component<TextProps, {}> {
                 ...textProps,
                 class: (className ? className + ' ' : '') + getTextClass(variant),
             },
-            createText(text),
+            createText(newText),
         );
     }
 }
+

@@ -1,22 +1,40 @@
-.content-add {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    width: 100%;
-    
-    &-body {
-        display: grid;
-        grid-template-columns: 100px 1fr;
-        grid-row-gap: 24px;
-        padding: 32px;
-        width: 100%;
-    }
+@use '../../../assets/css/vars.scss';
+@use '../../../assets/css/utility.scss';
+@use '../../../assets/css/sizes.scss';
 
-    &-btn-group {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-column-gap: 24px;
-        padding: 32px;
-        width: 50%;
+.wrapper-product-new {
+    @extend .wrapper !optional;
+    background-color: vars.$background-secondary;
+    flex-grow: 1;
+    padding-bottom: 10vh;
+
+    .content-add {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        width: sizes.$desktop;
+        
+        &-body {
+            display: grid;
+            grid-template-columns: 10% 1fr;
+            grid-row-gap: 24px;
+            padding: 32px;
+            width: 100%;
+            align-items: center;
+        }
+
+        &-error {
+            padding-left: 32px;
+            padding-right: 32px;
+            width: 100%;
+        }
+    
+        &-btn-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-column-gap: 24px;
+            padding: 32px;
+            width: 50%;
+        }
     }
 }

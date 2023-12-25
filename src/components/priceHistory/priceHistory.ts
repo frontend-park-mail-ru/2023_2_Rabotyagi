@@ -16,8 +16,6 @@ export interface PriceHistoryState {
     graphicPadding: number,
 }
 
-export type PriceHistoryGrowingClass = 'up' | 'down' | 'line';
-
 export class PriceHistory extends Component<PriceHistoryProps, PriceHistoryState> {
 
     state = {
@@ -32,32 +30,6 @@ export class PriceHistory extends Component<PriceHistoryProps, PriceHistoryState
         return Math.min(...this.props.points.map(element => element.price), this.props.price);
     }
 
-    graphicYLength() {
-        return this.maxPrice() - this.minPrice();
-    }
-
-    startTime(points: Array<productPriceUnit>) {
-        return points[0].created_at;
-    }
-
-    endTime() {
-        const nowDate = new Date();
-        return nowDate.toString();
-    }
-
-    getGrowingClass(points: Array<productPriceUnit>): PriceHistoryGrowingClass {
-        const reversePoints = points.reverse();
-        const nextUnequalElement = reversePoints.find((element) => element.price !== reversePoints[0].price);
-        if (!nextUnequalElement) {
-            return 'line';
-        }
-        if (nextUnequalElement.price > reversePoints[0].price) {
-            return 'up';
-        }
-
-        return 'down';
-    }
-
     getYCoor(price: number, minPrice: number, priceLength: number): number {
         if (priceLength === 0) {
             return this.state.graphicPadding;
@@ -68,7 +40,7 @@ export class PriceHistory extends Component<PriceHistoryProps, PriceHistoryState
             result += this.state.graphicPadding;
         if (result > 50)
             result -= this.state.graphicPadding;
-        
+
         return result;
     }
 
@@ -116,13 +88,14 @@ export class PriceHistory extends Component<PriceHistoryProps, PriceHistoryState
 
     getDifferenceTitle(minPrice: number, maxPrice: number) {
         if (maxPrice !== minPrice) {
-            return 'Цена менялась от ' + this.minPrice() + ' ₽ до ' + this.maxPrice() + ' ₽'
-        }   
+            return 'Цена менялась от ' + this.minPrice() + ' ₽ до ' + this.maxPrice() + ' ₽';
+        }
 
-        return minPrice.toString() + ' ₽'; 
+        return minPrice.toString() + ' ₽';
     }
 
     render() {
+
         if (this.props.points.length == 0) {
             throw new Error('Points must have at least one point');
         }

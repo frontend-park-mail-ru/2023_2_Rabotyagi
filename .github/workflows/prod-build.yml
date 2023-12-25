@@ -36,7 +36,6 @@ jobs:
               id: build
               with:
                   context: .
-                  file: Dockerfile.prod
                   build-args: |
                       SCHEMA=https://
                       API_URL=goods-galaxy.ru
@@ -45,28 +44,80 @@ jobs:
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
 
+    notify-build-good:
+        runs-on: ubuntu-latest
+        if: ${{ always() && needs.build.result == 'success' }}
+        needs: [build]
+        steps:
             - name: Send Good Notification
               uses: appleboy/telegram-action@master
-              if: success()
               with:
                   to: ${{ secrets.TELEGRAM_CHAT }}
                   token: ${{ secrets.TELEGRAM_TOKEN }}
-
                   message: |
-                      Билд образа
+                      Билд prod образа
                         - ${{ github.repository }}:${{github.ref_name}}
                       Закончился с ✅
                       https://github.com/frontend-park-mail-ru/2023_2_Rabotyagi/commit/${{github.sha}}
 
+    notify-build-bad:
+        runs-on: ubuntu-latest
+        if: ${{ always() && needs.build.result == 'failure' }}
+        needs: [build]
+        steps:
             - name: Send Bad Notification
               uses: appleboy/telegram-action@master
-              if: failure() && steps.build.outcome == 'failure'
               with:
                   to: ${{ secrets.TELEGRAM_CHAT }}
                   token: ${{ secrets.TELEGRAM_TOKEN }}
-                  # format: markdown
                   message: |
-                      Билд образа
+                      Билд prod образа
                         - ${{ github.repository }}:${{github.ref_name}}
                       Закончился с ❌
                       https://github.com/frontend-park-mail-ru/2023_2_Rabotyagi/actions/runs/${{github.run_id}}
+
+    deploy:
+        runs-on: ubuntu-latest
+        if: ${{ always() && needs.build.result == 'success' }}
+        needs: [notify-build-good, build]
+        steps:
+            - name: Deploy to dev
+              uses: appleboy/ssh-action@v1.0.0
+              with:
+                  host: goods-galaxy.ru
+                  username: ${{ secrets.BOT_USERNAME }}
+                  password: ${{ secrets.BOT_PASSWORD }}
+                  script_stop: true
+
+                  script: |
+                      cd /var/share/rabotyagi
+                      docker compose pull frontend
+                      docker compose up -d --force-recreate frontend
+
+    notify-deploy-good:
+        runs-on: ubuntu-latest
+        if: ${{ always() && needs.deploy.result == 'success' }}
+        needs: [deploy]
+        steps:
+            - name: Send Good Notification
+              uses: appleboy/telegram-action@master
+              with:
+                  to: ${{ secrets.TELEGRAM_CHAT }}
+                  token: ${{ secrets.TELEGRAM_TOKEN }}
+                  message: |
+                      Деплой на goods-galaxy состоялся, господа
+                      http://goods-galaxy.ru
+
+    notify-deploy-bad:
+        runs-on: ubuntu-latest
+        if: ${{ always() && needs.deploy.result == 'failure' }}
+        needs: [deploy]
+        steps:
+            - name: Send Bad Notification
+              uses: appleboy/telegram-action@master
+              with:
+                  to: ${{ secrets.TELEGRAM_CHAT }}
+                  token: ${{ secrets.TELEGRAM_TOKEN }}
+                  message: |
+                      Деплой на goods-galaxy кринжанул и вышел в окно, товарищи
+                      http://goods-galaxy.ru

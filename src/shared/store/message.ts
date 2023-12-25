@@ -1,6 +1,6 @@
-import { Store } from "../services/store/Store";
+import { Store } from '../services/store/Store';
 
-import { VDomNode, createText } from "../../components/baseComponents/snail/vdom/VirtualDOM";
+import { VDomNode, createText } from '../../components/baseComponents/snail/vdom/VirtualDOM';
 
 export enum MessageStoreAction {
     SHOW_MESSAGE = 'SHOW_MESSAGE',
@@ -20,7 +20,7 @@ const initMessageStoreState: MessageStoreInterface = {
 export class MessageStore extends Store<MessageStoreInterface> {
 
     private showContent(newNode: VDomNode) {
-        if (!this.state.visible) { 
+        if (!this.state.visible) {
             this.state.content = newNode;
             this.state.visible = true;
         }
@@ -47,7 +47,7 @@ export class MessageStore extends Store<MessageStoreInterface> {
         this.addAction({
             name: MessageStoreAction.HIDE_MESSAGE,
             operation: () => { this.hideContent(); },
-        })    
+        });
     }
 }
 

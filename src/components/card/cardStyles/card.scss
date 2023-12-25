@@ -3,7 +3,6 @@
 
 @import './commonStyles/image.scss';
 @import './commonStyles/badges.scss';
-@import './commonStyles/badge.scss';
 @import './commonStyles/title.scss';
 
 @import './baseStyles.scss';
@@ -20,7 +19,7 @@
     font-family: 'Nunito Sans';
     font-size: 15px;
 
-    &--premium {
+    &--premium .body-base {
         box-shadow: 0px 0px 10px gold;
     }
 }
@@ -35,6 +34,12 @@
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
 
     &--premium {
+        display: flex;
+        width: cardConstants.$card-profile-width;
+        padding: 8px;
+        align-items: flex-start;
+        border-radius: 0 cardConstants.$card-radius cardConstants.$card-radius 0;
+        background: vars.$background-primary;
         box-shadow: 0px 0px 10px gold;
     }
 }

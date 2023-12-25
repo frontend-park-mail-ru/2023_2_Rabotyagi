@@ -34,19 +34,28 @@ export class Route extends Component<RouteProps, never> {
     }
 }
 
-export class Router extends Component<never, never> {
+export interface RouterProps {
+    mini_router?: boolean,
+}
+
+export class Router extends Component<RouterProps, never> {
 
     // связка Роутера и Навигатора
     public componentDidMount(): void {
-        Navigate.addCallback(() => {
-            this.applyComponentChanges();
-        });
+        if (!this.props.mini_router) {
+            Navigate.addCallback(() => {
+                this.applyComponentChanges();
+            });
+        }
+    }
+
+    public componentWillUnmount(): void {
+        /*if (!this.props.mini_router) {
+            Navigate.removeCallback(() => { this.applyComponentChanges() });
+        }*/
     }
 
     render() {
-        if (!this.props) {
-            throw new Error('props are undefined');
-        }
         if (!this.children) {
             throw new Error('children are undefined');
         }

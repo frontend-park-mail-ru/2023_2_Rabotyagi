@@ -10,3 +10,4 @@ export { Select } from './select/select';
 export { Option } from './option/option';
 export { Image } from './image/image';
 export { MessageBox } from './messageBox/messageBox';
+export { TextLink, TextLinkProps, TextLinkType } from './textLink/textLink';

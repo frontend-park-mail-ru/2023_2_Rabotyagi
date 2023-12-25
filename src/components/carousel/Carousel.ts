@@ -56,9 +56,6 @@ export class Carousel extends Component<CarouselProps, CarouselState> {
     };
 
     render() {
-        if (!this.props) {
-            throw new Error('Carousel props are undefined');
-        }
 
         const images = this.props.images;
 

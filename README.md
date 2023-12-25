@@ -35,8 +35,6 @@ Frontend репозиторий команды Работяги
 
 # Docker image build
 
-## Local
-
 Из корня проекта прописываем
 ```shell
 docker build -t nikdemi/rabotyagi-backend:latest .
@@ -52,8 +50,3 @@ docker images
 REPOSITORY                  TAG       IMAGE ID       CREATED          SIZE
 nikdemi/rabotyagi-backend   latest    25dbaeeef1af   50 seconds ago   307MB
 ```
-
-## Запуск контейнера
-
-`docker run -p 3000:3000 nikdemi/rabotyagi-backend:rk1-test`
-

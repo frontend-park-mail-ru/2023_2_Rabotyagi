@@ -1,16 +1,19 @@
+import './edit.scss';
 import { BooleanInput, Button, FileInput, NumberInput, Select, Text, TextArea, TextInput } from '../../../../components/baseComponents/index';
 import { Component } from '../../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
-import { Carousel } from '../../../../components/carousel/Carousel';
 import { FileApi } from '../../../../shared/api/file';
 import { ProductApi } from '../../../../shared/api/product';
 import { ResponseStatusChecker } from '../../../../shared/constants/response';
 import Navigate from '../../../../shared/services/router/Navigate';
-// import UserStore from '../../../../shared/store/UserStore';
 import CategoryStore from '../../../../shared/store/category';
 import CityStore from '../../../../shared/store/city';
+import { ProductBase } from '../base';
+import { Carousel } from '../../../../components/carousel/Carousel';
 
-interface ProductBaseEditProps extends ProductModel {}
+interface ProductBaseEditProps extends ProductModel {
+    parent: ProductBase
+}
 
 interface ProductBaseEditState {
     [key: string]: any
@@ -127,9 +130,6 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
     };
 
     public render() {
-        if (!this.props){
-            throw new Error('ProductBaseEdit props undefined');
-        }
 
         this.state['safe_deal'] = this.props.safe_deal;
         this.state['delivery'] = this.props.delivery;
@@ -137,13 +137,13 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
         return createElement(
             'form',
             {
-                class: 'content-add',
+                class: 'edit-container',
                 onsubmit: this.formSubmit,
             },
             createElement(
                 'div',
                 {
-                    class: 'content-add-body',
+                    class: 'edit-container-body',
                     onsubmit: this.formSubmit,
                 },
                 createComponent(
@@ -266,7 +266,6 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
                     BooleanInput,
                     {
                         checked: this.props.safe_deal,
-                        // value: this.props.safe_deal ? 'on' : 'off',
                         oninput: (e: Event) => this.state['safe_deal'] = Boolean((e.target as HTMLInputElement).checked)},
                 ),
                 createComponent(
@@ -286,7 +285,7 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
             createElement(
                 'div',
                 {
-                    class: 'content-add-btn-group',
+                    class: 'edit-container-btn-group',
                 },
                 createComponent(
                     Button,
@@ -296,16 +295,16 @@ export class ProductBaseEdit extends Component<ProductBaseEditProps, ProductBase
                         style: 'width: 100%',
                     },
                 ),
-                // createComponent(
-                //     Button,
-                //     {
-                //         text: 'Очистить',
-                //         variant: 'neutral',
-                //         subvariant: 'primary',
-                //         style: 'width: 100%',
-                //         onclick: this.clear,
-                //     },
-                // ),
+                createComponent(
+                    Button,
+                    {
+                        text: 'Отмена',
+                        variant: 'neutral',
+                        subvariant: 'primary',
+                        style: 'width: 100%',
+                        onclick: this.props.parent.switchEditMode,
+                    },
+                ),
             ),
         );
     }

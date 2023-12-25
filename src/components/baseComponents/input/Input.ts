@@ -3,16 +3,14 @@ import './Input.scss';
 import { Component } from '../snail/component';
 import { VDomComponent, createComponent, createElement } from '../snail/vdom/VirtualDOM';
 
-import { Text, TextTypes, getTextClass } from '../text/Text';
-import { ErrorMessageBox } from '../index';
+import { ErrorMessageBox, Text } from '../index';
 import { Validate } from '../../../shared/utils/validation';
-
-// здесь прописаны все необходимые типы инпутов для проекта
+import { TextVariants, getTextClass } from '../text/Text';
 
 export interface BaseInputProps {
     id?: string,
     name?: string,
-    textType?: TextTypes,
+    textType?: TextVariants,
     value?: string,
     onchange?: (e?: any) => void,
     onkeypress?: (e?: any) => void,
@@ -49,12 +47,9 @@ export type FileInputProps = BaseInputProps & {
     text?: string,
 };
 
-const errorInputMessage: string = 'Input settings are undefined';
-
 export class BaseInput extends Component<BaseInputProps, never> {
 
     render() {
-        if (!this.props) { throw new Error(errorInputMessage); }
 
         const { textType, ...otherProps } = this.props;
 
@@ -71,7 +66,6 @@ export class BaseInput extends Component<BaseInputProps, never> {
 export class TextInput extends Component<TextInputProps, never> {
 
     render() {
-        if (!this.props) { throw new Error(errorInputMessage); }
 
         const { textType, ...otherProps } = this.props;
 
@@ -89,7 +83,6 @@ export class TextInput extends Component<TextInputProps, never> {
 export class NumberInput extends Component<NumberInputProps, never> {
 
     render() {
-        if (!this.props) { throw new Error(errorInputMessage); }
 
         const { textType, min, max, ...otherProps } = this.props;
 
@@ -109,7 +102,6 @@ export class NumberInput extends Component<NumberInputProps, never> {
 export class BooleanInput extends Component<CheckboxInputProps, never> {
 
     render() {
-        if (!this.props) { throw new Error(errorInputMessage); }
 
         return createElement(
             'input',
@@ -124,7 +116,6 @@ export class BooleanInput extends Component<CheckboxInputProps, never> {
 export class Password extends Component<PasswordInputProps, never> {
 
     render() {
-        if (!this.props) { throw new Error(errorInputMessage); }
 
         const { textType, ...otherProps } = this.props;
 
@@ -178,7 +169,6 @@ export class FileInput extends Component<FileInputProps, FileInputState> {
     };
 
     render() {
-        if (!this.props) { throw new Error(errorInputMessage); }
 
         let {text, oninput, ...other} = this.props; // eslint-disable-line prefer-const, @typescript-eslint/no-unused-vars
         let error: VDomComponent[] = [];

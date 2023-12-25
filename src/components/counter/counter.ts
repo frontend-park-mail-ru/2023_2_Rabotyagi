@@ -29,13 +29,13 @@ export interface CounterState {
 
 export class Counter extends Component<CounterProps, CounterState> {
 
-    public componentWillRecieveProps(props: CounterProps, state: CounterState | undefined): CounterState | undefined {
+    public componentWillRecieveProps(props: CounterProps, state: CounterState | undefined) {
         state = {
             ...state,
             currentCount: props.selectedCount,
             price: props.unitPrice * props.selectedCount,
         };
-        
+
         return state;
     }
 
