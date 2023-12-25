@@ -19,11 +19,13 @@ export class Navigate {
         this.callbacks = this.callbacks.filter(callback => callback !== oldCallback);
     }
 
-    navigateTo(url: string, state: any = {}) {
+    navigateTo(url: string, state: any = {}, out: boolean = false) {
         history.pushState(state, '', url);
-        this.callbacks.forEach((callback) => {
-            callback();
-        });
+        if (!out) {
+            this.callbacks.forEach((callback) => {
+                callback();
+            });
+        }
     }
 }
 
