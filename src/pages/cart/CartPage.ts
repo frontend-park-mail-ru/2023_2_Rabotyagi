@@ -15,7 +15,7 @@ import UserStore from '../../shared/store/user';
 import CartStore, { CartStoreAction } from '../../shared/store/cart';
 import Navigate from '../../shared/services/router/Navigate';
 import Dispatcher from '../../shared/services/store/Dispatcher';
-import { Loader } from '../../components/loader/Loader';
+import { Loader } from '../../components/loader/loader';
 
 export interface CartPageState {
     loading: boolean,

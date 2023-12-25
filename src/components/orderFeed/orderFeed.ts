@@ -7,7 +7,7 @@ import { OrderCard } from '../orderCard/orderCard';
 
 import CartStore, { CartStoreAction } from '../../shared/store/cart';
 import Dispatcher from '../../shared/services/store/Dispatcher';
-import { Loader } from '../loader/Loader';
+import { Loader } from '../loader/loader';
 
 export interface OrderFeedState {
     loading: boolean,

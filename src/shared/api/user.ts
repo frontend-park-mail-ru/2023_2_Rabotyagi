@@ -36,7 +36,7 @@ export class UserApi {
             url: UserRoutes.GET_LIST_OF_SALER,
             params: {
                 'count': 20,
-                'last_id': 0,
+                'offset': 0,
                 'saler_id': salerID,
             },
             credentials: 'include',

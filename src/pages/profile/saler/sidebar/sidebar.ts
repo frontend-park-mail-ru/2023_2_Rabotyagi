@@ -1,7 +1,7 @@
 import { Component } from '../../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Loader } from '../../../../components/loader/Loader';
+import { Loader } from '../../../../components/loader/loader';
 import { Menu } from '../../menu/menu';
 import { Image, Text, TextLinkProps } from '../../../../components/baseComponents/index';
 

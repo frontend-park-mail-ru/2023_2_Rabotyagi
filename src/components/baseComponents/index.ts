@@ -1,7 +1,7 @@
 export { Button, ButtonImage } from './button/Button';
 export { Text } from './text/Text';
 export { TextInput, NumberInput, BooleanInput, Password, FileInput, BaseInput } from './input/Input';
-export { Svg } from './svg/Svg';
+export { Svg } from './svg/svg';
 export { Dropdown } from './dropdown/dropdown';
 export { TextArea } from './textArea/textArea';
 export { ErrorMessageBox } from './errorMessageBox/ErrorMessageBox';

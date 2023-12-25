@@ -11,7 +11,7 @@ import { ResponseMessage, ResponseStatusChecker } from '../../../shared/constant
 import { OrderCard, OrderCardProps, OrderCardType } from '../../../components/orderCard/orderCard';
 import { CommentCard, CommentCardProps } from '../../../components/commentCard/commentCard';
 import { Card, CardProps, CardVariants } from '../../../components/card/Card';
-import { Loader } from '../../../components/loader/Loader';
+import { Loader } from '../../../components/loader/loader';
 
 export type ProfileCardType = 'profile' | 'profile-saler' | 'favourite' | 'sold' | 'comment';
 
@@ -49,6 +49,10 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
     };
 
     getSelectedIndex() {
+        if (this.props.options.length == 1) {
+            return 0;
+        }
+
         const currentLocation = location.pathname;
         const optionIndex = this.props.options.findIndex((option) => option.link == currentLocation);
         if (optionIndex !== -1) {
@@ -89,6 +93,7 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
         try {
             resp = await option.apiFunction(option.apiParams);
         } catch (err: any) {
+            console.log(err);
             this.setState({
                 ...this.state,
                 loading: false,
@@ -96,6 +101,8 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                 selectedPage: selectedIndex,
             });
         }
+
+        console.log(resp);
 
         if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {
             if (ResponseStatusChecker.IsBadFormatRequest(resp)) {
