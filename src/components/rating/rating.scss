@@ -1,3 +1,5 @@
+@use '../../assets/css/vars.scss';
+
 .rating-box {
     display: flex;
     flex-direction: column;
@@ -15,6 +17,10 @@
                 height: 24px;
             }
         }
+    }
+
+    &-title {
+        font-weight: bold;
     }
 }
 
@@ -38,4 +44,12 @@
             }
         }
     }
+}
+
+.rating-error, .rating-bad {
+    color: vars.$text-accent;
+}
+
+.rating-good {
+    color: vars.$palette-secondary;
 }

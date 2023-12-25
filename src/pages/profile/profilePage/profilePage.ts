@@ -97,6 +97,8 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
             });
         }
 
+        console.log(resp);
+
         if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {
             if (ResponseStatusChecker.IsBadFormatRequest(resp)) {
                 this.setState({

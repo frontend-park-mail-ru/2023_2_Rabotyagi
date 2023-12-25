@@ -30,7 +30,7 @@ export class CommentCard extends Component<CommentCardProps, never> {
             createElement(
                 'div',
                 { class: 'comment-card-sender', },
-                (this.props.avatar.url) ?
+                (this.props.avatar && this.props.avatar.url) ?
                     createComponent(
                         Image,
                         { 

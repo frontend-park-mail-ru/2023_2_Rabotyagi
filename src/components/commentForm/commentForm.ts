@@ -4,7 +4,8 @@ import { Component } from '../baseComponents/snail/component';
 import { createElement, createComponent } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Rating } from '../rating/rating';
-import { Text, Button, TextArea } from '../baseComponents';
+import { ErrorMessageBox } from '../baseComponents';
+import { Text, Button, TextArea, Image } from '../baseComponents';
 
 import { CommentApi } from '../../shared/api/comment';
 import { ResponseStatusChecker, ResponseMessage } from '../../shared/constants/response';
@@ -21,7 +22,9 @@ export interface CommentFormProps {
 export interface CommentFormState {
     rating: number,
     text: string,
-    error: '',
+    error: string,
+    errorRating: string,
+    errorText: string,
     status: CommentFormStatus,
 }
 
@@ -31,10 +34,30 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
         rating: 0,
         text: '',
         error: '',
+        errorRating: '',
+        errorText: '',
         status: 'edit',
     }
 
     async addComment() {
+        let errorRating = '';
+        let errorText = ''
+
+        if (this.state.rating < 1) {
+            errorRating = 'Ошибка';
+        }
+        if (this.state.text == '') {
+            errorText = 'Ошибка';
+        }
+        if (errorRating !== '' || errorText !== '') {
+            this.setState({
+                ...this.state,
+                errorRating: errorRating,
+                errorText: errorText,
+            })
+            return;
+        }
+
         try {
             const resp = await CommentApi.add({
                 rating: this.state.rating,
@@ -43,7 +66,6 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
                 text: this.state.text,
             });
             const body = resp.body;
-            console.log(resp, body, this.props.saler);
             if (!ResponseStatusChecker.IsRedirectResponse(resp)) {
                 if (ResponseStatusChecker.IsBadFormatRequest(resp)) {
                     throw ResponseMessage.USER_MESSAGE;
@@ -59,12 +81,16 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
             this.setState({
                 ...this.state,
                 error: '',
+                errorRating: '',
+                errorText: '',
                 status: 'success',
             });
         } catch(err: any) {
             this.setState({
                 ...this.state,
                 error: err.toString(),
+                errorRating: '',
+                errorText: '',
                 status: 'error',
             });
         }
@@ -89,7 +115,18 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
                 createElement(
                     'div',
                     { class: 'comment-form-saler-avatar', },
-
+                    (this.props.saler.avatar) ?
+                    createComponent(
+                        Image,
+                        { 
+                            src: this.props.saler.avatar, 
+                            class: 'comment-form-saler-avatar-url',
+                        },
+                    ) :
+                    createElement(
+                        'div',
+                        { class: 'comment-form-saler-avatar-url', },
+                    ),
                 ),
                 createElement(
                     'div',
@@ -119,15 +156,29 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
                 createComponent(
                     Rating,
                     {
+                        textState: (this.state.errorRating  !== '' ? 'error' : 'normal'),
                         influenceFunc: (rating: number) => {
                             this.state.rating = rating;
                         },
                     }
                 ),
+                createElement(
+                    'div',
+                    { class: 'comment-form-create-desc', },
+                    createComponent(
+                        Text,
+                        {
+                            tag: 'div',
+                            text: 'Комментарий',
+                            className: 'comment-form-create-desc-name',
+                        },
+                    ),
+                ),
                 createComponent(
                     TextArea, 
                     { 
                         oninput: (e: Event) => this.state.text = (e.target as HTMLInputElement).value,
+                        className: (this.state.errorText !== '') ? 'textarea-error' : '',
                     },
                 ),
                 createComponent(
@@ -149,6 +200,7 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
             createComponent(
                 Text,
                 {
+                    tag: 'div',
                     text: 'Отзыв успешно отправлен',
                     variant: 'subheader',
                     className: 'success-message-text',
@@ -157,14 +209,7 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
             createComponent(
                 Button,
                 {
-                    variant: 'primary',
-                    text: 'Перейти к моим отзывам',
-                }
-            ),
-            createComponent(
-                Button,
-                {
-                    variant: 'primary',
+                    variant: 'secondary',
                     text: 'Перейти к отзывам продавца',
                 }
             ),
@@ -178,18 +223,15 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
             createComponent(
                 Text,
                 {
+                    tag: 'div',
                     text: 'Что-то пошло не так при отправке отзыва',
                     variant: 'subheader',
                     className: 'error-message-text',
                 },
             ),
             createComponent(
-                Text,
-                {
-                    tag: 'div',
-                    text: this.state.error,
-                    className: 'error-message-box',
-                }
+                ErrorMessageBox,
+                { text: this.state.error, },
             ),
         );
     }

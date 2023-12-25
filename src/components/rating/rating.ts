@@ -29,6 +29,7 @@ const ratingToString = (rating: number) => {
 export interface RatingProps {
     variant?: RatingVariant,
     rating?: number,
+    textState?: string,
     influenceFunc?: (rating: number) => void,
 }
 
@@ -78,6 +79,23 @@ export class Rating extends Component<RatingProps, RatingState> {
         return result;
     }
 
+    getTextClassName() {
+        let rating = this.state.rating;
+        if (this.props.rating) {
+            rating = Number(this.props.rating);
+        }
+        if (rating < 1 && this.props.textState && this.props.textState == 'error') {
+            return ' rating-error';
+        }
+        if (rating >= 1 && rating < 3) {
+            return ' rating-bad';
+        }
+        if (rating > 3) {
+            return ' rating-good';
+        }
+        return ' rating-normal';
+    }
+
     render() {
         const variantClass = this.props.variant ? 
             this.props.variant == 'show' ? '-show' : ''
@@ -92,7 +110,7 @@ export class Rating extends Component<RatingProps, RatingState> {
                     tag: 'div',
                     variant: (variantClass == '') ? 'regular' : 'subheader',
                     text: (variantClass == '') ? ratingToString(this.state.rating) : (this.props.rating || 0.0).toString(),
-                    className: 'rating-box-title' + variantClass,
+                    className: 'rating-box-title' + variantClass + this.getTextClassName(),
                 }
             ),
             createElement(
