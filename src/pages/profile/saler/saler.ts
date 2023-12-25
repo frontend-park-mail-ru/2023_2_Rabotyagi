@@ -1,11 +1,14 @@
-import { Text } from '../../../components/baseComponents/index';
+import './saler.scss';
+
 import { Component } from '../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
+
+import { Header } from '../../../components/header/header';
+import { SalerSidebar } from './sidebar/sidebar';
 import { Route, Router } from '../../../shared/services/router/Routing';
 import { SalerProducts } from './products/products';
 import { SalerComments } from './comments/comments';
-import { Header } from '../../../components/header/header';
-import { SalerSidebar } from './sidebar/sidebar';
+import { Text } from '../../../components/baseComponents/index';
 
 export class SalerProfile extends Component<never, never> {
 

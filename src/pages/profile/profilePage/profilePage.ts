@@ -49,6 +49,10 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
     };
 
     getSelectedIndex() {
+        if (this.props.options.length == 1) {
+            return 0;
+        }
+
         const currentLocation = location.pathname;
         const optionIndex = this.props.options.findIndex((option) => option.link == currentLocation);
         if (optionIndex !== -1) {

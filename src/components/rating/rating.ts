@@ -111,8 +111,8 @@ return ' rating-normal';
                 {
                     tag: 'div',
                     variant: (variantClass == '') ? 'regular' : 'subheader',
-                    text: (variantClass == '') ? 
-                            ratingToString(this.state.rating) 
+                    text: (variantClass == '') ?
+                            ratingToString(this.state.rating)
                             : (this.props.rating || 0.0).toString(),
                     className: 'rating-box-title' + variantClass + this.getTextClassName(),
                 },

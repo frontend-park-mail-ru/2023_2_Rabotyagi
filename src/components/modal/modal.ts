@@ -13,14 +13,12 @@ interface ModalProps {
 export class Modal extends Component<ModalProps, never> {
 
     render() {
-        console.log(this.props);
-
         return createElement(
             'modal',
-            { class: 'modal', },
+            { class: 'modal' },
             createComponent(
                 Text,
-                { text: 'Длительность подписки', },
+                { text: 'Длительность подписки' },
             ),
             ...this.children,
             createComponent(

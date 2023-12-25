@@ -10,7 +10,7 @@ import loader from '../../assets/icons/loader.svg';
 export class Loader extends Component<never, never> {
 
     render() {
-        
+
         return createElement(
             'loader',
             {},

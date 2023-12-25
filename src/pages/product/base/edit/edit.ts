@@ -1,15 +1,20 @@
 import './edit.scss';
-import { BooleanInput, Button, FileInput, NumberInput, Select, Text, TextArea, TextInput } from '../../../../components/baseComponents/index';
+
 import { Component } from '../../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
+
+import { Carousel } from '../../../../components/carousel/Carousel';
+import { ProductBase } from '../base';
+import { BooleanInput, Button, FileInput, NumberInput, Select, Text, TextArea, TextInput } from '../../../../components/baseComponents/index';
+
 import { FileApi } from '../../../../shared/api/file';
 import { ProductApi } from '../../../../shared/api/product';
 import { ResponseStatusChecker } from '../../../../shared/constants/response';
+
 import Navigate from '../../../../shared/services/router/Navigate';
+
 import CategoryStore from '../../../../shared/store/category';
 import CityStore from '../../../../shared/store/city';
-import { ProductBase } from '../base';
-import { Carousel } from '../../../../components/carousel/Carousel';
 
 interface ProductBaseEditProps extends ProductModel {
     parent: ProductBase

@@ -11,6 +11,9 @@ import { CommentApi } from '../../shared/api/comment';
 import { ResponseStatusChecker, ResponseMessage } from '../../shared/constants/response';
 
 import UserStore from '../../shared/store/user';
+import Navigate from '../../shared/services/router/Navigate';
+import Dispatcher from '../../shared/services/store/Dispatcher';
+import { MessageStoreAction } from '../../shared/store/message';
 
 export type CommentFormStatus = 'edit' | 'success' | 'error';
 
@@ -97,7 +100,7 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
     }
 
     renderEdit() {
-        
+
         return createElement(
             'div',
             { class: 'comment-form' },
@@ -212,6 +215,12 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
                 {
                     variant: 'secondary',
                     text: 'Перейти к отзывам продавца',
+                    onclick: () => {
+                        Dispatcher.dispatch({
+                            name: MessageStoreAction.HIDE_MESSAGE,
+                        });
+                        Navigate.navigateTo('saler/comments', { salerId: this.props.saler.id });
+                    },
                 },
             ),
         );

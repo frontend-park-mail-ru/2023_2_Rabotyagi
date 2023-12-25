@@ -14,8 +14,9 @@ import FavouriteStore from '../../../../shared/store/favourite';
 import UserStore from '../../../../shared/store/user';
 import Dispatcher from '../../../../shared/services/store/Dispatcher';
 
-import fav from '../../../../assets/icons/heart.svg';
 import { Carousel } from '../../../../components/carousel/Carousel';
+
+import fav from '../../../../assets/icons/heart.svg';
 
 interface ProductBaseViewProps extends ProductModelResponse { }
 
@@ -111,10 +112,8 @@ export class ProductBaseView extends Component<ProductBaseViewProps, ProductBase
 
     };
 
-    public render() {
-        if (!this.props) {
-            throw new Error('ProductBaseView props undefined');
-        }
+    render() {
+
         const city = CityStore.getById(this.props.city_id);
         const category = CategoryStore.getById(this.props.category_id);
 

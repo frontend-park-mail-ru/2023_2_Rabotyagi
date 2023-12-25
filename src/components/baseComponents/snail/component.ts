@@ -89,7 +89,6 @@ export abstract class Component<PropsType, StateType> {
     }
 
     private getComponentDifference(): VDomNodeUpdater {
-        //console.log('get difference');
         if (!this.node) {
             this.node = this.initProps(this.props);
         }

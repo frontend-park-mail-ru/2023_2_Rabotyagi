@@ -1,0 +1,52 @@
+.profile-page {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    
+    &-title {
+        padding-bottom: 16px;
+    }
+
+    .profile-content-block {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        &-full3 {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            grid-column-gap: 32px;
+            grid-row-gap: 16px;
+        }
+
+        &-full1 {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+        }
+
+        &-full2 {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            grid-column-gap: 32px;
+            grid-row-gap: 16px;
+        }
+        
+        &-empty {
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            margin-top: 10vh;
+        
+            button {
+                width: fit-content;
+            }
+        }
+    }
+}
