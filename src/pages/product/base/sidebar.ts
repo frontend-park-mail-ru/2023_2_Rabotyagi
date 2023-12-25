@@ -357,7 +357,7 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                                     });
                                 }
                             } else {
-                                Navigate.navigateTo('saler/comments', { salerId: this.props.id, });
+                                Navigate.navigateTo('saler/comments', { salerId: this.props.id });
                             }
                         },
                     },

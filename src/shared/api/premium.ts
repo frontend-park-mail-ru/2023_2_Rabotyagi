@@ -4,8 +4,6 @@ import { Ajax } from '../services/ajax';
 
 export class PremiumApi {
     static async add(id: number, period: PremiumPeriods) {
-        console.log(id, period);
-
         return Ajax.getInstance().patch({
             url: PremiumRoutes.ADD,
             params: {

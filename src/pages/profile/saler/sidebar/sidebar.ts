@@ -5,17 +5,12 @@ import { Loader } from '../../../../components/loader/loader';
 import { Menu } from '../../menu/menu';
 import { Image, Text, TextLinkProps } from '../../../../components/baseComponents/index';
 
-import UserStore from '../../../../shared/store/user';
-
 import { UserApi } from '../../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../../shared/constants/response';
 
 import Navigate from '../../../../shared/services/router/Navigate';
 
 import list from '../../../../assets/icons/list.svg';
-import heart from '../../../../assets/icons/heart.svg';
-import settings from '../../../../assets/icons/settings.svg';
-import cart from '../../../../assets/icons/cart.svg';
 import comment from '../../../../assets/icons/comment.svg';
 
 interface SalerSidebarState extends UserModel {}

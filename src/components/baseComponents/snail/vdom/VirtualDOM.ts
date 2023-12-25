@@ -77,7 +77,7 @@ export const createComponent = <PropsType extends object>(
 export const renderVDomNode = (rootNode: VDomNode): HTMLElement | SVGSVGElement | Text => {
     if (!rootNode || rootNode.kind == 'text') {
         if (!rootNode) {
-            return document.createTextNode('');        
+            return document.createTextNode('');
         }
 
         return document.createTextNode(rootNode.value.toString());

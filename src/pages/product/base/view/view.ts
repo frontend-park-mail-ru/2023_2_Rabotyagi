@@ -113,7 +113,7 @@ export class ProductBaseView extends Component<ProductBaseViewProps, ProductBase
     };
 
     render() {
-        
+
         const city = CityStore.getById(this.props.city_id);
         const category = CategoryStore.getById(this.props.category_id);
 

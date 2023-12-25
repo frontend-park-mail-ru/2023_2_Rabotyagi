@@ -254,7 +254,7 @@ export class OrderCard extends Component<OrderCardProps, never> {
     }
 
     render() {
-        
+
         if (!this.props.variant || this.props.variant == 'default') {
             return this.renderDefault();
         }

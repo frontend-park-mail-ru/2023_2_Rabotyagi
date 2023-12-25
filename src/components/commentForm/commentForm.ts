@@ -100,7 +100,7 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
     }
 
     renderEdit() {
-        
+
         return createElement(
             'div',
             { class: 'comment-form' },
@@ -219,7 +219,7 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
                         Dispatcher.dispatch({
                             name: MessageStoreAction.HIDE_MESSAGE,
                         });
-                        Navigate.navigateTo('saler/comments', { salerId: this.props.saler.id, });
+                        Navigate.navigateTo('saler/comments', { salerId: this.props.saler.id });
                     },
                 },
             ),
