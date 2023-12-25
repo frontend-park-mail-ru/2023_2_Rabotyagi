@@ -80,23 +80,23 @@ export class Profile extends Component<never, never> {
                        ),
                        createComponent(
                            Route,
-                           { 
+                           {
                                path: new RegExp('/profile/orders.*'),
                            },
                            createComponent(
-                                ProfileOrders, 
+                                ProfileOrders,
                                 {},
                            ),
                        ),
                        createComponent(
                         Route,
-                        { 
+                        {
                             path: new RegExp('/profile/comments.*'),
                         },
                         createComponent(
                             ProfileComments,
                             {},
-                        )
+                        ),
                     ),
                        createComponent(
                            Route,

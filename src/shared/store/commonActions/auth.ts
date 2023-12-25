@@ -35,10 +35,6 @@ export async function login() {
     await getOrders();
 }
 
-export async function signin(email: string, password: string) {
-
-}
-
 export async function logout() {
     Dispatcher.dispatch({ name: UserStoreAction.LOGOUT });
     Dispatcher.dispatch({ name: CartStoreAction.CLEAR_CART });

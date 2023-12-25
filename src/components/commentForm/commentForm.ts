@@ -9,7 +9,6 @@ import { Text, Button, TextArea, Image } from '../baseComponents';
 
 import { CommentApi } from '../../shared/api/comment';
 import { ResponseStatusChecker, ResponseMessage } from '../../shared/constants/response';
-import Navigate from '../../shared/services/router/Navigate';
 
 import UserStore from '../../shared/store/user';
 
@@ -37,11 +36,11 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
         errorRating: '',
         errorText: '',
         status: 'edit',
-    }
+    };
 
     async addComment() {
         let errorRating = '';
-        let errorText = ''
+        let errorText = '';
 
         if (this.state.rating < 1) {
             errorRating = 'Ошибка';
@@ -54,16 +53,17 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
                 ...this.state,
                 errorRating: errorRating,
                 errorText: errorText,
-            })
-            return;
+            });
+
+return;
         }
 
         try {
             const resp = await CommentApi.add({
-                rating: this.state.rating,
-                recipient_id: this.props.saler.id,
-                sender_id: UserStore.getFields()?.id,
-                text: this.state.text,
+                'rating': this.state.rating,
+                'recipient_id': this.props.saler.id,
+                'sender_id': UserStore.getFields()?.id,
+                'text': this.state.text,
             });
             const body = resp.body;
             if (!ResponseStatusChecker.IsRedirectResponse(resp)) {
@@ -99,7 +99,7 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
     renderEdit() {
         return createElement(
             'div',
-            { class: 'comment-form', },
+            { class: 'comment-form' },
             createComponent(
                 Text,
                 {
@@ -111,26 +111,26 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
             ),
             createElement(
                 'div',
-                { class: 'comment-form-saler', },
+                { class: 'comment-form-saler' },
                 createElement(
                     'div',
-                    { class: 'comment-form-saler-avatar', },
+                    { class: 'comment-form-saler-avatar' },
                     (this.props.saler.avatar) ?
                     createComponent(
                         Image,
-                        { 
-                            src: this.props.saler.avatar, 
+                        {
+                            src: this.props.saler.avatar,
                             class: 'comment-form-saler-avatar-url',
                         },
                     ) :
                     createElement(
                         'div',
-                        { class: 'comment-form-saler-avatar-url', },
+                        { class: 'comment-form-saler-avatar-url' },
                     ),
                 ),
                 createElement(
                     'div',
-                    { class: 'comment-form-saler-info', },
+                    { class: 'comment-form-saler-info' },
                     createComponent(
                         Text,
                         {
@@ -152,19 +152,19 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
             ),
             createElement(
                 'div',
-                { class: 'comment-form-create', },
+                { class: 'comment-form-create' },
                 createComponent(
                     Rating,
                     {
-                        textState: (this.state.errorRating  !== '' ? 'error' : 'normal'),
+                        textState: (this.state.errorRating !== '' ? 'error' : 'normal'),
                         influenceFunc: (rating: number) => {
                             this.state.rating = rating;
                         },
-                    }
+                    },
                 ),
                 createElement(
                     'div',
-                    { class: 'comment-form-create-desc', },
+                    { class: 'comment-form-create-desc' },
                     createComponent(
                         Text,
                         {
@@ -175,8 +175,8 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
                     ),
                 ),
                 createComponent(
-                    TextArea, 
-                    { 
+                    TextArea,
+                    {
                         oninput: (e: Event) => this.state.text = (e.target as HTMLInputElement).value,
                         className: (this.state.errorText !== '') ? 'textarea-error' : '',
                     },
@@ -196,7 +196,7 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
     renderSuccess() {
         return createElement(
             'div',
-            { class: 'success-message', },
+            { class: 'success-message' },
             createComponent(
                 Text,
                 {
@@ -211,7 +211,7 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
                 {
                     variant: 'secondary',
                     text: 'Перейти к отзывам продавца',
-                }
+                },
             ),
         );
     }
@@ -219,7 +219,7 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
     renderError() {
         return createElement(
             'div',
-            { class: 'error-message', },
+            { class: 'error-message' },
             createComponent(
                 Text,
                 {
@@ -231,14 +231,12 @@ export class CommentForm extends Component<CommentFormProps, CommentFormState> {
             ),
             createComponent(
                 ErrorMessageBox,
-                { text: this.state.error, },
+                { text: this.state.error },
             ),
         );
     }
 
     render() {
-        console.log(UserStore.getFields());
-
         switch(this.state.status) {
             case 'edit':
                 return this.renderEdit();

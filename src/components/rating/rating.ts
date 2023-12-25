@@ -21,10 +21,10 @@ const ratingToString = (rating: number) => {
             return 'Хорошо';
         case 5:
             return 'Отлично';
-        default: 
-            return 'Отлично';    
+        default:
+            return 'Отлично';
     }
-}
+};
 
 export interface RatingProps {
     variant?: RatingVariant,
@@ -41,19 +41,20 @@ export class Rating extends Component<RatingProps, RatingState> {
 
     state = {
         rating: 0,
-    }
+    };
 
     getStarState(index: number) {
         let rating = this.state.rating;
         if (this.props.rating) {
             rating = Number(this.props.rating);
         }
-        return createElement(
+
+return createElement(
             'div',
-            { 
-                class: 'rating-box-stars-star', 
+            {
+                class: 'rating-box-stars-star',
                 onclick: () => {
-                    this.setState({ rating: index, });
+                    this.setState({ rating: index });
                     if (this.props.influenceFunc) {
                         this.props.influenceFunc(index);
                     }
@@ -62,8 +63,8 @@ export class Rating extends Component<RatingProps, RatingState> {
             createElement(
                 'img',
                 {
-                    src: (index <= rating) ? 
-                        '../../assets/icons/fillstar.svg' 
+                    src: (index <= rating) ?
+                        '../../assets/icons/fillstar.svg'
                         : '../../assets/icons/star.svg',
                 },
             ),
@@ -71,7 +72,7 @@ export class Rating extends Component<RatingProps, RatingState> {
     }
 
     getStars() {
-        let result: Array<VDomNode> = [];
+        const result: Array<VDomNode> = [];
         [1, 2, 3, 4, 5].forEach((rating) => {
             result.push(this.getStarState(rating));
         });
@@ -93,17 +94,18 @@ export class Rating extends Component<RatingProps, RatingState> {
         if (rating > 3) {
             return ' rating-good';
         }
-        return ' rating-normal';
+
+return ' rating-normal';
     }
 
     render() {
-        const variantClass = this.props.variant ? 
+        const variantClass = this.props.variant ?
             this.props.variant == 'show' ? '-show' : ''
             : '';
 
         return createElement(
             'div',
-            { class: 'rating-box' + variantClass, },
+            { class: 'rating-box' + variantClass },
             createComponent(
                 Text,
                 {
@@ -111,13 +113,13 @@ export class Rating extends Component<RatingProps, RatingState> {
                     variant: (variantClass == '') ? 'regular' : 'subheader',
                     text: (variantClass == '') ? ratingToString(this.state.rating) : (this.props.rating || 0.0).toString(),
                     className: 'rating-box-title' + variantClass + this.getTextClassName(),
-                }
+                },
             ),
             createElement(
                 'div',
-                { class: 'rating-box-stars', },
+                { class: 'rating-box-stars' },
                 ...this.getStars(),
-            )
-        )
+            ),
+        );
     }
 }

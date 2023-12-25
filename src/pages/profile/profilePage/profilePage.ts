@@ -18,25 +18,25 @@ export type ProfileCardType = 'profile' | 'profile-saler' | 'favourite' | 'sold'
 export type ProfileMenuUnit = {
     name: string,
     link: string,
-    empty_message: string,
-    empty_button_text?: string,
-    empty_button_onclick?: (e?: any) => void,
-    api_function: (...e: any) => Promise<any>, 
-    api_params?: any,
+    emptyMessage: string,
+    emptyButtonText?: string,
+    emptyButtonOnclick?: (e?: any) => void,
+    apiFunction: (...e: any) => Promise<any>,
+    apiParams?: any,
 }
 
 export interface ProfilePageProps {
     title: string,
     options: Array<ProfileMenuUnit>,
-    card_variant?: ProfileCardType,
-    grid_x_repeat?: 1 | 2 | 3,
+    cardVariant?: ProfileCardType,
+    gridXRepeat?: 1 | 2 | 3,
 }
 
 export interface ProfilePageState {
     loading: boolean,
     error: string,
     contentBlocks: Array<any>,
-    selected_page: number,
+    selectedPage: number,
 }
 
 export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
@@ -45,23 +45,23 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
         loading: true,
         error: '',
         contentBlocks: [],
-        selected_page: 0,
-    }
+        selectedPage: 0,
+    };
 
     getSelectedIndex() {
-        let current_location = location.pathname;
-        let option_index = this.props.options.findIndex((option) => option.link == current_location);
-        if (option_index !== -1) {
-            return option_index;
+        const currentLocation = location.pathname;
+        const optionIndex = this.props.options.findIndex((option) => option.link == currentLocation);
+        if (optionIndex !== -1) {
+            return optionIndex;
         }
 
         return 0;
     }
 
     public componentDidMount() {
-        let option_index = this.getSelectedIndex();
-        history.pushState({}, '', this.props.options[option_index].link);
-        this.getBlocks(option_index);
+        const optionIndex = this.getSelectedIndex();
+        history.pushState({}, '', this.props.options[optionIndex].link);
+        this.getBlocks(optionIndex);
     }
 
     profileNavigate(url: string, index: number) {
@@ -70,34 +70,32 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
     }
 
     getMenuOptions() {
-        let result: Array<TextLinkProps> = [];
+        const result: Array<TextLinkProps> = [];
         this.props.options.forEach((option, index) => {
             result.push({
                 text: option.name,
                 onclick: () => {
                     this.profileNavigate(option.link, index);
                 },
-            })
+            });
         });
 
         return result;
     }
 
-    async getBlocks(selected_index: number) {
+    async getBlocks(selectedIndex: number) {
         let resp;
-        let option = this.props.options[selected_index];
+        const option = this.props.options[selectedIndex];
         try {
-            resp = await option.api_function(option.api_params);
+            resp = await option.apiFunction(option.apiParams);
         } catch (err: any) {
             this.setState({
                 ...this.state,
                 loading: false,
                 error: err.toString(),
-                selected_page: selected_index,
+                selectedPage: selectedIndex,
             });
         }
-
-        console.log(resp);
 
         if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {
             if (ResponseStatusChecker.IsBadFormatRequest(resp)) {
@@ -105,8 +103,9 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                     ...this.state,
                     loading: false,
                     error: ResponseMessage.USER_MESSAGE,
-                    selected_page: selected_index,
+                    selectedPage: selectedIndex,
                 });
+
                 return;
             }
             else if (ResponseStatusChecker.IsInternalServerError(resp)) {
@@ -114,8 +113,9 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                     ...this.state,
                     loading: false,
                     error: ResponseMessage.SERVER_MESSAGE,
-                    selected_page: selected_index,
+                    selectedPage: selectedIndex,
                 });
+
                 return;
             }
             else if (ResponseStatusChecker.IsUserError(resp)) {
@@ -123,8 +123,9 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                     ...this.state,
                     loading: false,
                     error: resp.body.error,
-                    selected_page: selected_index,
+                    selectedPage: selectedIndex,
                 });
+
                 return;
             }
         }
@@ -134,14 +135,14 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
             loading: false,
             error: '',
             contentBlocks: resp.body ? [...resp.body] : [],
-            selected_page: selected_index,
+            selectedPage: selectedIndex,
         });
     }
 
     createContainer() {
-        let result: Array<VDomNode> = [];
+        const result: Array<VDomNode> = [];
 
-        let variant = this.props.card_variant;
+        let variant = this.props.cardVariant;
         if (!variant) {
             variant = 'profile';
         }
@@ -150,19 +151,19 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
             this.state.contentBlocks.forEach((block) => {
                 result.push(createComponent(
                     Card,
-                    { 
+                    {
                         variant: variant as CardVariants,
-                        ...block as CardProps, 
+                        ...block as CardProps,
                     },
                 ));
-            });            
+            });
         } else if (variant == 'sold') {
             this.state.contentBlocks.forEach((block) => {
                 result.push(createComponent(
                     OrderCard,
-                    { 
+                    {
                         variant: variant as OrderCardType,
-                        ...block as OrderCardProps, 
+                        ...block as OrderCardProps,
                     },
                 ));
             });
@@ -170,7 +171,7 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
             this.state.contentBlocks.forEach((block) => {
                 result.push(createComponent(
                     CommentCard,
-                    { ...block as CommentCardProps, },
+                    { ...block as CommentCardProps },
                 ));
             });
         }
@@ -179,11 +180,11 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
     }
 
     render() {
-        let option = this.props.options[this.state.selected_page];
+        const option = this.props.options[this.state.selectedPage];
 
         return createElement(
             'div',
-            { class: 'profile-page', },
+            { class: 'profile-page' },
             createComponent(
                 Text,
                 {
@@ -203,7 +204,7 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                 ) : createText(''),
             createElement(
                 'div',
-                { class: 'profile-content-block', },
+                { class: 'profile-content-block' },
                 (this.state.loading) ?
                     createComponent(
                         Loader, { },
@@ -211,33 +212,33 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
                 (this.state.contentBlocks && this.state.contentBlocks.length > 0) ?
                     createElement(
                         'div',
-                        { class: 'profile-content-block-full' + (this.props.grid_x_repeat || 3).toString(), },
+                        { class: 'profile-content-block-full' + (this.props.gridXRepeat || 3).toString() },
                         ...this.createContainer(),
                     ) :
                     createElement(
-                        'div', 
-                        { class: 'profile-content-block-empty', },
+                        'div',
+                        { class: 'profile-content-block-empty' },
                         createComponent(
                             ProfilePlaceholder,
                             {
-                                text: option.empty_message ? option.empty_message : '',
+                                text: option.emptyMessage ? option.emptyMessage : '',
                             },
                         ),
-                        (option.empty_button_text) ?
+                        (option.emptyButtonText) ?
                             createComponent(
                                 Button,
                                 {
-                                    text: option.empty_button_text,
+                                    text: option.emptyButtonText,
                                     variant: 'primary',
-                                    onclick: () => { 
-                                        if (option.empty_button_onclick) {
-                                            option.empty_button_onclick();
-                                        } 
+                                    onclick: () => {
+                                        if (option.emptyButtonOnclick) {
+                                            option.emptyButtonOnclick();
+                                        }
                                     },
                                 },
                             ) : createText(''),
                     ),
-            )
-        )
+            ),
+        );
     }
 }

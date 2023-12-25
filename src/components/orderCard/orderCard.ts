@@ -2,7 +2,7 @@ import './orderCard.scss';
 import './orderCardSold.scss';
 
 import { Component } from '../baseComponents/snail/component';
-import { createElement, createComponent, VDomNode } from '../baseComponents/snail/vdom/VirtualDOM';
+import { createElement, createComponent } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Counter } from '../counter/counter';
 import { Text, Button, Image } from '../baseComponents/index';
@@ -44,7 +44,7 @@ const getStatusName = (status: number) => {
         default:
             return 'В корзине';
     }
-}
+};
 
 export type OrderCardType = 'default' | 'sold' | 'myorder';
 
@@ -205,8 +205,6 @@ export class OrderCard extends Component<OrderCardProps, never> {
     }
 
     renderSold() {
-        let variant = this.props.variant || 'sold';
-
         return createElement(
             'order-card-sold',
             {},
@@ -244,12 +242,12 @@ export class OrderCard extends Component<OrderCardProps, never> {
                     ),
                     createComponent(
                         Text,
-                        { text: 'Количество: ' + (this.props.count || 0).toString(), },
+                        { text: 'Количество: ' + (this.props.count || 0).toString() },
                     ),
                     createComponent(
                         Text,
-                        { text: getStatusName(this.props.status || 0), },
-                    ) 
+                        { text: getStatusName(this.props.status || 0) },
+                    ),
                 ),
             ),
         );

@@ -350,12 +350,12 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
                                     name: MessageStoreAction.SHOW_MESSAGE,
                                     payload: createComponent(
                                         CommentForm,
-                                        { saler: this.props, },
+                                        { saler: this.props },
                                     ),
                                 });
                             }
                         },
-                    }
+                    },
                 ) : createText(''),
             (!UserStore.isSameUser(this.props.id)) ?
                 (!CartStore.hasProduct(this.props.product_id)) ?

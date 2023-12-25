@@ -10,7 +10,7 @@ export class CommentApi {
         });
     }
 
-    static async getComments(userId: number, offset = 0, count = 20, ) {
+    static async getComments(userId: number, offset = 0, count = 20 ) {
         return await Ajax.getInstance().get({
             url: CommentRoutes.GET_LIST,
             params: {
@@ -36,7 +36,7 @@ export class CommentApi {
         return await Ajax.getInstance().patch({
             url: CommentRoutes.UPDATE,
             params: {
-                comment_id: commentId,
+                'comment_id': commentId,
             },
             body: comment,
             credentials: 'include',

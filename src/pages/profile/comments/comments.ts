@@ -1,10 +1,10 @@
-import { Component } from "../../../components/baseComponents/snail/component";
-import { createComponent } from "../../../components/baseComponents/snail/vdom/VirtualDOM";
+import { Component } from '../../../components/baseComponents/snail/component';
+import { createComponent } from '../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { ProfilePage } from "../profilePage/profilePage";
+import { ProfilePage } from '../profilePage/profilePage';
 
-import { CommentApi } from "../../../shared/api/comment";
-import UserStore from "../../../shared/store/user";
+import { CommentApi } from '../../../shared/api/comment';
+import UserStore from '../../../shared/store/user';
 
 export class ProfileComments extends Component<never, never> {
 
@@ -13,18 +13,18 @@ export class ProfileComments extends Component<never, never> {
             ProfilePage,
             {
                 title: 'Отзывы',
-                grid_x_repeat: 1,
-                card_variant: 'comment',
+                gridXRepeat: 1,
+                cardVariant: 'comment',
                 options: [
                     {
                         name: 'Отзывы',
                         link: '/profile/comments',
-                        empty_message: 'Никто пока не оставил вам отзыв.\nВсе оставленные вам отзывы будут отображаться на этой вкладке',
-                        api_function: CommentApi.getComments,
-                        api_params: UserStore.getFields()?.id,
+                        emptyMessage: 'Никто пока не оставил вам отзыв.\nВсе оставленные вам отзывы будут отображаться на этой вкладке',
+                        apiFunction: CommentApi.getComments,
+                        apiParams: UserStore.getFields()?.id,
                     },
                 ],
-            }
+            },
         );
     }
 }
