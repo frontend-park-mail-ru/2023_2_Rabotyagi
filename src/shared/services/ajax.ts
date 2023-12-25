@@ -8,6 +8,7 @@ interface AjaxPropsType {
     headers?: any,
     credentials?: any,
     contentType?: string,
+    signal?: AbortSignal,
 }
 
 interface RequestPropsType {
@@ -16,7 +17,8 @@ interface RequestPropsType {
     body?: any,
     headers?: any,
     credentials?: any,
-    contentType?: string
+    contentType?: string,
+    signal?: AbortSignal
 }
 
 interface ContextType {
@@ -65,6 +67,7 @@ export class Ajax {
         headers = {},
         credentials = null,
         contentType = ContentType.applicationJson,
+        signal = undefined,
     }: AjaxPropsType) {
         url = this.ADRESS_BACKEND + url;
         if (params) {
@@ -78,6 +81,7 @@ export class Ajax {
             method,
             mode: 'cors',
             headers,
+            signal: signal,
         };
 
         if (body != null) {
@@ -113,7 +117,7 @@ export class Ajax {
         return await (await fetch(url, config)).json();
     }
 
-    get({ url, params, headers={}, credentials, contentType=ContentType.applicationJson }: RequestPropsType) {
+    get({ url, params, headers={}, credentials, contentType=ContentType.applicationJson, signal }: RequestPropsType) {
         return this.#ajax({
             method: AJAX_METHODS.GET,
             url,
@@ -121,10 +125,11 @@ export class Ajax {
             headers,
             credentials,
             contentType,
+            signal: signal,
         });
     }
 
-    post({ url, body, headers={}, credentials, contentType=ContentType.applicationJson }: RequestPropsType) {
+    post({ url, body, headers={}, credentials, contentType=ContentType.applicationJson, signal }: RequestPropsType) {
         return this.#ajax({
             method: AJAX_METHODS.POST,
             url,
@@ -132,10 +137,11 @@ export class Ajax {
             headers,
             contentType,
             credentials,
+            signal,
         });
     }
 
-    delete({ url, params, headers, credentials, contentType=ContentType.applicationJson }: RequestPropsType) {
+    delete({ url, params, headers, credentials, contentType=ContentType.applicationJson, signal }: RequestPropsType) {
         return this.#ajax({
             method: AJAX_METHODS.DELETE,
             url,
@@ -143,10 +149,11 @@ export class Ajax {
             headers,
             credentials,
             contentType,
+            signal: signal,
         });
     }
 
-    patch({ url, params, body, headers, credentials, contentType=ContentType.applicationJson }: RequestPropsType) {
+    patch({ url, params, body, headers, credentials, contentType=ContentType.applicationJson, signal }: RequestPropsType) {
         return this.#ajax({
             method: AJAX_METHODS.PATCH,
             url,
@@ -155,10 +162,11 @@ export class Ajax {
             headers,
             credentials,
             contentType,
+            signal,
         });
     }
 
-    put({ url, params, body, headers, credentials, contentType=ContentType.applicationJson }: RequestPropsType) {
+    put({ url, params, body, headers, credentials, contentType=ContentType.applicationJson, signal }: RequestPropsType) {
         return this.#ajax({
             method: AJAX_METHODS.PUT,
             url,
@@ -167,6 +175,7 @@ export class Ajax {
             headers,
             credentials,
             contentType,
+            signal: signal,
         });
     }
 }

@@ -3,7 +3,7 @@ import './rating.scss';
 import { Component } from '../baseComponents/snail/component';
 import { createElement, createComponent, VDomNode } from '../baseComponents/snail/vdom/VirtualDOM';
 
-import { Text } from '../baseComponents';
+import { Svg, Text } from '../baseComponents';
 import fillstar from '../../assets/icons/fillstar.svg';
 import star from '../../assets/icons/star.svg';
 
@@ -51,25 +51,40 @@ export class Rating extends Component<RatingProps, RatingState> {
             rating = Number(this.props.rating);
         }
 
-return createElement(
-            'div',
-            {
-                class: 'rating-box-stars-star',
-                onclick: () => {
-                    this.setState({ rating: index });
-                    if (this.props.influenceFunc) {
-                        this.props.influenceFunc(index);
-                    }
-                },
-            },
-            createElement(
-                'img',
-                {
-                    src: (index <= rating) ?
-                        fillstar : star,
-                },
-            ),
-        );
+        return createElement(
+                    'div',
+                    {
+                        class: 'rating-box-stars-star',
+                        onclick: () => {
+                            this.setState({ rating: index });
+                            if (this.props.influenceFunc) {
+                                this.props.influenceFunc(index);
+                            }
+                        },
+                    },
+                    (index <= rating) ?
+                    createComponent(
+                        Svg,
+                        {
+                            content: fillstar,
+                            style: '#9d8df1',
+                        },
+                    )
+                    :
+                    createComponent(
+                        Svg,
+                        {
+                            content: star,
+                        },
+                    ),
+                    // createElement(
+                    //     'img',
+                    //     {
+                    //         src: () ?
+                    //             fillstar : star,
+                    //     },
+                    // ),
+                );
     }
 
     getStars() {

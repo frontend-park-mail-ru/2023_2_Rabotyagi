@@ -19,6 +19,9 @@ import { PremiumPeriods, premiumPeriodsList } from '../../shared/models/premium'
 import delivery from '../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../assets/icons/badges/safe_deal.svg';
 import { Badge } from './badge/Badge';
+import { AlertMessage } from '../alertMessage/alertMessage';
+import Dispatcher from '../../shared/services/store/Dispatcher';
+import MessageStore, { MessageStoreAction } from '../../shared/store/message';
 
 export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite';
 
@@ -218,6 +221,8 @@ export class Card extends Component<CardProps, CardState> {
         );
     }
 
+    // premuimWindow: Window | undefined = undefined;
+
     renderPromoteButton() {
 
         const promoteEvent = (e: Event) => {
@@ -228,15 +233,52 @@ export class Card extends Component<CardProps, CardState> {
                 return;
             }
 
+            let premiumWindow;
+            const cp = this;
+
             const accept = async() => {
                 if (this.props) {
                     let res;
 
-                    try {
-                        res = await PremiumApi.add(this.props.id, period);
+                    for (const i of [1,2,3]) {
+                        try {
+                            AbortSignal.timeout ??= function timeout(ms) {
+                                const ctrl = new AbortController();
+                                setTimeout(() => ctrl.abort(), ms);
+
+                                return ctrl.signal;
+                            };
+                            // const controller = new AbortController();
+                            // const timeoutId = setTimeout(() => controller.abort(), 5000);
+                            res = await PremiumApi.add(this.props.id, period, AbortSignal.timeout(5000));
+                            break;
+                            // clearTimeout(timeoutId);
+
+                        }
+                        catch(err){
+                            console.error(err);
+
+                            // return;
+                        }
                     }
-                    catch(err){
-                        console.error(err);
+
+                    if (res === undefined) {
+                        if (!MessageStore.getVisible()) {
+                            Dispatcher.dispatch({
+                                name: MessageStoreAction.SHOW_MESSAGE,
+                                payload: createComponent(
+                                    AlertMessage,
+                                    {
+                                        title: 'Что-то пошло не так',
+                                        text: 'Кол-во попыток подключение превысило допустимое',
+                                    },
+                                ),
+                            });
+                        }
+
+                        cp.setState({
+                            modalActive: undefined,
+                        });
 
                         return;
                     }
@@ -246,7 +288,8 @@ export class Card extends Component<CardProps, CardState> {
                     }
 
                     const url = res.body.redirect_url;
-                    Navigate.navigateTo(url, {}, true);
+                    premiumWindow = window.open(url, '_blank');
+                    // Navigate.navigateTo(url, {}, true);
 
                     // @FIX
                     //Navigate.navigateTo('/profile/orders');
@@ -280,6 +323,7 @@ export class Card extends Component<CardProps, CardState> {
                     },
                 ),
             );
+
             this.setState({
                 modalActive: modal,
             });
