@@ -3,7 +3,7 @@ import './commentCard.scss';
 import { Component } from '../baseComponents/snail/component';
 import { createElement, createComponent } from '../baseComponents/snail/vdom/VirtualDOM';
 
-import { Text, Image } from '../baseComponents';
+import { Text, Image, TextArea } from '../baseComponents';
 import { Rating } from '../rating/rating';
 
 import { getRuDayFormat } from '../../shared/utils/dateConverter';
@@ -16,7 +16,7 @@ export interface CommentCardProps extends CommentModel {
 
 export class CommentCard extends Component<CommentCardProps, never> {
 
-    render() {
+    renderView() {
         return createElement(
             'div',
             { class: 'comment-card' },
@@ -67,6 +67,66 @@ export class CommentCard extends Component<CommentCardProps, never> {
                     },
                 ),
                 createComponent(
+                    TextArea,
+                    {
+                        className: 'comment-card-info-text',
+                    },
+                ),
+            ),
+        );
+    }
+
+    renderOwn() {
+        return createElement(
+            'div',
+            { class: 'comment-card' },
+            createComponent(
+                Text,
+                {
+                    tag: 'div',
+                    text: getRuDayFormat(this.props.created_at),
+                    className: 'comment-card-date',
+                },
+            ),
+            createElement(
+                'div',
+                { class: 'comment-card-sender' },
+                (this.props.avatar && this.props.avatar.url) ?
+                    createComponent(
+                        Image,
+                        {
+                            src: this.props.avatar.url,
+                            class: 'comment-card-sender-avatar',
+                        },
+                    ) :
+                    createElement(
+                        'div',
+                        { class: 'comment-card-sender-avatar' },
+                    ),
+                createComponent(
+                    Text,
+                    { text: this.props.sender_name },
+                ),
+            ),
+            createElement(
+                'div',
+                { class: 'comment-card-info' },
+                createComponent(
+                    Rating,
+                    {
+                        variant: 'edit',
+                        rating: this.props.rating,
+                    },
+                ),
+                createComponent(
+                    Text,
+                    {
+                        tag: 'div',
+                        text: 'Комментарий',
+                        className: 'comment-card-info-title',
+                    },
+                ),
+                createComponent(
                     Text,
                     {
                         tag: 'div',
@@ -76,5 +136,15 @@ export class CommentCard extends Component<CommentCardProps, never> {
                 ),
             ),
         );
+    }
+
+    render() {
+
+        switch(this.props.variant) {
+            case 'view':
+                return this.renderView();
+            case 'own':
+                return this.renderOwn();
+        }
     }
 }

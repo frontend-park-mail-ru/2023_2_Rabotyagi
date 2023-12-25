@@ -1,18 +1,19 @@
 import './modal.scss';
 
 import { Component } from '../baseComponents/snail/component';
-import { VDomNode, createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
+import { createComponent, createElement } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Button, Text } from '../baseComponents';
 
 interface ModalProps {
     onAccept: () => void,
-    onDeny: () => void
+    onDeny: () => void,
 }
 
 export class Modal extends Component<ModalProps, never> {
 
     render() {
+        console.log(this.props);
 
         return createElement(
             'modal',

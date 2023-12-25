@@ -241,13 +241,16 @@ export class Card extends Component<CardProps, CardState> {
                         return;
                     }
 
-                    if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
+                    if (!ResponseStatusChecker.IsRedirectResponse(res)) {
                         return;
                     }
 
+                    const url = res.body.redirect_url;
+                    Navigate.navigateTo(url, {}, true);
+
                     // @FIX
-                    Navigate.navigateTo('/profile/orders');
-                    Navigate.navigateTo('/profile/products');
+                    //Navigate.navigateTo('/profile/orders');
+                    //Navigate.navigateTo('/profile/products');
                 }
 
             };
@@ -439,10 +442,6 @@ export class Card extends Component<CardProps, CardState> {
                 ),
             ),
         );
-    }
-
-    renderCart() {
-
     }
 
     render() {
