@@ -69,7 +69,6 @@ export class CommentCard extends Component<CommentCardProps, never> {
                 createComponent(
                     TextArea,
                     {
-                        //text: this.props.text,
                         className: 'comment-card-info-text',
                     },
                 ),
