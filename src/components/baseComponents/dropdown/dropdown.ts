@@ -7,6 +7,7 @@ import { Svg } from '../index';
 import { TextInput } from '../index';
 
 import searchIcon from '../../../assets/icons/search.svg';
+import Navigate from '../../../shared/services/router/Navigate';
 
 interface DropdownProps {
     search?: boolean,
@@ -15,6 +16,7 @@ interface DropdownProps {
 
 interface DropDownState {
     hidden: boolean,
+    parent?: Component<any,any>
 }
 
 export class Dropdown extends Component<DropdownProps, DropDownState> {
@@ -26,6 +28,36 @@ export class Dropdown extends Component<DropdownProps, DropDownState> {
         this.setState({
             hidden: !this.state.hidden,
         });
+    }
+
+    setParent(component: Component<any,any>) {
+        // debugger;
+        this.state.parent = component;
+    }
+
+    public componentDidMount(): void {
+        // document.body.addEventListener('click', this.clickOutsideEvent);
+        // Navigate.addCallback(() => this.setState({hidden: false}));
+    }
+
+    remove = () => this.unmount();
+
+    clickOutsideEvent = (e: Event) => {
+        e.preventDefault();
+
+        const element = e.target as HTMLElement;
+        // debugger;
+        this.domElement?.parentElement;
+        element.parentElement?.previousElementSibling;
+        // if (element === this.state.parent?.instance?.domElement || element.parentElement === this.state.parent?.instance?.domElement) {
+        //     debugger;
+        // }
+        // (e.target as HTMLElement).parentElement;
+    };
+
+    public componentWillUnmount(): void {
+        // document.body.removeEventListener('click', this.clickOutsideEvent);
+        // Navigate.addCallback(() => this.setState({hidden: false}));
     }
 
     public render(): VDomNode {

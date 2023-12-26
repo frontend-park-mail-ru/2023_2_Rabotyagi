@@ -427,7 +427,10 @@ export class Card extends Component<CardProps, CardState> {
                     class: `card-profile${this.props.premium ? '--premium' : ''}`,
                     onclick: this.navigateToProduct,
                 },
-                (this.props.images) ?
+                createElement(
+                    'div',
+                    {class: 'content-profile'},
+                    (this.props.images) ?
                     createComponent(
                         Image,
                         {
@@ -440,9 +443,6 @@ export class Card extends Component<CardProps, CardState> {
                         'div',
                         { class: 'image-profile' },
                     ),
-                createElement(
-                    'div',
-                    { class: 'content-profile' },
                     createComponent(
                         Text, { text: this.props.price, type: 'price' },
                     ),
@@ -454,15 +454,20 @@ export class Card extends Component<CardProps, CardState> {
                         { class: 'divider' },
                     ),
                     (this.thisHaveBadges()) ?
-                        createElement(
-                            'div',
-                            { class: 'badges-profile' },
-                            ...this.renderBadges('badge-profile'),
-                        ) :
-                        createElement(
-                            'div',
-                            { class: 'badges-profile' },
-                        ),
+                    createElement(
+                        'div',
+                        { class: 'badges-profile' },
+                        ...this.renderBadges('badge-profile'),
+                    ) :
+                    createElement(
+                        'div',
+                        { class: 'badges-profile' },
+                    ),
+                ),
+                createElement(
+                    'div',
+                    { class: 'content-buttons' },
+
                     (variant == 'profile') ?
                         this.renderActiveButton()
                         : createText(''),
@@ -475,7 +480,7 @@ export class Card extends Component<CardProps, CardState> {
                             {
                                 variant: 'accent',
                                 text: 'Удалить',
-                                style: 'width: 100%;',
+                                // style: 'width: 100%;',
                                 onclick: this.deleteFunction,
                             },
                         ) : createText(''),

@@ -11,7 +11,6 @@ interface ModalProps {
 }
 
 export class Modal extends Component<ModalProps, never> {
-
     render() {
         return createElement(
             'modal',
