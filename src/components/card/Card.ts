@@ -23,7 +23,6 @@ import { AlertMessage } from '../alertMessage/alertMessage';
 import Dispatcher from '../../shared/services/store/Dispatcher';
 import MessageStore, { MessageStoreAction } from '../../shared/store/message';
 import { useRetry } from '../baseComponents/snail/use/shortPull';
-import { Tooltip } from '../baseComponents/tooltip/tooltip';
 
 export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite';
 
@@ -235,7 +234,7 @@ export class Card extends Component<CardProps, CardState> {
                 return;
             }
 
-            let premiumWindow;
+            // eslint-disable-next-line @typescript-eslint/no-this-alias
             const cp = this;
 
             const accept = async() => {
@@ -250,6 +249,7 @@ export class Card extends Component<CardProps, CardState> {
                     const retryCount = 3;
                     const shortPull = useRetry(PremiumApi.add, retryCount);
 
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     for (const _ of Array(retryCount).keys()) {
                         res = await shortPull(this.props.id, period, AbortSignal.timeout(3000));
 
@@ -284,7 +284,7 @@ export class Card extends Component<CardProps, CardState> {
                     }
 
                     const url = res.body.redirect_url;
-                    premiumWindow = window.open(url, '_blank');
+                    window.open(url, '_blank');
                     // Navigate.navigateTo(url, {}, true);
 
                     // @FIX
