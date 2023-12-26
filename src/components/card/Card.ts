@@ -22,6 +22,7 @@ import { Badge } from './badge/Badge';
 import { AlertMessage } from '../alertMessage/alertMessage';
 import Dispatcher from '../../shared/services/store/Dispatcher';
 import MessageStore, { MessageStoreAction } from '../../shared/store/message';
+import { useRetry } from '../baseComponents/snail/use/shortPull';
 
 export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite';
 
@@ -239,26 +240,19 @@ export class Card extends Component<CardProps, CardState> {
             const accept = async() => {
                 if (this.props) {
                     let res;
+                    AbortSignal.timeout ??= function timeout(ms) {
+                        const ctrl = new AbortController();
+                        setTimeout(() => ctrl.abort(), ms);
 
-                    for (const i of [1,2,3]) {
-                        try {
-                            AbortSignal.timeout ??= function timeout(ms) {
-                                const ctrl = new AbortController();
-                                setTimeout(() => ctrl.abort(), ms);
+                        return ctrl.signal;
+                    };
+                    const shortPull = useRetry(PremiumApi.add, 3);
 
-                                return ctrl.signal;
-                            };
-                            // const controller = new AbortController();
-                            // const timeoutId = setTimeout(() => controller.abort(), 5000);
-                            res = await PremiumApi.add(this.props.id, period, AbortSignal.timeout(5000));
+                    for (const _ of Array(3).keys()) {
+                        res = await shortPull(this.props.id, period, AbortSignal.timeout(2000));
+
+                        if (res) {
                             break;
-                            // clearTimeout(timeoutId);
-
-                        }
-                        catch(err){
-                            console.error(err);
-
-                            // return;
                         }
                     }
 
@@ -270,7 +264,7 @@ export class Card extends Component<CardProps, CardState> {
                                     AlertMessage,
                                     {
                                         title: 'Что-то пошло не так',
-                                        text: 'Кол-во попыток подключение превысило допустимое',
+                                        text: 'Кол-во попыток подключения превысило допустимое',
                                     },
                                 ),
                             });
