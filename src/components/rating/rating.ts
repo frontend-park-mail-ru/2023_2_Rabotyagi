@@ -62,28 +62,14 @@ export class Rating extends Component<RatingProps, RatingState> {
                             }
                         },
                     },
-                    (index <= rating) ?
                     createComponent(
                         Svg,
                         {
-                            content: fillstar,
-                            style: '#9d8df1',
-                        },
-                    )
-                    :
-                    createComponent(
-                        Svg,
-                        {
-                            content: star,
+                            content: (index <= rating) ? fillstar : star,
+                            width: 24,
+                            height: 24,
                         },
                     ),
-                    // createElement(
-                    //     'img',
-                    //     {
-                    //         src: () ?
-                    //             fillstar : star,
-                    //     },
-                    // ),
                 );
     }
 

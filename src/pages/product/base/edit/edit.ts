@@ -3,7 +3,7 @@ import './edit.scss';
 import { Component } from '../../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Carousel } from '../../../../components/carousel/Carousel';
+import { Carousel } from '../../../../components/carousel/carousel';
 import { ProductBase } from '../base';
 import { BooleanInput, Button, FileInput, NumberInput, Select, Text, TextArea, TextInput } from '../../../../components/baseComponents/index';
 
