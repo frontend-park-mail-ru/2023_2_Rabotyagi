@@ -86,8 +86,9 @@ export const renderVDomNode = (rootNode: VDomNode): HTMLElement | SVGSVGElement 
     if (rootNode.kind == 'element') {
         if (rootNode.tag == 'svg-element') {
             if (!rootNode.props) {
-                throw new Error('');
+                throw new Error('Svg element must have props');
             }
+            
             const svgElement = parser.parseFromString(rootNode.props['svgcontent'].toString(), 'image/svg+xml');
 
             return svgElement.documentElement;
