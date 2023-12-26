@@ -9,6 +9,7 @@
 @import './profileStyles.scss';
 
 .card-base {
+    position: relative;
     display: flex;
     width: cardConstants.$card-base-width;
     padding: 8px;

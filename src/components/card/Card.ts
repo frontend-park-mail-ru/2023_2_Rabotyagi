@@ -23,6 +23,7 @@ import { AlertMessage } from '../alertMessage/alertMessage';
 import Dispatcher from '../../shared/services/store/Dispatcher';
 import MessageStore, { MessageStoreAction } from '../../shared/store/message';
 import { useRetry } from '../baseComponents/snail/use/shortPull';
+import { Tooltip } from '../baseComponents/tooltip/tooltip';
 
 export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite';
 
@@ -123,13 +124,13 @@ export class Card extends Component<CardProps, CardState> {
         if (this.props.delivery) {
             badges.push(createComponent(
                 Badge,
-                { class: badgeClass, svgIcon: delivery },
+                { class: badgeClass, svgIcon: delivery, tooltip: 'Возможна доставка' },
             ));
         }
         if (this.props.safe_deal) {
             badges.push(createComponent(
                 Badge,
-                { class: badgeClass, svgIcon: safeDeal },
+                { class: badgeClass, svgIcon: safeDeal, tooltip: 'Безопасная сделка' },
             ));
         }
         if (this.props.city) {
@@ -151,7 +152,7 @@ export class Card extends Component<CardProps, CardState> {
                 onclick: this.navigateToProduct,
             },
             createElement(
-                'div',
+                'badges',
                 { class: 'badges-base' },
                 ...this.renderBadges('badge-base'),
             ),
@@ -246,10 +247,11 @@ export class Card extends Component<CardProps, CardState> {
 
                         return ctrl.signal;
                     };
-                    const shortPull = useRetry(PremiumApi.add, 3);
+                    const retryCount = 3;
+                    const shortPull = useRetry(PremiumApi.add, retryCount);
 
-                    for (const _ of Array(3).keys()) {
-                        res = await shortPull(this.props.id, period, AbortSignal.timeout(2000));
+                    for (const _ of Array(retryCount).keys()) {
+                        res = await shortPull(this.props.id, period, AbortSignal.timeout(3000));
 
                         if (res) {
                             break;
