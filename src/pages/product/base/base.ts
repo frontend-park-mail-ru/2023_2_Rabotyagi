@@ -139,7 +139,7 @@ export class ProductBase extends Component<never, ProductBaseState> {
                         parent: this,
                         'safe_deal': this.state.product?.safe_deal || false,
                         delivery: this.state.product?.delivery || false,
-                        comment_id: this.state.product?.comment_id || null,
+                        'comment_id': this.state.product?.comment_id || null,
                     },
                 ),
             );

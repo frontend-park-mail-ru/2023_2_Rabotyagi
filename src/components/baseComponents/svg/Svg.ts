@@ -9,6 +9,7 @@ export interface SvgProps {
     height?: number,
     color?: string,
     class?: string,
+    style?: string
 }
 
 export class Svg extends Component<SvgProps, never> {

@@ -14,7 +14,7 @@ import FavouriteStore from '../../../../shared/store/favourite';
 import UserStore from '../../../../shared/store/user';
 import Dispatcher from '../../../../shared/services/store/Dispatcher';
 
-import { Carousel } from '../../../../components/carousel/carousel';
+import { Carousel } from '../../../../components/carousel/Carousel';
 
 import fav from '../../../../assets/icons/heart.svg';
 
@@ -113,7 +113,7 @@ export class ProductBaseView extends Component<ProductBaseViewProps, ProductBase
     };
 
     render() {
-        
+
         const city = CityStore.getById(this.props.city_id);
         const category = CategoryStore.getById(this.props.category_id);
 

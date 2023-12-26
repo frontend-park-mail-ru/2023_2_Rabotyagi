@@ -18,7 +18,11 @@ import { PremiumPeriods, premiumPeriodsList } from '../../shared/models/premium'
 
 import delivery from '../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../assets/icons/badges/safe_deal.svg';
-import { Badge } from './badge/badge';
+import { Badge } from './badge/Badge';
+import { AlertMessage } from '../alertMessage/alertMessage';
+import Dispatcher from '../../shared/services/store/Dispatcher';
+import MessageStore, { MessageStoreAction } from '../../shared/store/message';
+import { useRetry } from '../baseComponents/snail/use/shortPull';
 
 export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite';
 
@@ -119,13 +123,13 @@ export class Card extends Component<CardProps, CardState> {
         if (this.props.delivery) {
             badges.push(createComponent(
                 Badge,
-                { class: badgeClass, svgIcon: delivery },
+                { class: badgeClass, svgIcon: delivery, tooltip: 'Возможна доставка' },
             ));
         }
         if (this.props.safe_deal) {
             badges.push(createComponent(
                 Badge,
-                { class: badgeClass, svgIcon: safeDeal },
+                { class: badgeClass, svgIcon: safeDeal, tooltip: 'Безопасная сделка' },
             ));
         }
         if (this.props.city) {
@@ -147,7 +151,7 @@ export class Card extends Component<CardProps, CardState> {
                 onclick: this.navigateToProduct,
             },
             createElement(
-                'div',
+                'badges',
                 { class: 'badges-base' },
                 ...this.renderBadges('badge-base'),
             ),
@@ -218,6 +222,8 @@ export class Card extends Component<CardProps, CardState> {
         );
     }
 
+    // premuimWindow: Window | undefined = undefined;
+
     renderPromoteButton() {
 
         const promoteEvent = (e: Event) => {
@@ -228,15 +234,47 @@ export class Card extends Component<CardProps, CardState> {
                 return;
             }
 
+            // eslint-disable-next-line @typescript-eslint/no-this-alias
+            const cp = this;
+
             const accept = async() => {
                 if (this.props) {
                     let res;
+                    AbortSignal.timeout ??= function timeout(ms) {
+                        const ctrl = new AbortController();
+                        setTimeout(() => ctrl.abort(), ms);
 
-                    try {
-                        res = await PremiumApi.add(this.props.id, period);
+                        return ctrl.signal;
+                    };
+                    const retryCount = 3;
+                    const shortPull = useRetry(PremiumApi.add, retryCount);
+
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    for (const _ of Array(retryCount).keys()) {
+                        res = await shortPull(this.props.id, period, AbortSignal.timeout(3000));
+
+                        if (res) {
+                            break;
+                        }
                     }
-                    catch(err){
-                        console.error(err);
+
+                    if (res === undefined) {
+                        if (!MessageStore.getVisible()) {
+                            Dispatcher.dispatch({
+                                name: MessageStoreAction.SHOW_MESSAGE,
+                                payload: createComponent(
+                                    AlertMessage,
+                                    {
+                                        title: 'Что-то пошло не так',
+                                        text: 'Кол-во попыток подключения превысило допустимое',
+                                    },
+                                ),
+                            });
+                        }
+
+                        cp.setState({
+                            modalActive: undefined,
+                        });
 
                         return;
                     }
@@ -246,7 +284,8 @@ export class Card extends Component<CardProps, CardState> {
                     }
 
                     const url = res.body.redirect_url;
-                    Navigate.navigateTo(url, {}, true);
+                    window.open(url, '_blank');
+                    // Navigate.navigateTo(url, {}, true);
 
                     // @FIX
                     //Navigate.navigateTo('/profile/orders');
@@ -280,6 +319,7 @@ export class Card extends Component<CardProps, CardState> {
                     },
                 ),
             );
+
             this.setState({
                 modalActive: modal,
             });

@@ -1,12 +1,18 @@
 @use '../cardConstants.scss';
 
 .badges-base {
+    position: absolute;
     display: flex;
+    flex-direction: row;
     justify-content: center;
-    align-items: flex-end;
+    align-items: baseline;
     align-self: stretch;
-    max-width: cardConstants.$card-base-width;
-    overflow: hidden;
+    max-width: 220px;
+    width: -webkit-fill-available;
+    height: fit-content;
+    gap: 8px;
+    top: -28px;
+    overflow: visible;
 }
 
 .badges-profile {

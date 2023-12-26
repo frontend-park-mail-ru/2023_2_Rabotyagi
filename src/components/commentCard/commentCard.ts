@@ -145,7 +145,7 @@ export class CommentCard extends Component<CommentCardProps, never> {
                 return this.renderView();
             case 'own':
                 return this.renderOwn();
-            default: 
+            default:
                 return this.renderView();
         }
     }

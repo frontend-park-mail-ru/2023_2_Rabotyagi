@@ -11,7 +11,7 @@ import { ResponseMessage, ResponseStatusChecker } from '../../../shared/constant
 import { OrderCard, OrderCardProps, OrderCardType } from '../../../components/orderCard/orderCard';
 import { CommentCard, CommentCardProps } from '../../../components/commentCard/commentCard';
 import { Card, CardProps, CardVariants } from '../../../components/card/Card';
-import { Loader } from '../../../components/loader/loader';
+import { Loader } from '../../../components/loader/Loader';
 
 export type ProfileCardType = 'profile' | 'profile-saler' | 'favourite' | 'sold' | 'comment';
 

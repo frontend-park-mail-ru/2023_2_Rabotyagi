@@ -1,7 +1,7 @@
 import { Component } from '../../../../components/baseComponents/snail/component';
 import { VDomNode, createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 
-import { Loader } from '../../../../components/loader/loader';
+import { Loader } from '../../../../components/loader/Loader';
 import { Text } from '../../../../components/baseComponents';
 import { ProfilePlaceholder } from '../../placeholder/placeholder';
 
@@ -104,44 +104,6 @@ export class SalerComments extends Component<never, SalerCommentsState> {
     }
 
     render() {
-
-        let tail = createElement(
-            'div',
-            { class: 'profile-page' },
-            createComponent(
-                Text,
-                {
-                    variant: 'subheader',
-                    text: 'Отзывы',
-                    className: 'profile-page-title',
-                },
-            ),
-            createElement(
-                'div',
-                { class: 'profile-content-block' },
-                (this.state.loading) ?
-                    createComponent(
-                        Loader, { },
-                    ) :
-                (this.state.contentBlocks && this.state.contentBlocks.length > 0) ?
-                    createElement(
-                        'div',
-                        { class: 'profile-content-block-full1' },
-                        ...this.createContainer(),
-                    ) :
-                    createElement(
-                        'div',
-                        { class: 'profile-content-block-empty' },
-                        createComponent(
-                            ProfilePlaceholder,
-                            {
-                                text: 'У данного продавца пока нет отзывов',
-                            },
-                        ),
-                    ),
-            ),
-        )
-
         return createElement(
             'div',
             { class: 'profile-page' },

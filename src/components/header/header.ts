@@ -138,7 +138,7 @@ export class Header extends Component<never, HeaderState>{
     }
 
     render() {
-        
+
         let tail = [];
 
         if (!UserStore.isAuth()){

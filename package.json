@@ -11,8 +11,6 @@
     "server": "node server/index.js",
     "build-dev": "webpack --config ./webpack.dev.config.js",
     "build-prod": "webpack --config ./webpack.prod.config.js --watch",
-    "predocs": "rmdir -r -f ./docs",
-    "docs": "jsdoc .\\src\\ --recurse -d .\\docs -c .\\jsdoc.json",
     "lint": "npx eslint src"
   },
   "repository": {

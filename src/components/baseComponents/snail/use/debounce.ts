@@ -17,9 +17,3 @@ export function useDebounce<Args, Return>(
         lastCallTimer = setTimeout(() => func(args), timeoutMs);
     };
 }
-
-// const debounced = debounce<exampleArgs, void>(example, 100);
-// debounced({
-//     arg1: 1,
-//     arg2: 2,
-// });

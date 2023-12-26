@@ -4,7 +4,7 @@ import { Component } from '../snail/component';
 import { createElement, createComponent, createText } from '../snail/vdom/VirtualDOM';
 
 import { Text, TextVariants } from '../text/Text';
-import { Svg } from '../svg/svg';
+import { Svg } from '../svg/Svg';
 import { Image } from '../image/image';
 
 export type ButtonTypes = 'primary' | 'neutral' | 'secondary' | 'accent' | 'outlined' | 'base' | 'image';

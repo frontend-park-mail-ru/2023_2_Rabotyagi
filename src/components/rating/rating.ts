@@ -3,7 +3,9 @@ import './rating.scss';
 import { Component } from '../baseComponents/snail/component';
 import { createElement, createComponent, VDomNode } from '../baseComponents/snail/vdom/VirtualDOM';
 
-import { Text } from '../baseComponents';
+import { Svg, Text } from '../baseComponents';
+import fillstar from '../../assets/icons/fillstar.svg';
+import star from '../../assets/icons/star.svg';
 
 export type RatingVariant = 'edit' | 'show';
 
@@ -49,26 +51,40 @@ export class Rating extends Component<RatingProps, RatingState> {
             rating = Number(this.props.rating);
         }
 
-return createElement(
-            'div',
-            {
-                class: 'rating-box-stars-star',
-                onclick: () => {
-                    this.setState({ rating: index });
-                    if (this.props.influenceFunc) {
-                        this.props.influenceFunc(index);
-                    }
-                },
-            },
-            createElement(
-                'img',
-                {
-                    src: (index <= rating) ?
-                        '../../assets/icons/fillstar.svg'
-                        : '../../assets/icons/star.svg',
-                },
-            ),
-        );
+        return createElement(
+                    'div',
+                    {
+                        class: 'rating-box-stars-star',
+                        onclick: () => {
+                            this.setState({ rating: index });
+                            if (this.props.influenceFunc) {
+                                this.props.influenceFunc(index);
+                            }
+                        },
+                    },
+                    (index <= rating) ?
+                    createComponent(
+                        Svg,
+                        {
+                            content: fillstar,
+                            style: '#9d8df1',
+                        },
+                    )
+                    :
+                    createComponent(
+                        Svg,
+                        {
+                            content: star,
+                        },
+                    ),
+                    // createElement(
+                    //     'img',
+                    //     {
+                    //         src: () ?
+                    //             fillstar : star,
+                    //     },
+                    // ),
+                );
     }
 
     getStars() {
@@ -111,8 +127,8 @@ return ' rating-normal';
                 {
                     tag: 'div',
                     variant: (variantClass == '') ? 'regular' : 'subheader',
-                    text: (variantClass == '') ? 
-                            ratingToString(this.state.rating) 
+                    text: (variantClass == '') ?
+                            ratingToString(this.state.rating)
                             : (this.props.rating || 0.0).toString(),
                     className: 'rating-box-title' + variantClass + this.getTextClassName(),
                 },
