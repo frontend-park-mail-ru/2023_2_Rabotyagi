@@ -234,6 +234,10 @@ export class Card extends Component<CardProps, CardState> {
     getStatus = async() => {
         let res;
 
+        if (this.props.premium) {
+            return;
+        }
+
         try {
             res = await PremiumApi.getStatus(this.props.id);
         }
