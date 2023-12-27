@@ -64,12 +64,16 @@ export class ProfilePage extends Component<ProfilePageProps, ProfilePageState> {
 
     public componentDidMount() {
         const optionIndex = this.getSelectedIndex();
-        history.pushState({}, '', this.props.options[optionIndex].link);
+        if (this.props.options.length > 1) {
+            history.pushState({}, '', this.props.options[optionIndex].link);
+        }
         this.getBlocks(optionIndex);
     }
 
     profileNavigate(url: string, index: number) {
-        history.pushState({}, '', url);
+        if (this.props.options.length > 1) {
+            history.pushState({}, '', url);
+        }
         this.getBlocks(index);
     }
 
