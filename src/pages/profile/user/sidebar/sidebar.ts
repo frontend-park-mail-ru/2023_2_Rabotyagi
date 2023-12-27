@@ -144,7 +144,6 @@ export class UserSidebar extends Component<never, UserSidebarState> {
                         variant: 'subheader',
                     },
                 ),
-                (this.state.avatar) ?
                 createComponent(
                     Image,
                     {
@@ -152,13 +151,7 @@ export class UserSidebar extends Component<never, UserSidebarState> {
                         height: 80,
                         style: 'align-self: center;',
                         src: this.state.avatar,
-                    },
-                )
-                :
-                createElement(
-                    'div',
-                    {
-                        style: 'width: -webkit-fill-available; height: 80px; position: relative; background: rgba(41, 44, 47, 0.25)',
+                        variant: 'avatar',
                     },
                 ),
                 createComponent(

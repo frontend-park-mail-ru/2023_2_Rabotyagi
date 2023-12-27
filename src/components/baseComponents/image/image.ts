@@ -2,6 +2,8 @@ import { getResourceUrl } from '../../../shared/utils/getResource';
 import { Component } from '../snail/component';
 import { createElement } from '../snail/vdom/VirtualDOM';
 
+export type ImageType = 'avatar';
+
 export interface ImageProps {
     src?: string | null,
     id?: string,
@@ -9,6 +11,7 @@ export interface ImageProps {
     height?: number | string,
     class?: string,
     style?: string,
+    variant?: ImageType
 }
 
 export class Image extends Component<ImageProps, never> {
@@ -18,7 +21,7 @@ export class Image extends Component<ImageProps, never> {
             this.props.src = getResourceUrl(this.props.src) as string;
         }
 
-        const {width, height, src, style, ...etc} = this.props;
+        const {width, height, src, style, variant, ...etc} = this.props;
 
         if (src) {
             return createElement(
@@ -31,10 +34,21 @@ export class Image extends Component<ImageProps, never> {
             );
         }
 
+        if (variant === 'avatar') {
+            return createElement(
+                'img',
+                {
+                    style: `width: ${width}; height: ${height}; ${style}`,
+                    src: '/assets/images/avatar-placeholder.png',
+                    ...etc,
+                },
+            );
+        }
+
         return createElement(
                 'img',
                 {
-                    style: `width: ${width}; height: ${height}`,
+                    style: `width: ${width}; height: ${height}; ${style}`,
                     ...etc,
                 },
             );

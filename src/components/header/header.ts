@@ -199,6 +199,7 @@ export class Header extends Component<never, HeaderState>{
                     height: 36,
                     width: 36,
                     src: this.state.avatar,
+                    srcVariant: 'avatar',   
                     onclick: () => {
                         (dropdown.instance as Dropdown).switchHidden();
                     },
