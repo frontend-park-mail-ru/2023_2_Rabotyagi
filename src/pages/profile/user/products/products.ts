@@ -6,7 +6,7 @@ import { VDomNode, createComponent, createElement } from '../../../../components
 import { Card } from '../../../../components/card/Card';
 import { Loader } from '../../../../components/loader/Loader';
 import { ProfilePlaceholder } from '../../placeholder/placeholder';
-import { Button } from '../../../../components/baseComponents';
+import { Text, Button } from '../../../../components/baseComponents';
 
 import { UserApi } from '../../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../../shared/constants/response';
@@ -17,10 +17,27 @@ import { Menu } from '../../menu/menu';
 
 type TabVariant = 'all' | 'active' | 'not active';
 
+const allMessage = 'У вас пока нет объявлений.\nВсе объявления будут на этой вкладке';
+const activeMessage = 'У вас пока нет активированных объявлений.\nВсе активированные объявления будут на этой вкладке';
+const notActiveMessage = 'У вас пока нет неактивных объявлений.\nВсе неактивные объявления будут на этой вкладке';
+
+const getMessage = (variant: TabVariant) => {
+    switch(variant) {
+        case 'all':
+            return allMessage;
+        case 'active':
+            return activeMessage;
+        case 'not active':
+            return notActiveMessage;
+        default:
+            return allMessage;
+    }
+}
+
 interface ProfileProductsState {
     loading: boolean,
     products: Array<ProductModelResponse>,
-    page?: TabVariant
+    page?: TabVariant,
 }
 
 export class ProfileProducts extends Component<never, ProfileProductsState> {
@@ -82,6 +99,7 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
         this.setState({
             loading: false,
             products: products,
+            page: 'all',
         });
     }
 
@@ -92,6 +110,7 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
         this.setState({
             loading: false,
             products: active,
+            page: 'active',
         });
     }
 
@@ -102,13 +121,16 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
         this.setState({
             loading: false,
             products: notActive,
+            page: 'not active',
         });
     }
 
     removeProduct = (id: number) => {
+        const newProducts = this.state.products.filter((product) => product.id !== id);
+
         this.setState({
             loading: false,
-            products: this.state.products.filter((product) => product.id !== id),
+            products: newProducts,
         });
     };
 
@@ -118,7 +140,12 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
         this.state.products.forEach((product: ProductModelResponse) => products.push(
             createComponent(
                 Card,
-                {variant: 'profile', ...product, removeCallback: this.removeProduct},
+                {
+                    variant: 'profile', 
+                    ...product, 
+                    removeCallback: this.removeProduct,
+                    activeCallBack: this.removeProduct,
+                }
             )),
         );
 
@@ -134,6 +161,15 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
         return createElement(
             'div',
             { class: 'products' },
+            createComponent(
+                Text,
+                {
+                    tag: 'div',
+                    variant: 'subheader',
+                    text: 'Объявления',
+                    style: 'padding-bottom: 32px',
+                },
+            ),
             createComponent(
                 Menu,
                 {
@@ -175,9 +211,7 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
                 { class: 'empty-box' },
                 createComponent(
                     ProfilePlaceholder,
-                    {
-                        text: 'У вас пока нет объявлений.\nВсе созданные вами объявления будут на этой вкладке',
-                    },
+                    { text: getMessage(this.state.page || 'all'), },
                 ),
                 createComponent(
                     Button,

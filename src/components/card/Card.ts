@@ -73,7 +73,8 @@ export interface CardProps {
     is_active?: boolean,
     premium: boolean,
     favouriteInfluence?: (index: number) => void,
-    removeCallback?: (id: number) => void
+    removeCallback?: (id: number) => void,
+    activeCallBack?: (index: number) => void,
 }
 
 enum MouseButtons {
@@ -216,6 +217,9 @@ export class Card extends Component<CardProps, CardState> {
                 isActive: !this.state.isActive,
             });
 
+            if (this.props.activeCallBack) {
+                this.props.activeCallBack(this.props.id);
+            }
         };
 
         return createComponent(

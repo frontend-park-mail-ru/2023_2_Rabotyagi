@@ -5,6 +5,7 @@ sidebar {
     align-items: flex-start;
     gap: 16px;
     display: inline-flex;
+    max-width: 216px;
 
     >.badges {
         align-self: stretch;

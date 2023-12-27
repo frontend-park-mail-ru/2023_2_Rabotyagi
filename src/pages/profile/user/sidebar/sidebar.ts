@@ -1,8 +1,11 @@
+import './sidebar.scss';
+
 import { Component } from '../../../../components/baseComponents/snail/component';
-import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { createComponent, createElement, createText } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 
 import { Loader } from '../../../../components/loader/Loader';
 import { Menu } from '../../menu/menu';
+import { Rating } from '../../../../components/rating/rating';
 import { Image, Text, TextLinkProps } from '../../../../components/baseComponents/index';
 
 import UserStore from '../../../../shared/store/user';
@@ -140,8 +143,10 @@ export class UserSidebar extends Component<never, UserSidebarState> {
                 createComponent(
                     Text,
                     {
+                        tag: 'div',
                         text: this.state.name ? this.state.name : this.state.email,
                         variant: 'subheader',
+                        style: 'text-align: center; width: 100%;',
                     },
                 ),
                 createComponent(
@@ -154,6 +159,14 @@ export class UserSidebar extends Component<never, UserSidebarState> {
                         variant: 'avatar',
                     },
                 ),
+                (this.state.avg_rating) ?
+                    createComponent(
+                        Rating,
+                        {
+                            variant: 'profile-show',
+                            rating: this.state.avg_rating,
+                        },
+                    ) : createText(''),
                 createComponent(
                     Menu,
                     {
