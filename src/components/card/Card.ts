@@ -249,7 +249,7 @@ export class Card extends Component<CardProps, CardState> {
 
         const body = res.body as PremiumStatusResponse;
 
-        if (body.premium_status == PremuimStatus.PENDING || body.premium_status == PremuimStatus.WAITING_FOR_CAPTURE) {
+        if (body.premium_status == (PremuimStatus.PENDING || PremuimStatus.WAITING_FOR_CAPTURE)) {
             this.setState({
                 paymentProcess: true,
             });
