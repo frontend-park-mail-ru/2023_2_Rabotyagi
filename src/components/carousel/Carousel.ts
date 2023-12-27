@@ -59,34 +59,54 @@ export class Carousel extends Component<CarouselProps, CarouselState> {
 
         const images = this.props.images;
 
+        const leftBtn = [], rightBtn = [];
+
+        if (images && images.length > 1) {
+            leftBtn.push(
+                createComponent(
+                    Button,
+                    {
+                        className: 'carousel-button--left',
+                        onclick: this.goBack,
+                    },
+                    createElement(
+                        'span',
+                        {},
+                    ),
+                ),
+            );
+
+            rightBtn.push(
+                createComponent(
+                    Button,
+                    {
+                        className: 'carousel-button--right',
+                        onclick: this.goNext,
+                    },
+                    createElement(
+                        'span',
+                        {},
+                    ),
+                ),
+            );
+        }
+
         return createElement(
             'div',
             { class: 'carousel' },
-            createComponent(
-                Button,
-                {
-                    className: 'carousel-button--left',
-                    onclick: this.goBack,
-                },
-            ),
+            ...leftBtn,
             (images) ?
-                createComponent(
-                    Image,
-                    {
-                        class: 'carousel-item',
-                        src: images[this.state.currentImageIndex].url,
-                    },
-                ) :
-                createElement(
-                    'div', { class: 'carousel-empty placeholder' },
-                ),
             createComponent(
-                Button,
+                Image,
                 {
-                    className: 'carousel-button--right',
-                    onclick: this.goNext,
+                    class: 'carousel-item',
+                    src: images[this.state.currentImageIndex].url,
                 },
+            ) :
+            createElement(
+                'div', { class: 'carousel-empty placeholder' },
             ),
+            ...rightBtn,
         );
     }
 }
