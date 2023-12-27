@@ -9,7 +9,7 @@ import { extname } from './extname';
  * @constant {string} EMAIL_REGEXP
  */
 //eslint-disable-next-line no-useless-escape
-const EMAIL_REGEXP = /^[^\s()<>@,;:\/]+@\w[\w.-]+\.[a-z]{2,}$/i;
+const EMAIL_REGEXP = /^[^\s()<>@,;:\/]+@[\wА-Яа-я][\wА-Яа-я.-]+\.[a-zа-я]{2,}$/;
 /**
  * @constant {string} minLenPassword
  */

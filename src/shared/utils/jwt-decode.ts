@@ -13,8 +13,9 @@ export default function jwtDecode(token: string): userCookie {
     const idxStart = token.indexOf('.');
     const idxEnd = token.lastIndexOf('.');
     const payload = token.slice(idxStart + 1, idxEnd);
-    const decoded = decodeURIComponent(escape(window.atob(payload)));
-    const parsed = JSON.parse(decoded);
+    const decoded = decodeURIComponent(atob(payload).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
 
-    return parsed;
+    return JSON.parse(decoded);
 }
