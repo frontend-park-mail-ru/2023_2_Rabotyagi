@@ -7,7 +7,11 @@ import { Svg } from '../baseComponents/index';
 
 import loader from '../../assets/icons/loader.svg';
 
-export class Loader extends Component<never, never> {
+interface LoaderProps {
+    style?: string
+}
+
+export class Loader extends Component<LoaderProps, never> {
 
     render() {
 
@@ -16,7 +20,7 @@ export class Loader extends Component<never, never> {
             {},
             createComponent(
                 Svg,
-                { content: loader, class: 'loader-regular rotating' },
+                { content: loader, class: 'loader-regular rotating', style: this.props.style },
             ),
         );
     }

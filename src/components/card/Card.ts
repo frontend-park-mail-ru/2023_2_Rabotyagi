@@ -98,6 +98,10 @@ export class Card extends Component<CardProps, CardState> {
         this.setState({
             isActive: this.props?.is_active || false,
         });
+
+        if (this.props.variant === 'profile') {
+            this.getStatus();
+        }
     }
 
     navigateToProduct = (e: MouseEvent) => {
@@ -227,6 +231,71 @@ export class Card extends Component<CardProps, CardState> {
 
     // premuimWindow: Window | undefined = undefined;
 
+    getStatus = async() => {
+        let res;
+
+        try {
+            res = await PremiumApi.getStatus(this.props.id);
+        }
+        catch (err) {
+            console.error(err);
+
+            return;
+        }
+
+        if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
+            return;
+        }
+
+        const body = res.body as PremiumStatusResponse;
+
+        if (body?.premium_status == PremuimStatus.PENDING) {
+            this.setState({
+                paymentProcess: true,
+            });
+
+            setTimeout(() => this.checkStatus(this.props.id), 29000);
+
+            return;
+        }
+    };
+
+    checkStatus = async(id: number) => {
+        const sleepTimeout = 29 * 1000;
+
+        try {
+            const res = await PremiumApi.getStatus(id);
+
+            if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
+                setTimeout(() => this.checkStatus(this.props.id), sleepTimeout);
+
+                return;
+            }
+
+            const body = res.body as PremiumStatusResponse;
+
+            if (body?.premium_status !== PremuimStatus.SUCCEEDED) {
+                setTimeout(() => this.checkStatus(this.props.id), sleepTimeout);
+
+                return res.body.premium_status;
+            }
+
+            this.props.premium = true;
+            this.setState({
+                paymentProcess: false,
+            });
+            // cp.applyComponentChanges();
+
+            return;
+
+        }
+        catch (err) {
+            setTimeout(() => this.checkStatus(this.props.id), sleepTimeout);
+
+            return;
+        }
+    };
+
     renderPromoteButton() {
 
         const promoteEvent = (e: Event) => {
@@ -289,46 +358,10 @@ export class Card extends Component<CardProps, CardState> {
                     const url = res.body.redirect_url;
                     window.open(url, '_blank');
 
-                    const checkStatus = async(id: number) => {
-                        const sleepTimeout = 29 * 1000;
-
-                        try {
-                            const res = await PremiumApi.getStatus(id);
-
-                            if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
-                                setTimeout(() => checkStatus(this.props.id), sleepTimeout);
-
-                                return;
-                            }
-
-                            const body = res.body as PremiumStatusResponse;
-
-                            if (body?.premium_status !== PremuimStatus.SUCCEEDED) {
-                                setTimeout(() => checkStatus(this.props.id), sleepTimeout);
-
-                                return res.body.premium_status;
-                            }
-
-                            cp.props.premium = true;
-                            cp.setState({
-                                paymentProcess: false,
-                            });
-                            // cp.applyComponentChanges();
-
-                            return;
-
-                        }
-                        catch (err) {
-                            setTimeout(() => checkStatus(this.props.id), sleepTimeout);
-
-                            return;
-                        }
-                    };
-
                     cp.setState({
                         paymentProcess: true,
                     });
-                    checkStatus(this.props.id);
+                    cp.checkStatus(this.props.id);
                     // Navigate.navigateTo(url, {}, true);
 
                     // @FIX
@@ -379,7 +412,9 @@ export class Card extends Component<CardProps, CardState> {
                 },
                 createComponent(
                     Loader,
-                    {},
+                    {
+                        style: 'fill: white;',
+                    },
                 ),
             );
         }
