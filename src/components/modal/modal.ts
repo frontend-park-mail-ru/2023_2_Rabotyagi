@@ -15,26 +15,34 @@ export class Modal extends Component<ModalProps, never> {
         return createElement(
             'modal',
             { class: 'modal' },
-            createComponent(
-                Text,
-                { text: 'Длительность подписки' },
+            createElement(
+                'div',
+                { class: 'modal-content' },
+                createComponent(
+                    Text,
+                    { text: 'Длительность подписки' },
+                ),
+                ...this.children,
             ),
-            ...this.children,
-            createComponent(
-                Button,
-                {
-                    text: 'Принять',
-                    variant: 'primary',
-                    onclick: this.props.onAccept,
-                },
-            ),
-            createComponent(
-                Button,
-                {
-                    text: 'Отмена',
-                    variant: 'neutral',
-                    onclick: this.props.onDeny,
-                },
+            createElement(
+                'div',
+                { class: 'modal-buttons' },
+                createComponent(
+                    Button,
+                    {
+                        text: 'Принять',
+                        variant: 'primary',
+                        onclick: this.props.onAccept,
+                    },
+                ),
+                createComponent(
+                    Button,
+                    {
+                        text: 'Отмена',
+                        variant: 'neutral',
+                        onclick: this.props.onDeny,
+                    },
+                ),
             ),
         );
     }
