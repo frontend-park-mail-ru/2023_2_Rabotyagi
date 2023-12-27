@@ -539,7 +539,7 @@ export class Card extends Component<CardProps, CardState> {
                             {
                                 variant: 'accent',
                                 text: 'Удалить',
-                                // style: 'width: 100%;',
+                                className: 'content-buttons-delete',
                                 onclick: this.deleteFunction,
                             },
                         ) : createText(''),
