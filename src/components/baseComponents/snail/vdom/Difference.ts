@@ -1,6 +1,9 @@
 import { checkTagLikeSvgTag } from './SVGRender';
 import { VDomElement, VDomNode, VDomPropsType, renderVDomNode } from './VirtualDOM';
 
+// парсер необходим для svg-элементов
+const parser = new DOMParser();
+
 type PropsUpdater = {
     set: VDomPropsType,
     remove: Array<string>
@@ -249,7 +252,8 @@ export const applyChanges = (element: HTMLElement | SVGSVGElement | Text, differ
         return updatedElement;
     }
 
-    if (element instanceof HTMLElement) {
+    if (element instanceof HTMLElement || element instanceof SVGSVGElement) {
+
         difference.props.remove.forEach((prop) => {
             element.removeAttribute(prop);
         });
@@ -272,10 +276,10 @@ export const applyChanges = (element: HTMLElement | SVGSVGElement | Text, differ
                     throw new Error(prop + ' is not an event name');
                 }
                 element.addEventListener(eventName, eventFunc);
+            } else if (prop == 'svgcontent') {
+                const svgElement = parser.parseFromString(difference.props.set[prop].toString(), 'image/svg+xml');
+                element.outerHTML = svgElement.documentElement.outerHTML;
             } else {
-                //element.setAttribute(prop, difference.props.set[prop].toString());
-                // (element as any)[prop] = difference.props.set[prop];
-
                 if (checkTagLikeSvgTag(element.tagName)) {
                     element.setAttribute(prop, difference.props.set[prop].toString());
                 } else {
@@ -285,12 +289,12 @@ export const applyChanges = (element: HTMLElement | SVGSVGElement | Text, differ
         });
     }
 
-    applyChildrenChanges(element as HTMLElement, difference.children);
+    applyChildrenChanges(element as HTMLElement | SVGSVGElement, difference.children);
 
     return element;
 };
 
-export const applyChildrenChanges = (element: HTMLElement, functions: Array<ChildUpdater>) => {
+export const applyChildrenChanges = (element: HTMLElement | SVGSVGElement, functions: Array<ChildUpdater>) => {
 
     // сдвиг, необходимый, чтобы операции применялись к нужным элементам, если до этого были удаления
     let childIndex: number = 0;
@@ -324,7 +328,7 @@ export const applyChildrenChanges = (element: HTMLElement, functions: Array<Chil
                 return;
             }
 
-            applyChanges(childElement as HTMLElement | Text, func as VDomNodeUpdater);
+            applyChanges(childElement as HTMLElement | SVGSVGElement | Text, func as VDomNodeUpdater);
         }
     });
 };

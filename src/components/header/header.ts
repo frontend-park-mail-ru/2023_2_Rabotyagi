@@ -192,6 +192,21 @@ export class Header extends Component<never, HeaderState>{
                     },
                 ),
             );
+
+            const button = createComponent(
+                ButtonImage,
+                {
+                    height: 36,
+                    width: 36,
+                    src: this.state.avatar,
+                    srcVariant: 'avatar',   
+                    onclick: () => {
+                        (dropdown.instance as Dropdown).switchHidden();
+                    },
+                },
+                dropdown,
+            );
+
             tail = [
                 createComponent(
                     Button,
@@ -207,18 +222,7 @@ export class Header extends Component<never, HeaderState>{
                         onclick: () => { this.routeToCart(); },
                     },
                 ),
-                createComponent(
-                    ButtonImage,
-                    {
-                        height: 36,
-                        width: 36,
-                        src: this.state.avatar,
-                        onclick: () => {
-                            (dropdown.instance as Dropdown).switchHidden();
-                        },
-                    },
-                    dropdown,
-                ),
+                button,
             ];
         }
 

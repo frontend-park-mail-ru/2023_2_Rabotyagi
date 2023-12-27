@@ -1,6 +1,8 @@
 import { Store } from '../services/store/Store';
 
 import { VDomNode, createText } from '../../components/baseComponents/snail/vdom/VirtualDOM';
+import Navigate from '../services/router/Navigate';
+import Dispatcher from '../services/store/Dispatcher';
 
 export enum MessageStoreAction {
     SHOW_MESSAGE = 'SHOW_MESSAGE',
@@ -18,6 +20,15 @@ const initMessageStoreState: MessageStoreInterface = {
 };
 
 export class MessageStore extends Store<MessageStoreInterface> {
+    constructor(){
+        super(initMessageStoreState);
+
+        Navigate.addCallback(this.remove);
+    }
+
+    remove = () => {
+        Dispatcher.dispatch({ name: MessageStoreAction.HIDE_MESSAGE });
+    };
 
     private showContent(newNode: VDomNode) {
         if (!this.state.visible) {
@@ -51,5 +62,5 @@ export class MessageStore extends Store<MessageStoreInterface> {
     }
 }
 
-export default new MessageStore(initMessageStoreState);
+export default new MessageStore();
 

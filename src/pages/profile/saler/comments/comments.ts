@@ -4,6 +4,7 @@ import { VDomNode, createComponent, createElement } from '../../../../components
 import { Loader } from '../../../../components/loader/Loader';
 import { Text } from '../../../../components/baseComponents';
 import { ProfilePlaceholder } from '../../placeholder/placeholder';
+import { ProfilePage } from '../../profilePage/profilePage';
 
 import { CommentApi } from '../../../../shared/api/comment';
 import { ResponseMessage, ResponseStatusChecker } from '../../../../shared/constants/response';
@@ -104,41 +105,22 @@ export class SalerComments extends Component<never, SalerCommentsState> {
     }
 
     render() {
-        return createElement(
-            'div',
-            { class: 'profile-page' },
-            createComponent(
-                Text,
-                {
-                    variant: 'subheader',
-                    text: 'Отзывы',
-                    className: 'profile-page-title',
-                },
-            ),
-            createElement(
-                'div',
-                { class: 'profile-content-block' },
-                (this.state.loading) ?
-                    createComponent(
-                        Loader, { },
-                    ) :
-                (this.state.contentBlocks && this.state.contentBlocks.length > 0) ?
-                    createElement(
-                        'div',
-                        { class: 'profile-content-block-full1' },
-                        ...this.createContainer(),
-                    ) :
-                    createElement(
-                        'div',
-                        { class: 'profile-content-block-empty' },
-                        createComponent(
-                            ProfilePlaceholder,
-                            {
-                                text: 'У данного продавца пока нет отзывов',
-                            },
-                        ),
-                    ),
-            ),
+        return createComponent(
+            ProfilePage,
+            {
+                title: 'Отзывы',
+                cardVariant: 'comment',
+                gridXRepeat: 1,
+                options: [
+                    {
+                        name: 'Отзывы',
+                        link: 'comments',
+                        emptyMessage: 'У данного продавца пока нет отзывов',
+                        apiFunction: CommentApi.getComments,
+                        apiParams: history.state.salerId,    
+                    },
+                ],
+            },
         );
     }
 }

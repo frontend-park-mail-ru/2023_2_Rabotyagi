@@ -28,6 +28,8 @@ export async function getOrders() {
             }
         }
     } catch(err) {
-        console.error(err);
+        // console.error(err);
+
+        return;
     }
 }

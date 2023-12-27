@@ -50,3 +50,10 @@ docker images
 REPOSITORY                  TAG       IMAGE ID       CREATED          SIZE
 nikdemi/rabotyagi-backend   latest    25dbaeeef1af   50 seconds ago   307MB
 ```
+
+# Для рестарта базы
+```
+./migrate -database postgres://postgres:postgres@postgres:5432/youla?sslmode=disable -path db/migrations down
+./migrate -database postgres://postgres:postgres@postgres:5432/youla?sslmode=disable -path db/migrations up
+./fake_db postgres://postgres:postgres@postgres:5432/youla?sslmode=disable .
+```

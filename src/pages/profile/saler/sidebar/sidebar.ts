@@ -1,9 +1,12 @@
+import './sidebar.scss';
+
 import { Component } from '../../../../components/baseComponents/snail/component';
-import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
+import { createComponent, createElement, createText } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 
 import { Loader } from '../../../../components/loader/Loader';
 import { Menu } from '../../menu/menu';
 import { Image, Text, TextLinkProps } from '../../../../components/baseComponents/index';
+import { Rating } from '../../../../components/rating/rating';
 
 import { UserApi } from '../../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../../shared/constants/response';
@@ -73,12 +76,6 @@ export class SalerSidebar extends Component<never, SalerSidebarState> {
                 return 0;
             case 'comments':
                 return 1;
-            case 'orders':
-                return 2;
-            case 'favourites':
-                return 3;
-            case 'settings':
-                return 4;
             default:
                 return 0;
         }
@@ -122,27 +119,30 @@ export class SalerSidebar extends Component<never, SalerSidebarState> {
                 createComponent(
                     Text,
                     {
+                        tag: 'div',
                         text: this.state.name ? this.state.name : this.state.email,
                         variant: 'subheader',
+                        className: 'profile-sidebar-name',
                     },
                 ),
-                (this.state.avatar) ?
                 createComponent(
                     Image,
                     {
                         width: 80,
                         height: 80,
                         style: 'align-self: center;',
+                        variant: 'avatar',
                         src: this.state.avatar,
                     },
-                )
-                :
-                createElement(
-                    'div',
-                    {
-                        style: 'width: -webkit-fill-available; height: 80px; position: relative; background: rgba(41, 44, 47, 0.25)',
-                    },
                 ),
+                (this.state.avg_rating) ?
+                    createComponent(
+                        Rating,
+                        {
+                            variant: 'show',
+                            rating: this.state.avg_rating,
+                        },
+                    ) : createText(''),
                 createComponent(
                     Menu,
                     {

@@ -3,7 +3,9 @@ import './rating.scss';
 import { Component } from '../baseComponents/snail/component';
 import { createElement, createComponent, VDomNode } from '../baseComponents/snail/vdom/VirtualDOM';
 
-import { Text } from '../baseComponents';
+import { Svg, Text } from '../baseComponents';
+import fillstar from '../../assets/icons/fillstar.svg';
+import star from '../../assets/icons/star.svg';
 
 export type RatingVariant = 'edit' | 'show';
 
@@ -49,26 +51,26 @@ export class Rating extends Component<RatingProps, RatingState> {
             rating = Number(this.props.rating);
         }
 
-return createElement(
-            'div',
-            {
-                class: 'rating-box-stars-star',
-                onclick: () => {
-                    this.setState({ rating: index });
-                    if (this.props.influenceFunc) {
-                        this.props.influenceFunc(index);
-                    }
-                },
-            },
-            createElement(
-                'img',
-                {
-                    src: (index <= rating) ?
-                        '../../assets/icons/fillstar.svg'
-                        : '../../assets/icons/star.svg',
-                },
-            ),
-        );
+        return createElement(
+                    'div',
+                    {
+                        class: 'rating-box-stars-star',
+                        onclick: () => {
+                            this.setState({ rating: index });
+                            if (this.props.influenceFunc) {
+                                this.props.influenceFunc(index);
+                            }
+                        },
+                    },
+                    createComponent(
+                        Svg,
+                        {
+                            content: (index <= rating) ? fillstar : star,
+                            width: 24,
+                            height: 24,
+                        },
+                    ),
+                );
     }
 
     getStars() {

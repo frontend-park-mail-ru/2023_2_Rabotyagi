@@ -22,6 +22,7 @@ import { getRuDayFormat } from '../../../shared/utils/dateConverter';
 
 import delivery from '../../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../../assets/icons/badges/safe_deal.svg';
+import star from '../../../assets/icons/star.svg';
 import { CommentForm } from '../../../components/commentForm/commentForm';
 
 interface ProductSidebarProps extends UserModel {
@@ -31,6 +32,7 @@ interface ProductSidebarProps extends UserModel {
     parent: ProductBase,
     safe_deal: boolean,
     delivery: boolean,
+    premium: boolean,
     comment_id: number | null,
 }
 
@@ -200,8 +202,14 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
 
         const badges: VDomElement[] = [];
         if (!this.props.parent.isEditMode()) {
+            const container = [
+                createElement(
+                    'div',
+                    {class: 'product-menu-badges'},
+                ),
+            ];
             if (this.props.safe_deal) {
-                badges.push(
+                container[0].children?.push(
                     createElement(
                         'div',
                         {class: 'product-menu-badges-badge'},
@@ -222,28 +230,49 @@ export class ProductSidebar extends Component<ProductSidebarProps, ProductSideba
             }
 
             if (this.props.delivery) {
-                badges.push(
+                container[0].children?.push(
                     createElement(
                         'div',
-                        {class: 'product-menu-badges'},
-                        createElement(
-                            'div',
-                            {class: 'product-menu-badges-badge'},
-                            createComponent(
-                                Svg,
-                                {
-                                    content: delivery,
-                                    width: 24,
-                                    height: 24,
-                                },
-                            ),
-                            createComponent(
-                                Text,
-                                {text: 'Возможна доставка'},
-                            ),
+                        {class: 'product-menu-badges-badge'},
+                        createComponent(
+                            Svg,
+                            {
+                                content: delivery,
+                                width: 24,
+                                height: 24,
+                            },
+                        ),
+                        createComponent(
+                            Text,
+                            {text: 'Возможна доставка'},
                         ),
                     ),
                 );
+            }
+
+            if (this.props.premium){
+                container[0].children?.push(
+                    createElement(
+                        'div',
+                        {class: 'product-menu-badges-badge'},
+                        createComponent(
+                            Svg,
+                            {
+                                content: star,
+                                width: 24,
+                                height: 24,
+                            },
+                        ),
+                        createComponent(
+                            Text,
+                            {text: 'Это продвигаемое объявление'},
+                        ),
+                    ),
+                );
+            }
+
+            if (container.length > 0){
+                badges.push(container[0]);
             }
         }
 

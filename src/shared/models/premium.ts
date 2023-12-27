@@ -28,3 +28,15 @@ export const premiumPeriodsList = [
         value: PremiumPeriods.Year,
     },
 ];
+
+export enum PremuimStatus {
+    NOT_PREMIUM = 0,
+    PENDING = 1,
+    WAITING_FOR_CAPTURE = 2,
+    SUCCEEDED = 3,
+    CANCELED = 4
+}
+
+export interface PremiumStatusResponse {
+    'premium_status': number
+}

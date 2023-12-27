@@ -9,6 +9,8 @@ export interface SvgProps {
     height?: number,
     color?: string,
     class?: string,
+    style?: string,
+    fill?: string
 }
 
 export class Svg extends Component<SvgProps, never> {
@@ -20,6 +22,7 @@ export class Svg extends Component<SvgProps, never> {
         svgElement.setAttribute('height', (this.props.height || 60).toString() + 'px');
         svgElement.setAttribute('width', (this.props.width || 60).toString() + 'px');
         svgElement.setAttribute('color', (this.props.color || 'black'));
+        svgElement.setAttribute('style', (this.props.style || ''));
 
         if (this.props.id) {
             svgElement.setAttribute('id', this.props.id);
@@ -34,6 +37,7 @@ export class Svg extends Component<SvgProps, never> {
             'svg-element',
             {
                 svgcontent: svgElement.outerHTML,
+                ...this.props,
             },
         );
     }

@@ -5,7 +5,8 @@ declare interface UserModel {
     created_at: string,
     email: string,
     name: string | null,
-    phone: string | null
+    phone: string | null,
+    avg_rating: number | null,
 }
 
 declare type UserModelPatch = {

@@ -14,11 +14,16 @@ import { ResponseStatusChecker } from '../../shared/constants/response';
 
 import { Modal } from '../modal/modal';
 
-import { PremiumPeriods, premiumPeriodsList } from '../../shared/models/premium';
+import { PremiumPeriods, PremiumStatusResponse, PremuimStatus, premiumPeriodsList } from '../../shared/models/premium';
 
 import delivery from '../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../assets/icons/badges/safe_deal.svg';
 import { Badge } from './badge/Badge';
+import { AlertMessage } from '../alertMessage/alertMessage';
+import Dispatcher from '../../shared/services/store/Dispatcher';
+import MessageStore, { MessageStoreAction } from '../../shared/store/message';
+import { useRetry } from '../baseComponents/snail/use/shortPull';
+import { Loader } from '../loader/Loader';
 
 export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite';
 
@@ -80,17 +85,23 @@ enum MouseButtons {
 interface CardState {
     isActive?: boolean,
     modalActive?: VDomComponent,
+    paymentProcess?: boolean,
 }
 
 export class Card extends Component<CardProps, CardState> {
     protected state: CardState = {
         isActive: false,
+        paymentProcess: false,
     };
 
     public componentDidMount(): void {
         this.setState({
             isActive: this.props?.is_active || false,
         });
+
+        if (this.props.variant === 'profile') {
+            this.getStatus();
+        }
     }
 
     navigateToProduct = (e: MouseEvent) => {
@@ -119,13 +130,13 @@ export class Card extends Component<CardProps, CardState> {
         if (this.props.delivery) {
             badges.push(createComponent(
                 Badge,
-                { class: badgeClass, svgIcon: delivery },
+                { class: badgeClass, svgIcon: delivery, tooltip: 'Возможна доставка' },
             ));
         }
         if (this.props.safe_deal) {
             badges.push(createComponent(
                 Badge,
-                { class: badgeClass, svgIcon: safeDeal },
+                { class: badgeClass, svgIcon: safeDeal, tooltip: 'Безопасная сделка' },
             ));
         }
         if (this.props.city) {
@@ -147,7 +158,7 @@ export class Card extends Component<CardProps, CardState> {
                 onclick: this.navigateToProduct,
             },
             createElement(
-                'div',
+                'badges',
                 { class: 'badges-base' },
                 ...this.renderBadges('badge-base'),
             ),
@@ -218,25 +229,124 @@ export class Card extends Component<CardProps, CardState> {
         );
     }
 
+    // premuimWindow: Window | undefined = undefined;
+
+    getStatus = async() => {
+        let res;
+
+        try {
+            res = await PremiumApi.getStatus(this.props.id);
+        }
+        catch (err) {
+            console.error(err);
+
+            return;
+        }
+
+        if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
+            return;
+        }
+
+        const body = res.body as PremiumStatusResponse;
+
+        if (body?.premium_status == PremuimStatus.PENDING) {
+            this.setState({
+                paymentProcess: true,
+            });
+
+            setTimeout(() => this.checkStatus(this.props.id), 29000);
+
+            return;
+        }
+    };
+
+    checkStatus = async(id: number) => {
+        const sleepTimeout = 29 * 1000;
+
+        try {
+            const res = await PremiumApi.getStatus(id);
+
+            if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
+                setTimeout(() => this.checkStatus(this.props.id), sleepTimeout);
+
+                return;
+            }
+
+            const body = res.body as PremiumStatusResponse;
+
+            if (body?.premium_status !== PremuimStatus.SUCCEEDED) {
+                setTimeout(() => this.checkStatus(this.props.id), sleepTimeout);
+
+                return res.body.premium_status;
+            }
+
+            this.props.premium = true;
+            this.setState({
+                paymentProcess: false,
+            });
+            // cp.applyComponentChanges();
+
+            return;
+
+        }
+        catch (err) {
+            setTimeout(() => this.checkStatus(this.props.id), sleepTimeout);
+
+            return;
+        }
+    };
+
     renderPromoteButton() {
 
         const promoteEvent = (e: Event) => {
             e.stopPropagation();
-            let period: PremiumPeriods = PremiumPeriods.Year;
+            let period: PremiumPeriods = PremiumPeriods.Week;
 
             if (this.state.modalActive) {
                 return;
             }
 
+            // eslint-disable-next-line @typescript-eslint/no-this-alias
+            const cp = this;
+
             const accept = async() => {
                 if (this.props) {
                     let res;
+                    AbortSignal.timeout ??= function timeout(ms) {
+                        const ctrl = new AbortController();
+                        setTimeout(() => ctrl.abort(), ms);
 
-                    try {
-                        res = await PremiumApi.add(this.props.id, period);
+                        return ctrl.signal;
+                    };
+                    const retryCount = 3;
+                    const shortPull = useRetry(PremiumApi.add, retryCount);
+
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    for (const _ of Array(retryCount).keys()) {
+                        res = await shortPull(this.props.id, period, AbortSignal.timeout(3000));
+
+                        if (res) {
+                            break;
+                        }
                     }
-                    catch(err){
-                        console.error(err);
+
+                    cp.setState({
+                        modalActive: undefined,
+                    });
+
+                    if (res === undefined) {
+                        if (!MessageStore.getVisible()) {
+                            Dispatcher.dispatch({
+                                name: MessageStoreAction.SHOW_MESSAGE,
+                                payload: createComponent(
+                                    AlertMessage,
+                                    {
+                                        title: 'Что-то пошло не так',
+                                        text: 'Кол-во попыток подключения превысило допустимое',
+                                    },
+                                ),
+                            });
+                        }
 
                         return;
                     }
@@ -246,7 +356,13 @@ export class Card extends Component<CardProps, CardState> {
                     }
 
                     const url = res.body.redirect_url;
-                    Navigate.navigateTo(url, {}, true);
+                    window.open(url, '_blank');
+
+                    cp.setState({
+                        paymentProcess: true,
+                    });
+                    cp.checkStatus(this.props.id);
+                    // Navigate.navigateTo(url, {}, true);
 
                     // @FIX
                     //Navigate.navigateTo('/profile/orders');
@@ -280,10 +396,28 @@ export class Card extends Component<CardProps, CardState> {
                     },
                 ),
             );
+
             this.setState({
                 modalActive: modal,
             });
         };
+
+        if (this.state.paymentProcess) {
+            return createComponent(
+                Button,
+                {
+                    variant: (this.props.premium) ? 'secondary' : 'primary',
+                    style: 'width: 100%;',
+                    disabled: true,
+                },
+                createComponent(
+                    Loader,
+                    {
+                        style: 'fill: white;',
+                    },
+                ),
+            );
+        }
 
         return createComponent(
             Button,
@@ -387,7 +521,10 @@ export class Card extends Component<CardProps, CardState> {
                     class: `card-profile${this.props.premium ? '--premium' : ''}`,
                     onclick: this.navigateToProduct,
                 },
-                (this.props.images) ?
+                createElement(
+                    'div',
+                    {class: 'content-profile'},
+                    (this.props.images) ?
                     createComponent(
                         Image,
                         {
@@ -400,9 +537,6 @@ export class Card extends Component<CardProps, CardState> {
                         'div',
                         { class: 'image-profile' },
                     ),
-                createElement(
-                    'div',
-                    { class: 'content-profile' },
                     createComponent(
                         Text, { text: this.props.price, type: 'price' },
                     ),
@@ -414,15 +548,20 @@ export class Card extends Component<CardProps, CardState> {
                         { class: 'divider' },
                     ),
                     (this.thisHaveBadges()) ?
-                        createElement(
-                            'div',
-                            { class: 'badges-profile' },
-                            ...this.renderBadges('badge-profile'),
-                        ) :
-                        createElement(
-                            'div',
-                            { class: 'badges-profile' },
-                        ),
+                    createElement(
+                        'div',
+                        { class: 'badges-profile' },
+                        ...this.renderBadges('badge-profile'),
+                    ) :
+                    createElement(
+                        'div',
+                        { class: 'badges-profile' },
+                    ),
+                ),
+                createElement(
+                    'div',
+                    { class: 'content-buttons' },
+
                     (variant == 'profile') ?
                         this.renderActiveButton()
                         : createText(''),
@@ -435,7 +574,7 @@ export class Card extends Component<CardProps, CardState> {
                             {
                                 variant: 'accent',
                                 text: 'Удалить',
-                                style: 'width: 100%;',
+                                className: 'content-buttons-delete',
                                 onclick: this.deleteFunction,
                             },
                         ) : createText(''),

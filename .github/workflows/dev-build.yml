@@ -39,7 +39,7 @@ jobs:
               with:
                   context: .
                   build-args: |
-                      SCHEMA=http://
+                      SCHEMA=https://
                       API_URL=dev.goods-galaxy.ru
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}

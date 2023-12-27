@@ -4,20 +4,19 @@ import { Component } from '../../baseComponents/snail/component';
 import { createComponent, createElement, createText } from '../../baseComponents/snail/vdom/VirtualDOM';
 
 import { Text, Svg } from '../../baseComponents/index';
+import { Tooltip } from '../../baseComponents/tooltip/tooltip';
 
 export interface BadgeProps {
     id?: string,
     class?: string,
     text?: string,
-    svgIcon?: string
+    tooltip?: string,
+    svgIcon?: string,
 }
 
 export class Badge extends Component<BadgeProps, {}> {
 
     render() {
-        if (!this.props) {
-            throw new Error('Badge settings are undefined');
-        }
 
         const { text, svgIcon, ...otherProps } = this.props;
 
@@ -25,8 +24,18 @@ export class Badge extends Component<BadgeProps, {}> {
             throw new Error('Badge must have child');
         }
 
+        const tooltip = [];
+        if (this.props.tooltip) {
+            tooltip.push(createComponent(
+                Tooltip,
+                {
+                    text: this.props.tooltip,
+                },
+            ));
+        }
+
         return createElement(
-            'div',
+            'badge',
             { ...otherProps },
             (text) ?
             createComponent(
@@ -37,6 +46,7 @@ export class Badge extends Component<BadgeProps, {}> {
                 Svg, { content: svgIcon, width: 20, height: 20 },
             )
             : createText(''),
+            ...tooltip,
         );
     }
 }

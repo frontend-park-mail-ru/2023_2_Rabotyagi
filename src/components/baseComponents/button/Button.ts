@@ -5,7 +5,7 @@ import { createElement, createComponent, createText } from '../snail/vdom/Virtua
 
 import { Text, TextVariants } from '../text/Text';
 import { Svg } from '../svg/Svg';
-import { Image } from '../image/image';
+import { Image, ImageType } from '../image/image';
 
 export type ButtonTypes = 'primary' | 'neutral' | 'secondary' | 'accent' | 'outlined' | 'base' | 'image';
 export type ButtonSubVariantTypes = 'primary' | 'tertiary' | 'outlined';
@@ -52,6 +52,7 @@ export interface ButtonImageProps extends ButtonEvents {
     name?: string,
     type?: string,
     className?: string,
+    srcVariant?: ImageType
 }
 
 export class Button extends Component<ButtonProps, never> {
@@ -110,6 +111,7 @@ export class ButtonImage extends Component<ButtonImageProps, never> {
             src,
             variant,
             subvariant,
+            srcVariant,
             ...buttonProps
         } = this.props;
 
@@ -136,6 +138,7 @@ export class ButtonImage extends Component<ButtonImageProps, never> {
                 Image,
                 {
                     src: src,
+                    variant: srcVariant,
                     width: width,
                     height: height,
                 },

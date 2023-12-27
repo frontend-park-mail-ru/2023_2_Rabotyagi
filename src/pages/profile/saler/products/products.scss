@@ -1,6 +1,6 @@
 @use '../../../../assets/css/vars.scss';
 
-.container {
+.container-saler {
     > .tabs {
         display: inline-flex;
         flex-direction: row;
@@ -24,7 +24,7 @@
     
 }
 
-.products-container {
+.products-container-saler {
     display: grid;
     grid-template-columns: repeat(3,1fr);
     grid-column-gap: 32px;

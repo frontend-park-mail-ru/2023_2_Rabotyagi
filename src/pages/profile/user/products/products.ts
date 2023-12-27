@@ -61,15 +61,15 @@ export class ProfileProducts extends Component<never, ProfileProductsState> {
         if (!ResponseStatusChecker.IsSuccessfulRequest(resp)) {
             if (ResponseStatusChecker.IsBadFormatRequest(resp)) {
                 // throw statuses.USER_MESSAGE;
-                return;
+                return [];
             }
             else if (ResponseStatusChecker.IsInternalServerError(resp)) {
                 // throw statuses.SERVER_MESSAGE;
-                return;
+                return [];
             }
             else if (ResponseStatusChecker.IsUserError(resp)) {
                 // throw body.error;
-                return;
+                return [];
             }
         }
 
