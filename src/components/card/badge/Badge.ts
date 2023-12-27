@@ -11,15 +11,12 @@ export interface BadgeProps {
     class?: string,
     text?: string,
     tooltip?: string,
-    svgIcon?: string
+    svgIcon?: string,
 }
 
 export class Badge extends Component<BadgeProps, {}> {
 
     render() {
-        if (!this.props) {
-            throw new Error('Badge settings are undefined');
-        }
 
         const { text, svgIcon, ...otherProps } = this.props;
 

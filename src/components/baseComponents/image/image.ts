@@ -1,6 +1,9 @@
-import { getResourceUrl } from '../../../shared/utils/getResource';
+import './image.scss';
+
 import { Component } from '../snail/component';
 import { createElement } from '../snail/vdom/VirtualDOM';
+
+import { getResourceUrl } from '../../../shared/utils/getResource';
 
 export type ImageType = 'avatar';
 
@@ -29,6 +32,7 @@ export class Image extends Component<ImageProps, never> {
                 {
                     style: `width: ${width}; height: ${height}; ${style}`,
                     src: src,
+                    class: 'img-avatar',
                     ...etc,
                 },
             );
