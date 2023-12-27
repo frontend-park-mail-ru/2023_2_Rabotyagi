@@ -231,7 +231,7 @@ export class Card extends Component<CardProps, CardState> {
 
         const promoteEvent = (e: Event) => {
             e.stopPropagation();
-            let period: PremiumPeriods = PremiumPeriods.Year;
+            let period: PremiumPeriods = PremiumPeriods.Week;
 
             if (this.state.modalActive) {
                 return;
@@ -290,7 +290,7 @@ export class Card extends Component<CardProps, CardState> {
                     window.open(url, '_blank');
 
                     const checkStatus = async(id: number) => {
-                        const sleepTimeout = 3000;
+                        const sleepTimeout = 29 * 1000;
 
                         try {
                             const res = await PremiumApi.getStatus(id);
