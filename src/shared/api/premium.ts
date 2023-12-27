@@ -14,4 +14,14 @@ export class PremiumApi {
             signal: signal,
         });
     }
+
+    static async getStatus(id: number) {
+        return Ajax.getInstance().get({
+            url: PremiumRoutes.GET_STATUS,
+            params: {
+                'product_id': id,
+            },
+            credentials: 'include',
+        });
+    }
 }

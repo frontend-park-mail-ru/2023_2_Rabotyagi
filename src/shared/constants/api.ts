@@ -60,4 +60,5 @@ export enum ProductRoutes {
 
 export enum PremiumRoutes {
     ADD = 'premium/add',
+    GET_STATUS = 'premium/check'
 }

@@ -14,7 +14,7 @@ import { ResponseStatusChecker } from '../../shared/constants/response';
 
 import { Modal } from '../modal/modal';
 
-import { PremiumPeriods, premiumPeriodsList } from '../../shared/models/premium';
+import { PremiumPeriods, PremiumStatusResponse, PremuimStatus, premiumPeriodsList } from '../../shared/models/premium';
 
 import delivery from '../../assets/icons/badges/delivery.svg';
 import safeDeal from '../../assets/icons/badges/safe_deal.svg';
@@ -23,6 +23,7 @@ import { AlertMessage } from '../alertMessage/alertMessage';
 import Dispatcher from '../../shared/services/store/Dispatcher';
 import MessageStore, { MessageStoreAction } from '../../shared/store/message';
 import { useRetry } from '../baseComponents/snail/use/shortPull';
+import { Loader } from '../loader/Loader';
 
 export type CardVariants = 'base' | 'profile' | 'profile-saler' | 'favourite';
 
@@ -84,11 +85,13 @@ enum MouseButtons {
 interface CardState {
     isActive?: boolean,
     modalActive?: VDomComponent,
+    paymentProcess?: boolean,
 }
 
 export class Card extends Component<CardProps, CardState> {
     protected state: CardState = {
         isActive: false,
+        paymentProcess: false,
     };
 
     public componentDidMount(): void {
@@ -258,6 +261,10 @@ export class Card extends Component<CardProps, CardState> {
                         }
                     }
 
+                    cp.setState({
+                        modalActive: undefined,
+                    });
+
                     if (res === undefined) {
                         if (!MessageStore.getVisible()) {
                             Dispatcher.dispatch({
@@ -272,10 +279,6 @@ export class Card extends Component<CardProps, CardState> {
                             });
                         }
 
-                        cp.setState({
-                            modalActive: undefined,
-                        });
-
                         return;
                     }
 
@@ -285,6 +288,47 @@ export class Card extends Component<CardProps, CardState> {
 
                     const url = res.body.redirect_url;
                     window.open(url, '_blank');
+
+                    const checkStatus = async(id: number) => {
+                        const sleepTimeout = 3000;
+
+                        try {
+                            const res = await PremiumApi.getStatus(id);
+
+                            if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
+                                setTimeout(() => checkStatus(this.props.id), sleepTimeout);
+
+                                return;
+                            }
+
+                            const body = res.body as PremiumStatusResponse;
+
+                            if (body?.premium_status !== PremuimStatus.SUCCEEDED) {
+                                setTimeout(() => checkStatus(this.props.id), sleepTimeout);
+
+                                return res.body.premium_status;
+                            }
+
+                            cp.props.premium = true;
+                            cp.setState({
+                                paymentProcess: false,
+                            });
+                            // cp.applyComponentChanges();
+
+                            return;
+
+                        }
+                        catch (err) {
+                            setTimeout(() => checkStatus(this.props.id), sleepTimeout);
+
+                            return;
+                        }
+                    };
+
+                    cp.setState({
+                        paymentProcess: true,
+                    });
+                    checkStatus(this.props.id);
                     // Navigate.navigateTo(url, {}, true);
 
                     // @FIX
@@ -324,6 +368,21 @@ export class Card extends Component<CardProps, CardState> {
                 modalActive: modal,
             });
         };
+
+        if (this.state.paymentProcess) {
+            return createComponent(
+                Button,
+                {
+                    variant: (this.props.premium) ? 'secondary' : 'primary',
+                    style: 'width: 100%;',
+                    disabled: true,
+                },
+                createComponent(
+                    Loader,
+                    {},
+                ),
+            );
+        }
 
         return createComponent(
             Button,
