@@ -139,7 +139,7 @@ export class SalerSidebar extends Component<never, SalerSidebarState> {
                     createComponent(
                         Rating,
                         {
-                            variant: 'show',
+                            variant: 'profile-show',
                             rating: this.state.avg_rating,
                         },
                     ) : createText(''),

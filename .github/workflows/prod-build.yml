@@ -92,7 +92,7 @@ jobs:
                   script: |
                       cd /var/share/rabotyagi
                       docker compose pull frontend
-                      docker compose up -d --force-recreate frontend
+                      docker compose up -d --force-recreate frontend nginx
 
     notify-deploy-good:
         runs-on: ubuntu-latest

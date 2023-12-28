@@ -4,10 +4,12 @@ import { Component } from '../baseComponents/snail/component';
 import { createElement, createComponent, VDomNode } from '../baseComponents/snail/vdom/VirtualDOM';
 
 import { Svg, Text } from '../baseComponents';
+import { Tooltip } from '../baseComponents/tooltip/tooltip';
+
 import fillstar from '../../assets/icons/fillstar.svg';
 import star from '../../assets/icons/star.svg';
 
-export type RatingVariant = 'edit' | 'show';
+export type RatingVariant = 'edit' | 'show' | 'profile-show';
 
 const ratingToString = (rating: number) => {
     switch(rating) {
@@ -66,8 +68,8 @@ export class Rating extends Component<RatingProps, RatingState> {
                         Svg,
                         {
                             content: (index <= rating) ? fillstar : star,
-                            width: 24,
-                            height: 24,
+                            width: (this.props.variant !== 'profile-show') ? 24 : 40,
+                            height: (this.props.variant !== 'profile-show') ? 24 : 40,
                         },
                     ),
                 );
@@ -97,17 +99,29 @@ export class Rating extends Component<RatingProps, RatingState> {
             return ' rating-good';
         }
 
-return ' rating-normal';
+        return ' rating-normal';
     }
 
     render() {
         const variantClass = this.props.variant ?
-            this.props.variant == 'show' ? '-show' : ''
-            : '';
+            this.props.variant == 'show' ? '-show'
+            : this.props.variant == 'profile-show' ? '-profile'
+            : '' : '';
+
+        const tooltip = [];
+        if (this.props.variant == 'profile-show') {
+            tooltip.push(createComponent(
+                Tooltip,
+                { text: 'Рейтинг', },
+            ));
+        }
 
         return createElement(
             'div',
-            { class: 'rating-box' + variantClass },
+            {
+                class: 'rating-box' + variantClass,
+                tooltip: 'Рейтинг',
+            },
             createComponent(
                 Text,
                 {
@@ -124,6 +138,7 @@ return ' rating-normal';
                 { class: 'rating-box-stars' },
                 ...this.getStars(),
             ),
+            ...tooltip,
         );
     }
 }

@@ -73,7 +73,8 @@ export interface CardProps {
     is_active?: boolean,
     premium: boolean,
     favouriteInfluence?: (index: number) => void,
-    removeCallback?: (id: number) => void
+    removeCallback?: (id: number) => void,
+    activeCallBack?: (index: number) => void,
 }
 
 enum MouseButtons {
@@ -216,6 +217,9 @@ export class Card extends Component<CardProps, CardState> {
                 isActive: !this.state.isActive,
             });
 
+            if (this.props.activeCallBack) {
+                this.props.activeCallBack(this.props.id);
+            }
         };
 
         return createComponent(
@@ -234,6 +238,10 @@ export class Card extends Component<CardProps, CardState> {
     getStatus = async() => {
         let res;
 
+        if (this.props.premium) {
+            return;
+        }
+
         try {
             res = await PremiumApi.getStatus(this.props.id);
         }
@@ -249,7 +257,7 @@ export class Card extends Component<CardProps, CardState> {
 
         const body = res.body as PremiumStatusResponse;
 
-        if (body?.premium_status == PremuimStatus.PENDING) {
+        if (body.premium_status == (PremuimStatus.PENDING || PremuimStatus.WAITING_FOR_CAPTURE)) {
             this.setState({
                 paymentProcess: true,
             });
@@ -262,38 +270,60 @@ export class Card extends Component<CardProps, CardState> {
 
     checkStatus = async(id: number) => {
         const sleepTimeout = 29 * 1000;
+        let res;
 
         try {
-            const res = await PremiumApi.getStatus(id);
-
-            if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
-                setTimeout(() => this.checkStatus(this.props.id), sleepTimeout);
-
-                return;
-            }
-
-            const body = res.body as PremiumStatusResponse;
-
-            if (body?.premium_status !== PremuimStatus.SUCCEEDED) {
-                setTimeout(() => this.checkStatus(this.props.id), sleepTimeout);
-
-                return res.body.premium_status;
-            }
-
-            this.props.premium = true;
-            this.setState({
-                paymentProcess: false,
-            });
-            // cp.applyComponentChanges();
-
-            return;
-
+            res = await PremiumApi.getStatus(id);
         }
         catch (err) {
             setTimeout(() => this.checkStatus(this.props.id), sleepTimeout);
 
             return;
         }
+
+        if (!ResponseStatusChecker.IsSuccessfulRequest(res)) {
+            setTimeout(() => this.checkStatus(this.props.id), sleepTimeout);
+
+            return;
+        }
+
+        const body = res.body as PremiumStatusResponse;
+
+        switch (body.premium_status) {
+            case PremuimStatus.PENDING:
+                setTimeout(() => this.checkStatus(this.props.id), sleepTimeout);
+
+                return;
+
+            case PremuimStatus.WAITING_FOR_CAPTURE:
+                setTimeout(() => this.checkStatus(this.props.id), sleepTimeout);
+
+                return;
+
+            case PremuimStatus.CANCELED:
+                this.setState({
+                    paymentProcess: false,
+                });
+                Dispatcher.dispatch({
+                    name: MessageStoreAction.SHOW_MESSAGE,
+                    payload: createComponent(
+                        AlertMessage,
+                        {
+                            title: 'Платеж не прошел',
+                            text: '',
+                        },
+                    ),
+                });
+
+                return;
+        }
+
+        this.props.premium = true;
+        this.setState({
+            paymentProcess: false,
+        });
+
+        return;
     };
 
     renderPromoteButton() {

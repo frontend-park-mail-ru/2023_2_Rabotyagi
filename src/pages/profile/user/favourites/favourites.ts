@@ -3,12 +3,13 @@ import './favourite.scss';
 import { Component } from '../../../../components/baseComponents/snail/component';
 import { createComponent, createElement } from '../../../../components/baseComponents/snail/vdom/VirtualDOM';
 
+import { ProfilePlaceholder } from '../../placeholder/placeholder';
+import { Loader } from '../../../../components/loader/Loader';
 import { Card, CardProps } from '../../../../components/card/Card';
+import { Text } from '../../../../components/baseComponents';
 
 import { UserApi } from '../../../../shared/api/user';
 import { ResponseStatusChecker } from '../../../../shared/constants/response';
-import { ProfilePlaceholder } from '../../placeholder/placeholder';
-import { Loader } from '../../../../components/loader/Loader';
 
 interface ProfileFavouritesState {
     items: Array<CardProps>,
@@ -96,8 +97,21 @@ export class ProfileFavourites extends Component<never, ProfileFavouritesState> 
 
         return createElement(
             'div',
-            {class: 'fav-container'},
-            ...this.createFavs(),
+            { class: 'favs', },
+            createComponent(
+                Text,
+                {
+                    tag: 'div',
+                    variant: 'subheader',
+                    text: 'Избранное',
+                    style: 'padding-bottom: 32px;',
+                },
+            ),
+            createElement(
+                'div',
+                { class: 'fav-container', },
+                ...this.createFavs(),
+            ),
         );
     }
 }
